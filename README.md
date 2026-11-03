@@ -125,7 +125,7 @@ tests/                        数值、资源、隔离及模型协议测试
 
 `config.example.json` 可以设置模型、base_url、思考模式/强度、超时、重试、单次输出及总 token 上限。主 Agent 不再限制模型调用总次数或对话轮次，旧配置中的 `max_calls`、`main_max_calls`、`max_turns`、`max_rounds` 不再约束新运行；有效调用限额记录为 `null`。每次输出默认最多 65,536 token（含思考），总预算 5,000,000 token，单次请求超时 600 秒。每次 HTTP 尝试包括重试仍计入调用统计，实际 token 用量由服务端 usage 记录，未知用量另外保守预留。总 token、现实时间、单次重试次数及连续三次无工具回复的限制继续生效；未成功提交时如实结束为未完成。
 
-网页高级设置可选择 low / high / max 推理强度；本地模型接入见[部署说明](docs/local_deployment.md)。主 Agent 默认启用 low 强度思考。新探索不创建分析子 Agent，也不提供 summarize_data 工具；数据解释和假设生成由主 Agent 完成，精确计算继续交给数值工具。旧会话、分析报告和原始失败记录保留，历史用量按其原配置展示。
+网页高级设置可选择 low / high / max 推理强度；本地模型接入见[部署说明](docs/local_deployment.md)。主 Agent 默认启用 low 强度思考。45次推理强度消融的完整结果见[E1报告](benchmarks/E1/README.md)，本轮建议在高级设置选择high。新探索不创建分析子 Agent，也不提供 summarize_data 工具；数据解释和假设生成由主 Agent 完成，精确计算继续交给数值工具。旧会话、分析报告和原始失败记录保留，历史用量按其原配置展示。
 
 核验日期：2026-11-01。当前默认 `deepseek-flash`；官方页面显示它对应 DeepSeek-V4.1-Flash-1017，旧 `deepseek-v4-flash` 名称虽可接受，已经重定向至新模型，不能声称锁定原权重。使用显式 `thinking` 和 `reasoning_effort`；带工具的历史中所有 assistant 的 `reasoning_content` 完整保留，包括没有调用工具的回复。[官方模型页面](https://api-docs.deepseek.com/quick_start/pricing/)、[思考与工具协议](https://api-docs.deepseek.com/guides/thinking_mode/)。
 
