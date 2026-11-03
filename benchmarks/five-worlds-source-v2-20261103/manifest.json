@@ -1,0 +1,292 @@
+{
+  "benchmark_kind": "real_agent_once_per_world",
+  "started_at": "2026-11-03T07:32:45.937462+00:00",
+  "status": "completed_all_attempts",
+  "base_url": "http://127.0.0.1:8765",
+  "settings": {
+    "model": "deepseek-flash",
+    "thinking": true,
+    "max_calls": 24,
+    "max_total_tokens": 2000000,
+    "max_tokens_per_call": 65536,
+    "noise": false,
+    "seed": 42
+  },
+  "role_limits": {
+    "main_max_calls": 24
+  },
+  "evaluation": {
+    "seed": 1871,
+    "n_probes": 20
+  },
+  "tool_names": [
+    "observe_body",
+    "insert_probe",
+    "fit_law_and_rollout",
+    "validate_law",
+    "call_back",
+    "analyze_residual",
+    "submit"
+  ],
+  "agent_architecture": "single_agent",
+  "prompt_sha256": {
+    "main.txt": "fa94273caf8ce022efd921518e2956f5b43bbd9fdfe95f2a5127fcb302f9436a"
+  },
+  "base_configuration": {
+    "environment": {
+      "world_id": "world_1",
+      "physics_version": "v2",
+      "noise": false,
+      "seed": 42,
+      "reference_length": 10.0,
+      "position_limit": 5.0,
+      "velocity_limit": 3.0,
+      "time_max": 30.0,
+      "wall_seconds": 3600
+    },
+    "model": {
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-flash",
+      "thinking": true,
+      "reasoning_effort": "low",
+      "timeout_seconds": 600,
+      "max_calls": 24,
+      "main_max_calls": 24,
+      "max_tokens_per_call": 65536,
+      "max_total_tokens": 2000000,
+      "max_retries": 1
+    },
+    "agent": {
+      "max_no_action": 3,
+      "max_turns": 30
+    },
+    "numerics": {
+      "max_nfev": 80
+    }
+  },
+  "automatic_reruns": false,
+  "automatic_budget_expansion": false,
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "name": "世界 01",
+      "status": "submitted",
+      "run_id": "web-20261103-073246-1ef99e81",
+      "started_at": "2026-11-03T07:32:46.562851+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_1",
+          "physics_version": "v2",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 24,
+          "max_tokens_per_call": 65536,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "f35b93a57298d588d3bae198b3099228e2d040014a4a7c8e8e02c8686fee5afd",
+      "prompt_sha256": {
+        "main.txt": "fa94273caf8ce022efd921518e2956f5b43bbd9fdfe95f2a5127fcb302f9436a"
+      },
+      "finished_at": "2026-11-03T07:34:22.038619+00:00"
+    },
+    {
+      "world_id": "world_2",
+      "name": "世界 02",
+      "status": "submitted",
+      "run_id": "web-20261103-073422-33fef611",
+      "started_at": "2026-11-03T07:34:22.919802+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_2",
+          "physics_version": "v2",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 24,
+          "max_tokens_per_call": 65536,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "82e2b48cf2a84700c404d091ea37a870981ae664082133b3ee17f8374a19926c",
+      "prompt_sha256": {
+        "main.txt": "fa94273caf8ce022efd921518e2956f5b43bbd9fdfe95f2a5127fcb302f9436a"
+      },
+      "finished_at": "2026-11-03T07:37:38.884502+00:00"
+    },
+    {
+      "world_id": "world_3",
+      "name": "世界 03",
+      "status": "submitted",
+      "run_id": "web-20261103-073739-1962cf75",
+      "started_at": "2026-11-03T07:37:39.763600+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v2",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 24,
+          "max_tokens_per_call": 65536,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "2adb2bf1365da09882d26f16c5b012e6b94e6f706cecd37412469571354b3522",
+      "prompt_sha256": {
+        "main.txt": "fa94273caf8ce022efd921518e2956f5b43bbd9fdfe95f2a5127fcb302f9436a"
+      },
+      "finished_at": "2026-11-03T07:41:11.970322+00:00"
+    },
+    {
+      "world_id": "world_4",
+      "name": "世界 04",
+      "status": "submitted",
+      "run_id": "web-20261103-074112-03c2278b",
+      "started_at": "2026-11-03T07:41:12.669175+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v2",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 24,
+          "max_tokens_per_call": 65536,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "ba196bb9ac5630056fcdfaa0a6c8738b89fb537e8ef4aeb5a5321e4aa66458f7",
+      "prompt_sha256": {
+        "main.txt": "fa94273caf8ce022efd921518e2956f5b43bbd9fdfe95f2a5127fcb302f9436a"
+      },
+      "finished_at": "2026-11-03T07:46:00.923164+00:00"
+    },
+    {
+      "world_id": "world_5",
+      "name": "世界 05",
+      "status": "submitted",
+      "run_id": "web-20261103-074601-2e14853c",
+      "started_at": "2026-11-03T07:46:01.619093+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v2",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 24,
+          "max_tokens_per_call": 65536,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "0a013d6e02fa1fb11a9e723f23ce8a6e1384a399b63869d024f53f0d649fd450",
+      "prompt_sha256": {
+        "main.txt": "fa94273caf8ce022efd921518e2956f5b43bbd9fdfe95f2a5127fcb302f9436a"
+      },
+      "finished_at": "2026-11-03T07:50:10.860158+00:00"
+    }
+  ],
+  "finished_at": "2026-11-03T07:50:10.862110+00:00"
+}

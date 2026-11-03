@@ -1,0 +1,635 @@
+{
+  "kind": "manual_engineering_known_law_replay",
+  "prominent_notice": "MANUAL ENGINEERING CHECK ONLY. Uses developer-supplied true law and known coefficients. NOT autonomous discovery, NOT an API rerun, and does NOT replace the failed Agent result.",
+  "autonomous_discovery": false,
+  "model_api_calls": 0,
+  "parameters_fitted": false,
+  "purpose": "Check whether the approved world_5 law is expressible and numerically executable on exactly the failed run's 20 held-out initial states and time grids.",
+  "source_run_id": "web-20261103-074601-2e14853c",
+  "world_id": "world_5",
+  "physics_version": "v2",
+  "source_evaluation_seed": 1871,
+  "source_submitted_law_id": "law_3",
+  "original_agent_overall": {
+    "position_mse": 8.672568892917841,
+    "velocity_mse": 3.836418412330425,
+    "position_rmse": 2.9449225614467083,
+    "velocity_rmse": 1.9586777203844499
+  },
+  "law_spec": {
+    "ax": "sum_b(k*(bx-x)+g*vy/((bx-x)**2+(by-y)**2+s))",
+    "ay": "sum_b(k*(by-y)-g*vx/((bx-x)**2+(by-y)**2+s))"
+  },
+  "manually_supplied_parameters": {
+    "k": 0.1,
+    "g": 1.2,
+    "s": 4.0
+  },
+  "dsl_ast_nodes": 96,
+  "known_bodies_source": "Frozen observed body positions from the original submitted law; no coordinates substituted.",
+  "known_bodies": [
+    {
+      "body_id": "b1",
+      "position": [
+        -2.0,
+        0.0
+      ]
+    },
+    {
+      "body_id": "b2",
+      "position": [
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "body_id": "b3",
+      "position": [
+        0.0,
+        3.0
+      ]
+    }
+  ],
+  "body_position_estimate": {
+    "version": "body_estimate_1",
+    "method": "mean_of_acquired_static_observations",
+    "observation_ids": [
+      "body_0002"
+    ],
+    "sample_count_per_body": {
+      "b1": 3,
+      "b2": 3,
+      "b3": 3
+    },
+    "bodies": [
+      {
+        "body_id": "b1",
+        "position": [
+          -2.0,
+          0.0
+        ],
+        "sample_count": 3,
+        "position_standard_error": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "body_id": "b2",
+        "position": [
+          2.0,
+          0.0
+        ],
+        "sample_count": 3,
+        "position_standard_error": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "body_id": "b3",
+        "position": [
+          0.0,
+          3.0
+        ],
+        "sample_count": 3,
+        "position_standard_error": [
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "assumption": "Visible bodies are static; all acquired independent position samples have equal weight.",
+    "uncertainty_note": "Per-coordinate standard error uses the public independent noise sigma / sqrt(sample_count); it is not the realized error relative to truth."
+  },
+  "n_trajectories": 20,
+  "n_successful": 20,
+  "complete": true,
+  "overall": {
+    "position_mse": 3.1482028943717287e-15,
+    "velocity_mse": 2.000494418950669e-15,
+    "position_rmse": 5.6108848628106146e-08,
+    "velocity_rmse": 4.4726886980323915e-08
+  },
+  "successful_subset_overall": {
+    "position_mse": 3.1482028943717287e-15,
+    "velocity_mse": 2.000494418950669e-15,
+    "position_rmse": 5.6108848628106146e-08,
+    "velocity_rmse": 4.4726886980323915e-08
+  },
+  "per_probe": [
+    {
+      "probe_id": "hidden_001",
+      "n_samples": 50,
+      "position_mse": 4.879597222543614e-15,
+      "position_rmse": 6.985411385554622e-08,
+      "velocity_mse": 3.165996756664366e-15,
+      "velocity_rmse": 5.6267190765706136e-08
+    },
+    {
+      "probe_id": "hidden_002",
+      "n_samples": 50,
+      "position_mse": 5.499413677252624e-16,
+      "position_rmse": 2.3450828721502837e-08,
+      "velocity_mse": 1.689999942045462e-16,
+      "velocity_rmse": 1.2999999777097929e-08
+    },
+    {
+      "probe_id": "hidden_003",
+      "n_samples": 50,
+      "position_mse": 2.7164224050737664e-15,
+      "position_rmse": 5.211930933036015e-08,
+      "velocity_mse": 5.813767130789011e-16,
+      "velocity_rmse": 2.411175466611464e-08
+    },
+    {
+      "probe_id": "hidden_004",
+      "n_samples": 50,
+      "position_mse": 1.0968633061753323e-14,
+      "position_rmse": 1.0473124205199384e-07,
+      "velocity_mse": 9.574792704897011e-15,
+      "velocity_rmse": 9.785086971967603e-08
+    },
+    {
+      "probe_id": "hidden_005",
+      "n_samples": 50,
+      "position_mse": 9.298277770954449e-16,
+      "position_rmse": 3.049307752745605e-08,
+      "velocity_mse": 4.2296365076766383e-16,
+      "velocity_rmse": 2.056608010214061e-08
+    },
+    {
+      "probe_id": "hidden_006",
+      "n_samples": 50,
+      "position_mse": 1.4878103104617047e-15,
+      "position_rmse": 3.85721442295046e-08,
+      "velocity_mse": 2.278519900357095e-15,
+      "velocity_rmse": 4.773384439113505e-08
+    },
+    {
+      "probe_id": "hidden_007",
+      "n_samples": 50,
+      "position_mse": 6.865122361511318e-17,
+      "position_rmse": 8.285603394751234e-09,
+      "velocity_mse": 5.181310679413271e-17,
+      "velocity_rmse": 7.198132173983242e-09
+    },
+    {
+      "probe_id": "hidden_008",
+      "n_samples": 50,
+      "position_mse": 5.151433976665693e-16,
+      "position_rmse": 2.2696770644005047e-08,
+      "velocity_mse": 4.73692042158024e-16,
+      "velocity_rmse": 2.176446742187881e-08
+    },
+    {
+      "probe_id": "hidden_009",
+      "n_samples": 50,
+      "position_mse": 2.511346714229284e-16,
+      "position_rmse": 1.5847229140229166e-08,
+      "velocity_mse": 1.3684068809366666e-16,
+      "velocity_rmse": 1.1697892463758874e-08
+    },
+    {
+      "probe_id": "hidden_010",
+      "n_samples": 50,
+      "position_mse": 1.2206929407230585e-15,
+      "position_rmse": 3.493841640262275e-08,
+      "velocity_mse": 6.671626598719931e-16,
+      "velocity_rmse": 2.582949205601986e-08
+    },
+    {
+      "probe_id": "hidden_011",
+      "n_samples": 50,
+      "position_mse": 9.155296652267446e-16,
+      "position_rmse": 3.025772075399508e-08,
+      "velocity_mse": 4.540123688086067e-16,
+      "velocity_rmse": 2.1307565999161112e-08
+    },
+    {
+      "probe_id": "hidden_012",
+      "n_samples": 50,
+      "position_mse": 1.1727600147152945e-14,
+      "position_rmse": 1.0829404483697589e-07,
+      "velocity_mse": 5.636618778700123e-15,
+      "velocity_rmse": 7.507741856710394e-08
+    },
+    {
+      "probe_id": "hidden_013",
+      "n_samples": 50,
+      "position_mse": 3.066877416405313e-16,
+      "position_rmse": 1.7512502437987875e-08,
+      "velocity_mse": 1.821022868619724e-16,
+      "velocity_rmse": 1.349452803405782e-08
+    },
+    {
+      "probe_id": "hidden_014",
+      "n_samples": 50,
+      "position_mse": 2.9367310292377936e-16,
+      "position_rmse": 1.7136893035897126e-08,
+      "velocity_mse": 1.3428013544412626e-16,
+      "velocity_rmse": 1.1587930593687825e-08
+    },
+    {
+      "probe_id": "hidden_015",
+      "n_samples": 50,
+      "position_mse": 2.4169983263448456e-16,
+      "position_rmse": 1.554669844804628e-08,
+      "velocity_mse": 8.662236069623131e-17,
+      "velocity_rmse": 9.30711344597407e-09
+    },
+    {
+      "probe_id": "hidden_016",
+      "n_samples": 50,
+      "position_mse": 9.642089958921408e-15,
+      "position_rmse": 9.819414421909999e-08,
+      "velocity_mse": 5.489481785654699e-15,
+      "velocity_rmse": 7.40910371479216e-08
+    },
+    {
+      "probe_id": "hidden_017",
+      "n_samples": 50,
+      "position_mse": 1.5778674989041328e-16,
+      "position_rmse": 1.256131959192239e-08,
+      "velocity_mse": 2.334373030443177e-16,
+      "velocity_rmse": 1.52786551451467e-08
+    },
+    {
+      "probe_id": "hidden_018",
+      "n_samples": 50,
+      "position_mse": 1.5112741087497397e-15,
+      "position_rmse": 3.8875109115599146e-08,
+      "velocity_mse": 1.4229872170233341e-15,
+      "velocity_rmse": 3.7722502793734855e-08
+    },
+    {
+      "probe_id": "hidden_019",
+      "n_samples": 50,
+      "position_mse": 4.928141876591985e-16,
+      "position_rmse": 2.2199418633360615e-08,
+      "velocity_mse": 2.4904190705861773e-16,
+      "velocity_rmse": 1.5781061658159053e-08
+    },
+    {
+      "probe_id": "hidden_020",
+      "n_samples": 50,
+      "position_mse": 1.408704801455455e-14,
+      "position_rmse": 1.1868887064318436e-07,
+      "velocity_mse": 8.599146018833948e-15,
+      "velocity_rmse": 9.273158048277809e-08
+    }
+  ],
+  "failures": [],
+  "initial_conditions": [
+    {
+      "probe_id": "hidden_001",
+      "r0": [
+        -0.8136639240648069,
+        -2.4598033693705803
+      ],
+      "v0": [
+        -2.277525393742272,
+        1.898741798198918
+      ],
+      "t0": 0.63,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.2490532980652764,
+        "charge": 0.46084752401999585
+      }
+    },
+    {
+      "probe_id": "hidden_002",
+      "r0": [
+        1.13197807524683,
+        3.1945823122114536
+      ],
+      "v0": [
+        1.2961593000633203,
+        -1.9316151130121675
+      ],
+      "t0": 6.47,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.5391237996489826,
+        "charge": -0.4965272149847848
+      }
+    },
+    {
+      "probe_id": "hidden_003",
+      "r0": [
+        1.4989703406938337,
+        -4.016273948305723
+      ],
+      "v0": [
+        -2.356594328988523,
+        -0.6245900682860805
+      ],
+      "t0": 6.3,
+      "dt": 0.405,
+      "properties": {
+        "mass": 0.6271524592660527,
+        "charge": 0.4658824740740879
+      }
+    },
+    {
+      "probe_id": "hidden_004",
+      "r0": [
+        -3.3107663332318396,
+        -3.7448778451275633
+      ],
+      "v0": [
+        -0.6934185691591612,
+        -0.9062359572646612
+      ],
+      "t0": 5.025,
+      "dt": 0.405,
+      "properties": {
+        "mass": 0.6247220786229473,
+        "charge": 0.662667306323174
+      }
+    },
+    {
+      "probe_id": "hidden_005",
+      "r0": [
+        -1.8562683916135048,
+        4.341807026677728
+      ],
+      "v0": [
+        1.8719452962650918,
+        -0.5300683418764836
+      ],
+      "t0": 2.635,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.512982297267004,
+        "charge": 0.9754986870246256
+      }
+    },
+    {
+      "probe_id": "hidden_006",
+      "r0": [
+        1.8287501215767876,
+        4.460656287512686
+      ],
+      "v0": [
+        0.0858224485589596,
+        2.1742043007156475
+      ],
+      "t0": 0.485,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.6154110804252488,
+        "charge": 0.2257929327973418
+      }
+    },
+    {
+      "probe_id": "hidden_007",
+      "r0": [
+        -0.3321613324358097,
+        0.14733875389717266
+      ],
+      "v0": [
+        0.4048519362768106,
+        0.16335115171722125
+      ],
+      "t0": 9.85,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.075945521367722,
+        "charge": 0.21103340339103793
+      }
+    },
+    {
+      "probe_id": "hidden_008",
+      "r0": [
+        -2.2213250879514956,
+        0.7979277160048581
+      ],
+      "v0": [
+        -2.078614208962107,
+        2.0913439186596845
+      ],
+      "t0": 3.945,
+      "dt": 0.405,
+      "properties": {
+        "mass": 0.6835141211884617,
+        "charge": -0.7642137331258059
+      }
+    },
+    {
+      "probe_id": "hidden_009",
+      "r0": [
+        -0.637109703909331,
+        1.7308458098022061
+      ],
+      "v0": [
+        0.7771341432591383,
+        -0.031800323631007155
+      ],
+      "t0": 9.515,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.9870831442643624,
+        "charge": 0.5464365410398564
+      }
+    },
+    {
+      "probe_id": "hidden_010",
+      "r0": [
+        0.9385372595256392,
+        -3.8445057622809955
+      ],
+      "v0": [
+        -0.3821904773180369,
+        -1.0307248079955935
+      ],
+      "t0": 8.065,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.148264440046371,
+        "charge": 0.2465855989414365
+      }
+    },
+    {
+      "probe_id": "hidden_011",
+      "r0": [
+        1.9914951457354757,
+        -2.7684994998426093
+      ],
+      "v0": [
+        0.4556512527851937,
+        -0.6872516653775245
+      ],
+      "t0": 6.64,
+      "dt": 0.405,
+      "properties": {
+        "mass": 0.627068345982623,
+        "charge": 0.7642489757815185
+      }
+    },
+    {
+      "probe_id": "hidden_012",
+      "r0": [
+        -3.7212164542440043,
+        1.4139821427324362
+      ],
+      "v0": [
+        0.1854619901564709,
+        -2.757246619891867
+      ],
+      "t0": 1.46,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.361793923440862,
+        "charge": 0.5241650270144205
+      }
+    },
+    {
+      "probe_id": "hidden_013",
+      "r0": [
+        1.4009295449090253,
+        0.06041533140073052
+      ],
+      "v0": [
+        -2.623165695388385,
+        0.00655956608699948
+      ],
+      "t0": 3.955,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.160399766909013,
+        "charge": -0.8740745686066962
+      }
+    },
+    {
+      "probe_id": "hidden_014",
+      "r0": [
+        -0.537769253430409,
+        0.9259148535277417
+      ],
+      "v0": [
+        -0.9371552539660646,
+        -1.6208217147072337
+      ],
+      "t0": 3.69,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.3472908900164853,
+        "charge": 0.9938396362087787
+      }
+    },
+    {
+      "probe_id": "hidden_015",
+      "r0": [
+        1.1291313523125923,
+        -2.317268677176758
+      ],
+      "v0": [
+        0.8806034167355534,
+        1.311253046173356
+      ],
+      "t0": 9.985,
+      "dt": 0.405,
+      "properties": {
+        "mass": 0.8156980060499814,
+        "charge": 0.3869727559169107
+      }
+    },
+    {
+      "probe_id": "hidden_016",
+      "r0": [
+        -4.1942796746918205,
+        -3.51660146815004
+      ],
+      "v0": [
+        -2.775976447927679,
+        -2.773882026462346
+      ],
+      "t0": 4.31,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.1458230002229075,
+        "charge": 0.5263410304033886
+      }
+    },
+    {
+      "probe_id": "hidden_017",
+      "r0": [
+        1.7965428547289786,
+        0.0738151156363187
+      ],
+      "v0": [
+        0.06484780382115707,
+        1.0905461660214615
+      ],
+      "t0": 1.31,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.5898876210364628,
+        "charge": 0.10247124131521912
+      }
+    },
+    {
+      "probe_id": "hidden_018",
+      "r0": [
+        0.369097266901951,
+        -1.1804717386651142
+      ],
+      "v0": [
+        2.6038048188689236,
+        -2.286949023784803
+      ],
+      "t0": 8.185,
+      "dt": 0.405,
+      "properties": {
+        "mass": 0.925694272631258,
+        "charge": 0.2704224695664068
+      }
+    },
+    {
+      "probe_id": "hidden_019",
+      "r0": [
+        3.0520853040629503,
+        2.9069237727888297
+      ],
+      "v0": [
+        0.4823973543709863,
+        1.471363494197852
+      ],
+      "t0": 1.8,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.5004137447105517,
+        "charge": -0.9772826085835142
+      }
+    },
+    {
+      "probe_id": "hidden_020",
+      "r0": [
+        -4.087682973096708,
+        -3.991575636915239
+      ],
+      "v0": [
+        -0.00046120229211488173,
+        -1.8341293883220777
+      ],
+      "t0": 8.705,
+      "dt": 0.405,
+      "properties": {
+        "mass": 1.7133302229671383,
+        "charge": -0.4112078379016013
+      }
+    }
+  ],
+  "time_grid": "Identical archived t0/dt; per-probe n_samples from original evaluation; times rounded to 10 decimals as evaluate.py.",
+  "truth_reference": "v2 independent Radau numerical reference; rollout uses existing DSL and DOP853 tool integrator.",
+  "source_artifacts_sha256": {
+    "runs/web-20261103-074601-2e14853c/evaluation.json": "f919e7c54cb0f0d7de463c20d4c724645eb9123a7e82242ec3847842ef7eba1f",
+    "runs/web-20261103-074601-2e14853c/config.json": "fe70c04a20a3929c9ac9617cac4199bfdf4c8389d83aa7a59dcf20974e695aa9",
+    "runs/web-20261103-074601-2e14853c/records/law/law_3.json": "4cf491de4ae43c034b97cad937ca1fabea92287875f15a64c67594385bf71bdf"
+  },
+  "source_artifacts_unchanged": true,
+  "elapsed_seconds": 14.704613959,
+  "interpretation": "A low error here establishes tool expressiveness and numerical feasibility for the supplied law. It does not establish that the Agent discovered it or understood its source mechanism."
+}

@@ -1,0 +1,101 @@
+{
+  "kind": "targeted_unchanged_version_repeats",
+  "settings": {
+    "model": "deepseek-flash",
+    "thinking": true,
+    "max_calls": 24,
+    "max_total_tokens": 2000000,
+    "max_tokens_per_call": 65536,
+    "noise": false,
+    "seed": 42
+  },
+  "prompt_sha256": {
+    "main.txt": "885721681b642ed0be72a33d447f7bc12078e2b28feeb28261cd333476ea1c4a"
+  },
+  "automatic_reruns": false,
+  "worlds": [
+    {
+      "world_id": "world_3",
+      "run_id": "web-20261103-060508-2c0980d5",
+      "prior_run_id": "web-20261103-053406-95984ecd",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 12,
+      "main_calls": 12,
+      "analyst_calls": 0,
+      "tokens": 720619,
+      "prompt_tokens": 649574,
+      "completion_tokens": 71045,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 74,
+      "energy_used": 26,
+      "law": {
+        "law_id": "law_6",
+        "law_spec": {
+          "ax": "-(A*(x-cx)+B*(x-cx)**3)",
+          "ay": "-(A*(y-cy)+B*(y-cy)**3)"
+        },
+        "fitted_parameters": {
+          "A": 0.19999999978529537,
+          "B": 0.015000000163335438,
+          "cx": -1.2976717709008878e-10,
+          "cy": 1.00000000031171
+        }
+      },
+      "law_versions": 6,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 1.363360568468483e-15,
+        "velocity_mse": 8.650554910911888e-16,
+        "position_rmse": 3.6923712820740046e-08,
+        "velocity_rmse": 2.941182570142814e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 449.788561375,
+      "wall_seconds_including_evaluation": 464.673277
+    },
+    {
+      "world_id": "world_4",
+      "run_id": "web-20261103-061253-41d2a573",
+      "prior_run_id": "web-20261103-054116-026291f0",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 12,
+      "main_calls": 12,
+      "analyst_calls": 0,
+      "tokens": 604726,
+      "prompt_tokens": 570127,
+      "completion_tokens": 34599,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 71,
+      "energy_used": 29,
+      "law": {
+        "law_id": "law_6",
+        "law_spec": {
+          "ax": "sum_b(mu*(bx-x)/(sqrt((bx-x)**2+(by-y)**2+a2)**3))",
+          "ay": "sum_b(mu*(by-y)/(sqrt((bx-x)**2+(by-y)**2+a2)**3))"
+        },
+        "fitted_parameters": {
+          "mu": 0.8,
+          "a2": 0.64
+        }
+      },
+      "law_versions": 6,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 3.247149127553387e-15,
+        "velocity_mse": 4.666472569183318e-16,
+        "position_rmse": 5.698376196385587e-08,
+        "velocity_rmse": 2.160201974164295e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 193.03110474999994,
+      "wall_seconds_including_evaluation": 201.69442937499997
+    }
+  ],
+  "status": "completed_all_attempts"
+}

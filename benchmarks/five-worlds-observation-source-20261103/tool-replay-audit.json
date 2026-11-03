@@ -1,0 +1,379 @@
+{
+  "purpose": "Engineering replay of previously successful recorded tool arguments against current observation-derived runtime; no autonomous model run.",
+  "no_model_api_calls": true,
+  "no_hidden_truth_or_evaluator_imports": true,
+  "submissions_skipped": true,
+  "tolerance": {
+    "absolute": 1e-10,
+    "relative": 1e-10
+  },
+  "cases": [
+    {
+      "source_run": "web-20261103-043907-5d764020",
+      "world_id": "world_3",
+      "environment_config": {
+        "world_id": "world_3",
+        "noise": false,
+        "seed": 42,
+        "reference_length": 10.0,
+        "position_limit": 5.0,
+        "velocity_limit": 3.0,
+        "time_max": 30.0,
+        "wall_seconds": 3600
+      },
+      "numerics_config": {
+        "max_nfev": 80
+      },
+      "engineering_dir": "/var/folders/z4/vywxck2j61l4stsxckcy8r240000gn/T/shore-engineering-tool-replay-ugz6qkgh",
+      "steps": [
+        {
+          "index": 0,
+          "tool": "insert_probe",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.02683391700000015
+        },
+        {
+          "index": 1,
+          "tool": "insert_probe",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.025750709000000205
+        },
+        {
+          "index": 2,
+          "tool": "fit_law_and_rollout",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.5829485829999999,
+          "known_bodies_comparison": {
+            "numeric_values_compared": 6,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/position/0"
+          },
+          "fitted_parameters_comparison": {
+            "numeric_values_compared": 3,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/k1"
+          },
+          "errors_comparison": {
+            "numeric_values_compared": 69,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/overall/position_mse"
+          },
+          "rollouts_comparison": {
+            "numeric_values_compared": 3962,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/times/0"
+          },
+          "source_fit_status": "converged",
+          "replay_fit_status": "converged",
+          "source_position_rmse": 7.3728849395103024e-09,
+          "replay_position_rmse": 7.3728849395103024e-09,
+          "frozen_observation_version": "body_estimate_1"
+        },
+        {
+          "index": 3,
+          "tool": "validate_law",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.03683745900000002,
+          "errors_comparison": {
+            "numeric_values_compared": 29,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/overall/position_mse"
+          },
+          "rollouts_comparison": {
+            "numeric_values_compared": 1750,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/times/0"
+          },
+          "source_position_rmse": 9.094856247320654e-09,
+          "replay_position_rmse": 9.094856247320654e-09
+        },
+        {
+          "index": 4,
+          "tool": "insert_probe",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.01857675000000003
+        },
+        {
+          "index": 5,
+          "tool": "insert_probe",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.01651679100000014
+        },
+        {
+          "index": 6,
+          "tool": "validate_law",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.06766383399999998,
+          "errors_comparison": {
+            "numeric_values_compared": 44,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/overall/position_mse"
+          },
+          "rollouts_comparison": {
+            "numeric_values_compared": 2800,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/times/0"
+          },
+          "source_position_rmse": 7.659356965043285e-09,
+          "replay_position_rmse": 7.659356965043285e-09
+        },
+        {
+          "index": 7,
+          "tool": "analyze_residual",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.08021279199999998,
+          "trajectories_comparison": {
+            "numeric_values_compared": 3497,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/times/0"
+          }
+        }
+      ],
+      "initial_probe_comparison": {
+        "numeric_values_compared": 126,
+        "max_absolute_delta": 0.0,
+        "within_tolerance": true,
+        "largest_delta_path": "/0/initial_conditions/r0/0"
+      },
+      "initial_bodies_comparison": {
+        "numeric_values_compared": 6,
+        "max_absolute_delta": 0.0,
+        "within_tolerance": true,
+        "largest_delta_path": "/0/position/0"
+      },
+      "submission_skipped": {
+        "source_law_id": "law_1",
+        "reason": "Engineering compatibility replay only; no discovery or submission claim."
+      },
+      "all_probe_comparison": {
+        "numeric_values_compared": 9704,
+        "max_absolute_delta": 0.0,
+        "within_tolerance": true,
+        "largest_delta_path": "probe_0001/initial_conditions/r0/0"
+      },
+      "probe_count": 26,
+      "elapsed_seconds": 1.276802375,
+      "all_non_submit_steps_replayed": true,
+      "compatible": true
+    },
+    {
+      "source_run": "web-20261103-044121-e2a858ca",
+      "world_id": "world_4",
+      "environment_config": {
+        "world_id": "world_4",
+        "noise": false,
+        "seed": 42,
+        "reference_length": 10.0,
+        "position_limit": 5.0,
+        "velocity_limit": 3.0,
+        "time_max": 30.0,
+        "wall_seconds": 3600
+      },
+      "numerics_config": {
+        "max_nfev": 80
+      },
+      "engineering_dir": "/var/folders/z4/vywxck2j61l4stsxckcy8r240000gn/T/shore-engineering-tool-replay-azazprnj",
+      "steps": [
+        {
+          "index": 0,
+          "tool": "fit_law_and_rollout",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 5.502865250000001,
+          "known_bodies_comparison": {
+            "numeric_values_compared": 6,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/position/0"
+          },
+          "fitted_parameters_comparison": {
+            "numeric_values_compared": 1,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/G"
+          },
+          "errors_comparison": {
+            "numeric_values_compared": 14,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/overall/position_mse"
+          },
+          "rollouts_comparison": {
+            "numeric_values_compared": 112,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/times/0"
+          },
+          "source_fit_status": "converged",
+          "replay_fit_status": "converged",
+          "source_position_rmse": 0.9287482041582832,
+          "replay_position_rmse": 0.9287482041582832,
+          "frozen_observation_version": "body_estimate_1"
+        },
+        {
+          "index": 1,
+          "tool": "insert_probe",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.01885129199999991
+        },
+        {
+          "index": 2,
+          "tool": "insert_probe",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.022846291999999657
+        },
+        {
+          "index": 3,
+          "tool": "insert_probe",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.02217558300000011
+        },
+        {
+          "index": 4,
+          "tool": "fit_law_and_rollout",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 1.0958295419999997,
+          "known_bodies_comparison": {
+            "numeric_values_compared": 6,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/position/0"
+          },
+          "fitted_parameters_comparison": {
+            "numeric_values_compared": 2,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/G"
+          },
+          "errors_comparison": {
+            "numeric_values_compared": 54,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/overall/position_mse"
+          },
+          "rollouts_comparison": {
+            "numeric_values_compared": 2100,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/times/0"
+          },
+          "source_fit_status": "converged",
+          "replay_fit_status": "converged",
+          "source_position_rmse": 2.9555032610287837e-12,
+          "replay_position_rmse": 2.9555032610287837e-12,
+          "frozen_observation_version": "body_estimate_1"
+        },
+        {
+          "index": 5,
+          "tool": "validate_law",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.13082224999999958,
+          "errors_comparison": {
+            "numeric_values_compared": 64,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/overall/position_mse"
+          },
+          "rollouts_comparison": {
+            "numeric_values_compared": 2212,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/times/0"
+          },
+          "source_position_rmse": 2.969305526849014e-09,
+          "replay_position_rmse": 2.969305526849014e-09
+        },
+        {
+          "index": 6,
+          "tool": "insert_probe",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.03709437500000057
+        },
+        {
+          "index": 7,
+          "tool": "validate_law",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.1081815000000006,
+          "errors_comparison": {
+            "numeric_values_compared": 24,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/overall/position_mse"
+          },
+          "rollouts_comparison": {
+            "numeric_values_compared": 1400,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/times/0"
+          },
+          "source_position_rmse": 2.6600742680006118e-08,
+          "replay_position_rmse": 2.6600742680006118e-08
+        },
+        {
+          "index": 8,
+          "tool": "analyze_residual",
+          "source_ok": true,
+          "replay_ok": true,
+          "elapsed_seconds": 0.08889920900000092,
+          "trajectories_comparison": {
+            "numeric_values_compared": 1096,
+            "max_absolute_delta": 0.0,
+            "within_tolerance": true,
+            "largest_delta_path": "/0/times/0"
+          }
+        }
+      ],
+      "initial_probe_comparison": {
+        "numeric_values_compared": 126,
+        "max_absolute_delta": 0.0,
+        "within_tolerance": true,
+        "largest_delta_path": "/0/initial_conditions/r0/0"
+      },
+      "initial_bodies_comparison": {
+        "numeric_values_compared": 6,
+        "max_absolute_delta": 0.0,
+        "within_tolerance": true,
+        "largest_delta_path": "/0/position/0"
+      },
+      "submission_skipped": {
+        "source_law_id": "law_2",
+        "reason": "Engineering compatibility replay only; no discovery or submission claim."
+      },
+      "all_probe_comparison": {
+        "numeric_values_compared": 7462,
+        "max_absolute_delta": 0.0,
+        "within_tolerance": true,
+        "largest_delta_path": "probe_0001/initial_conditions/r0/0"
+      },
+      "probe_count": 30,
+      "elapsed_seconds": 7.40509475,
+      "all_non_submit_steps_replayed": true,
+      "compatible": true
+    }
+  ],
+  "compatible": true
+}

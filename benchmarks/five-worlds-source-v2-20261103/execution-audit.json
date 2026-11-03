@@ -1,0 +1,485 @@
+{
+  "physics_version": "v2",
+  "code_unchanged_during_all_five_runs": true,
+  "engineering_tests_passed": 358,
+  "total_model_calls": 56,
+  "total_tokens": 2192238,
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "run_id": "web-20261103-073246-1ef99e81",
+      "physics_version": "v2",
+      "initial_body_coordinates_absent": true,
+      "prompt_matches_frozen_snapshot": true,
+      "tool_calls": {
+        "observe_body": 1,
+        "insert_probe": 3,
+        "fit_law_and_rollout": 2,
+        "validate_law": 2,
+        "analyze_residual": 1,
+        "submit": 1
+      },
+      "tool_failures": [
+        {
+          "tool": "fit_law_and_rollout",
+          "error": {
+            "code": "invalid_expression",
+            "message": "invalid, reserved or duplicate parameter name"
+          }
+        }
+      ],
+      "successful_body_observations": 1,
+      "failed_body_observations": 0,
+      "submitted_law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "-klin*x + offx",
+          "ay": "-klin*y + offy"
+        },
+        "fitted_parameters": {
+          "klin": 0.3,
+          "offx": 0.0,
+          "offy": 0.3
+        }
+      },
+      "uses_sum_b": false,
+      "frozen_observation_ids": [
+        "body_0002"
+      ],
+      "final_law_validations": [
+        {
+          "validation_id": "validation_572c9a36ff1b",
+          "test_probe_ids": [
+            "probe_0011",
+            "probe_0012",
+            "probe_0013",
+            "probe_0014"
+          ],
+          "post_freeze_new_probe_ids": [
+            "probe_0011",
+            "probe_0012",
+            "probe_0013",
+            "probe_0014"
+          ],
+          "overall": {
+            "position_mse": 1.5976794187055933e-15,
+            "velocity_mse": 5.766951772857193e-16,
+            "position_rmse": 3.9970982208417064e-08,
+            "velocity_rmse": 2.401447849289506e-08
+          },
+          "new_probes_position_rmse": 3.9970982208417064e-08
+        },
+        {
+          "validation_id": "validation_6e79bc037b83",
+          "test_probe_ids": [
+            "probe_0015"
+          ],
+          "post_freeze_new_probe_ids": [
+            "probe_0015"
+          ],
+          "overall": {
+            "position_mse": 2.910000905619493e-16,
+            "velocity_mse": 9.829725100892615e-17,
+            "position_rmse": 1.7058724763649517e-08,
+            "velocity_rmse": 9.914497012401897e-09
+          },
+          "new_probes_position_rmse": 1.7058724763649517e-08
+        }
+      ],
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": false
+      },
+      "physical_explanation": "提交版本 law_1 的冻结公式为 ax = -klin*x + offx，ay = -klin*y + offy；拟合参数为 klin=0.300000、offx=0.000000、offy=0.300000。代数上等价于 a = -klin*(r - c)，其中平衡中心 c=(offx/klin, offy/klin)=(0,1)。因此该候选把二维加速度描述为指向固定中心 c 的线性回复场：加速度方向始终由当前位置指向 c，大小与到 c 的距离成正比，x 与 y 两个分量解耦。\n\n参数与单位：klin 是单位质量的回复刚度，单位为 local_time^-2，数值 0.3 local_time^-2；offx、offy 是常加速度偏移，单位为 local_length/local_time^2，数值分别为 0 和 0.3 local_length/local_time^2；由它们推出的中心 c=(0,1) 的单位是 local_length。该公式不含显式时间 t，也不含速度 vx、vy，因此候选声明 dynamics_order=2（加速度决定速度变化）、time_dependence=false。\n\n由公式可推导的运动性质：在 c 附近，轨迹是角频率 omega=sqrt(klin)≈0.5477 local_time^-1、周期约 11.47 local_time 的简谐振动；c 是稳定平衡点，偏离 c 时加速度回复。量 E=0.5*(vx^2+vy^2)+0.5*klin*((x-0)^2+(y-1)^2) 在该公式下守恒（这是数学推论，本次没有直接测量能量）。由于场是线性的且各向同性（除中心偏移外），没有极限环或混沌的证据。\n\n观测支持与实验编号：训练使用 probe_0001 至 probe_0010 拟合得到 law_1，训练位置 RMSE 约 1.7e-8。独立验证 validation_572c9a36ff1b 使用未参与拟合的整条轨迹 probe_0011、probe_0012、probe_0013、probe_0014，位置 RMSE 约 3.997e-8；其中 probe_0011 从 (-4,-2) 出发，probe_0012 从 (3,3) 出发并带 mass=7、charge=-3，probe_0013 和 probe_0014 带较大速度。另一个独立验证 validation_6e79bc037b83 使用从 t=10 起始的 probe_0015，位置 RMSE 约 1.706e-8，说明在 t=0 至约 13.9 的已测时间内同一冻结参数仍然有效，没有显式时间依赖。残差诊断 residual_c0952331632c 显示位置残差 RMSE 约 1e-8 量级，加速度残差 RMSE 约 2e-4，后者主要与中心差分估计的偏差有关，没有显示出随速度或时间的系统大残差。任务包给出的位置噪声 sigma=0，因此这些极小残差主要来自数值积分和差分估计；没有公开阈值，不能声称官方通过。\n\n对替代解释的排除：probe_0003、probe_0004、probe_0005 具有相同初态而 mass/charge 分别为无属性、mass=5、mass=1/charge=5，观测轨迹和估计加速度逐点相同；probe_0012 带 mass=7、charge=-3 也被同一 law_1 精确预测。因此在本实验范围内，没有证据表明探针质量或电荷进入加速度。probe_0008（v=(1,0)）、probe_0009（v=(0,2)）、probe_0013（v=(-2.5,0.8)）、probe_0014（v=(0,-2)）都没有显示类似 -d*v 的阻尼项；若存在明显速度阻尼，这些高速轨迹会系统偏离位置-only 的简谐预测。因此简单线性阻尼假说被现有数据否定。可见天体 b1=(-2,0)、b2=(2,0)、b3=(0,3) 在 body_0002 的 t=0、1、5、10、20、30 观测中位置不变，其质心正是 (0,1)，与拟合中心一致；所以“这些可见静态天体共同产生一个以质心为中心的线性回复场”是与观测相容的物理解释，不需要引入位置不可见的源，故 hidden_matter=false。\n\n需要区分的层次：上述“质量/电荷无影响”“无速度阻尼”“无显式时间依赖”是观测支持的经验结论；“加速度指向 (0,1) 且与距离成正比”“简谐振动、周期和能量守恒”是由候选公式推出的数学结论；“三个可见天体各自贡献线性回复项”则是一个尚不能唯一识别的机制假说：因为 law_1 是线性场，数据只能识别总刚度 klin 和中心 c，不能唯一分解为各天体的独立耦合系数；任何满足总刚度和加权和相同的可见天体耦合组合都会给出完全相同的轨迹，隐藏源若存在也不能仅凭现有线性场唯一排除。本提交的结论是：在已探测范围内，可见静态天体足以解释观测，没有发现需要隐藏源的残差。\n\n适用范围与未检验区域：已检验的初始位置大致覆盖 x∈[-4,3]、y∈[-2,4]，时间覆盖 0 至约 13.9 local_time；对更大空间范围、极端速度、超出测试范围的 mass/charge 以及更晚时间，公式仍是候选外推，未直接验证。若真实场在远处变为非线性或出现额外源，law_1 可能失效；现有数据只能说明在所测区域内线性回复场与观测一致。",
+      "independent_evaluation": {
+        "n_successful": 20,
+        "n_trajectories": 20,
+        "overall": {
+          "position_mse": 3.628013035381623e-15,
+          "velocity_mse": 1.0045470067980827e-15,
+          "position_rmse": 6.023298959359085e-08,
+          "velocity_rmse": 3.1694589550869444e-08
+        }
+      }
+    },
+    {
+      "world_id": "world_2",
+      "run_id": "web-20261103-073422-33fef611",
+      "physics_version": "v2",
+      "initial_body_coordinates_absent": true,
+      "prompt_matches_frozen_snapshot": true,
+      "tool_calls": {
+        "observe_body": 2,
+        "fit_law_and_rollout": 5,
+        "analyze_residual": 2,
+        "insert_probe": 3,
+        "validate_law": 2,
+        "submit": 1
+      },
+      "tool_failures": [
+        {
+          "tool": "observe_body",
+          "error": {
+            "code": "ValueError",
+            "message": "{'code': 'time_order', 'message': 'times must be strictly increasing'}"
+          }
+        }
+      ],
+      "successful_body_observations": 1,
+      "failed_body_observations": 1,
+      "submitted_law": {
+        "law_id": "law_5",
+        "law_spec": {
+          "ax": "-k00*x-k01*y+c0",
+          "ay": "-k01*x-k11*y+c1"
+        },
+        "fitted_parameters": {
+          "k00": 0.35,
+          "k01": 0.08,
+          "k11": 0.2,
+          "c0": 0.08,
+          "c1": 0.2
+        }
+      },
+      "uses_sum_b": false,
+      "frozen_observation_ids": [
+        "body_0002"
+      ],
+      "final_law_validations": [
+        {
+          "validation_id": "validation_103db4132829",
+          "test_probe_ids": [
+            "probe_0001",
+            "probe_0002",
+            "probe_0003",
+            "probe_0004",
+            "probe_0005",
+            "probe_0006",
+            "probe_0007",
+            "probe_0008",
+            "probe_0009",
+            "probe_0010"
+          ],
+          "post_freeze_new_probe_ids": [],
+          "overall": {
+            "position_mse": 2.2569807709066446e-18,
+            "velocity_mse": 1.5584259092517211e-18,
+            "position_rmse": 1.5023251215721065e-09,
+            "velocity_rmse": 1.2483693000277286e-09
+          },
+          "new_probes_position_rmse": null
+        },
+        {
+          "validation_id": "validation_be4594e45da8",
+          "test_probe_ids": [
+            "probe_0019",
+            "probe_0020",
+            "probe_0021",
+            "probe_0022",
+            "probe_0023",
+            "probe_0024"
+          ],
+          "post_freeze_new_probe_ids": [
+            "probe_0019",
+            "probe_0020",
+            "probe_0021",
+            "probe_0022",
+            "probe_0023",
+            "probe_0024"
+          ],
+          "overall": {
+            "position_mse": 1.985816233164312e-16,
+            "velocity_mse": 1.5481312388511075e-16,
+            "position_rmse": 1.4091899208993484e-08,
+            "velocity_rmse": 1.2442392209101542e-08
+          },
+          "new_probes_position_rmse": 1.4091899208993484e-08
+        }
+      ],
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": true,
+        "time_dependence": false
+      },
+      "physical_explanation": "一、提交的冻结公式与参数（law_5）\nax = -k00·x - k01·y + c0\nay = -k01·x - k11·y + c1\n拟合冻结值：k00=0.35, k01=0.08, k11=0.20, c0=0.08, c1=0.20（拟合达机器精度，位置 RMSE≈1e-16；law_id=law_5）。\n把 c 写成 K·r0，其中 r0=(0,1)，则 a = -K·(r - r0)，K=[[0.35,0.08],[0.08,0.20]] 对称正定。也就是说：作用力决定加速度（二阶），加速度是位置 r 的线性函数、且不显含时间、不含速度项。\n\n二、观测证据（区分“观测支持”与“推导”）\n1) 格点实验 probe_0011–0018（初速为 0、dt=0.02 短步长）直接给出 v≈0 处的加速度场。逐点核对（如 r=(-1,0)→a=(0.430,0.280)、(1,0)→(-0.270,0.120)、(0,-1)→(0.160,0.400)、(-1,-1)→(0.510,0.480)、(1.5,0.5)→(-0.485,-0.020)、(-1.5,-0.5)→(0.645,0.420)、(0,2)→(-0.080,-0.200)）全部与上式吻合到 3–4 位有效数字。对这 8 条训练轨迹拟合得到上述精确参数（law_5）。\n2) 检验速度依赖：probe_0003–0007 从同一点 r0=(0,0) 以不同初速 (0/±x/±y) 发射。看似 a 随 v 变化，但逐点用“中点位置 r(t)”代入线性场即可精确解释（例：probe_0004 中点 r≈(0.0501,0.00025) 预测 ax=0.06244，观测 0.06243；probe_0006 中点 r≈(-0.0499,…) 预测 ax=0.09746，观测 0.09742）。因此那些差异来自位置漂移而非速度依赖；在 |v|≤1 无速度项。\n3) 高速度检验：probe_0019–0024 以 |v0| 达 3、|r| 达 2.9 的独立轨迹验证冻结 law_5，位置 RMSE≈1.4e-8（validation_be4594e45da8）；此前 probe_0001–0010 的独立验证位置 RMSE≈1.5e-9（validation_103db4132829）。说明到 |v|=3 仍无需阻尼/洛伦兹等速度项。\n4) 早期 law_1（纯谐振）与 law_3（加阻尼/旋转）的残差诊断（residual_cf8574b2498a、residual_98afa510cf88）显示加速度残差与 vx/vy 高度相关，看似需要速度项；但那只反映第一束光所在区域被全局非线性场局部“近似为线性”带来的口径误差，以及 v 与 r 沿轨迹的相位耦合。加入新的同点不同速实验和格点场后，速度相关性消失，被证伪为速度项。\n\n三、由公式推导的运动性质（仅限本公式支持的结论）\n- 平衡点：a=0 的解为 r_eq=K^{-1}c=(0,1)。\n- 稳定性：K 正定（特征值 0.385、0.165），平衡为稳定中心，小振动有界且保守。绕平衡点写在位移 u=r-(0,1) 下 a=-K u，运动为简谐振动；主频 ω=√λ≈0.620 与 0.407（周期≈10.1 与 15.5），两主轴正交（因 K 对称，无旋转/无 curl），能量 E=½|v|²+½ u^T K u 守恒（推导条件：仅受此线性力、无其他外力/耗散；观测上在 |v|≤3、|r|≤2.9 内未发现耗散，故守恒成立）。\n- 参数意义与单位：k00,k01,k11 为刚度张量分量，单位 1/(local_time)²；c0,c1 为常力项，单位 local_length/(local_time)²；r_eq=(0,1) 单位 local_length。c 与 K 的第二列相等（c=K·(0,1)），故平衡点精确落在 (0,1)。\n- 各向异性与对称性：K 非标量（对角 0.35≠0.20 且有 0.08 非对角），主轴相对坐标轴旋转；运动不是各向同性振荡。\n\n四、源结构与“隐藏物质”判断（区分观测、推导与假说）\n- 观测支持：加速度是全局线性场、且线性关系一直延伸到 |r|≈2.9；平衡点 (0,1) 处没有可见天体（可见天体在 (-2,0),(2,0),(0,3)）。\n- 推导：若由可见天体作为球对称点源贡献力，a=Σ k_b(b-r) 只能给出各向同性 K=(Σk_b)I、对角相等；这与观测到的各向异性（0.35、0.20，且 K12=0.08≠0）矛盾。因此可见天体不可能通过任何中心力解释该力场——力场的源不在任何可见天体位置。\n- 假说（不可唯一识别）：该力场可由位于 (0,1) 的“位置不可见”的弥散/扩展质量分布（内部线性场）产生，也可等价地视为一个背景谐振势阱（不需要任何物质点）。由于是线性场而非 1/r²，可排除在 (0,1) 处存在点质量。据此判定 hidden_matter=true（存在位置不可见的源，其中心非任何可见天体），但须强调这是“观测上与背景势阱不可区分”的判断，源的具体结构（弥散质量 vs 纯背景场）无法从轨迹唯一确定；可见天体看似与力无关，可能在本题中为干扰项，其质点恰好位于平衡点 (0,1) 这一点不构成因果证据。\n\n五、适用范围、未检验区域与限制\n- 已检验区域：|r|≲2.9、|v|≤3、时间范围覆盖 t∈[0,23]、单位 local_length/local_time；这些范围内线性、无速度依赖、无时间依赖结论可靠。\n- 未检验：更大 |r|（>2.9）或更高 |v| 是否仍严格线性未知（超出投放范围）；探针的 mass/charge 依赖未测试——所有探针 properties 为空（标准探针），因此无法判断力是否随质量/电荷缩放，本公式不设 q() 项，仅适用于无质量/电荷标注的标准探针。\n- 数值注意：第一束光 a_est 用 dt=0.5 的中心差分，存在 O(dt²) 截断偏差，故第一束光的加速度残差（约 1e-2）大于格点实验（约 1e-6），这是差分估计误差而非模型误差；本报告相对观测（位置噪声 0），无官方通过阈值，故仅能以验证 RMSE 量级（1e-8）说明拟合，而不宣称“官方通过”。\n- 结论不依赖隐藏源的具体机制：无论源为弥散质量还是背景势阱，提交公式 law_5 的预测均相同；这是 source-structure 非唯一识别性的直接体现。",
+      "independent_evaluation": {
+        "n_successful": 20,
+        "n_trajectories": 20,
+        "overall": {
+          "position_mse": 2.0893716940690427e-15,
+          "velocity_mse": 8.200190082566457e-16,
+          "position_rmse": 4.570964552552385e-08,
+          "velocity_rmse": 2.8635974023187088e-08
+        }
+      }
+    },
+    {
+      "world_id": "world_3",
+      "run_id": "web-20261103-073739-1962cf75",
+      "physics_version": "v2",
+      "initial_body_coordinates_absent": true,
+      "prompt_matches_frozen_snapshot": true,
+      "tool_calls": {
+        "observe_body": 1,
+        "fit_law_and_rollout": 5,
+        "analyze_residual": 2,
+        "insert_probe": 3,
+        "validate_law": 1,
+        "submit": 1
+      },
+      "tool_failures": [
+        {
+          "tool": "fit_law_and_rollout",
+          "error": {
+            "code": "invalid_expression",
+            "message": "formula exceeds 100 total AST nodes"
+          }
+        },
+        {
+          "tool": "fit_law_and_rollout",
+          "error": {
+            "code": "invalid_expression",
+            "message": "formula exceeds 100 total AST nodes"
+          }
+        }
+      ],
+      "successful_body_observations": 1,
+      "failed_body_observations": 0,
+      "submitted_law": {
+        "law_id": "law_3",
+        "law_spec": {
+          "ax": "sum_b((bx - x)*(A + B*((bx - x)**2 + (by - y)**2)))",
+          "ay": "sum_b((by - y)*(A + B*((bx - x)**2 + (by - y)**2)))"
+        },
+        "fitted_parameters": {
+          "A": 0.059999999757938446,
+          "B": 0.004000000031483663
+        }
+      },
+      "uses_sum_b": true,
+      "frozen_observation_ids": [
+        "body_0002"
+      ],
+      "final_law_validations": [
+        {
+          "validation_id": "validation_165046b78f64",
+          "test_probe_ids": [
+            "probe_0009",
+            "probe_0010",
+            "probe_0011",
+            "probe_0012",
+            "probe_0013",
+            "probe_0014",
+            "probe_0015"
+          ],
+          "post_freeze_new_probe_ids": [
+            "probe_0009",
+            "probe_0010",
+            "probe_0011",
+            "probe_0012",
+            "probe_0013",
+            "probe_0014",
+            "probe_0015"
+          ],
+          "overall": {
+            "position_mse": 6.440695542226242e-17,
+            "velocity_mse": 8.95251394585071e-17,
+            "position_rmse": 8.025394409140426e-09,
+            "velocity_rmse": 9.461772532591718e-09
+          },
+          "new_probes_position_rmse": 8.025394409140426e-09
+        }
+      ],
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": false
+      },
+      "physical_explanation": "提交公式（冻结参数 A=0.0600, B=0.00400）：\nax = Σ_b (bx−x)(A + B[(bx−x)²+(by−y)²])\nay = Σ_b (by−y)(A + B[(bx−x)²+(by−y)²])\n其中求和遍历经 observe_body 取得的三个静态可见天体 b1=(−2,0)、b2=(2,0)、b3=(0,3)。\n\n【观测支持】第一束光 probe_0001/0002 的加速度（速度中心差分）显示：a_x 几乎只随 x 线性变化、a_y 几乎只随 y 线性变化且零点在 y≈1，初步判为指向“质心附近”的回复场。开发探针 probe_0003/0004（d≈3）显示加速度幅值（|a_x|≈1.22、|a_y|≈1.18）明显大于纯线性外推（0.90），证明场随距离超线性增长；probe_0006/0007/0008 进一步表明场近似指向 (0,1) 但存在由三体几何（b1、b2 在 x 轴、b3 在 y 轴）导致的各向异性。据此把“单一线性回复”替换为“逐天体 线性+立方”叠加，probe_0001–0008 训练拟合达机器精度。\n\n【公式结构与参数含义】每个天体对探针施加一个指向该天体（方向 (r_b−r)）的中心力，单个天体的力幅为 |r_b−r|·(A+B|r_b−r|²)=A·d+B·d³，随到该天体距离 d 单调增大。A 的量纲为 1/时间²，B 的量纲为 1/(长度²·时间²)：A 项是各向同性的线性回复耦合，B 项是随距离三次增长的非线性耦合，二者在三天体上取相同系数（拟合表明所有天体耦合等价，无法分别识别各天体的质量/电荷，探针 properties 为空，故亦无探针属性依赖）。速度不回代：力只依赖位置（静态天体）。\n\n【由公式推导】该场是保守场：a=−∇V，V=Σ_b[(A/2)d_b²+(B/4)d_b⁴]，即三天体处各有一个“二次+四次”势阱之和，故能量守恒、无耗散。线性部分贡献 Σ_b(b−r)=−3(r−c)，在质心 c=(0,1) 附近给出 -3A(r−c) 的回复（斜率 3A=0.18）；立方项在中心附近叠加后，使有效近心刚度约 0.30/时间²（对应角频率≈0.55）。严格平衡点并非质心：解 Σ_b(b−r)(A+B d_b²)=0 得 x=0、y*≈0.97，略低于质心（立方项把平衡点往下拉，probe_0011 在原点处观测到的 a_y≈+0.288 与“场指向该平衡点下方”一致）。线性化在该平衡点给出回复，运动有界、呈椭圆振荡，与 probe_0001/0002 等有界轨迹一致。\n\n【验证与排除】冻结参数在未参与拟合的 7 条全新轨迹 probe_0009–0015（validation_165046b78f64）上 position RMSE≈8×10⁻⁹，含两条以 dt=0.6 采样到 t≈29.4 的长时间探针。据此排除：(1) 纯线性场（被 probe_0003/0004 的超线性加速度否定）；(2) 速度（阻尼/洛伦兹类）依赖项（全速度范围残差达机器精度，无需速度项）；(3) 显式时间依赖（全程到 t≈29.4 精确）；(4) 隐藏不可见源——仅用三个可见静态天体即精确复现，无需第四个不可见质量。\n\n【适用范围与不可辨识性】该“逐天体 A d+B d³”形式在已探测范围（到单个天体距离约 0–6、时间 0–30、位置/速度限制内）精确成立；更远处或极端参数未检验。由于对每个天体只用 2 个共享系数且探针无属性，无法唯一确定各天体的质量/电荷标度或 A、B 是否本为更高阶展开的截断；A、B 只能作为等效耦合报告，其“逐天体独立中心力”的物理解释是工作假说，数据只能支持这一整体叠加形式及其径向依赖，不能证明力的微观来源。",
+      "independent_evaluation": {
+        "n_successful": 20,
+        "n_trajectories": 20,
+        "overall": {
+          "position_mse": 9.286196274442088e-16,
+          "velocity_mse": 9.147899642330034e-16,
+          "position_rmse": 3.047326086004267e-08,
+          "velocity_rmse": 3.024549494111484e-08
+        }
+      }
+    },
+    {
+      "world_id": "world_4",
+      "run_id": "web-20261103-074112-03c2278b",
+      "physics_version": "v2",
+      "initial_body_coordinates_absent": true,
+      "prompt_matches_frozen_snapshot": true,
+      "tool_calls": {
+        "observe_body": 1,
+        "call_back": 2,
+        "insert_probe": 4,
+        "fit_law_and_rollout": 1,
+        "analyze_residual": 1,
+        "validate_law": 2,
+        "submit": 1
+      },
+      "tool_failures": [],
+      "successful_body_observations": 1,
+      "failed_body_observations": 0,
+      "submitted_law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "sum_b(mu*(bx-x)/(sqrt((bx-x)**2+(by-y)**2+eps2)**3))",
+          "ay": "sum_b(mu*(by-y)/(sqrt((bx-x)**2+(by-y)**2+eps2)**3))"
+        },
+        "fitted_parameters": {
+          "mu": 0.8000000607201516,
+          "eps2": 0.6400001100734729
+        }
+      },
+      "uses_sum_b": true,
+      "frozen_observation_ids": [
+        "body_0002"
+      ],
+      "final_law_validations": [
+        {
+          "validation_id": "validation_baf4cb1f38a9",
+          "test_probe_ids": [
+            "probe_0019",
+            "probe_0020",
+            "probe_0021",
+            "probe_0022",
+            "probe_0023",
+            "probe_0024",
+            "probe_0025",
+            "probe_0026"
+          ],
+          "post_freeze_new_probe_ids": [],
+          "overall": {
+            "position_mse": 4.537402607474552e-20,
+            "velocity_mse": 6.904257997843048e-18,
+            "position_rmse": 2.1301179797078265e-10,
+            "velocity_rmse": 2.627595478349559e-09
+          },
+          "new_probes_position_rmse": null
+        },
+        {
+          "validation_id": "validation_452a97a10378",
+          "test_probe_ids": [
+            "probe_0001",
+            "probe_0002",
+            "probe_0027",
+            "probe_0028",
+            "probe_0029",
+            "probe_0030"
+          ],
+          "post_freeze_new_probe_ids": [
+            "probe_0027",
+            "probe_0028",
+            "probe_0029",
+            "probe_0030"
+          ],
+          "overall": {
+            "position_mse": 6.653553488876867e-16,
+            "velocity_mse": 3.6787420293315424e-16,
+            "position_rmse": 2.579448291568735e-08,
+            "velocity_rmse": 1.918004700028533e-08
+          },
+          "new_probes_position_rmse": 1.4890132688633801e-08
+        }
+      ],
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": false
+      },
+      "physical_explanation": "提交的冻结公式为\na(r) = Σ_b μ (r_b − r) / ( |r_b − r|^2 + ε^2 )^(3/2)，\n其中 b 取三个可见静态天体 b1=(-2,0)、b2=(2,0)、b3=(0,3)，位置来自 body_0002 的三次静态观测；冻结参数为 μ=0.80000006，ε^2=0.64000011（即 ε≈0.80000007）。\n\n一、各项的物理含义、方向与单位\n1. 每一项都是指向天体 b 的中心吸引力：方向沿 r_b−r，即从探针指向天体；因此三个天体对探针均为吸引，不是排斥。\n2. μ 是每个天体的引力参数（若探针惯性质量与引力质量等价，则 μ=G M_b；若天体质量不同，则只能识别 G M_b 的乘积）。三项使用同一个 μ，说明三个源在探针加速度层面的强度相等。μ 的单位是 local_length^3/local_time^2。\n3. ε 是 Plummer 软化长度，单位 local_length；ε^2 是公式中的软化平方项，单位 local_length^2。当距离 d=|r_b−r| 远大于 ε 时，该项趋近 μ/d^2 的反平方吸引；当 d 远小于 ε 时，加速度幅值趋近 (μ/ε^3)d，在 d=0 处为零，从而避免点源奇点，并使短距离力变软。该软化是“由数据拟合出的相互作用形式”，不能仅凭轨迹唯一区分它是基本力律、天体有限尺寸还是正则化效应。\n4. 公式不含显式时间 t，也不含探针速度 vx、vy，因此是二阶动力学：加速度决定速度与位置，没有速度阻尼、磁场式横向力或显式时变项。\n\n二、观测证据与支持范围\n1. law_1 用 16 条零初速短轨迹（probe_0003–probe_0018）拟合，得到上述 μ 与 ε^2，训练位置 MSE≈4.75×10^-18，逐点位置 RMSE 约 10^-9 量级；这些轨迹覆盖了 y 轴 -2.5 到 2.5、x 到 ±1.8/2 以及若干离轴点。\n2. 冻结后，validation_baf4cb1f38a9 在未参与拟合的 probe_0019–probe_0026 上给出位置 RMSE≈2.13×10^-10，说明 y 轴细化点和 (2,0)、(2,1) 等截面也被同一组参数描述。\n3. validation_452a97a10378 在首束光 probe_0001、probe_0002 以及 t0=10 的新轨迹 probe_0027–probe_0030 上给出位置 RMSE≈2.58×10^-8；这些轨迹具有非零初速，并且物理时刻从 0 延伸到 10 以后。同一空间点 (1,1) 在 t0=0 的 probe_0014 与 t0=10 的 probe_0028 上给出相同的初始加速度预测 (0.057624, -0.090098)，观测推演也一致，因此没有证据需要显式时间依赖或速度依赖项。\n4. residual_141dd3ca7d15 对 law_1 的检查显示位置残差约 10^-10；加速度残差约 10^-5，主要来自观测速度中心差分估计与初始时刻加速度预测之间的差分偏差，而不是模型缺失项。经验上，首束光 probe_0001 在 t=0.5 的观测加速度约 (-0.2074, 0.0703)，同一冻结公式的预测约 (-0.2037, 0.0709)，差异远小于空间场的变化尺度，也支持“静态位置场”而非明显速度相关力。\n5. 在 (2,0) 恰好位于 b2 中心处，观测到有限加速度约 (-0.0789, 0.0476)，而不是奇点；这与 Plummer 形式一致：该天体的自身项在 d=0 为零，剩余加速度来自 b1 与 b3。该点也排除了未软化点质量模型。\n\n三、由公式可推导的运动性质\n1. 该场是保守场，可由每单位质量势能\nU(r) = −Σ_b μ / sqrt(|r_b−r|^2+ε^2)\n导出；总机械能 E=1/2|v|^2+U 在无其他作用时守恒。这是公式的直接数学推论，不是额外假设。\n2. 每个单体项在 d≫ε 时表现为反平方吸引，在 d≪ε 时表现为指向该天体的线性软核；因此在天体中心附近加速度平滑趋零，但净场不一定为零，因为其他天体仍可贡献。例如在 b2 中心 (2,0) 净加速度并不为零，不能把天体中心误称为平衡点。原点 (0,0) 也有非零加速度 (0,0.0802)，同样不是静态平衡点。\n3. 由于三个天体的位置固定且不共线，整体场没有绕原点的连续旋转对称性；单个天体的角动量一般不守恒，只有总能量（以及由公式可知的保守性）是明确可推出的。本文不声称存在稳定的平衡点、周期轨道或特定能量分配，这些需要另行求解和检验。\n\n四、排除的替代解释与不可辨识性\n1. 未软化反平方三体引力：在 (0,1) 等点会给出明显过大的 y 加速度，且在 (2,0) 会出现奇点，与观测不符；Plummer 软化项是必要的。\n2. 单一中心力、单一隐藏点源或仅含 b3 的模型：无法同时解释 y 轴的非单调加速度剖面和离轴 (1,1)、(2,1) 的转向；三个可见天体的叠加可以做到。\n3. 速度阻尼/磁场式横向力/显式时间依赖：在首束光非零初速轨迹和 t0=10 新轨迹上没有发现需要的残差；加入这些项不会改善已经处于数值精度的拟合。因此提交声明 time_dependence=false，且不声称速度依赖。\n4. hidden_matter=false 的含义是：在已探测区域，三个可见静态天体的 Plummer 场已经充分解释观测，没有残差要求额外的不可见源。由于所有探针的 properties 均为空，本实验不能识别探针质量/电荷的耦合，也不能把 μ 唯一分解为 G 与天体质量，或把 ε 唯一归因于天体尺寸还是相互作用律；这是源结构和参数简并，不应解释为已经证明了唯一的微观机制。若未来在未探测区域发现系统残差，仍可能需要隐藏源，但当前证据不支持。\n5. 适用范围：已验证的初始位置大致在 |x|≤2、|y|≤2.5 以及部分到 2.8 的轨迹，物理时刻约 0–13；未系统检验位置/速度上限附近、b1 与 b3 的精确中心邻域、t>13 以及带非空 mass/charge 属性的探针。公式本身无时间项，但“全时域成立”只是外推，不是已观测事实。所有误差均为相对观测的误差，任务未给出官方通过阈值，因此不能声称官方通过。",
+      "independent_evaluation": {
+        "n_successful": 20,
+        "n_trajectories": 20,
+        "overall": {
+          "position_mse": 2.128490317230722e-12,
+          "velocity_mse": 3.711015066444487e-13,
+          "position_rmse": 1.4589346514600036e-06,
+          "velocity_rmse": 6.091810130367235e-07
+        }
+      }
+    },
+    {
+      "world_id": "world_5",
+      "run_id": "web-20261103-074601-2e14853c",
+      "physics_version": "v2",
+      "initial_body_coordinates_absent": true,
+      "prompt_matches_frozen_snapshot": true,
+      "tool_calls": {
+        "observe_body": 1,
+        "insert_probe": 3,
+        "fit_law_and_rollout": 3,
+        "analyze_residual": 2,
+        "validate_law": 1,
+        "submit": 1
+      },
+      "tool_failures": [],
+      "successful_body_observations": 1,
+      "failed_body_observations": 0,
+      "submitted_law": {
+        "law_id": "law_3",
+        "law_spec": {
+          "ax": "-kx*x - d*vx - e*vy",
+          "ay": "-ky*(y-cy) - d*vy + e*vx"
+        },
+        "fitted_parameters": {
+          "kx": 0.2984267007961601,
+          "ky": 0.333944095704358,
+          "cy": 0.9887743839790615,
+          "d": 0.006598878383272991,
+          "e": -0.40709248654137536
+        }
+      },
+      "uses_sum_b": false,
+      "frozen_observation_ids": [
+        "body_0002"
+      ],
+      "final_law_validations": [
+        {
+          "validation_id": "validation_c961b8fad123",
+          "test_probe_ids": [
+            "probe_0017",
+            "probe_0018",
+            "probe_0019",
+            "probe_0020"
+          ],
+          "post_freeze_new_probe_ids": [
+            "probe_0017",
+            "probe_0018",
+            "probe_0019",
+            "probe_0020"
+          ],
+          "overall": {
+            "position_mse": 0.0008883588914271114,
+            "velocity_mse": 0.0008066747507934507,
+            "position_rmse": 0.02980535004704879,
+            "velocity_rmse": 0.02840202018859663
+          },
+          "new_probes_position_rmse": 0.02980535004704879
+        }
+      ],
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": false
+      },
+      "physical_explanation": "提交定律（law_3，冻结参数）：ax = -kx·x - d·vx - e·vy；ay = -ky·(y-cy) - d·vy + e·vx。拟合值：kx≈0.2984、ky≈0.3339（单位 1/local_time²），cy≈0.9888（单位 local_length，x 向中心经对称性固定为 0），d≈0.0066、e≈-0.4071（单位 1/local_time）。\n\n各项的物理含义与方向：\n1) 位置恢复项 -kx·x、-ky·(y-cy)：指向中心 (0, cy≈0.99) 的各向异性线性（谐振）恢复力，对应角频率 ωx=√kx≈0.546、ωy=√ky≈0.578 /local_time。x 向对称（b1、b2 关于 y 轴对称），故中心 x≈0；cy≈0.99 恰与三个可见天体 b1(-2,0)、b2(2,0)、b3(0,3) 的质心 (0,1) 吻合。\n2) 速度耦合项 e·(vy, -vx)（在 ay 中即 +e·vx、在 ax 中即 -e·vy）：这是垂直于速度的“回转/类科里奥利/洛伦兹”耦合，系数 e≈-0.41 /local_time，几乎不做功，故主导运动近于保守的椭圆进动，而非耗散。\n3) -d·v：很小的阻尼，d≈0.0066 /local_time，接近零，说明能量缓慢衰减。\n\n观测证据与实验区分：\n- 速度依赖是“观测支持”的：probe_0011–0014 从同一初位 (0,0) 以相反速度 (dt=0.1) 投放，加速度呈明显反对称——如 (0,0) 处 +x 方向 a≈(-0.03,-0.09)、-x 方向 a≈(0.06,0.69)、+y 方向 a≈(0.41,0.25)、-y 方向 a≈(-0.37,0.34)。反对称部分给出回转系数，对称部分给出位置场，二者可分离。\n- 位置场近线性的“观测支持”：probe_0007 距 b3 仅约 0.25（(0.248,2.968)）时加速度仅约 (-0.19,-1.01)，保持有限且与线性模型一致，排除了把可见天体当作反平方点质量源的解释（否则近 b3 会发散、方向相反）；probe_0008 位于角落 (2.97,2.98) 也基本符合线性恢复。\n- 静态（无时间依赖）的“观测支持”：t0=0、5、10 三个批次可用同一组冻结参数描述，validation_c961b8fad123 在 t0=10 的全新轨迹（probe_0017–0020，未参与拟合）上位置 RMSE≈0.030、速度 RMSE≈0.028 且无随时间漂移。\n- 拟合与验证：law_3 训练整体位置 RMSE≈0.047（16 条轨迹），独立验证 0.030，明显优于早期反平方/纯线性旋转候选（后者位置 RMSE≈0.53）。\n\n“由候选公式推导”的运动性质：二阶动力学（加速度由完整状态决定；probe_0002 的 vy 在第 2 秒附近过零而 ay>0，存在转向点，确认二阶而非一阶）；因回转项不做功、阻尼极小，轨迹近似以 (0,0.99) 为中心的椭圆、能量缓慢衰减。\n\n“尚待检验的机制假说”与不可识别性：把该二次势解释为三个可见天体等强度 Hooke 叠加（sum_b(b-r) =-3r+Σb，自然给出中心=质心、且各向同性）是一种可能来源，但这与“各向异性谐振子”在观测上不可唯一区分；事实上拟合出的 kx≠ky（≈0.298 vs 0.334）说明若为等强度天体叠加则不完全成立，天体各自的耦合强度/质量无法通过 sum_b 的等权结构辨识，故不能声称某一具体天体是唯一作用源。近 b3 力不发散，源更像弥散背景势而非离散点源。\n\n适用边界与未检验区域：仅覆盖 |r|≲4、|v|≲1.2 的时域；残差诊断 residual_6e5e7ea31bbc 显示大 |r| 的远角（probe_0008）残差最大（加速度残差 RMSE 约 0.05–0.08），提示真实场在大半径处相对纯线性偏弱（可能存在饱和/非线性），因此纯二次模型在远场只是近似，该非线性机制尚未识别。各向异性来源、是否真实存在看不见的位置源均不能确定；本定律未引用任何不可见源位置，故不做隐藏物质声明。以上均为相对观测的误差，非官方通过阈值。",
+      "independent_evaluation": {
+        "n_successful": 20,
+        "n_trajectories": 20,
+        "overall": {
+          "position_mse": 8.672568892917841,
+          "velocity_mse": 3.836418412330425,
+          "position_rmse": 2.9449225614467083,
+          "velocity_rmse": 1.9586777203844499
+        }
+      }
+    }
+  ]
+}

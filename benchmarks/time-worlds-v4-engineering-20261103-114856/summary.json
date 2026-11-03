@@ -1,0 +1,73 @@
+{
+  "kind": "manual_engineering_smoke",
+  "autonomous_discovery": false,
+  "api_calls": 0,
+  "note": "Developer supplied candidate families; coefficients fitted through public tools. Each has two fresh validation probes and twenty independent post-session probes. This does not test autonomous discovery.",
+  "physics_version": "v4",
+  "results": [
+    {
+      "world_id": "world_6",
+      "run_id": "offline-time-v4-6-20261103-114856",
+      "autonomous_discovery": false,
+      "known_candidate_structure": {
+        "ax": "k*sum_b(bx-x)",
+        "ay": "k*sum_b(by-y)"
+      },
+      "fitted_parameters": {
+        "k": 0.10000000008957097
+      },
+      "fresh_validation": {
+        "position_mse": 1.3492780009580547e-15,
+        "velocity_mse": 4.250865395000682e-16,
+        "position_rmse": 3.6732519665251045e-08,
+        "velocity_rmse": 2.0617626912427828e-08
+      },
+      "heldout": {
+        "position_mse": 3.0088308520936363e-15,
+        "velocity_mse": 8.224373873830465e-16,
+        "position_rmse": 5.485281079483199e-08,
+        "velocity_rmse": 2.8678169177669738e-08
+      },
+      "complete": true,
+      "n_successful": 20,
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": false
+      }
+    },
+    {
+      "world_id": "world_7",
+      "run_id": "offline-time-v4-7-20261103-114856",
+      "autonomous_discovery": false,
+      "known_candidate_structure": {
+        "ax": "(k+c*sin(w*t))*sum_b(bx-x)",
+        "ay": "(k+c*sin(w*t))*sum_b(by-y)"
+      },
+      "fitted_parameters": {
+        "k": 0.09999999977336792,
+        "c": 0.05000000009245092,
+        "w": 0.6000000008609145
+      },
+      "fresh_validation": {
+        "position_mse": 1.5512360090090419e-15,
+        "velocity_mse": 3.365998424846607e-16,
+        "position_rmse": 3.9385733572056794e-08,
+        "velocity_rmse": 1.834665752895226e-08
+      },
+      "heldout": {
+        "position_mse": 3.247692735702827e-15,
+        "velocity_mse": 1.1385355903844781e-15,
+        "position_rmse": 5.6988531615605144e-08,
+        "velocity_rmse": 3.3742193028676695e-08
+      },
+      "complete": true,
+      "n_successful": 20,
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": true
+      }
+    }
+  ]
+}

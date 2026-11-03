@@ -1,0 +1,59 @@
+{
+  "scope": "Observation source and frozen-version pipeline. Does not validate every physical-explanation claim.",
+  "automated_tests_passed": 311,
+  "worlds": [
+    {
+      "world_id": "world_3",
+      "run_id": "web-20261103-060508-2c0980d5",
+      "task_has_no_exact_coordinates": true,
+      "all_laws_reconstruct_from_prior_acquired_observations": true,
+      "law_count": 6,
+      "body_observation_count": 1,
+      "additional_observe_body_calls": 0,
+      "train_validation_ids_disjoint": true,
+      "final_law_validation_count": 2,
+      "submission_artifacts_match": true,
+      "independent_trajectories_complete": 20,
+      "tool_errors": [
+        {
+          "tool": "fit_law_and_rollout",
+          "error": {
+            "code": "invalid_expression",
+            "message": "formula exceeds 100 total AST nodes"
+          }
+        }
+      ],
+      "physical_explanation_chars": 2367
+    },
+    {
+      "world_id": "world_4",
+      "run_id": "web-20261103-061253-41d2a573",
+      "task_has_no_exact_coordinates": true,
+      "all_laws_reconstruct_from_prior_acquired_observations": true,
+      "law_count": 6,
+      "body_observation_count": 1,
+      "additional_observe_body_calls": 0,
+      "train_validation_ids_disjoint": true,
+      "final_law_validation_count": 1,
+      "submission_artifacts_match": true,
+      "independent_trajectories_complete": 20,
+      "tool_errors": [
+        {
+          "tool": "insert_probe",
+          "error": {
+            "code": "ValidationError",
+            "message": "Additional properties are not allowed ('t0' was unexpected)\n\nFailed validating 'additionalProperties' in schema['properties']['probes']['items']:\n    {'type': 'object',\n     'properties': {'r0': {'type': 'array',\n                           'items': {'type': 'number'},\n                           'minItems': 2,\n                           'maxItems': 2},\n                    'v0': {'type': 'array',\n                           'items': {'type': 'number'},\n                           'minItems': 2,\n                           'maxItems': 2},\n                    'properties': {'type': 'object',\n                                   'properties': {'mass': {'type': 'number'},\n                                                  'charge': {'type': 'number'}},\n                                   'required': [],\n                                   'additionalProperties': False}},\n     'required': ['r0', 'v0', 'properties'],\n     'additionalProperties': False}\n\nOn instance['probes'][5]:\n    {'r0': [1.0, 0.0], 'v0': [0.0, 0.0], 'properties': {}, 't0': 20.0}"
+          }
+        }
+      ],
+      "physical_explanation_chars": 2787
+    }
+  ],
+  "completed_worlds": 2,
+  "source_sha256": {
+    "shore_agent/runtime.py": "c3878aa3a2c7ccfdb6380a3889815ab6fbc2bc944e82f45e77fc6fb63ac9cd9c",
+    "shore_agent/observations.py": "00785d9f21c5d8cf872663629f1f0e2c41063958ceaba75d97e4329ee740abbd",
+    "shore_sim/simulator.py": "f8f8411bd4b67336c052e3a1cf98d60fea9743e30e75f81ce070ba15474a079b",
+    "shore_agent/prompts/main.txt": "885721681b642ed0be72a33d447f7bc12078e2b28feeb28261cd333476ea1c4a"
+  }
+}

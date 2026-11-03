@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#153e48">
+  <title>彼岸 · 规律发现实验台</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="彼岸规律发现实验台首页">
+      <svg class="brand-icon" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="12"/><ellipse cx="20" cy="20" rx="19" ry="7" transform="rotate(-35 20 20)"/><circle cx="20" cy="20" r="3" class="brand-core"/><circle cx="31" cy="7" r="3" class="brand-dot"/></svg>
+      <span class="brand-name">彼岸<span class="brand-slash">/</span><span class="brand-subtitle">规律发现实验台</span></span>
+    </a>
+    <div class="top-meta"><span class="local-status"><i></i> 本地研究环境</span><span class="version">PROTOTYPE 01</span></div>
+  </header>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="探索配置与历史">
+      <div class="sidebar-title"><span class="eyebrow">EXPERIMENT SETUP</span><span class="section-number">01</span></div>
+      <h2>开启一次探索</h2>
+      <p class="sidebar-intro">让 Agent 自主观测、提出假设，<br>再用新的轨迹检验它。</p>
+      <form id="run-form">
+        <label class="field-label" for="model">探索模型</label>
+        <select id="model" name="model" required><option value="deepseek-flash">DeepSeek Flash</option><option value="deepseek-v4-pro">DeepSeek V4 Pro</option></select>
+        <div class="field-heading"><label class="field-label" for="api-key">API 密钥</label><span id="key-state" class="field-meta">仅本次使用</span></div>
+        <input id="api-key" name="api_key" type="password" placeholder="输入 DeepSeek API Key" autocomplete="off" spellcheck="false" maxlength="300" aria-describedby="key-note">
+        <p id="key-note" class="field-hint">密钥仅用于启动本次探索，不保存在浏览器中。</p>
+        <div class="world-setting"><label class="field-label" for="world-select">实验世界</label><select id="world-select" name="world_id" required aria-describedby="world-note"><option value="world_1">世界 01</option></select><p id="world-note" class="field-hint">用于下一次探索，历史会话保持原有世界。</p></div>
+        <div class="noise-control">
+          <div><label for="noise">观测噪声</label><p>检验规律对测量误差的稳健性</p></div>
+          <label class="switch"><input id="noise" name="noise" type="checkbox"><span class="switch-track"></span><span class="sr-only">启用观测噪声</span></label>
+        </div>
+        <details class="advanced">
+          <summary>高级设置 <span class="summary-hint">预算与随机种子</span></summary>
+          <div class="advanced-fields">
+            <div class="thinking-setting"><label class="thinking-toggle" for="thinking"><input id="thinking" name="thinking" type="checkbox" checked>启用思考模式</label><p class="field-hint">关闭可缩短响应时间；探索质量需结合验证判断。</p></div>
+            <label class="field-label" for="seed">随机种子</label><input id="seed" name="seed" type="number" min="0" max="2147483647" value="42" required>
+            <label class="field-label" for="max-tokens">Token 总预算</label><input id="max-tokens" name="max_total_tokens" type="number" min="1000" max="10000000" value="2000000" step="1000" required>
+            <label class="field-label" for="output-tokens">单次输出上限</label><input id="output-tokens" name="max_tokens_per_call" type="number" min="64" max="393216" value="65536" step="1" required aria-describedby="output-token-note">
+            <p id="output-token-note" class="field-hint budget-hint">模型调用无次数上限；Token 总预算与实验时限仍生效。单次输出含思考、正文和工具参数。</p>
+          </div>
+        </details>
+        <button id="start-button" class="button button-primary" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 8 5-8 5Z"/></svg><span>开始探索</span><span class="button-arrow">↗</span></button>
+        <button id="stop-button" class="button button-stop" type="button" hidden><span class="stop-square"></span>停止本次探索</button>
+        <p class="run-note">将实际调用模型 API，并使用当前配置开始新实验。</p>
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+      </form>
+      <div class="history-section">
+        <div class="section-heading"><h3>历史会话</h3><button id="refresh-history" class="icon-button" type="button" title="刷新历史会话" aria-label="刷新历史会话">↻</button></div>
+        <div id="history-list" class="history-list"><p class="muted small">正在读取会话…</p></div>
+        <details id="recycle-bin" class="recycle-bin">
+          <summary>回收站 <span id="deleted-count">0</span></summary>
+          <p class="recycle-hint">删除的会话可以在这里恢复。</p>
+          <div id="deleted-list" class="deleted-list"><p class="muted small">回收站为空。</p></div>
+        </details>
+      </div>
+      <div class="sidebar-foot"><span class="tiny-orbit">◌</span><p>观察是起点，验证是下一步。<br><span>本地实验结果不代表正式比赛评分。</span></p></div>
+    </aside>
+    <main class="workspace">
+      <section class="workspace-heading">
+        <div><div class="eyebrow">PHYSICS DISCOVERY AGENT</div><h1>让假设，接受轨迹的检验。</h1><p id="session-caption">配置实验，观察 Agent 如何从数据中寻找规律。</p></div>
+        <div class="session-state"><span id="mode-badge" class="badge badge-neutral">准备就绪</span><span id="run-status" class="status-text" role="status">正在连接实验台</span><span id="wall-clock" class="wall-clock" title="探索会话剩余的现实时间">剩余时间 —</span></div>
+      </section>
+      <div id="connection-banner" class="connection-banner" role="alert" hidden><span id="connection-message"></span><button id="reconnect-button" type="button">重新连接</button></div>
+      <section class="metrics" aria-label="实验预算与进度">
+        <div class="metric energy-metric"><div class="metric-label"><span>剩余探索能量</span><span class="metric-symbol">ϟ</span></div><div class="metric-value"><strong id="energy-value">—</strong><span>/ 100</span></div><progress id="energy-progress" value="0" max="100" aria-label="剩余探索能量"></progress></div>
+        <div class="metric"><div class="metric-label">模型调用</div><div class="metric-value"><strong id="calls-value">—</strong><span id="calls-limit">无次数上限</span></div><div id="calls-note" class="metric-foot">主 Agent 模型请求</div></div>
+        <div class="metric"><div class="metric-label">Token 用量</div><div class="metric-value"><strong id="tokens-value">—</strong><span id="tokens-limit">/ 2M</span></div><div class="metric-foot">累计输入与输出</div></div>
+        <div class="metric"><div class="metric-label">已取得轨迹</div><div class="metric-value"><strong id="probes-value">—</strong><span>条</span></div><div class="metric-foot"><span id="validations-value">0</span> 次独立轨迹验证</div></div>
+      </section>
+      <div class="research-grid">
+        <section class="panel trajectory-panel" aria-labelledby="trajectory-title">
+          <div class="panel-heading"><div><span class="eyebrow">OBSERVE & COMPARE</span><h2 id="trajectory-title">轨迹观测</h2></div><span class="coordinate-badge">2D / x · y</span></div>
+          <div class="chart-toolbar"><label for="probe-select" class="sr-only">显示的探针轨迹</label><select id="probe-select"><option value="all">全部轨迹</option></select><label for="law-select" class="sr-only">用于预测的候选规律</label><select id="law-select"><option value="">尚无拟合规律</option></select></div>
+          <div id="body-time-control" class="body-time-control" hidden>
+            <div class="body-time-heading"><label for="body-time">天体位置 · 绝对时间</label><output id="body-time-readout" for="body-time">t = —</output><button id="body-time-latest" type="button">最新观测</button></div>
+            <input id="body-time" type="range" min="0" max="0" step="0.005" value="0" aria-describedby="body-time-coverage">
+            <p id="body-time-coverage">等待已取得的天体观测</p>
+          </div>
+          <div class="plot-wrap"><svg id="trajectory-chart" viewBox="0 0 720 400" role="img" aria-label="二维轨迹图：显示观测轨迹、候选规律预测与观测得到的天体位置估计"></svg><div id="chart-empty" class="chart-empty"><span class="empty-crosshair">+</span><h3>等待第一条轨迹</h3><p>探索开始后，观测与预测将在这里相遇。</p></div></div>
+          <div class="chart-footer"><div class="legend"><span><i class="legend-observed"></i>探针观测轨迹</span><span><i class="legend-predicted"></i>规律预测</span><span><i class="legend-body"></i><span id="body-legend-label">天体位置估计</span></span><span id="body-trail-legend" hidden><i class="legend-body-trail"></i>天体观测路径</span><span id="frozen-body-legend" hidden><i class="legend-frozen-body"></i><span id="frozen-body-label">候选冻结的位置</span></span></div><span id="plot-note">自动缩放 · 坐标为环境单位</span></div><p id="body-observation-note" class="body-observation-note" hidden></p>
+        </section>
+        <section class="panel timeline-panel" aria-labelledby="timeline-title">
+          <div class="panel-heading"><div><span class="eyebrow">EXPLORATION LOG</span><h2 id="timeline-title">探索进程</h2></div><span id="event-count" class="event-count">0 条</span></div>
+          <div id="timeline" class="timeline" tabindex="0" aria-label="探索事件列表"><div class="timeline-empty"><div class="empty-path"><i></i><span></span><i></i><span></span><i></i></div><h3>每一步，都有迹可循。</h3><p>观测、拟合、验证与提交的<br>实际执行过程将在这里记录。</p></div></div>
+          <div class="timeline-footer"><span id="live-dot" class="live-dot"></span><span id="timeline-caption">等待探索开始</span><button id="scroll-latest" type="button">最新 ↓</button></div>
+        </section>
+      </div>
+      <section class="panel discovery-panel" aria-labelledby="discovery-title">
+        <div class="panel-heading"><div><span class="eyebrow">HYPOTHESIS & EVIDENCE</span><h2 id="discovery-title">候选规律与验证</h2></div><a id="export-link" class="text-action" href="#" hidden download>导出实验记录 <span>↗</span></a></div>
+        <div id="discovery-empty" class="discovery-empty"><span class="formula-placeholder">a = ?</span><div><h3>规律还在等待被发现</h3><p>Agent 提出的公式、拟合参数和验证误差会随探索实时更新。</p></div></div>
+        <div id="discovery-content" class="discovery-content" hidden><div class="law-main"><div class="law-meta"><span id="law-label">候选规律</span><span id="fit-status" class="badge badge-neutral"></span></div><div class="formula-line"><span>a<sub>x</sub> =</span><code id="formula-x"></code></div><div class="formula-line"><span>a<sub>y</sub> =</span><code id="formula-y"></code></div><div id="law-parameters" class="parameter-list"></div><p id="law-train-note" class="field-hint"></p><p id="law-body-note" class="field-hint"></p></div><div class="evidence"><div class="evidence-row"><span>训练位置 RMSE</span><strong id="training-rmse">—</strong></div><div class="evidence-row"><span>验证位置 RMSE</span><strong id="validation-rmse">—</strong></div><p id="validation-note" class="field-hint">等待独立轨迹验证</p><div id="submission-outcome" class="submission-outcome" hidden></div></div></div>
+        <section id="physical-explanation-block" class="physical-explanation-block" aria-labelledby="physical-explanation-title" hidden>
+          <span class="eyebrow">PHYSICAL EXPLANATION</span>
+          <h3 id="physical-explanation-title">最终答案 · 物理解释</h3>
+          <p id="physical-explanation-law" class="field-hint"></p>
+          <div id="physical-explanation" class="physical-explanation"></div>
+          <p class="field-hint">随最终规律提交；解释中的物理假说需结合实验依据判断，数值拟合与评测不等于机制已获证实。</p>
+        </section>
+        <div id="evaluation-block" class="evaluation-block" hidden>
+          <div class="evaluation-copy">
+            <span class="eyebrow">POST-SESSION EVALUATION</span><h3>会话后独立测评 · 题目得分</h3>
+            <p id="evaluation-summary" class="evaluation-summary" role="status"></p><p id="evaluation-note"></p>
+            <details class="evaluation-rule"><summary>计分公式与依据</summary>
+              <p>总分 = P + L + C，满分 100。e = MSE / max(V, 1e-12)；P = 80 / (1 + 10e)。三项声明每项正确得 5 分，L 满分 15。仅当未舍入的 P ≥ 40 时，C = 5 × (1 − E / 100)，否则 C = 0。</p>
+              <p>V 为参考轨迹的位置方差，E 为已用实验能量。按题目公式与本地隐藏测试集计分，不是官方成绩，不对物理解释质量打分。</p>
+              <p>题目数值示例与公式存在差异，本工作台按书面公式 10e 计算。</p>
+              <p id="evaluation-inputs"></p><ul id="evaluation-claims"></ul>
+            </details>
+          </div>
+          <div class="evaluation-metrics">
+            <div class="evaluation-total"><span class="metric-label">总分</span><div><strong id="evaluation-score">—</strong><span> / <span id="evaluation-maximum">100</span></span></div></div>
+            <div class="evaluation-components">
+              <div><span>预测 P</span><p><b id="evaluation-prediction">—</b> / 80</p></div>
+              <div><span>声明 L</span><p><b id="evaluation-law">—</b> / 15</p></div>
+              <div><span>节能 C</span><p><b id="evaluation-conservation">—</b> / 5</p></div>
+            </div>
+            <div class="evaluation-diagnostic"><span>未见初态 · 位置 RMSE</span><b id="evaluation-rmse">—</b></div>
+          </div>
+        </div>
+        <div id="run-outcome" class="run-outcome" hidden></div>
+      </section>
+      <footer class="workspace-footer"><span><i></i> 由真实观测驱动 · 所有结果可追溯</span><span>BEYOND THE OBSERVABLE</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+{
+  "review_kind": "post_session_read_only_scientific_audit",
+  "no_official_pass_threshold": true,
+  "worlds": {
+    "world_1": {
+      "numerical_result": "accurate_equivalent_field",
+      "source_form": "expanded_affine",
+      "explanation": "兼容逐源线性机制并承认一般源结构不可唯一识别，未明确给出每源0.1。",
+      "issues": [
+        "在限定三个已知非共线源的标量线性模型后，源系数实际可唯一求解，不能泛称各耦合系数不可辨识。",
+        "仅取得轨迹预览，却声称完整轨迹逐点相同；完整档案虽相同，当时可见证据不足。"
+      ],
+      "run_id": "web-20261103-073246-1ef99e81",
+      "independent_position_rmse": 6.023298959359085e-08
+    },
+    "world_2": {
+      "numerical_result": "accurate_equivalent_field",
+      "source_form": "expanded_affine",
+      "explanation": "数值式与逐源各向异性矩阵作用等价，但来源解释错误。",
+      "issues": [
+        "错误提交hidden_matter=true；真实v2完全由可见源产生。",
+        "由各向同性源模型不符扩大到可见源不能解释，遗漏逐源各向异性作用。",
+        "声称最终残差速度相关消失，但只对旧候选进行残差诊断。",
+        "以预览概括完整轨迹范围，漏掉验证中更远位置。"
+      ],
+      "run_id": "web-20261103-073422-33fef611",
+      "independent_position_rmse": 4.570964552552385e-08
+    },
+    "world_3": {
+      "numerical_result": "accurate_source_law",
+      "source_form": "sum_b",
+      "explanation": "恢复A≈0.06、B≈0.004；逐源方向、线性加三次幅值、单位、保守势和平衡点解释主干正确。",
+      "issues": [
+        "未改变探针属性便声称无属性依赖。",
+        "有限实验不能全面排除速度、显式时间依赖或隐藏源。",
+        "该非线性多源场的轨道不普遍为椭圆。"
+      ],
+      "run_id": "web-20261103-073739-1962cf75",
+      "independent_position_rmse": 3.047326086004267e-08
+    },
+    "world_4": {
+      "numerical_result": "accurate_source_law",
+      "source_form": "sum_b",
+      "explanation": "恢复mu≈0.8、eps2≈0.64；方向、单位、远近场、势和源中心净力解释总体正确。",
+      "issues": [
+        "未实际拟合比较阻尼、磁式或时间项，却断言加入它们不会改善。",
+        "加速度残差比较的是同一内部时刻，不是说明中的初始时刻。"
+      ],
+      "run_id": "web-20261103-074112-03c2278b",
+      "independent_position_rmse": 1.4589346514600036e-06
+    },
+    "world_5": {
+      "numerical_result": "incorrect_approximation",
+      "source_form": "constant_coefficient_affine_velocity",
+      "explanation": "识别了横向速度偏转，却未发现其源距依赖，错误引入各向异性和阻尼。",
+      "issues": [
+        "三个拟合候选都使用常量速度系数，未尝试sum_b或位置相关偏转强度。",
+        "训练位置RMSE0.047、全新验证0.0298仍存在系统偏差，过早提交近似。",
+        "11次工具调用全部成功；仅用11/24模型调用、478320/2000000 token，非资源耗尽。",
+        "所有训练/验证轨迹跨度不超过3.5，最终验证跨度3；后评测约20，初态范围也更广。",
+        "解释中偏转项向量符号与实际分量相反，真实场保守却被解释为缓慢耗散。",
+        "声称比较过反平方候选，但未执行对应拟合。"
+      ],
+      "run_id": "web-20261103-074601-2e14853c",
+      "independent_position_rmse": 2.9449225614467083,
+      "manual_engineering_check": {
+        "autonomous_discovery": false,
+        "model_api_calls": 0,
+        "same_20_initial_conditions": true,
+        "position_rmse": 5.6108848628106146e-08,
+        "artifact": "engineering-world5-known-law.json",
+        "meaning": "手工指定批准公式，证明现有DSL与数值工具可表达；不替代自主失败结果。"
+      }
+    }
+  }
+}

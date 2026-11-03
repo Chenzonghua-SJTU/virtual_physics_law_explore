@@ -1,0 +1,101 @@
+{
+  "run_id": "web-20261103-094229-91d8e489",
+  "physics_version": "v3",
+  "status": "incomplete",
+  "reason": "http_status_503",
+  "result_classification": "model_service_interruption_not_scientific_failure",
+  "autonomous_discovery_completed": false,
+  "model_api_attempts": [
+    {
+      "call_number": 1,
+      "attempt": 1,
+      "http_status": 503,
+      "error": "http_status_503",
+      "finish_reason": null,
+      "elapsed_seconds": 0.19378529199999994
+    },
+    {
+      "call_number": 2,
+      "attempt": 2,
+      "http_status": 200,
+      "error": null,
+      "finish_reason": "tool_calls",
+      "elapsed_seconds": 224.669832375
+    },
+    {
+      "call_number": 3,
+      "attempt": 1,
+      "http_status": 200,
+      "error": null,
+      "finish_reason": "tool_calls",
+      "elapsed_seconds": 33.489860209
+    },
+    {
+      "call_number": 4,
+      "attempt": 1,
+      "http_status": 503,
+      "error": "http_status_503",
+      "finish_reason": null,
+      "elapsed_seconds": 0.16744141700002046
+    },
+    {
+      "call_number": 5,
+      "attempt": 2,
+      "http_status": 503,
+      "error": "http_status_503",
+      "finish_reason": null,
+      "elapsed_seconds": 0.11728912499995658
+    }
+  ],
+  "tools": [
+    {
+      "name": "observe_body",
+      "ok": true
+    },
+    {
+      "name": "insert_probe",
+      "ok": true
+    }
+  ],
+  "record_counts": {
+    "probe": 10,
+    "body_observation": 1,
+    "law": 0,
+    "validation": 0,
+    "submission": 0
+  },
+  "prompt_sha256": "fa94273caf8ce022efd921518e2956f5b43bbd9fdfe95f2a5127fcb302f9436a",
+  "initial_first_light_keys": [
+    "probes"
+  ],
+  "model_usage": {
+    "calls": 5,
+    "prompt_tokens": 9507,
+    "completion_tokens": 6462,
+    "total_tokens": 15969,
+    "conservative_reserved_tokens": 293478,
+    "elapsed_seconds": 258.638208418,
+    "roles": {
+      "main": {
+        "calls": 5,
+        "prompt_tokens": 9507,
+        "completion_tokens": 6462,
+        "total_tokens": 15969
+      }
+    }
+  },
+  "budget": {
+    "energy_remaining": 92,
+    "observations_remaining": 19,
+    "wall_seconds_remaining": 3340.269640417,
+    "session_ended": false
+  },
+  "engineering_checks": {
+    "unique_tests_passed": 431,
+    "sandbox_passed": 371,
+    "sandbox_http_setup_errors": 60,
+    "http_tests_repeated_with_loopback_permission_passed": 64
+  },
+  "automatic_reruns": false,
+  "interpretation": "No law was fitted or submitted, so no independent prediction score exists. This run cannot establish whether s=1,g=1 improves discovery."
+}

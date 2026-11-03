@@ -1,0 +1,301 @@
+{
+  "benchmark_kind": "real_agent_once_per_world",
+  "started_at": "2026-11-02T08:55:17.442009+00:00",
+  "status": "completed_all_attempts",
+  "base_url": "http://127.0.0.1:8765",
+  "settings": {
+    "model": "deepseek-flash",
+    "thinking": true,
+    "max_calls": 24,
+    "max_total_tokens": 2000000,
+    "max_tokens_per_call": 65536,
+    "noise": false,
+    "seed": 42
+  },
+  "role_limits": {
+    "main_max_calls": 20,
+    "analyst_max_calls": 4
+  },
+  "evaluation": {
+    "seed": 1871,
+    "n_probes": 20
+  },
+  "prompt_sha256": {
+    "main.txt": "1c856c51a13983137a392174aa5f030bce407ea7d306969e5cbccd5453f772a7",
+    "analyst.txt": "51e4936165c9b2b437f531d5fa20d1056fa35a78be0346c897bfee8e8e02aa62"
+  },
+  "base_configuration": {
+    "environment": {
+      "world_id": "world_1",
+      "noise": false,
+      "seed": 42,
+      "reference_length": 10.0,
+      "position_limit": 5.0,
+      "velocity_limit": 3.0,
+      "time_max": 30.0,
+      "wall_seconds": 3600
+    },
+    "model": {
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-flash",
+      "thinking": true,
+      "analyst_thinking": false,
+      "reasoning_effort": "low",
+      "timeout_seconds": 600,
+      "max_calls": 24,
+      "main_max_calls": 20,
+      "analyst_max_calls": 4,
+      "max_tokens_per_call": 65536,
+      "analyst_max_tokens": 4096,
+      "max_total_tokens": 2000000,
+      "max_retries": 1
+    },
+    "agent": {
+      "max_no_action": 3,
+      "max_turns": 30
+    },
+    "numerics": {
+      "max_nfev": 80
+    }
+  },
+  "automatic_reruns": false,
+  "automatic_budget_expansion": false,
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "name": "世界 01",
+      "status": "submitted",
+      "run_id": "web-20261102-085517-530d06fa",
+      "started_at": "2026-11-02T08:55:17.575638+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_1",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "analyst_thinking": false,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 20,
+          "analyst_max_calls": 4,
+          "max_tokens_per_call": 65536,
+          "analyst_max_tokens": 4096,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "339cbabf964612c8056d1f641018481a1bd6bd727a1c6c509f7761cdf79ce048",
+      "prompt_sha256": {
+        "main.txt": "1c856c51a13983137a392174aa5f030bce407ea7d306969e5cbccd5453f772a7",
+        "analyst.txt": "51e4936165c9b2b437f531d5fa20d1056fa35a78be0346c897bfee8e8e02aa62"
+      },
+      "finished_at": "2026-11-02T08:56:58.609293+00:00"
+    },
+    {
+      "world_id": "world_2",
+      "name": "世界 02",
+      "status": "submitted",
+      "run_id": "web-20261102-085658-0e954438",
+      "started_at": "2026-11-02T08:56:58.754143+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_2",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "analyst_thinking": false,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 20,
+          "analyst_max_calls": 4,
+          "max_tokens_per_call": 65536,
+          "analyst_max_tokens": 4096,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "f3bced6f859afd2d5779368c3da181f80cf4c1c5658e5b27bde73f8af194b115",
+      "prompt_sha256": {
+        "main.txt": "1c856c51a13983137a392174aa5f030bce407ea7d306969e5cbccd5453f772a7",
+        "analyst.txt": "51e4936165c9b2b437f531d5fa20d1056fa35a78be0346c897bfee8e8e02aa62"
+      },
+      "finished_at": "2026-11-02T08:59:10.057568+00:00"
+    },
+    {
+      "world_id": "world_3",
+      "name": "世界 03",
+      "status": "submitted",
+      "run_id": "web-20261102-085910-c1170f82",
+      "started_at": "2026-11-02T08:59:10.281873+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "analyst_thinking": false,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 20,
+          "analyst_max_calls": 4,
+          "max_tokens_per_call": 65536,
+          "analyst_max_tokens": 4096,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "4db19305cbef9d94d468ade0ca27ff8c70be452e24a0caf30faae38a84718a8a",
+      "prompt_sha256": {
+        "main.txt": "1c856c51a13983137a392174aa5f030bce407ea7d306969e5cbccd5453f772a7",
+        "analyst.txt": "51e4936165c9b2b437f531d5fa20d1056fa35a78be0346c897bfee8e8e02aa62"
+      },
+      "finished_at": "2026-11-02T09:02:41.763185+00:00"
+    },
+    {
+      "world_id": "world_4",
+      "name": "世界 04",
+      "status": "submitted",
+      "run_id": "web-20261102-090242-aaae4dd6",
+      "started_at": "2026-11-02T09:02:42.065586+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "analyst_thinking": false,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 20,
+          "analyst_max_calls": 4,
+          "max_tokens_per_call": 65536,
+          "analyst_max_tokens": 4096,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "182d662b90fd278c29f44e6b8b08ad152258d8c7a47bd035d509e55d708cafd3",
+      "prompt_sha256": {
+        "main.txt": "1c856c51a13983137a392174aa5f030bce407ea7d306969e5cbccd5453f772a7",
+        "analyst.txt": "51e4936165c9b2b437f531d5fa20d1056fa35a78be0346c897bfee8e8e02aa62"
+      },
+      "finished_at": "2026-11-02T09:05:06.147018+00:00"
+    },
+    {
+      "world_id": "world_5",
+      "name": "世界 05",
+      "status": "submitted",
+      "run_id": "web-20261102-090506-d09ffce3",
+      "started_at": "2026-11-02T09:05:06.474410+00:00",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "analyst_thinking": false,
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": 24,
+          "main_max_calls": 20,
+          "analyst_max_calls": 4,
+          "max_tokens_per_call": 65536,
+          "analyst_max_tokens": 4096,
+          "max_total_tokens": 2000000,
+          "max_retries": 1
+        },
+        "agent": {
+          "max_no_action": 3,
+          "max_turns": 30
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "configuration_sha256": "21c8bd361a1b2a4ccc48f4cb96e40d402160799c0b06d897737e195ace63e1db",
+      "prompt_sha256": {
+        "main.txt": "1c856c51a13983137a392174aa5f030bce407ea7d306969e5cbccd5453f772a7",
+        "analyst.txt": "51e4936165c9b2b437f531d5fa20d1056fa35a78be0346c897bfee8e8e02aa62"
+      },
+      "finished_at": "2026-11-02T09:08:07.704073+00:00"
+    }
+  ],
+  "finished_at": "2026-11-02T09:08:07.709144+00:00"
+}

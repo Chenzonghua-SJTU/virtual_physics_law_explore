@@ -1,0 +1,228 @@
+[
+  {
+    "world_id": "world_1",
+    "tool_counts": {
+      "fit_law_and_rollout": 1,
+      "insert_probe": 1,
+      "validate_law": 1,
+      "analyze_residual": 1,
+      "submit": 1
+    },
+    "tool_errors": [],
+    "validation": [
+      {
+        "law_id": "law_1",
+        "errors": {
+          "position_mse": 1.2760445454488345e-15,
+          "velocity_mse": 4.107641627036968e-16,
+          "position_rmse": 3.572176571012181e-08,
+          "velocity_rmse": 2.0267317600109215e-08
+        },
+        "test_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      }
+    ],
+    "reply_usage": [
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 7039
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 714
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 656
+      }
+    ]
+  },
+  {
+    "world_id": "world_2",
+    "tool_counts": {},
+    "tool_errors": [],
+    "validation": [],
+    "reply_usage": [
+      {
+        "finish_reason": "length",
+        "max_tokens": 8192,
+        "reasoning_tokens": 8191
+      }
+    ]
+  },
+  {
+    "world_id": "world_3",
+    "tool_counts": {},
+    "tool_errors": [],
+    "validation": [],
+    "reply_usage": [
+      {
+        "finish_reason": "length",
+        "max_tokens": 8192,
+        "reasoning_tokens": 8192
+      }
+    ]
+  },
+  {
+    "world_id": "world_4",
+    "tool_counts": {
+      "fit_law_and_rollout": 10,
+      "summarize_data": 1,
+      "insert_probe": 1,
+      "validate_law": 1
+    },
+    "tool_errors": [
+      {
+        "tool": "fit_law_and_rollout",
+        "error": {
+          "code": "invalid_expression",
+          "message": "formula exceeds 100 total AST nodes"
+        }
+      },
+      {
+        "tool": "fit_law_and_rollout",
+        "error": {
+          "code": "invalid_expression",
+          "message": "formula exceeds 100 total AST nodes"
+        }
+      },
+      {
+        "tool": "fit_law_and_rollout",
+        "error": {
+          "code": "invalid_expression",
+          "message": "formula exceeds 100 total AST nodes"
+        }
+      },
+      {
+        "tool": "summarize_data",
+        "error": {
+          "code": "analyst_report_item_limit",
+          "message": "analyst_report_item_limit"
+        }
+      },
+      {
+        "tool": "fit_law_and_rollout",
+        "error": {
+          "code": "invalid_expression",
+          "message": "formula exceeds 100 total AST nodes"
+        }
+      },
+      {
+        "tool": "fit_law_and_rollout",
+        "error": {
+          "code": "invalid_expression",
+          "message": "use named parameters for constants; only 0, +/-1 and integer exponents -3..3 are structural literals"
+        }
+      }
+    ],
+    "validation": [
+      {
+        "law_id": "law_5",
+        "errors": {
+          "position_mse": 0.05163344985095865,
+          "velocity_mse": 0.021925039093572265,
+          "position_rmse": 0.22722994928256848,
+          "velocity_rmse": 0.14807106095916334
+        },
+        "test_probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ]
+      }
+    ],
+    "reply_usage": [
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 2756
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 196
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 416
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 644
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 415
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 690
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 18
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 222
+      },
+      {
+        "finish_reason": "stop",
+        "max_tokens": 4096,
+        "reasoning_tokens": null
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 750
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 747
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 474
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 333
+      },
+      {
+        "finish_reason": "tool_calls",
+        "max_tokens": 8192,
+        "reasoning_tokens": 3368
+      }
+    ]
+  },
+  {
+    "world_id": "world_5",
+    "tool_counts": {},
+    "tool_errors": [],
+    "validation": [],
+    "reply_usage": [
+      {
+        "finish_reason": "length",
+        "max_tokens": 8192,
+        "reasoning_tokens": 8192
+      }
+    ]
+  }
+]

@@ -1,0 +1,349 @@
+[
+  {
+    "world_id": "world_1",
+    "run_id": "web-20261102-085517-530d06fa",
+    "tool_counts": {
+      "insert_probe": 2,
+      "fit_law_and_rollout": 1,
+      "validate_law": 2,
+      "analyze_residual": 1,
+      "submit": 1
+    },
+    "tool_errors": [],
+    "reply_usage": [
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 10640,
+        "reasoning_tokens": 10150
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 1968,
+        "reasoning_tokens": 1640
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 400,
+        "reasoning_tokens": 231
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 1511,
+        "reasoning_tokens": 1094
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 546,
+        "reasoning_tokens": 261
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 1921,
+        "reasoning_tokens": 1567
+      }
+    ]
+  },
+  {
+    "world_id": "world_2",
+    "run_id": "web-20261102-085658-0e954438",
+    "tool_counts": {
+      "insert_probe": 3,
+      "summarize_data": 1,
+      "fit_law_and_rollout": 1,
+      "validate_law": 2,
+      "analyze_residual": 1,
+      "submit": 1
+    },
+    "tool_errors": [
+      {
+        "tool": "summarize_data",
+        "error": {
+          "code": "analyst_invalid_json",
+          "message": "analyst_invalid_json"
+        }
+      }
+    ],
+    "reply_usage": [
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 7369,
+        "reasoning_tokens": 6829
+      },
+      {
+        "role": "analyst",
+        "finish_reason": "stop",
+        "max_tokens": 4096,
+        "completion_tokens": 1284,
+        "reasoning_tokens": 0
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 8016,
+        "reasoning_tokens": 7536
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 1221,
+        "reasoning_tokens": 571
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 3392,
+        "reasoning_tokens": 3153
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 1435,
+        "reasoning_tokens": 1248
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 816,
+        "reasoning_tokens": 541
+      }
+    ]
+  },
+  {
+    "world_id": "world_3",
+    "run_id": "web-20261102-085910-c1170f82",
+    "tool_counts": {
+      "insert_probe": 3,
+      "fit_law_and_rollout": 6,
+      "analyze_residual": 1,
+      "validate_law": 1,
+      "submit": 1
+    },
+    "tool_errors": [
+      {
+        "tool": "fit_law_and_rollout",
+        "error": {
+          "code": "invalid_expression",
+          "message": "use named parameters for constants; only 0, +/-1 and integer exponents -3..3 are structural literals"
+        }
+      }
+    ],
+    "reply_usage": [
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 5703,
+        "reasoning_tokens": 5139
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 13098,
+        "reasoning_tokens": 12006
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 3959,
+        "reasoning_tokens": 3319
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 2363,
+        "reasoning_tokens": 1830
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 5591,
+        "reasoning_tokens": 4893
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 1826,
+        "reasoning_tokens": 1264
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 416,
+        "reasoning_tokens": 207
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 548,
+        "reasoning_tokens": 272
+      }
+    ]
+  },
+  {
+    "world_id": "world_4",
+    "run_id": "web-20261102-090242-aaae4dd6",
+    "tool_counts": {
+      "insert_probe": 3,
+      "fit_law_and_rollout": 2,
+      "validate_law": 2,
+      "submit": 1
+    },
+    "tool_errors": [
+      {
+        "tool": "fit_law_and_rollout",
+        "error": {
+          "code": "invalid_expression",
+          "message": "formula exceeds 100 total AST nodes"
+        }
+      }
+    ],
+    "reply_usage": [
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 8400,
+        "reasoning_tokens": 7918
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 12493,
+        "reasoning_tokens": 11970
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 1889,
+        "reasoning_tokens": 1611
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 315,
+        "reasoning_tokens": 147
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 1244,
+        "reasoning_tokens": 754
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 273,
+        "reasoning_tokens": 109
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 514,
+        "reasoning_tokens": 313
+      }
+    ]
+  },
+  {
+    "world_id": "world_5",
+    "run_id": "web-20261102-090506-d09ffce3",
+    "tool_counts": {
+      "summarize_data": 1,
+      "insert_probe": 3,
+      "fit_law_and_rollout": 1,
+      "validate_law": 1,
+      "submit": 1
+    },
+    "tool_errors": [
+      {
+        "tool": "summarize_data",
+        "error": {
+          "code": "analyst_invalid_json",
+          "message": "analyst_invalid_json"
+        }
+      }
+    ],
+    "reply_usage": [
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 8927,
+        "reasoning_tokens": 8438
+      },
+      {
+        "role": "analyst",
+        "finish_reason": "stop",
+        "max_tokens": 4096,
+        "completion_tokens": 1340,
+        "reasoning_tokens": 0
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 14974,
+        "reasoning_tokens": 14536
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 4479,
+        "reasoning_tokens": 3980
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 1060,
+        "reasoning_tokens": 717
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 108,
+        "reasoning_tokens": 20
+      },
+      {
+        "role": "main",
+        "finish_reason": "tool_calls",
+        "max_tokens": 65536,
+        "completion_tokens": 807,
+        "reasoning_tokens": 607
+      }
+    ]
+  }
+]

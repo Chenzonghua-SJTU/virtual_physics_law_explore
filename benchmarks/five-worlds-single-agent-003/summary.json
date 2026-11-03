@@ -1,0 +1,209 @@
+{
+  "benchmark_kind": "real_agent_once_per_world",
+  "started_at": "2026-11-02T11:37:01.597737+00:00",
+  "status": "completed_all_attempts",
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "run_id": "web-20261102-113701-c80b7165",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 4,
+      "main_calls": 4,
+      "analyst_calls": 0,
+      "tokens": 47541,
+      "prompt_tokens": 41154,
+      "completion_tokens": 6387,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 95,
+      "energy_used": 5,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "-k*sum_b(x-bx)",
+          "ay": "-k*sum_b(y-by)"
+        },
+        "fitted_parameters": {
+          "k": 0.1
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 3.628012907199623e-15,
+        "velocity_mse": 1.0045469837502703e-15,
+        "position_rmse": 6.023298852953939e-08,
+        "velocity_rmse": 3.169458918727722e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 38.51297916700014,
+      "wall_seconds_including_evaluation": 42.376868958
+    },
+    {
+      "world_id": "world_2",
+      "run_id": "web-20261102-113744-82cc725b",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 7,
+      "main_calls": 7,
+      "analyst_calls": 0,
+      "tokens": 370530,
+      "prompt_tokens": 323874,
+      "completion_tokens": 46656,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 86,
+      "energy_used": 14,
+      "law": {
+        "law_id": "law_2",
+        "law_spec": {
+          "ax": "sum_b(k1*(bx - x) + k2*(by - y))",
+          "ay": "sum_b(k2*(bx - x) + k3*(by - y))"
+        },
+        "fitted_parameters": {
+          "k1": 0.116666666294382,
+          "k2": 0.02666666661993216,
+          "k3": 0.0666666666762473
+        }
+      },
+      "law_versions": 2,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 4.082196246313893e-15,
+        "velocity_mse": 1.4830089618089198e-15,
+        "position_rmse": 6.389206716262898e-08,
+        "velocity_rmse": 3.8509855385458405e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 255.87666949999993,
+      "wall_seconds_including_evaluation": 258.602938833
+    },
+    {
+      "world_id": "world_3",
+      "run_id": "web-20261102-114203-c9da8920",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 6,
+      "main_calls": 6,
+      "analyst_calls": 0,
+      "tokens": 197435,
+      "prompt_tokens": 171033,
+      "completion_tokens": 26402,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 86,
+      "energy_used": 14,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "-p1*x - p2*x**3",
+          "ay": "-p1*(y-c) - p2*(y-c)**3"
+        },
+        "fitted_parameters": {
+          "p1": 0.19999999995450435,
+          "p2": 0.015000000092386298,
+          "c": 1.0000000000556992
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 1.3483492034647716e-15,
+        "velocity_mse": 8.98609941300834e-16,
+        "position_rmse": 3.671987477463358e-08,
+        "velocity_rmse": 2.997682340243599e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 151.5166451250002,
+      "wall_seconds_including_evaluation": 165.451395708
+    },
+    {
+      "world_id": "world_4",
+      "run_id": "web-20261102-114449-7556d485",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 7,
+      "main_calls": 7,
+      "analyst_calls": 0,
+      "tokens": 181053,
+      "prompt_tokens": 161659,
+      "completion_tokens": 19394,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 88,
+      "energy_used": 12,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "g*sum_b((bx-x)/sqrt((bx-x)**2+(by-y)**2+e)**3)",
+          "ay": "g*sum_b((by-y)/sqrt((bx-x)**2+(by-y)**2+e)**3)"
+        },
+        "fitted_parameters": {
+          "g": 0.8000000001789748,
+          "e": 0.6400000063280479
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 5.726317958801579e-14,
+        "velocity_mse": 1.0293314711752226e-14,
+        "position_rmse": 2.3929726197350396e-07,
+        "velocity_rmse": 1.0145597425362504e-07
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 110.72208112499993,
+      "wall_seconds_including_evaluation": 116.90237141700004
+    },
+    {
+      "world_id": "world_5",
+      "run_id": "web-20261102-114646-e4b93b95",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 6,
+      "main_calls": 6,
+      "analyst_calls": 0,
+      "tokens": 209593,
+      "prompt_tokens": 178598,
+      "completion_tokens": 30995,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 68,
+      "energy_used": 32,
+      "law": {
+        "law_id": "law_2",
+        "law_spec": {
+          "ax": "-k*x - g*y + g - a*vx + b*vy",
+          "ay": "g*x - k*y + k - b*vx - a*vy"
+        },
+        "fitted_parameters": {
+          "k": 0.3000000006877791,
+          "g": 3.845063910746298e-11,
+          "a": 7.471453356932937e-09,
+          "b": 0.4499999996209008
+        }
+      },
+      "law_versions": 2,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 2.8921543647059647e-14,
+        "velocity_mse": 1.4862341298448024e-14,
+        "position_rmse": 1.7006335186353244e-07,
+        "velocity_rmse": 1.2191120251415792e-07
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 173.42119999999977,
+      "wall_seconds_including_evaluation": 175.57422562499994
+    }
+  ],
+  "interpretation": "No success threshold; failed/incomplete runs are retained, not counted as discoveries.",
+  "locally_submitted_count": 5,
+  "independently_evaluated_count": 5,
+  "finished_at": "2026-11-02T11:49:42.422066+00:00"
+}

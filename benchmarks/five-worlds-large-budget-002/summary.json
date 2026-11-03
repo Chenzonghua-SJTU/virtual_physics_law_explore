@@ -1,0 +1,212 @@
+{
+  "benchmark_kind": "real_agent_once_per_world",
+  "started_at": "2026-11-02T08:55:17.442009+00:00",
+  "status": "completed_all_attempts",
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "run_id": "web-20261102-085517-530d06fa",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 6,
+      "main_calls": 6,
+      "analyst_calls": 0,
+      "tokens": 155549,
+      "prompt_tokens": 138563,
+      "completion_tokens": 16986,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 86,
+      "energy_used": 14,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "-k * sum_b(x - bx)",
+          "ay": "-k * sum_b(y - by)"
+        },
+        "fitted_parameters": {
+          "k": 0.10000000036639296
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 3.1744388150556247e-15,
+        "velocity_mse": 8.574628443347121e-16,
+        "position_rmse": 5.6342158416727564e-08,
+        "velocity_rmse": 2.928246650018936e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 98.76477370800012,
+      "wall_seconds_including_evaluation": 101.03483975
+    },
+    {
+      "world_id": "world_2",
+      "run_id": "web-20261102-085658-0e954438",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 7,
+      "main_calls": 6,
+      "analyst_calls": 1,
+      "tokens": 185240,
+      "prompt_tokens": 161707,
+      "completion_tokens": 23533,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 82,
+      "energy_used": 18,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "p0 - p1*x - p2*y",
+          "ay": "p3 - p2*x - p4*y"
+        },
+        "fitted_parameters": {
+          "p0": 0.08,
+          "p1": 0.35,
+          "p2": 0.08,
+          "p3": 0.2,
+          "p4": 0.2
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 2.0893717419878565e-15,
+        "velocity_mse": 8.200190275751862e-16,
+        "position_rmse": 4.570964604968908e-08,
+        "velocity_rmse": 2.8635974360499526e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 128.1560679160002,
+      "wall_seconds_including_evaluation": 131.305061292
+    },
+    {
+      "world_id": "world_3",
+      "run_id": "web-20261102-085910-c1170f82",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 8,
+      "main_calls": 8,
+      "analyst_calls": 0,
+      "tokens": 360393,
+      "prompt_tokens": 326889,
+      "completion_tokens": 33504,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 76,
+      "energy_used": 24,
+      "law": {
+        "law_id": "law_5",
+        "law_spec": {
+          "ax": "-(a*(x-x0)+b*(x-x0)**3)",
+          "ay": "-(a*(y-y0)+b*(y-y0)**3)"
+        },
+        "fitted_parameters": {
+          "a": 0.2000000000432145,
+          "b": 0.015000000087371167,
+          "x0": 2.701989828268226e-10,
+          "y0": 1.0000000003715863
+        }
+      },
+      "law_versions": 5,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 1.3421223376697914e-15,
+        "velocity_mse": 8.931129956174382e-16,
+        "position_rmse": 3.663498788958161e-08,
+        "velocity_rmse": 2.9884996162245665e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 194.63394512500008,
+      "wall_seconds_including_evaluation": 211.48458037500004
+    },
+    {
+      "world_id": "world_4",
+      "run_id": "web-20261102-090242-aaae4dd6",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 7,
+      "main_calls": 7,
+      "analyst_calls": 0,
+      "tokens": 230559,
+      "prompt_tokens": 205431,
+      "completion_tokens": 25128,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 86,
+      "energy_used": 14,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "G*sum_b((bx-x)/sqrt(((bx-x)**2+(by-y)**2+s2)**3))",
+          "ay": "G*sum_b((by-y)/sqrt(((bx-x)**2+(by-y)**2+s2)**3))"
+        },
+        "fitted_parameters": {
+          "G": 0.7999999850236176,
+          "s2": 0.6399999803569698
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 7.773671907402254e-15,
+        "velocity_mse": 8.00762423851754e-16,
+        "position_rmse": 8.81684291989046e-08,
+        "velocity_rmse": 2.829774591467939e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 135.36530941699993,
+      "wall_seconds_including_evaluation": 144.077296917
+    },
+    {
+      "world_id": "world_5",
+      "run_id": "web-20261102-090506-d09ffce3",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 7,
+      "main_calls": 6,
+      "analyst_calls": 1,
+      "tokens": 214511,
+      "prompt_tokens": 182816,
+      "completion_tokens": 31695,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 82,
+      "energy_used": 18,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "-k*x - d*vx + w*vy",
+          "ay": "-k*y + K*sum_b(by) - d*vy - w*vx"
+        },
+        "fitted_parameters": {
+          "k": 0.30000000072901356,
+          "K": 0.10000000016010979,
+          "d": 1.2261716130429002e-10,
+          "w": 0.45000000071562707
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 1.3723537304734027e-15,
+        "velocity_mse": 7.284058875610475e-16,
+        "position_rmse": 3.7045292959745946e-08,
+        "velocity_rmse": 2.698899567529417e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 178.0605140419998,
+      "wall_seconds_including_evaluation": 181.23159120799994
+    }
+  ],
+  "interpretation": "No success threshold; failed/incomplete runs are retained, not counted as discoveries.",
+  "locally_submitted_count": 5,
+  "independently_evaluated_count": 5,
+  "finished_at": "2026-11-02T09:08:07.709144+00:00"
+}

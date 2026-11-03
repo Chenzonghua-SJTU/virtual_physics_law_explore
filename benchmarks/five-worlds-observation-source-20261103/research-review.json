@@ -1,0 +1,134 @@
+{
+  "review_kind": "read_only_post_session_research_and_provenance_audit",
+  "scope": "Worlds 1–3 of the original real-agent batch. Original run records are unchanged. Metrics quote existing post-session evaluations; scientific-process findings use acquired observations, tool traces and frozen candidates. World 3 numerical diagnostics do not import simulator truth or derive an alternative true model.",
+  "common_provenance_checks": {
+    "passed": true,
+    "checks": [
+      "mission.task has no visible_bodies exact-coordinate field",
+      "Every stored law's known_bodies exactly equals the mean of its cited acquired body_observation.positions_obs arrays",
+      "Checked 1 law in world 1, 5 laws in world 2 and 7 laws in world 3",
+      "All three runs are noiseless: observed positions matching private coordinates in this mode is not evidence of leakage",
+      "No post-hoc edits to model explanations, candidate records or evaluations"
+    ]
+  },
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "run_id": "web-20261103-053033-d7ba2865",
+      "submitted_law": "law_1",
+      "blocking_functional_or_source_issue": false,
+      "calls": 3,
+      "tokens": 34763,
+      "independent_evaluation": {"completed_trajectories": 20, "position_rmse": 6.023298907550687e-8, "velocity_rmse": 3.169458934722472e-8},
+      "validation": "Training probes 0001–0002 and validation probes 0003–0004 are disjoint. Only one law was fitted; no post-validation candidate revision.",
+      "issues": [
+        {
+          "severity": "P2",
+          "kind": "unverified_evidence_claim",
+          "excerpt": "无残差与 t/x/y/vx/vy 的可分辨相关",
+          "finding": "No correlation statistics or reproducible full-array calculation are recorded. There was no analyze_residual or call_back invocation; 30-point prediction arrays were previewed. Visible prediction/observation subsets permit qualitative reasoning, so absence of the tool alone does not prove the inference impossible; the stated full correlation conclusion remains unaudited."
+        },
+        {
+          "severity": "P2",
+          "kind": "unsupported_alternative_exclusion",
+          "excerpt": "指向 b1 的平方反比项在 x 上为负号、量级亦不符",
+          "finding": "One source's contribution does not establish exclusion of a multi-source or differently weighted inverse-square family. No such alternative was fitted in this run."
+        },
+        {
+          "severity": "P3",
+          "kind": "incorrect_coverage_summary",
+          "excerpt": "位置在投放范围内（|r|≲2.5）",
+          "finding": "Acquired probe_0003 has maximum sampled position norm 3.1814763035955296 and maximum y 3.05458855."
+        }
+      ],
+      "accurate_explanation_items": ["Validation ID and quoted RMSE", "30 samples over t=0…14.5", "Quoted probe_0001 position and acceleration estimate at t=0.5", "Conditional harmonic-model center, units and frequency deductions"]
+    },
+    {
+      "world_id": "world_2",
+      "run_id": "web-20261103-053114-ce4f01d6",
+      "submitted_law": "law_5",
+      "blocking_functional_or_source_issue": false,
+      "calls": 10,
+      "tokens": 375549,
+      "independent_evaluation": {"completed_trajectories": 20, "position_rmse": 5.473264439068124e-8, "velocity_rmse": 3.006861917707942e-8},
+      "validation": "Final law trains on probes 0001–0002. Probes 0011–0030 were acquired after this law was fitted and are disjoint. Earlier probes 0003–0010 helped develop the law and must not be counted as untouched scientific holdout evidence.",
+      "issues": [
+        {
+          "severity": "P2",
+          "kind": "failed_tool_is_not_scientific_rejection",
+          "excerpt": "现有数据足以否定……仅三体反平方力",
+          "finding": "The inverse-square expression was rejected by the parser for exponent 1.5; no completed inverse-square alternative fit is recorded."
+        },
+        {
+          "severity": "P2",
+          "kind": "unsupported_physics_prior",
+          "excerpt": "若把 (0,1) 强行解释为隐藏质点，其力律应表现为非线性反平方",
+          "finding": "The virtual world's force law is unknown. A hidden point source need not obey a Newtonian inverse-square law."
+        },
+        {
+          "severity": "P2",
+          "kind": "development_data_called_independent",
+          "excerpt": "独立短时零初速探针 probe_0003–probe_0010",
+          "finding": "These observations preceded and informed law_5. Later fresh validation remains valid."
+        },
+        {
+          "severity": "P3",
+          "kind": "preview_scope_confused_with_full_statistics",
+          "excerpt": "预测加速度减中心差分加速度……残差最大约 6e-3",
+          "finding": "Full residual_c8b91775558f has maximum acceleration-coordinate residual 0.011679406530616387 in probe_0013. The response preview displayed only 3 of 10 trajectories and no full residual retrieval followed. Long-validation position RMSE is 1.4068991208089622e-8 and a position-coordinate maximum is 6.529610718786216e-8, so a blanket 1e-9 summary is also incomplete."
+        }
+      ],
+      "accurate_explanation_items": ["Cited validation IDs and their RMSE", "Symmetric-positive-definite matrix interpretation", "Conditional potential, stability and eigensystem deductions", "Explicit source non-identifiability caveat"]
+    },
+    {
+      "world_id": "world_3",
+      "run_id": "web-20261103-053406-95984ecd",
+      "submitted_law": "law_4",
+      "blocking_functional_or_source_issue": false,
+      "scientific_outcome": "Submitted candidate has substantial prediction mismatch. Existing fit and validation observations already contradict adequacy; post-session evaluation is not the first evidence of failure.",
+      "calls": 23,
+      "tokens": 1497127,
+      "energy_remaining": 91,
+      "training_position_rmse": 0.0676348259415722,
+      "last_fresh_validation_position_rmse": 0.10211075341084067,
+      "independent_evaluation": {"completed_trajectories": 20, "position_rmse": 2.129543495218071, "velocity_rmse": 1.358614148137722},
+      "diagnosis": [
+        "All nonlinear candidates retained a central/radial structure, including polynomial, exponential and velocity-perturbed variants. Repeated within-family refits did not resolve systematic errors.",
+        "Residual record residual_30afd65ecaf2 shows substantial position errors and strong correlations. For probe_0008, position-coordinate maxima are about 0.144 and 0.113; correlations with time are about 0.975 and -0.967.",
+        "Candidate fits and validation tools returned finite, converged results with explicit errors. Parser failures for larger expressions are recorded as failures. No source or execution bug was found in the reviewed evidence."
+      ],
+      "acquired_only_numerical_check": {
+        "method": "Reintegrate the submitted frozen DSL candidate with the same acquired initial states and body estimates using DOP853 rtol=1e-12, atol=1e-14; compare to stored candidate predictions and acquired r_obs. No simulator truth import.",
+        "results": [
+          {"probe_id": "probe_0008", "maximum_coordinate_change_vs_stored_prediction": 1.6757782717036207e-8, "position_rmse_vs_acquired_observation": 0.12611414734798715},
+          {"probe_id": "probe_0009", "maximum_coordinate_change_vs_stored_prediction": 1.5686883791943274e-8, "position_rmse_vs_acquired_observation": 0.11217684517854823}
+        ],
+        "interpretation": "Tighter integration changes candidate predictions by about 1e-8 while observed mismatch stays about 0.1. Candidate numerical integration error does not explain the discrepancy."
+      },
+      "acquired_only_direction_check": {
+        "reference": "Use the submitted fitted center only, not any private true center. A radial force requires equal effective scalar multipliers in both nonzero displacement components.",
+        "examples": [
+          {"probe_id": "probe_0008", "time": 0.1, "observed_position": [2.506321572688021, 2.987407145334905], "observed_acceleration_estimate": [-0.7368292429457494, -0.5149116215931954], "negative_acceleration_over_displacement_components": [0.29520828648692116, 0.25985462387853575]},
+          {"probe_id": "probe_0009", "time": 0.1, "negative_acceleration_over_displacement_components": [0.2310523247496141, 0.2903434932870812]}
+        ],
+        "interpretation": "These are finite-difference acceleration estimates, so discretization bias remains a caveat. Nevertheless their direction mismatch motivates direct discrimination of the radial assumption instead of treating it as established. No alternative true model is inferred here."
+      },
+      "issues": [
+        {"severity": "P2", "kind": "unjustified_symmetry_and_error_attribution", "excerpt": "可能来自更高阶径向项……也可能是推演积分误差", "finding": "The candidate's shared radial assumption was not sufficiently tested, and the acquired-only tighter-integration check does not support integration error as an explanation of the observed 0.1 mismatch."},
+        {"severity": "P2", "kind": "wrong_law_evidence_binding", "excerpt": "线性 Hooke 模型 law_1……validation_32a25dcb1ffb", "finding": "That validation belongs to nonlinear law_2, not law_1."},
+        {"severity": "P2", "kind": "wrong_law_and_holdout_binding", "excerpt": "law_4……从未参与拟合的新轨迹 probe_0006、probe_0007（validation_d3168c0ec94b）", "finding": "That validation belongs to law_3, and probes 0006–0007 were subsequently included in law_4 training. The final fresh probes 0010–0011 remain valid and show RMSE 0.1021."},
+        {"severity": "P3", "kind": "incorrect_training_count", "excerpt": "九条训练轨迹联合", "finding": "Submitted law_4 used seven training trajectories; later candidates used nine."},
+        {"severity": "P2", "kind": "incorrect_mathematical_deduction", "excerpt": "轨迹为有界闭轨道族（四次势在无穷处发散，运动不会逃逸）", "finding": "Confinement implies boundedness at finite energy, not that every orbit is closed."}
+      ]
+    }
+  ],
+  "proposed_generic_prompt_guardrails": [
+    "中心力、旋转对称、各向同性、坐标分量独立及作用源位置都属于待检验假设，不能由轨迹看似围绕某点直接认定。同一结构族反复拟合后仍在新轨迹上出现明显、系统性的偏差，应先设计能检验这些共同假设的对照实验，比较结构不同的候选，而不是仅追加同类高阶项、改初值或扩大训练集。拟合收敛不是模型成立；保留与假设矛盾的证据，无法解释时如实报告候选未充分验证。",
+    "严格区分证据与工具状态：解析失败、超时或未执行的候选未受到科学检验；不同训练集上的拟合误差不能直接作为同条件优劣比较。数值积分或差分误差须有相应尺度或收敛证据，不能用来解释任意模型偏差。相关性、范围、最大值等只引用实际取得的统计或明确可复核的计算；预览不能代表完整数据。每条验证结论核对其 law_id 与训练、验证角色，不把旧版本或开发数据的结论移到最终版本。"
+  ],
+  "limits": [
+    "This review does not establish unique physical mechanisms or a universal success threshold.",
+    "The five-world batch is still running when this Worlds 1–3 review is written; no prompt was changed by this reviewer.",
+    "No new model API calls were made by this reviewer."
+  ]
+}

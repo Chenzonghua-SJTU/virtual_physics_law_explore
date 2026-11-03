@@ -1,0 +1,118 @@
+{
+  "kind": "single_real_autonomous_discovery",
+  "created_at": "2026-11-03T09:42:27.844736+00:00",
+  "physics_version": "v3",
+  "settings": {
+    "world_id": "world_5",
+    "model": "deepseek-flash",
+    "thinking": true,
+    "noise": false,
+    "seed": 43,
+    "max_calls": 24,
+    "max_total_tokens": 5000000,
+    "max_tokens_per_call": 65536
+  },
+  "automatic_reruns": false,
+  "evaluation": {
+    "seed": 1871,
+    "n_probes": 20
+  },
+  "status": "incomplete",
+  "previous_comparison_run": "web-20261103-081610-40c182a0",
+  "code_sha256_before": {
+    "shore_worlds.py": "a81f17d5074ac909473b4b38dd235e2e63f4bb70e52bfbbe1462d85b046987a2",
+    "shore_sim/worlds.py": "ade1d8ef4a21fb46edf49bf7cfd122a719815f31d41ef1873a979f338ac25f5b",
+    "shore_sim/simulator.py": "aad0ca7764ea19e1d57d5efe02b1894b676c919742e34d19674555039229eb31",
+    "shore_agent/prompts/main.txt": "fa94273caf8ce022efd921518e2956f5b43bbd9fdfe95f2a5127fcb302f9436a",
+    "shore_agent/agent.py": "02684706349ace1649b20b61c66f93f6c5edcca7b17058b3ebc461321186b982",
+    "shore_agent/runtime.py": "0cee1ee80784c7ef50d523edb122dc818c0c5a34d611fde36f32a028901c5cb8",
+    "shore_agent/model.py": "afd657b60595573d8b82b329f67418aed5646eaec1feaa98c491d0f70cea373b",
+    "shore_agent/schemas.py": "8a6685de774b9e795a6d6b96ee909c5737ec3b4ec7aec819cab4d7140a4dd143",
+    "shore_agent/numerics.py": "0bccfc456bbe811d66ab8d1a25937a3f1084d8dde6e8737afec0c0d7708ba739",
+    "shore_agent/expressions.py": "26ab237d2e44385ab65a0e1e1aa72ec90fcd62daa03b4b596d6d35c92ff20e9c",
+    "config.example.json": "7866a423988a94274bc8b076e5d99f06f705d9071011d2b87a1143d7108288d4",
+    "evaluate.py": "e182e216b86c5586022c3a7aad7172fb3f2d1be6d5414eddb45372710e59940a"
+  },
+  "start_requested_at": "2026-11-03T09:42:29.090849+00:00",
+  "run_id": "web-20261103-094229-91d8e489",
+  "configuration": {
+    "environment": {
+      "world_id": "world_5",
+      "physics_version": "v3",
+      "noise": false,
+      "seed": 43,
+      "reference_length": 10.0,
+      "position_limit": 5.0,
+      "velocity_limit": 3.0,
+      "time_max": 30.0,
+      "wall_seconds": 3600
+    },
+    "model": {
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-flash",
+      "thinking": true,
+      "reasoning_effort": "low",
+      "timeout_seconds": 600,
+      "max_calls": 24,
+      "main_max_calls": 24,
+      "max_tokens_per_call": 65536,
+      "max_total_tokens": 5000000,
+      "max_retries": 1
+    },
+    "agent": {
+      "max_no_action": 3,
+      "max_turns": 30
+    },
+    "numerics": {
+      "max_nfev": 80
+    }
+  },
+  "finished_at": "2026-11-03T09:46:59.211753+00:00",
+  "reason": "http_status_503",
+  "model_usage": {
+    "calls": 5,
+    "prompt_tokens": 9507,
+    "completion_tokens": 6462,
+    "total_tokens": 15969,
+    "conservative_reserved_tokens": 293478,
+    "elapsed_seconds": 258.638208418,
+    "roles": {
+      "main": {
+        "calls": 5,
+        "prompt_tokens": 9507,
+        "completion_tokens": 6462,
+        "total_tokens": 15969
+      }
+    }
+  },
+  "budget": {
+    "energy_remaining": 92,
+    "observations_remaining": 19,
+    "wall_seconds_remaining": 3340.269640417,
+    "session_ended": false
+  },
+  "evaluation_status": null,
+  "evaluation_overall": null,
+  "code_sha256_after": {
+    "shore_worlds.py": "a81f17d5074ac909473b4b38dd235e2e63f4bb70e52bfbbe1462d85b046987a2",
+    "shore_sim/worlds.py": "ade1d8ef4a21fb46edf49bf7cfd122a719815f31d41ef1873a979f338ac25f5b",
+    "shore_sim/simulator.py": "aad0ca7764ea19e1d57d5efe02b1894b676c919742e34d19674555039229eb31",
+    "shore_agent/prompts/main.txt": "fa94273caf8ce022efd921518e2956f5b43bbd9fdfe95f2a5127fcb302f9436a",
+    "shore_agent/agent.py": "02684706349ace1649b20b61c66f93f6c5edcca7b17058b3ebc461321186b982",
+    "shore_agent/runtime.py": "0cee1ee80784c7ef50d523edb122dc818c0c5a34d611fde36f32a028901c5cb8",
+    "shore_agent/model.py": "afd657b60595573d8b82b329f67418aed5646eaec1feaa98c491d0f70cea373b",
+    "shore_agent/schemas.py": "8a6685de774b9e795a6d6b96ee909c5737ec3b4ec7aec819cab4d7140a4dd143",
+    "shore_agent/numerics.py": "0bccfc456bbe811d66ab8d1a25937a3f1084d8dde6e8737afec0c0d7708ba739",
+    "shore_agent/expressions.py": "26ab237d2e44385ab65a0e1e1aa72ec90fcd62daa03b4b596d6d35c92ff20e9c",
+    "config.example.json": "7866a423988a94274bc8b076e5d99f06f705d9071011d2b87a1143d7108288d4",
+    "evaluate.py": "e182e216b86c5586022c3a7aad7172fb3f2d1be6d5414eddb45372710e59940a"
+  },
+  "code_unchanged_during_run": true,
+  "engineering_checks": {
+    "unique_tests_passed": 431,
+    "sandbox_passed": 371,
+    "sandbox_http_setup_errors": 60,
+    "http_tests_repeated_with_loopback_permission_passed": 64
+  },
+  "result_classification": "model_service_interruption_not_scientific_failure"
+}

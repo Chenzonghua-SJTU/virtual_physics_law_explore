@@ -1,0 +1,196 @@
+{
+  "benchmark_kind": "real_agent_once_per_world",
+  "started_at": "2026-11-03T05:30:33.382439+00:00",
+  "status": "completed_all_attempts",
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "run_id": "web-20261103-053033-d7ba2865",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 3,
+      "main_calls": 3,
+      "analyst_calls": 0,
+      "tokens": 34763,
+      "prompt_tokens": 29104,
+      "completion_tokens": 5659,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 98,
+      "energy_used": 2,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "sum_b(k*(bx - x))",
+          "ay": "sum_b(k*(by - y))"
+        },
+        "fitted_parameters": {
+          "k": 0.1
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 3.628012972970129e-15,
+        "velocity_mse": 1.0045469938892106e-15,
+        "position_rmse": 6.023298907550687e-08,
+        "velocity_rmse": 3.169458934722472e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 35.61250641700008,
+      "wall_seconds_including_evaluation": 40.138889457999994
+    },
+    {
+      "world_id": "world_2",
+      "run_id": "web-20261103-053114-ce4f01d6",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 10,
+      "main_calls": 10,
+      "analyst_calls": 0,
+      "tokens": 375549,
+      "prompt_tokens": 347716,
+      "completion_tokens": 27833,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 72,
+      "energy_used": 28,
+      "law": {
+        "law_id": "law_5",
+        "law_spec": {
+          "ax": "-kxx*(x-cx)-kxy*(y-cy)",
+          "ay": "-kxy*(x-cx)-kyy*(y-cy)"
+        },
+        "fitted_parameters": {
+          "kxx": 0.35000000048632507,
+          "kxy": 0.08000000034023455,
+          "kyy": 0.19999999932821788,
+          "cx": -8.982389378633365e-10,
+          "cy": 1.0000000031503196
+        }
+      },
+      "law_versions": 5,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 2.9956623619967705e-15,
+        "velocity_mse": 9.041218592162285e-16,
+        "position_rmse": 5.473264439068124e-08,
+        "velocity_rmse": 3.006861917707942e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 167.68631479199985,
+      "wall_seconds_including_evaluation": 171.807282125
+    },
+    {
+      "world_id": "world_3",
+      "run_id": "web-20261103-053406-95984ecd",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 23,
+      "main_calls": 23,
+      "analyst_calls": 0,
+      "tokens": 1497127,
+      "prompt_tokens": 1430454,
+      "completion_tokens": 66673,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 91,
+      "energy_used": 9,
+      "law": {
+        "law_id": "law_4",
+        "law_spec": {
+          "ax": "-(k1+k3*((x-cx)**2+(y-cy)**2))*(x-cx)",
+          "ay": "-(k1+k3*((x-cx)**2+(y-cy)**2))*(y-cy)"
+        },
+        "fitted_parameters": {
+          "k1": 0.20504406831397148,
+          "k3": 0.007069094640543616,
+          "cx": 0.010357615462200856,
+          "cy": 1.0058698768894483
+        }
+      },
+      "law_versions": 7,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 4.534955498025599,
+        "velocity_mse": 1.845832403519988,
+        "position_rmse": 2.129543495218071,
+        "velocity_rmse": 1.358614148137722
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 412.0384523339999,
+      "wall_seconds_including_evaluation": 429.27250737500003
+    },
+    {
+      "world_id": "world_4",
+      "run_id": "web-20261103-054116-026291f0",
+      "status": "incomplete",
+      "reason": "model_token_budget_exhausted",
+      "calls": 18,
+      "main_calls": 18,
+      "analyst_calls": 0,
+      "tokens": 1585725,
+      "prompt_tokens": 1473413,
+      "completion_tokens": 112312,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 82,
+      "energy_used": 18,
+      "law": null,
+      "law_versions": 20,
+      "accepted_submission": false,
+      "independent_evaluation_complete": false,
+      "independent_rmse": null,
+      "evaluation_status": "unavailable",
+      "evaluation_failures": null,
+      "session_wall_seconds": 676.8990962910002,
+      "wall_seconds_including_evaluation": 682.770646
+    },
+    {
+      "world_id": "world_5",
+      "run_id": "web-20261103-055239-d5ff5629",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 10,
+      "main_calls": 10,
+      "analyst_calls": 0,
+      "tokens": 293593,
+      "prompt_tokens": 270163,
+      "completion_tokens": 23430,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 80,
+      "energy_used": 20,
+      "law": {
+        "law_id": "law_4",
+        "law_spec": {
+          "ax": "-k*x+c*vy",
+          "ay": "-k*y+b-c*vx"
+        },
+        "fitted_parameters": {
+          "k": 0.3,
+          "b": 0.3,
+          "c": 0.45
+        }
+      },
+      "law_versions": 4,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 1.6083730665581626e-15,
+        "velocity_mse": 1.0744114031630082e-15,
+        "position_rmse": 4.010452675893536e-08,
+        "velocity_rmse": 3.277821537489508e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 146.13785420800014,
+      "wall_seconds_including_evaluation": 151.50941050000006
+    }
+  ],
+  "interpretation": "No success threshold; failed/incomplete runs are retained, not counted as discoveries.",
+  "locally_submitted_count": 4,
+  "independently_evaluated_count": 4,
+  "finished_at": "2026-11-03T05:55:11.168869+00:00"
+}
