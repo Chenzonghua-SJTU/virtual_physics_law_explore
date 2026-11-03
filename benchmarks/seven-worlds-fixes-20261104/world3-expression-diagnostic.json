@@ -1,0 +1,13 @@
+{
+  "kind": "developer_post_session_algebra_check_not_agent_discovery",
+  "agent_run_unchanged": true,
+  "agent_rejected_nodes": 276,
+  "factored_equivalent_nodes": 232,
+  "factored_equivalent": {
+    "ax": "sum_b((bx-x)*(p0*sqrt(((bx-x)**2+(by-y)**2))+p1*((bx-x)**2+(by-y)**2)+p2*((bx-x)**2+(by-y)**2)*sqrt(((bx-x)**2+(by-y)**2))))",
+    "ay": "sum_b((by-y)*(p0*sqrt(((bx-x)**2+(by-y)**2))+p1*((bx-x)**2+(by-y)**2)+p2*((bx-x)**2+(by-y)**2)*sqrt(((bx-x)**2+(by-y)**2))))"
+  },
+  "max_numeric_discrepancy_100_states": 0.0,
+  "known_reference_nodes": 80,
+  "interpretation": "The rejected candidate can fit within 256 nodes after exact factoring; the true linear-plus-cubic source law also fits. The Agent did not try that reference structure in this run. No candidate was injected or submitted by this diagnostic."
+}

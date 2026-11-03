@@ -1,0 +1,200 @@
+{
+  "code_commit": "3e7264d316172c4dac727f52b461fd5b4c887424",
+  "source_unchanged": true,
+  "single_run_per_world": true,
+  "http_requests": 82,
+  "http_200_count": 82,
+  "http_errors": [],
+  "expressions_over_old_100_node_limit_now_fitted": [
+    {
+      "world": "world_3",
+      "law_id": "law_11",
+      "nodes": 152
+    },
+    {
+      "world": "world_3",
+      "law_id": "law_2",
+      "nodes": 122
+    },
+    {
+      "world": "world_3",
+      "law_id": "law_6",
+      "nodes": 108
+    },
+    {
+      "world": "world_4",
+      "law_id": "law_1",
+      "nodes": 172
+    },
+    {
+      "world": "world_4",
+      "law_id": "law_3",
+      "nodes": 188
+    },
+    {
+      "world": "world_4",
+      "law_id": "law_4",
+      "nodes": 188
+    },
+    {
+      "world": "world_5",
+      "law_id": "law_10",
+      "nodes": 130
+    },
+    {
+      "world": "world_5",
+      "law_id": "law_11",
+      "nodes": 194
+    },
+    {
+      "world": "world_5",
+      "law_id": "law_12",
+      "nodes": 116
+    },
+    {
+      "world": "world_5",
+      "law_id": "law_7",
+      "nodes": 114
+    },
+    {
+      "world": "world_5",
+      "law_id": "law_8",
+      "nodes": 130
+    },
+    {
+      "world": "world_5",
+      "law_id": "law_9",
+      "nodes": 114
+    }
+  ],
+  "refinement_attempted_laws": 6,
+  "refinement_adopted_laws": 6,
+  "calibrated_requests": 75,
+  "calibrated_estimate_to_actual_median": 1.1968058968058968,
+  "old_byte_estimate_to_actual_median": 2.7573864928371106,
+  "world5": {
+    "status": "incomplete_without_submission_or_independent_evaluation",
+    "last_law": {
+      "law_id": "law_12",
+      "law_spec": {
+        "ax": "sum_b(p1*(bx-x)+p2*vy/((bx-x)*(bx-x)+(by-y)*(by-y)+p3))",
+        "ay": "sum_b(p1*(by-y)-p2*vx/((bx-x)*(bx-x)+(by-y)*(by-y)+p3))"
+      },
+      "parameter_spec": [
+        {
+          "name": "p1",
+          "initial": 0.1,
+          "lower": 0,
+          "upper": 5
+        },
+        {
+          "name": "p2",
+          "initial": 1.0,
+          "lower": -5,
+          "upper": 5
+        },
+        {
+          "name": "p3",
+          "initial": 1.0,
+          "lower": 0,
+          "upper": 10
+        }
+      ],
+      "fitted_parameters": {
+        "p1": 0.10000000002836978,
+        "p2": 0.9999999992149474,
+        "p3": 0.999999998065556
+      },
+      "train_probe_ids": [
+        "probe_0033",
+        "probe_0034",
+        "probe_0035",
+        "probe_0036",
+        "probe_0037",
+        "probe_0038"
+      ],
+      "fit_status": "converged",
+      "converged": true,
+      "refinement": {
+        "attempted": true,
+        "status": "refined",
+        "tolerance": 1e-12,
+        "position_noise_sigma": 0.0,
+        "reason": null,
+        "initial_position_rmse": 2.1813753783035054e-09,
+        "final_position_rmse": 2.1667662264734403e-09,
+        "objective_calls": 8
+      },
+      "objective_calls": 12,
+      "errors": {
+        "position_mse": 4.694875880185951e-18,
+        "velocity_mse": 4.814163586367664e-18,
+        "position_rmse": 2.1667662264734403e-09,
+        "velocity_rmse": 2.194120230608994e-09
+      }
+    },
+    "best_existing_trajectory_validation": {
+      "validation_id": "validation_b55f250563c8",
+      "law_id": "law_12",
+      "test_probe_ids": [
+        "probe_0001",
+        "probe_0002",
+        "probe_0003",
+        "probe_0004",
+        "probe_0005",
+        "probe_0006",
+        "probe_0007",
+        "probe_0008",
+        "probe_0009",
+        "probe_0011",
+        "probe_0012",
+        "probe_0013",
+        "probe_0014",
+        "probe_0015",
+        "probe_0016",
+        "probe_0017",
+        "probe_0018",
+        "probe_0019",
+        "probe_0020",
+        "probe_0021",
+        "probe_0022",
+        "probe_0023",
+        "probe_0024",
+        "probe_0025",
+        "probe_0026",
+        "probe_0027",
+        "probe_0028",
+        "probe_0029",
+        "probe_0030",
+        "probe_0031",
+        "probe_0032"
+      ],
+      "errors": {
+        "position_mse": 4.5667192672271344e-17,
+        "velocity_mse": 3.7207346075795096e-17,
+        "position_rmse": 6.757750563040289e-09,
+        "velocity_rmse": 6.099782461350166e-09
+      }
+    },
+    "fresh_post_selection_validation_completed": false,
+    "request_budget": {
+      "method": "reported_prefix_plus_utf8_suffix",
+      "estimated_prompt_tokens": 160793,
+      "reference_prompt_tokens": 154916,
+      "added_message_bytes": 5365,
+      "utf8_upper_bound": 417545,
+      "available_tokens": 100480,
+      "requested_output_tokens": 65536,
+      "output_token_limit": 0,
+      "minimum_output_tokens": 64,
+      "status": "blocked"
+    },
+    "note": "Correct structure and parameters recovered; validation is on already observed development trajectories not used to fit this law, not hidden post-session evaluation. No manual submission or score was supplied."
+  },
+  "priorities_after_user_steering": [
+    "Improve world 3 candidate structure exploration and syntax-error recovery.",
+    "Keep AST/resource errors separate from empirical falsification; factoring can reduce the rejected 276-node candidate to 232 nodes.",
+    "Do not prioritize token cost: user plans local model deployment. Preserve this capped-run result as historical evidence."
+  ],
+  "physical_explanation_verification_changed": false
+}
