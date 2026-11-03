@@ -6,6 +6,7 @@ from datetime import datetime
 from pathlib import Path
 from .environment import Environment
 from .runtime import ToolRuntime
+from .model import model_auth_config
 from shore_worlds import DEFAULT_WORLD_ID, WORLD_IDS, validate_world_id
 
 
@@ -44,7 +45,8 @@ def main():
     config.setdefault('agent', {}).pop('max_turns', None)
     config['agent'].pop('max_rounds', None)
     (directory / 'config.json').write_text(json.dumps(config, indent=2), encoding='utf-8')
-    env = Environment(config['environment'])
+    key_env, key_required = model_auth_config(config['model'])
+    env = Environment(config['environment'], secret_env_names=(key_env,))
     try:
         runtime = ToolRuntime(env, directory, config=config.get('numerics'))
         mission = runtime.mission()
@@ -53,8 +55,8 @@ def main():
         if args.command == 'init':
             print(json.dumps(mission, ensure_ascii=False, indent=2))
             result = {'status': 'initialized_only', 'reason': 'No model called; first-light records saved.'}
-        elif not os.environ.get('DEEPSEEK_API_KEY'):
-            result = {'status': 'incomplete', 'reason': 'DEEPSEEK_API_KEY is absent; real API run not verified.',
+        elif key_required and not os.environ.get(key_env):
+            result = {'status': 'incomplete', 'reason': key_env + ' is absent; real API run not verified.',
                       'real_api_attempted': False, 'submission': None}
             print(result['reason'])
         else:

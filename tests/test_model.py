@@ -489,7 +489,7 @@ def test_project_large_output_budget_reaches_provider(tmp_path, monkeypatch):
     client.complete([{'role': 'user', 'content': 'test'}])
     assert requests[0]['max_tokens'] == 65536
     assert client.timeout == 600
-    assert client.max_total_tokens == 2000000
+    assert client.max_total_tokens == 5000000
     assert client.usage['total_tokens'] == 30
     client.close()
 

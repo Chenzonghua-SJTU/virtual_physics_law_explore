@@ -5,7 +5,6 @@ Only named scientific records are exposed; raw model history stays on disk.
 """
 from __future__ import annotations
 
-import copy
 import ctypes
 import errno
 import hashlib
@@ -22,9 +21,11 @@ import threading
 import uuid
 
 from shore_worlds import DEFAULT_WORLD_ID, validate_world_id, world_name
+from .model import model_auth_config
 from .observations import estimate_body_trajectories, estimate_static_bodies
 
 MODELS = ('deepseek-flash', 'deepseek-v4-pro')
+REASONING_EFFORTS = ('low', 'high', 'max')
 RUN_ID = re.compile(r'[A-Za-z0-9_-]{1,120}')
 SECRET = re.compile(r'\bsk-[A-Za-z0-9_-]{8,}|\bBearer\s+\S+', re.I)
 PRIVATE_FIELDS = {'api_key', 'deepseek_api_key', 'authorization', 'access_token',
@@ -268,13 +269,62 @@ def _world_fields(configuration=None, metadata=None):
 
 
 class RunManager:
-    def __init__(self, project_root, runs_dir=None):
+    def __init__(self, project_root, runs_dir=None, config_path=None):
         self.project_root = Path(project_root).resolve()
+        self.config_path = Path(config_path).resolve() if config_path is not None else None
         self.runs_dir = Path(runs_dir or self.project_root / 'runs').resolve()
         self.runs_dir.mkdir(parents=True, exist_ok=True)
         self._lock = threading.RLock()
         self._owned = {}
         self._closed = False
+
+    def _server_config(self):
+        config = json.loads((self.project_root / 'config.example.json').read_text(encoding='utf-8'))
+        if self.config_path is not None:
+            override = json.loads(self.config_path.read_text(encoding='utf-8'))
+            if not isinstance(override, dict):
+                raise ValueError('invalid_server_configuration')
+            for section, value in override.items():
+                if isinstance(value, dict) and isinstance(config.get(section), dict):
+                    config[section].update(value)
+                else:
+                    config[section] = value
+        # Keep the three actual DeepSeek effort levels visible in the console.
+        aliases = {'minimal': 'low', 'medium': 'high', 'xhigh': 'high', 'ultra': 'max'}
+        effort = config['model'].get('reasoning_effort', 'low')
+        effort = aliases.get(effort, effort) if isinstance(effort, str) else None
+        if effort not in REASONING_EFFORTS:
+            raise ValueError('invalid_server_reasoning_effort')
+        config['model']['reasoning_effort'] = effort
+        model_auth_config(config['model'])
+        return config
+
+    def _model_options(self, config):
+        model = config['model']
+        name = model['model']
+        # A custom endpoint/model is selected only by the trusted startup config.
+        cloud_defaults = (self.config_path is None and model.get('deployment', 'cloud') != 'local'
+                          and model.get('base_url', '').rstrip('/') == 'https://api.deepseek.com'
+                          and name in MODELS)
+        names = MODELS if cloud_defaults else (name,)
+        labels = {'deepseek-flash': 'DeepSeek Flash', 'deepseek-v4-pro': 'DeepSeek V4 Pro'}
+        return [{'id': item, 'name': labels.get(item, item)} for item in names]
+
+    def client_configuration(self):
+        config = self._server_config()
+        model, environment = config['model'], config['environment']
+        key_env, key_required = model_auth_config(model)
+        return {
+            'models': self._model_options(config),
+            'api_key_configured': bool(os.environ.get(key_env, '').strip()),
+            'api_key_required': key_required,
+            'defaults': {
+                **{name: environment[name] for name in ('noise', 'seed', 'world_id')},
+                **{name: model[name] for name in ('model', 'max_total_tokens', 'max_tokens_per_call',
+                                                  'thinking', 'reasoning_effort')},
+                'max_calls': None,
+            },
+        }
 
     def _directory(self, run_id):
         if not isinstance(run_id, str) or not RUN_ID.fullmatch(run_id):
@@ -285,22 +335,26 @@ class RunManager:
         return directory
 
     def _config(self, payload):
-        allowed = {'model', 'noise', 'seed', 'max_calls', 'max_total_tokens', 'max_tokens_per_call', 'thinking', 'api_key', 'world_id'}
+        allowed = {'model', 'noise', 'seed', 'max_calls', 'max_total_tokens', 'max_tokens_per_call',
+                   'thinking', 'reasoning_effort', 'api_key', 'world_id'}
         if not isinstance(payload, dict) or set(payload) - allowed:
             raise ValidationError('invalid_run_configuration')
-        config = json.loads((self.project_root / 'config.example.json').read_text(encoding='utf-8'))
-        config = copy.deepcopy(config)
+        config = self._server_config()
         try:
-            config['environment']['world_id'] = validate_world_id(payload.get('world_id', DEFAULT_WORLD_ID))
+            config['environment']['world_id'] = validate_world_id(payload.get('world_id', config['environment']['world_id']))
         except ValueError:
             raise ValidationError('invalid_world_id') from None
         for name in ('noise', 'thinking'):
             if name in payload and type(payload[name]) is not bool:
                 raise ValidationError('invalid_run_configuration')
         if 'model' in payload:
-            if payload['model'] not in MODELS:
+            if payload['model'] not in [item['id'] for item in self._model_options(config)]:
                 raise ValidationError('invalid_model')
             config['model']['model'] = payload['model']
+        if 'reasoning_effort' in payload:
+            if payload['reasoning_effort'] not in REASONING_EFFORTS:
+                raise ValidationError('invalid_reasoning_effort')
+            config['model']['reasoning_effort'] = payload['reasoning_effort']
         for name, lower, upper in [('seed', 0, 2147483647),
                                     ('max_total_tokens', 1000, 10000000), ('max_tokens_per_call', 64, 393216)]:
             if name in payload:
@@ -322,8 +376,9 @@ class RunManager:
         key = payload.get('api_key', '')
         if not isinstance(key, str) or len(key) > 512 or any(ord(char) < 32 or ord(char) == 127 for char in key):
             raise ValidationError('invalid_api_key')
-        key = key.strip() or os.environ.get('DEEPSEEK_API_KEY', '').strip()
-        if not key:
+        key_env, key_required = model_auth_config(config['model'])
+        key = key.strip() or os.environ.get(key_env, '').strip()
+        if not key and key_required:
             raise ValidationError('missing_api_key')
         return config, key
 
@@ -346,6 +401,7 @@ class RunManager:
             # in a manager field, argv, a log, or a config file.
             env = dict(os.environ)
             env.pop('DEEPSEEK_API_KEY', None)
+            env.pop(model_auth_config(config['model'])[0], None)
             env['PYTHONPATH'] = str(self.project_root)
             process = None
             try:
@@ -679,6 +735,8 @@ class RunManager:
             return _public({'id': run_id, 'status': status, 'running': running, 'events': events,
                             **_world_fields(configuration, metadata),
                             'limits': {k: model_config.get(k) for k in ('max_calls', 'max_total_tokens', 'max_tokens_per_call')},
+                            'model_settings': {k: model_config.get(k) for k in
+                                               ('model', 'thinking', 'reasoning_effort', 'reasoning_protocol')},
                             'budget': budget, 'model_usage': usage, 'records': records, 'result': result,
                             'evaluation': evaluation,
                             **_evaluation_projection(directory, status, metadata, configuration, mission, evaluation, running),

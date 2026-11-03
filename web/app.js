@@ -3,7 +3,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const state = {
-    token: '', configured: false, defaults: {}, runs: [], active: null, run: null,
+    token: '', configured: false, keyRequired: true, defaults: {}, runs: [], active: null, run: null,
     selected: null, busy: false, connected: false, timer: null, generation: 0,
     renderedEvents: new Set(), liveIds: new Set(), lastChartSignature: '', toastTimer: null,
     listAt: 0, manuallySelectedLaw: false, lawNames: new Map(),
@@ -30,6 +30,7 @@
     run_not_found: '找不到这次探索记录，请刷新历史会话。',
     server_error: '实验台暂时无法完成请求，请稍后重试。',
     invalid_model: '模型名称无效，请检查后重试。',
+    invalid_reasoning_effort: '推理强度无效，请选择低、高或最高。',
     invalid_world_id: '实验世界无效，请重新选择世界后再试。',
     invalid_seed: '随机种子超出允许范围，请检查后重试。',
     invalid_max_total_tokens: 'Token 预算超出允许范围，请检查后重试。',
@@ -158,6 +159,7 @@
     $('stop-button').lastChild.textContent = state.active && state.selected !== state.active ? '停止正在运行的探索' : '停止本次探索';
     $('stop-button').disabled = state.busy || (state.run?.id === state.active && state.run?.status === 'stopping');
     for (const id of ['model', 'api-key', 'world-select', 'noise', 'thinking', 'seed', 'max-tokens', 'output-tokens']) $(id).disabled = active || state.busy;
+    $('reasoning-effort').disabled = active || state.busy || !$('thinking').checked;
   }
   function formatDate(value) {
     if (!value) return '时间未记录';
@@ -265,7 +267,7 @@
     $('calls-limit').textContent = '无次数上限';
     $('calls-note').textContent = '主 Agent 模型请求';
     $('tokens-note').textContent = '累计输入与输出';
-    $('tokens-limit').textContent = `/ ${compact(state.defaults.max_total_tokens ?? 2000000)}`;
+    $('tokens-limit').textContent = `/ ${compact(state.defaults.max_total_tokens ?? 5000000)}`;
     renderChart(); renderTimeline([]); renderDiscovery(); renderHistory(); setFormState();
   }
   async function changeHistory(action, id) {
@@ -359,7 +361,11 @@
     $('mode-badge').className = `badge ${history ? 'badge-history' : isRunning(run) ? 'badge-live' : ['failed', 'error'].includes(run.status) ? 'badge-error' : 'badge-neutral'}`;
     $('run-status').textContent = runLabel(run);
     $('run-status').className = `status-text ${runTone(run)}`;
-    $('session-caption').textContent = `${history ? '历史会话' : '当前会话'} · ${worldLabel(run)} · ${modes[run.mode] || '探索记录'} · ${formatDate(run.created_at)} · ${run.id}`;
+    const settings = run.model_settings || run.config?.model || {};
+    const effortLabels = {low: '低', high: '高', max: '最高'};
+    const effort = settings.thinking === false ? '思考关闭' : effortLabels[settings.reasoning_effort]
+      ? `推理：${effortLabels[settings.reasoning_effort]}` : '推理强度未记录';
+    $('session-caption').textContent = `${history ? '历史会话' : '当前会话'} · ${worldLabel(run)} · ${modes[run.mode] || '探索记录'} · ${effort} · ${formatDate(run.created_at)} · ${run.id}`;
     $('live-dot').className = `live-dot${isRunning(run) ? ' running' : ''}`;
     $('timeline-caption').textContent = history ? '历史记录 · 非实时运行' : run.status === 'stopping' ? '正在停止，请稍候' : isRunning(run) ? '实时更新 · 每秒同步' : '本次探索已结束';
     $('export-link').href = `/api/runs/${encodeURIComponent(run.id)}/export`;
@@ -385,7 +391,7 @@
         : '累计输入与输出';
     const callLimit = Object.prototype.hasOwnProperty.call(config, 'max_calls') ? config.max_calls : run.max_calls;
     $('calls-limit').textContent = finite(callLimit) && callLimit > 0 ? `/ ${number(callLimit)}` : '无次数上限';
-    $('tokens-limit').textContent = `/ ${compact(config.max_total_tokens ?? run.max_total_tokens ?? state.defaults.max_total_tokens ?? 2000000)}`;
+    $('tokens-limit').textContent = `/ ${compact(config.max_total_tokens ?? run.max_total_tokens ?? state.defaults.max_total_tokens ?? 5000000)}`;
     $('probes-value').textContent = number(asArray(records.probes).length);
     $('validations-value').textContent = number(asArray(records.validations).length);
     updateSelectors(records);
@@ -759,12 +765,13 @@
     if (state.busy || state.active || state.historyBusy || !state.connected) return;
     if (!$('run-form').reportValidity()) return;
     $('form-error').hidden = true;
-    if (!$('api-key').value.trim() && !state.configured) {
+    if (!$('api-key').value.trim() && !state.configured && state.keyRequired) {
       $('form-error').textContent = errors.missing_api_key; $('form-error').hidden = false; $('api-key').focus(); return;
     }
     const body = {
       model: $('model').value.trim(), world_id: $('world-select').value, noise: $('noise').checked, seed: Number($('seed').value),
       max_total_tokens: Number($('max-tokens').value), max_tokens_per_call: Number($('output-tokens').value), thinking: $('thinking').checked,
+      reasoning_effort: $('reasoning-effort').value,
     };
     if ($('api-key').value.trim()) body.api_key = $('api-key').value.trim();
     $('api-key').value = '';
@@ -797,7 +804,11 @@
     $('reconnect-button').disabled = true;
     try {
       const data = await api('/api/bootstrap');
-      state.token = data.token; state.configured = data.api_key_configured; state.defaults = data.defaults || {};
+      state.token = data.token; state.configured = data.api_key_configured; state.keyRequired = data.api_key_required ?? true; state.defaults = data.defaults || {};
+      const selectedModel = $('model').value;
+      const models = asArray(data.models);
+      if (models.length) $('model').replaceChildren(...models.map((model) => new Option(model.name, model.id)));
+      $('model').value = state.selected && models.some((model) => model.id === selectedModel) ? selectedModel : state.defaults.model || 'deepseek-flash';
       state.worlds = asArray(data.worlds);
       if (!state.worlds.length) state.worlds = [{id: 'world_1', name: '世界 01'}];
       const selectedWorld = $('world-select').value;
@@ -805,15 +816,16 @@
       $('world-select').value = state.selected && state.worlds.some((world) => world.id === selectedWorld) ? selectedWorld : state.defaults.world_id || 'world_1';
       state.runs = asArray(data.runs); state.deletedRuns = asArray(data.deleted_runs); state.active = data.active_run_id || null; state.connected = true; state.listAt = Date.now();
       $('connection-banner').hidden = true;
-      $('key-state').textContent = state.configured ? '服务已配置' : '仅本次使用';
-      $('api-key').placeholder = state.configured ? '已配置，可直接开始探索' : '输入 DeepSeek API Key';
-      $('key-note').textContent = state.configured ? '可直接使用已配置的密钥，或填入本次使用的密钥。' : '密钥仅用于启动本次探索，不保存在浏览器中。';
+      $('key-state').textContent = state.configured ? '服务已配置' : state.keyRequired ? '仅本次使用' : '无需密钥';
+      $('api-key').placeholder = state.configured ? '已配置，可直接开始探索' : state.keyRequired ? '输入 API Key' : '本地服务无需密钥，可留空';
+      $('key-note').textContent = state.configured ? '可直接使用已配置的密钥，或填入本次使用的密钥。' : state.keyRequired ? '密钥仅用于启动本次探索，不保存在浏览器中。' : '当前本地模型服务已配置为无需认证。';
       if (!state.selected) {
         $('model').value = state.defaults.model || 'deepseek-flash';
         $('noise').checked = Boolean(state.defaults.noise);
         $('thinking').checked = state.defaults.thinking ?? true;
+        $('reasoning-effort').value = state.defaults.reasoning_effort || 'low';
         $('seed').value = state.defaults.seed ?? 42;
-        $('max-tokens').value = state.defaults.max_total_tokens ?? 2000000;
+        $('max-tokens').value = state.defaults.max_total_tokens ?? 5000000;
         $('output-tokens').value = state.defaults.max_tokens_per_call ?? 65536;
       }
       renderHistory(); setFormState();
@@ -832,6 +844,7 @@
   $('stop-button').addEventListener('click', stopRun);
   $('refresh-history').addEventListener('click', () => refreshHistory(true));
   $('reconnect-button').addEventListener('click', bootstrap);
+  $('thinking').addEventListener('change', setFormState);
   $('probe-select').addEventListener('change', renderChart);
   $('body-time').addEventListener('input', () => { state.bodyTime = Number($('body-time').value); renderChart(); });
   $('body-time-latest').addEventListener('click', () => { state.bodyTime = null; renderChart(); });

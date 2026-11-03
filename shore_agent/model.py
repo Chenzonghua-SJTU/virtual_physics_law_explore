@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import copy
+import ipaddress
 import json
 import math
 import os
+import re
 import time
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -31,6 +33,46 @@ def _positive(config, key, default, *, integer=False):
     return int(value) if integer else float(value)
 
 
+def _model_base_url(config):
+    value = config.get('base_url', 'https://api.deepseek.com')
+    if not isinstance(value, str):
+        raise ValueError('base_url must be an HTTP(S) URL')
+    value = value.rstrip('/')
+    parsed = urlsplit(value)
+    if (parsed.scheme not in ('http', 'https') or not parsed.hostname or parsed.username
+            or parsed.password or parsed.query or parsed.fragment):
+        raise ValueError('base_url must be an HTTP(S) URL without credentials/query/fragment')
+    return value, parsed
+
+
+def model_auth_config(config):
+    """Return (environment-variable name, key required) for the model section.
+
+    Unauthenticated requests require an explicit local deployment and loopback
+    URL. Remote local servers can use a key or an SSH tunnel to a loopback port.
+    This helper validates configuration without reading or returning a secret.
+    """
+    _, parsed = _model_base_url(config)
+    deployment = config.get('deployment', 'cloud')
+    if deployment not in ('cloud', 'local'):
+        raise ValueError('deployment must be cloud or local')
+    env_name = config.get('api_key_env', 'DEEPSEEK_API_KEY')
+    if not isinstance(env_name, str) or re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', env_name) is None:
+        raise ValueError('api_key_env must be an environment-variable name')
+    required = config.get('api_key_required', True)
+    if not isinstance(required, bool):
+        raise ValueError('api_key_required must be boolean')
+    if not required:
+        loopback = parsed.hostname == 'localhost'
+        try:
+            loopback = loopback or ipaddress.ip_address(parsed.hostname).is_loopback
+        except ValueError:
+            pass
+        if deployment != 'local' or not loopback:
+            raise ValueError('api_key_required=false requires deployment=local and a loopback base_url')
+    return env_name, required
+
+
 class DeepSeekClient:
     """Every HTTP attempt (including retries) consumes the research Agent budget.
 
@@ -45,11 +87,14 @@ class DeepSeekClient:
         self.run_dir.mkdir(parents=True, exist_ok=True)
         self.remaining_seconds = remaining_seconds
         self.model = config.get('model', 'deepseek-flash')
-        self.base_url = config.get('base_url', 'https://api.deepseek.com').rstrip('/')
-        parsed = urlsplit(self.base_url)
-        if (parsed.scheme not in ('http', 'https') or not parsed.hostname or parsed.username
-                or parsed.password or parsed.query or parsed.fragment):
-            raise ValueError('base_url must be an HTTP(S) URL without credentials/query/fragment')
+        self.base_url, _ = _model_base_url(config)
+        self.api_key_env, self.api_key_required = model_auth_config(config)
+        self.deployment = config.get('deployment', 'cloud')
+        self.reasoning_protocol = config.get('reasoning_protocol', 'deepseek')
+        if self.reasoning_protocol not in ('deepseek', 'chat_template'):
+            raise ValueError('reasoning_protocol must be deepseek or chat_template')
+        if self.reasoning_protocol == 'chat_template' and self.deployment != 'local':
+            raise ValueError('chat_template requires deployment=local')
         self.timeout = _positive(config, 'timeout_seconds', 90)
         # Call counts remain auditable but no longer terminate a session. Ignore
         # obsolete caps in older configurations, including the per-role cap.
@@ -63,6 +108,8 @@ class DeepSeekClient:
         self.reasoning_effort = config.get('reasoning_effort', 'high')
         if self.reasoning_effort not in ('low', 'medium', 'high', 'max'):
             raise ValueError('Invalid reasoning_effort')
+        if self.deployment == 'local' and self.reasoning_effort == 'medium':
+            raise ValueError('Local reasoning_effort must be low, high or max; aliases differ by server')
         self.thinking = config.get('thinking', True)
         if not isinstance(self.thinking, bool):
             raise ValueError('thinking must be boolean')
@@ -77,6 +124,9 @@ class DeepSeekClient:
             'event': 'configuration', 'model': self.model, 'base_url': self.base_url,
             'thinking': self.thinking,
             'reasoning_effort': self.reasoning_effort,
+            **self._request_metadata(),
+            'deployment': self.deployment, 'api_key_env': self.api_key_env,
+            'api_key_required': self.api_key_required,
             'timeout_seconds': self.timeout,
             'max_calls': self.max_calls, 'max_tokens_per_call': self.max_tokens_per_call,
             'max_total_tokens': self.max_total_tokens, 'role_limits': self.role_limits,
@@ -85,6 +135,29 @@ class DeepSeekClient:
 
     def close(self):
         self._http.close()
+
+    def _reasoning_parameters(self):
+        if self.reasoning_protocol == 'chat_template':
+            # DeepSeek-V4's local tokenizer consumes these explicit template
+            # arguments. Server/checkpoint support must be verified at deploy
+            # time; an HTTP 200 response alone does not demonstrate effectiveness.
+            kwargs = {'thinking': self.thinking}
+            parameters = {'chat_template_kwargs': kwargs}
+            if self.thinking:
+                kwargs['reasoning_effort'] = self.reasoning_effort
+                # SGLang's V4 adapter reads the top-level field, whereas the
+                # vLLM tokenizer reads kwargs. Keep the two values identical.
+                parameters['reasoning_effort'] = self.reasoning_effort
+            return parameters
+        parameters = {'thinking': {'type': 'enabled' if self.thinking else 'disabled'}}
+        if self.thinking:
+            parameters['reasoning_effort'] = self.reasoning_effort
+        return parameters
+
+    def _request_metadata(self):
+        return {'reasoning_protocol': self.reasoning_protocol,
+                'requested_reasoning_effort': self.reasoning_effort,
+                'reasoning_parameters': self._reasoning_parameters()}
 
     def _quota(self, role):
         if role not in self.role_limits:
@@ -125,15 +198,14 @@ class DeepSeekClient:
 
     def complete(self, messages, tools=None, role='main') -> dict:
         self._quota(role)
-        key = os.environ.get('DEEPSEEK_API_KEY')
-        if not key:
-            raise ModelError('missing_deepseek_api_key')
+        key = os.environ.get(self.api_key_env)
+        if not key and self.api_key_required:
+            code = 'missing_deepseek_api_key' if self.api_key_env == 'DEEPSEEK_API_KEY' else 'missing_model_api_key'
+            raise ModelError(code)
+        headers = {'Authorization': f'Bearer {key}'} if key else {}
         requested_max = self.max_tokens_per_call
-        thinking = self.thinking
         body = {'model': self.model, 'messages': copy.deepcopy(messages), 'stream': False,
-                'thinking': {'type': 'enabled' if thinking else 'disabled'}}
-        if thinking:
-            body['reasoning_effort'] = self.reasoning_effort
+                **self._reasoning_parameters()}
         if tools:
             body.update(tools=copy.deepcopy(tools), tool_choice='auto')
         estimate = self._prompt_estimate(body)
@@ -161,12 +233,12 @@ class DeepSeekClient:
             started = time.monotonic()
             event = {'event': 'request', 'role': role, 'attempt': attempt + 1,
                      'call_number': self.usage['calls'], 'max_tokens': output_limit,
-                     'timeout_seconds': timeout}
+                     'timeout_seconds': timeout, **self._request_metadata()}
             retryable = False
             response_data = None
             try:
                 response = self._http.post(self.base_url + '/chat/completions', json=body,
-                                           headers={'Authorization': f'Bearer {key}'}, timeout=timeout)
+                                           headers=headers, timeout=timeout)
                 event['http_status'] = response.status_code
                 if response.status_code != 200:
                     retryable = response.status_code in (408, 429) or response.status_code >= 500

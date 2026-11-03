@@ -2,7 +2,10 @@
 import copy
 import http.client
 import json
+import os
+from pathlib import Path
 import threading
+from types import SimpleNamespace
 
 import pytest
 
@@ -20,6 +23,18 @@ class FakeManager:
         self.start_error = None
         self.snapshot_error = None
         self.history_error = None
+        self.client_settings = None
+
+    def client_configuration(self):
+        if self.client_settings is not None:
+            return self.client_settings
+        config = json.loads((Path(__file__).resolve().parents[1] / 'config.example.json').read_text())
+        return {'api_key_configured': bool(os.environ.get('DEEPSEEK_API_KEY')),
+                'api_key_required': True,
+                'models': [{'id': 'deepseek-flash', 'name': 'DeepSeek Flash'}],
+                'defaults': {**{key: config['model'][key] for key in
+                              ('model', 'max_calls', 'max_total_tokens', 'max_tokens_per_call', 'thinking', 'reasoning_effort')},
+                             **{key: config['environment'][key] for key in ('noise', 'seed', 'world_id')}}}
 
     def list_runs(self):
         return {'runs': [{'id': 'demo-1', 'status': 'submitted', 'world_id': 'world_3', 'world_name': '世界 03'}], 'active_run_id': None,
@@ -122,9 +137,12 @@ def test_bootstrap_listing_and_start(local_server, monkeypatch):
     assert data['deleted_runs'] == manager.list_runs()['deleted_runs']
     assert data['active_run_id'] is None
     assert data['defaults']['max_calls'] is None
-    assert data['defaults']['max_total_tokens'] == 2000000
+    assert data['defaults']['max_total_tokens'] == 5000000
     assert data['defaults']['max_tokens_per_call'] == 65536
     assert data['defaults']['model']
+    assert data['defaults']['reasoning_effort'] == 'low'
+    assert data['models'] == manager.client_configuration()['models']
+    assert data['api_key_required'] is True
     assert data['defaults']['world_id'] == DEFAULT_WORLD_ID
     assert data['worlds'] == public_worlds()
     assert all(set(world) == {'id', 'name'} for world in data['worlds'])
@@ -138,6 +156,48 @@ def test_bootstrap_listing_and_start(local_server, monkeypatch):
     assert json.loads(body) == {'run_id': 'new-run'}
     assert manager.started == [config]
     assert secret.encode() not in body
+
+
+def test_bootstrap_uses_server_selected_local_configuration(local_server):
+    server, manager = local_server
+    manager.client_settings = {'models': [{'id': 'local-flash', 'name': 'local-flash'}],
+                               'api_key_configured': False, 'api_key_required': False,
+                               'defaults': {'model': 'local-flash', 'reasoning_effort': 'max',
+                                            'max_total_tokens': 7000000, 'seed': 81, 'world_id': 'world_4'}}
+    status, _, body = request(server)
+    data = json.loads(body)
+    assert status == 200
+    for key, value in manager.client_settings.items():
+        assert data[key] == value
+
+
+def test_server_factory_reads_explicit_config_without_starting_a_model(tmp_path, monkeypatch):
+    from shore_agent import web
+    project = tmp_path / 'project'
+    project.mkdir()
+    (project / 'config.example.json').write_bytes((web.PROJECT / 'config.example.json').read_bytes())
+    config_path = tmp_path / 'local.json'
+    config_path.write_text(json.dumps({'model': {'model': 'my-local-flash', 'reasoning_effort': 'high'}}))
+    monkeypatch.setattr(web, 'PROJECT', project)
+    monkeypatch.setattr(web, 'WebServer', lambda *_args: SimpleNamespace())
+    server = make_server(config_path=config_path)
+    try:
+        assert server.manager.config_path == config_path.resolve()
+        public = server.manager.client_configuration()
+        assert public['models'] == [{'id': 'my-local-flash', 'name': 'my-local-flash'}]
+        assert public['defaults']['reasoning_effort'] == 'high'
+        assert not list(server.manager.runs_dir.iterdir())
+    finally:
+        server.manager.close()
+
+
+@pytest.mark.parametrize('effort', ['low', 'high', 'max'])
+def test_http_forwards_reasoning_choice(local_server, effort):
+    server, manager = local_server
+    status, _, body = request(server, 'POST', '/api/runs', {'reasoning_effort': effort})
+    assert status == 202
+    assert json.loads(body) == {'run_id': 'new-run'}
+    assert manager.started == [{'reasoning_effort': effort}]
 
 
 @pytest.mark.parametrize('world_id', WORLD_IDS)

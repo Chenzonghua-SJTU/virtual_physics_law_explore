@@ -14,22 +14,27 @@ from .web_jobs import _now, _read, _write, accepted_submission
 def run(directory):
     directory = Path(directory)
     environment = client = None
+    key_env = 'DEEPSEEK_API_KEY'
     try:
         # The server bounds the field; bound the local protocol as defense in depth.
         envelope = json.loads(sys.stdin.readline(8192))
         key = envelope.pop('api_key', None)
-        if not isinstance(key, str) or not key:
+        config = _read(directory / 'config.json', directory, {})
+        from .model import DeepSeekClient, model_auth_config
+        key_env, key_required = model_auth_config(config.get('model', {}))
+        if key_required and (not isinstance(key, str) or not key):
             _write(directory / 'result.json', {'status': 'incomplete', 'reason': 'missing_api_key', 'submission': None})
             return 2
-        os.environ['DEEPSEEK_API_KEY'] = key
+        if isinstance(key, str) and key:
+            os.environ[key_env] = key
+        else:
+            os.environ.pop(key_env, None)
         del key, envelope
-        config = _read(directory / 'config.json', directory)
         from .agent import Agent
         from .environment import Environment
-        from .model import DeepSeekClient
         from .runtime import ToolRuntime
         from .store import append_event
-        environment = Environment(config['environment'])
+        environment = Environment(config['environment'], secret_env_names=(key_env,))
         runtime = ToolRuntime(environment, directory, config=config.get('numerics'))
         mission = runtime.mission()
         _metadata(directory, session_started_at=_now(), initial_budget=mission.get('budget') or {})
@@ -42,6 +47,7 @@ def run(directory):
         environment.close()
         environment = None
         os.environ.pop('DEEPSEEK_API_KEY', None)
+        os.environ.pop(key_env, None)
         # The main Agent has returned and its simulator has closed. Only now may
         # a separate, key-free evaluator access hidden initial conditions.
         if result.get('status') == 'submitted' and accepted_submission(directory):
@@ -63,6 +69,7 @@ def run(directory):
         return 1
     finally:
         os.environ.pop('DEEPSEEK_API_KEY', None)
+        os.environ.pop(key_env, None)
         for resource in (client, environment):
             if resource is not None:
                 try:

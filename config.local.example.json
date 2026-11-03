@@ -1,0 +1,35 @@
+{
+  "environment": {
+    "world_id": "world_1",
+    "physics_version": "v4",
+    "noise": false,
+    "seed": 42,
+    "reference_length": 10.0,
+    "position_limit": 5.0,
+    "velocity_limit": 3.0,
+    "time_max": 30.0,
+    "wall_seconds": 3600
+  },
+  "model": {
+    "deployment": "local",
+    "base_url": "http://127.0.0.1:8000/v1",
+    "model": "deepseek-ai/DeepSeek-V4-Flash",
+    "api_key_env": "LOCAL_LLM_API_KEY",
+    "api_key_required": false,
+    "reasoning_protocol": "chat_template",
+    "thinking": true,
+    "reasoning_effort": "low",
+    "timeout_seconds": 600,
+    "max_calls": null,
+    "main_max_calls": null,
+    "max_tokens_per_call": 65536,
+    "max_total_tokens": 5000000,
+    "max_retries": 1
+  },
+  "agent": {
+    "max_no_action": 3
+  },
+  "numerics": {
+    "max_nfev": 80
+  }
+}

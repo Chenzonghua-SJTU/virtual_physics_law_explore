@@ -12,10 +12,12 @@ import threading
 
 
 class Environment:
-    def __init__(self, config=None):
+    def __init__(self, config=None, *, secret_env_names=()):
         config = dict(config or {})
         env = dict(os.environ)
         env.pop("DEEPSEEK_API_KEY", None)
+        for name in secret_env_names:
+            env.pop(name, None)
         project = str(Path(__file__).resolve().parents[1])
         env["PYTHONPATH"] = project
         self._process = subprocess.Popen(

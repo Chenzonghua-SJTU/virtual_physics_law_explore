@@ -6,14 +6,13 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import secrets
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from shore_worlds import DEFAULT_WORLD_ID, public_worlds
+from shore_worlds import public_worlds
 
 PROJECT = Path(__file__).resolve().parents[1]
 MAX_BODY = 64 * 1024
@@ -108,11 +107,8 @@ class Handler(BaseHTTPRequestHandler):
             if path == '/api/bootstrap':
                 listing = self.server.manager.list_runs()
                 return self._reply(200, dict(listing, token=self.server.session_token,
-                    api_key_configured=bool(os.environ.get('DEEPSEEK_API_KEY')),
                     worlds=public_worlds(),
-                    defaults={'model': 'deepseek-flash', 'noise': False, 'seed': 42, 'world_id': DEFAULT_WORLD_ID,
-                              'max_calls': None, 'max_total_tokens': 2000000,
-                              'max_tokens_per_call': 65536, 'thinking': True}))
+                    **self.server.manager.client_configuration()))
             if path == '/api/runs':
                 return self._reply(200, self.server.manager.list_runs())
             pieces = (path or '').strip('/').split('/')
@@ -191,14 +187,15 @@ class Handler(BaseHTTPRequestHandler):
         self._error(403, 'cross_origin_access_disabled')
 
 
-def make_server(host='127.0.0.1', port=0, manager=None):
+def make_server(host='127.0.0.1', port=0, manager=None, config_path=None):
     if host not in ('127.0.0.1', 'localhost'):
         raise ValueError('The research console must bind to loopback')
     if type(port) is not int or not 0 <= port <= 65535:
         raise ValueError('Port must be an integer from 0 through 65535')
     if manager is None:
         from .web_jobs import RunManager
-        manager = RunManager(PROJECT)
+        manager = RunManager(PROJECT, config_path=config_path)
+        manager.client_configuration()  # Fail before listening if startup config is invalid.
     server = WebServer((host, port), Handler)
     server.manager = manager
     server.session_token = secrets.token_urlsafe(32)
@@ -208,8 +205,9 @@ def make_server(host='127.0.0.1', port=0, manager=None):
 def main():
     parser = argparse.ArgumentParser(description='Local physical-law discovery console')
     parser.add_argument('--port', type=int, default=8765)
+    parser.add_argument('--config', type=Path, help='Trusted server JSON settings; overrides config.example.json')
     args = parser.parse_args()
-    server = make_server(port=args.port)
+    server = make_server(port=args.port, config_path=args.config)
     print(f'彼岸研究台已启动：http://127.0.0.1:{server.server_port}', flush=True)
     try:
         server.serve_forever(poll_interval=0.3)

@@ -146,6 +146,12 @@ def test_archived_call_limit_and_failure_remain_visible_without_rewriting(manage
     ({'command': 'anything'}, 'invalid_run_configuration'),
     ({'model': 'unsupported'}, 'invalid_model'),
     ({'model': 'deepseek-pro'}, 'invalid_model'),
+    ({'reasoning_effort': 'medium'}, 'invalid_reasoning_effort'),
+    ({'reasoning_effort': 'invalid'}, 'invalid_reasoning_effort'),
+    ({'reasoning_effort': None}, 'invalid_reasoning_effort'),
+    ({'reasoning_effort': []}, 'invalid_reasoning_effort'),
+    ({'reasoning_protocol': 'chat_template'}, 'invalid_run_configuration'),
+    ({'api_key_required': False}, 'invalid_run_configuration'),
     ({'noise': 1}, 'invalid_run_configuration'),
     ({'thinking': 'yes'}, 'invalid_run_configuration'),
     ({'world_id': None}, 'invalid_world_id'),
@@ -524,7 +530,7 @@ def test_worker_evaluation_runs_after_agent_and_environment_close(tmp_path, monk
     phases = []
 
     class FakeEnvironment:
-        def __init__(self, config):
+        def __init__(self, config, **kwargs):
             pass
 
         def request(self, method, **kwargs):
@@ -823,7 +829,7 @@ def test_move_preserves_internal_symlink_without_accessing_target(manager, tmp_p
     assert (directory / 'linked-artifact').is_symlink()
     assert outside.read_text() == 'keep outside untouched'
 
-@pytest.mark.parametrize('total_budget', [2000000, 10000000])
+@pytest.mark.parametrize('total_budget', [2000000, 5000000, 10000000])
 def test_large_budget_persisted_in_config_and_snapshot(manager, launch, total_budget):
     run_id = manager.start({'api_key': 'mock-only', 'max_total_tokens': total_budget,
                             'max_tokens_per_call': 65536})
@@ -834,3 +840,78 @@ def test_large_budget_persisted_in_config_and_snapshot(manager, launch, total_bu
     limits = manager.snapshot(run_id)['limits']
     assert limits['max_tokens_per_call'] == 65536
     assert limits['max_total_tokens'] == total_budget
+
+
+@pytest.mark.parametrize('effort', ['low', 'high', 'max'])
+def test_selected_effort_is_persisted_and_exportable(manager, launch, effort):
+    run_id = manager.start({'api_key': 'mock-only', 'reasoning_effort': effort})
+    configuration = json.loads((manager.runs_dir / run_id / 'config.json').read_text())
+    assert configuration['model']['reasoning_effort'] == effort
+    assert configuration['model']['max_total_tokens'] == 5000000
+    settings = manager.snapshot(run_id)['model_settings']
+    assert settings['reasoning_effort'] == effort
+    assert settings['thinking'] is True
+    assert settings['model'] == 'deepseek-flash'
+    assert settings['reasoning_protocol'] == 'deepseek'
+
+
+def test_server_config_controls_bootstrap_endpoint_model_and_auth(manager, tmp_path, monkeypatch, launch):
+    path = tmp_path / 'local.json'
+    _write(path, {'model': {'base_url': 'http://127.0.0.1:8000/v1', 'model': 'served-v4-flash',
+                           'deployment': 'local', 'reasoning_protocol': 'chat_template',
+                           'api_key_env': 'SHORE_TEST_LOCAL_KEY', 'api_key_required': False,
+                           'reasoning_effort': 'max', 'max_total_tokens': 7000000},
+                  'environment': {'seed': 77, 'world_id': 'world_5'}})
+    manager.config_path = path
+    monkeypatch.setenv('DEEPSEEK_API_KEY', 'unrelated-cloud-key')
+    monkeypatch.delenv('SHORE_TEST_LOCAL_KEY', raising=False)
+    public = manager.client_configuration()
+    assert public['models'] == [{'id': 'served-v4-flash', 'name': 'served-v4-flash'}]
+    assert public['defaults']['model'] == 'served-v4-flash'
+    assert public['defaults']['reasoning_effort'] == 'max'
+    assert public['defaults']['max_total_tokens'] == 7000000
+    assert public['defaults']['world_id'] == 'world_5'
+    assert public['defaults']['seed'] == 77
+    assert public['api_key_required'] is False
+    assert public['api_key_configured'] is False
+    assert 'base_url' not in json.dumps(public)
+    for payload, code in [({'model': 'deepseek-flash'}, 'invalid_model'),
+                          ({'base_url': 'https://example.com'}, 'invalid_run_configuration'),
+                          ({'reasoning_protocol': 'deepseek'}, 'invalid_run_configuration')]:
+        with pytest.raises(ValidationError, match=code):
+            manager._config(payload)
+    run_id = manager.start({'reasoning_effort': 'high'})
+    config = json.loads((manager.runs_dir / run_id / 'config.json').read_text())
+    assert config['model']['base_url'] == 'http://127.0.0.1:8000/v1'
+    assert config['model']['reasoning_protocol'] == 'chat_template'
+    assert config['model']['model'] == 'served-v4-flash'
+    assert config['model']['reasoning_effort'] == 'high'
+    assert config['environment']['world_id'] == 'world_5'
+    assert json.loads(launch[0][0][2].stdin.text) == {'api_key': ''}
+    assert 'DEEPSEEK_API_KEY' not in launch[0][0][1]['env']
+
+
+def test_custom_server_key_environment_stays_out_of_config_and_child_environment(manager, tmp_path, monkeypatch, launch):
+    path = tmp_path / 'authenticated.json'
+    _write(path, {'model': {'api_key_env': 'SHORE_TEST_AUTH_KEY', 'reasoning_effort': 'high'}})
+    manager.config_path = path
+    secret = 'synthetic-local-auth-value'
+    monkeypatch.setenv('SHORE_TEST_AUTH_KEY', secret)
+    assert manager.client_configuration()['api_key_configured'] is True
+    run_id = manager.start({})
+    options, process = launch[0][0][1:]
+    assert 'SHORE_TEST_AUTH_KEY' not in options['env']
+    assert json.loads(process.stdin.text) == {'api_key': secret}
+    assert all(secret not in file.read_text() for file in (manager.runs_dir / run_id).iterdir())
+
+
+def test_legacy_missing_effort_is_unknown_not_current_default(manager):
+    directory = manager.runs_dir / 'legacy-effort'
+    directory.mkdir()
+    _write(directory / 'config.json', {'model': {'max_total_tokens': 2000000}})
+    original = (directory / 'config.json').read_bytes()
+    snapshot = manager.snapshot(directory.name)
+    assert snapshot['model_settings']['reasoning_effort'] is None
+    assert snapshot['model_settings']['thinking'] is None
+    assert snapshot['limits']['max_total_tokens'] == 2000000
+    assert (directory / 'config.json').read_bytes() == original
