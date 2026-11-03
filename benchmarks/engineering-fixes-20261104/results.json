@@ -1,0 +1,83 @@
+{
+  "kind": "offline_engineering_regression_not_autonomous_discovery",
+  "new_model_calls": 0,
+  "original_archives_unchanged": true,
+  "previous_ast_rejections": [
+    {
+      "run_id": "web-20261103-151955-5e7a19dd",
+      "tool_index": 7,
+      "ast_nodes": 112,
+      "accepted_now": true
+    },
+    {
+      "run_id": "web-20261103-151955-5e7a19dd",
+      "tool_index": 9,
+      "ast_nodes": 134,
+      "accepted_now": true
+    },
+    {
+      "run_id": "web-20261103-152916-2454706e",
+      "tool_index": 4,
+      "ast_nodes": 142,
+      "accepted_now": true
+    },
+    {
+      "run_id": "web-20261103-153234-0c6d5b0b",
+      "tool_index": 13,
+      "ast_nodes": 108,
+      "accepted_now": true
+    },
+    {
+      "run_id": "web-20261103-153234-0c6d5b0b",
+      "tool_index": 14,
+      "ast_nodes": 106,
+      "accepted_now": true
+    },
+    {
+      "run_id": "web-20261103-153234-0c6d5b0b",
+      "tool_index": 16,
+      "ast_nodes": 102,
+      "accepted_now": true
+    }
+  ],
+  "world5_budget": {
+    "method": "reported_prefix_plus_utf8_suffix",
+    "estimated_prompt_tokens": 165487,
+    "reference_prompt_tokens": 157162,
+    "added_message_bytes": 7813,
+    "utf8_upper_bound": 450025,
+    "available_tokens": 435726,
+    "allowed_output_tokens": 65536,
+    "replay_only": true,
+    "request_sent": false
+  },
+  "world2_numerics": {
+    "run_id": "web-20261103-151802-c2293873",
+    "training_unchanged": true,
+    "independent_trajectory_count": 20,
+    "old_archived_independent_rmse": 8.640572501563943e-06,
+    "old_analytic_rmse": 8.635068683783326e-06,
+    "refined_analytic_rmse": 1.4737908580469938e-08,
+    "refined_production_rollout_rmse_vs_analytic": 4.2210616881351364e-08,
+    "old_objective_calls": 18,
+    "new_objective_calls": 30,
+    "training_rmse": 1.3890086193783287e-09,
+    "fitted_parameters": {
+      "p1": 0.3500000004360948,
+      "p2": 0.08000000016247306,
+      "p3": 0.08000000019931701,
+      "p4": 0.19999999984852937,
+      "p5": 0.20000000000727458
+    },
+    "refinement": {
+      "attempted": true,
+      "status": "refined",
+      "tolerance": 1e-12,
+      "position_noise_sigma": 0.0,
+      "reason": null,
+      "initial_position_rmse": 3.9861345011898665e-08,
+      "final_position_rmse": 1.3890086193783287e-09,
+      "objective_calls": 12
+    }
+  }
+}

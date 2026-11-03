@@ -1,0 +1,280 @@
+{
+  "benchmark_kind": "real_agent_once_per_world",
+  "started_at": "2026-11-03T15:17:04.381367+00:00",
+  "status": "completed_all_attempts",
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "physics_version": "v4",
+      "run_id": "web-20261103-151705-97db916f",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 4,
+      "main_calls": 4,
+      "analyst_calls": 0,
+      "tokens": 70957,
+      "prompt_tokens": 62586,
+      "completion_tokens": 8371,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 95,
+      "energy_used": 5,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "sum_b(kb*(bx-x))",
+          "ay": "sum_b(kb*(by-y))"
+        },
+        "fitted_parameters": {
+          "kb": 0.1
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 3.628012972970129e-15,
+        "velocity_mse": 1.0045469938892106e-15,
+        "position_rmse": 6.023298907550687e-08,
+        "velocity_rmse": 3.169458934722472e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 49.23741158299981,
+      "wall_seconds_including_evaluation": 55.224731166
+    },
+    {
+      "world_id": "world_2",
+      "physics_version": "v4",
+      "run_id": "web-20261103-151802-c2293873",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 7,
+      "main_calls": 7,
+      "analyst_calls": 0,
+      "tokens": 206950,
+      "prompt_tokens": 187737,
+      "completion_tokens": 19213,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 84,
+      "energy_used": 16,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "-p1*x - p2*y + p3",
+          "ay": "-p2*x - p4*y + p5"
+        },
+        "fitted_parameters": {
+          "p1": 0.3499999168236506,
+          "p2": 0.08000003886441434,
+          "p3": 0.07999998839997434,
+          "p4": 0.19999983963332377,
+          "p5": 0.19999995647778973
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 7.465949315478297e-11,
+        "velocity_mse": 1.401865554360826e-11,
+        "position_rmse": 8.640572501563943e-06,
+        "velocity_rmse": 3.744149508714664e-06
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 105.94497912499992,
+      "wall_seconds_including_evaluation": 110.47734504200001
+    },
+    {
+      "world_id": "world_3",
+      "physics_version": "v4",
+      "run_id": "web-20261103-151955-5e7a19dd",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 12,
+      "main_calls": 12,
+      "analyst_calls": 0,
+      "tokens": 1155906,
+      "prompt_tokens": 1059146,
+      "completion_tokens": 96760,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 82,
+      "energy_used": 18,
+      "law": {
+        "law_id": "law_5",
+        "law_spec": {
+          "ax": "-sum_b((x-bx)*(k1+k2*((x-bx)**2+(y-by)**2)))",
+          "ay": "-sum_b((y-by)*(k1+k2*((x-bx)**2+(y-by)**2)))"
+        },
+        "fitted_parameters": {
+          "k1": 0.06000004102652521,
+          "k2": 0.003999996122768491
+        }
+      },
+      "law_versions": 5,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 3.017815148425615e-11,
+        "velocity_mse": 2.073968289654294e-11,
+        "position_rmse": 5.493464433693564e-06,
+        "velocity_rmse": 4.554084199544727e-06
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 538.8429389160001,
+      "wall_seconds_including_evaluation": 558.723437292
+    },
+    {
+      "world_id": "world_4",
+      "physics_version": "v4",
+      "run_id": "web-20261103-152916-2454706e",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 9,
+      "main_calls": 9,
+      "analyst_calls": 0,
+      "tokens": 336043,
+      "prompt_tokens": 306012,
+      "completion_tokens": 30031,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 80,
+      "energy_used": 20,
+      "law": {
+        "law_id": "law_2",
+        "law_spec": {
+          "ax": "sum_b(-k*(x-bx)/sqrt(((x-bx)**2+(y-by)**2+ss)**3))",
+          "ay": "sum_b(-k*(y-by)/sqrt(((x-bx)**2+(y-by)**2+ss)**3))"
+        },
+        "fitted_parameters": {
+          "k": 0.8000000605919515,
+          "ss": 0.6400000829572559
+        }
+      },
+      "law_versions": 2,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 3.8991157336935706e-13,
+        "velocity_mse": 5.61486205087197e-14,
+        "position_rmse": 6.244289978607312e-07,
+        "velocity_rmse": 2.3695700139206627e-07
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 189.24321800000007,
+      "wall_seconds_including_evaluation": 196.015464167
+    },
+    {
+      "world_id": "world_5",
+      "physics_version": "v4",
+      "run_id": "web-20261103-153234-0c6d5b0b",
+      "status": "incomplete",
+      "reason": "model_token_budget_exhausted",
+      "calls": 18,
+      "main_calls": 18,
+      "analyst_calls": 0,
+      "tokens": 1564274,
+      "prompt_tokens": 1470507,
+      "completion_tokens": 93767,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 52,
+      "energy_used": 48,
+      "law": null,
+      "law_versions": 5,
+      "accepted_submission": false,
+      "independent_evaluation_complete": false,
+      "independent_rmse": null,
+      "evaluation_status": "unavailable",
+      "evaluation_failures": null,
+      "session_wall_seconds": 590.7684197079998,
+      "wall_seconds_including_evaluation": 593.6205327920001
+    },
+    {
+      "world_id": "world_6",
+      "physics_version": "v4",
+      "run_id": "web-20261103-154229-5cae2072",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 4,
+      "main_calls": 4,
+      "analyst_calls": 0,
+      "tokens": 105495,
+      "prompt_tokens": 88765,
+      "completion_tokens": 16730,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 97,
+      "energy_used": 3,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "g*sum_b(bx) - k*x",
+          "ay": "g*sum_b(by) - k*y"
+        },
+        "fitted_parameters": {
+          "k": 0.3,
+          "g": 0.1
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 3.4938760774743725e-15,
+        "velocity_mse": 9.807722352609163e-16,
+        "position_rmse": 5.910901857986116e-08,
+        "velocity_rmse": 3.131728333142765e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 87.24484933299982,
+      "wall_seconds_including_evaluation": 100.325895167
+    },
+    {
+      "world_id": "world_7",
+      "physics_version": "v4",
+      "run_id": "web-20261103-154412-03fecad2",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 8,
+      "main_calls": 8,
+      "analyst_calls": 0,
+      "tokens": 371312,
+      "prompt_tokens": 332420,
+      "completion_tokens": 38892,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 85,
+      "energy_used": 15,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "(K0 + K1*cos(W*t) + K2*sin(W*t))*sum_b(bx - x)",
+          "ay": "(K0 + K1*cos(W*t) + K2*sin(W*t))*sum_b(by - y)"
+        },
+        "fitted_parameters": {
+          "K0": 0.10000000009092294,
+          "K1": -2.371566608045093e-10,
+          "K2": 0.050000000077514324,
+          "W": 0.6000000003089295
+        }
+      },
+      "law_versions": 1,
+      "accepted_submission": true,
+      "independent_evaluation_complete": true,
+      "independent_rmse": {
+        "position_mse": 7.317906468970212e-16,
+        "velocity_mse": 3.0270753880903706e-16,
+        "position_rmse": 2.7051629283594384e-08,
+        "velocity_rmse": 1.7398492429203085e-08
+      },
+      "evaluation_status": "complete",
+      "evaluation_failures": [],
+      "session_wall_seconds": 199.97892108299993,
+      "wall_seconds_including_evaluation": 213.9240252919999
+    }
+  ],
+  "interpretation": "No success threshold; failed/incomplete runs are retained, not counted as discoveries.",
+  "locally_submitted_count": 6,
+  "independently_evaluated_count": 6,
+  "finished_at": "2026-11-03T15:47:46.232995+00:00"
+}

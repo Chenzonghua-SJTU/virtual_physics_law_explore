@@ -1,0 +1,366 @@
+{
+  "source_commit": "3dde3c77e56770b0ea4a45bffd18fb2ef749193c",
+  "source_tag": "v0.1.0",
+  "source_unchanged": true,
+  "attempts": 7,
+  "submitted": 6,
+  "independently_evaluated": 6,
+  "total_model_calls": 62,
+  "actual_tokens": 3810937,
+  "api_error_count": 0,
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "run_id": "web-20261103-151705-97db916f",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 4,
+      "tokens": 70957,
+      "energy_used": 5,
+      "score": {
+        "status": "scored",
+        "total": 99.74999999999983,
+        "maximum": 100,
+        "prediction": 79.99999999999983,
+        "law": 15,
+        "conservation": 4.75,
+        "position_mse": 3.628012972970129e-15,
+        "reference_variance": 15.638138600643364,
+        "normalized_error": 2.319977502195095e-16,
+        "energy_used": 5.0,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_pdf_1101",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples correspond to 5e and conflict with that formula; this implementation uses 10e and applies the P>=40 conservation gate before display rounding.",
+        "source": "fresh_independent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 3.628012972970129e-15,
+        "velocity_mse": 1.0045469938892106e-15,
+        "position_rmse": 6.023298907550687e-08,
+        "velocity_rmse": 3.169458934722472e-08
+      }
+    },
+    {
+      "world_id": "world_2",
+      "run_id": "web-20261103-151802-c2293873",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 7,
+      "tokens": 206950,
+      "energy_used": 16,
+      "score": {
+        "status": "scored",
+        "total": 99.1999999967241,
+        "maximum": 100,
+        "prediction": 79.9999999967241,
+        "law": 15,
+        "conservation": 4.2,
+        "position_mse": 7.465949315478297e-11,
+        "reference_variance": 18.232392389765806,
+        "normalized_error": 4.094881876099309e-12,
+        "energy_used": 16.0,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_pdf_1101",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples correspond to 5e and conflict with that formula; this implementation uses 10e and applies the P>=40 conservation gate before display rounding.",
+        "source": "fresh_independent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 7.465949315478297e-11,
+        "velocity_mse": 1.401865554360826e-11,
+        "position_rmse": 8.640572501563943e-06,
+        "velocity_rmse": 3.744149508714664e-06
+      }
+    },
+    {
+      "world_id": "world_3",
+      "run_id": "web-20261103-151955-5e7a19dd",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 12,
+      "tokens": 1155906,
+      "energy_used": 18,
+      "score": {
+        "status": "scored",
+        "total": 99.09999999796968,
+        "maximum": 100,
+        "prediction": 79.99999999796968,
+        "law": 15,
+        "conservation": 4.1000000000000005,
+        "position_mse": 3.0178151484256144e-11,
+        "reference_variance": 11.89102032180547,
+        "normalized_error": 2.5378941981047804e-12,
+        "energy_used": 18.0,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_pdf_1101",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples correspond to 5e and conflict with that formula; this implementation uses 10e and applies the P>=40 conservation gate before display rounding.",
+        "source": "fresh_independent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 3.017815148425615e-11,
+        "velocity_mse": 2.073968289654294e-11,
+        "position_rmse": 5.493464433693564e-06,
+        "velocity_rmse": 4.554084199544727e-06
+      }
+    },
+    {
+      "world_id": "world_4",
+      "run_id": "web-20261103-152916-2454706e",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 9,
+      "tokens": 336043,
+      "energy_used": 20,
+      "score": {
+        "status": "scored",
+        "total": 98.99999999999942,
+        "maximum": 100,
+        "prediction": 79.99999999999942,
+        "law": 15,
+        "conservation": 4.0,
+        "position_mse": 3.8991157336935706e-13,
+        "reference_variance": 535.5358506737191,
+        "normalized_error": 7.280774440755692e-16,
+        "energy_used": 20.0,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_pdf_1101",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples correspond to 5e and conflict with that formula; this implementation uses 10e and applies the P>=40 conservation gate before display rounding.",
+        "source": "fresh_independent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 3.8991157336935706e-13,
+        "velocity_mse": 5.61486205087197e-14,
+        "position_rmse": 6.244289978607312e-07,
+        "velocity_rmse": 2.3695700139206627e-07
+      }
+    },
+    {
+      "world_id": "world_5",
+      "run_id": "web-20261103-153234-0c6d5b0b",
+      "status": "incomplete",
+      "reason": "model_token_budget_exhausted",
+      "calls": 18,
+      "tokens": 1564274,
+      "energy_used": 48,
+      "score": null,
+      "independent_rmse": null
+    },
+    {
+      "world_id": "world_6",
+      "run_id": "web-20261103-154229-5cae2072",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 4,
+      "tokens": 105495,
+      "energy_used": 3,
+      "score": {
+        "status": "scored",
+        "total": 99.84999999999982,
+        "maximum": 100,
+        "prediction": 79.99999999999983,
+        "law": 15,
+        "conservation": 4.85,
+        "position_mse": 3.4938760774743725e-15,
+        "reference_variance": 15.988717104400145,
+        "normalized_error": 2.185213519421672e-16,
+        "energy_used": 3.0,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_pdf_1101",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples correspond to 5e and conflict with that formula; this implementation uses 10e and applies the P>=40 conservation gate before display rounding.",
+        "source": "fresh_independent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 3.4938760774743725e-15,
+        "velocity_mse": 9.807722352609163e-16,
+        "position_rmse": 5.910901857986116e-08,
+        "velocity_rmse": 3.131728333142765e-08
+      }
+    },
+    {
+      "world_id": "world_7",
+      "run_id": "web-20261103-154412-03fecad2",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "calls": 8,
+      "tokens": 371312,
+      "energy_used": 15,
+      "score": {
+        "status": "scored",
+        "total": 99.24999999999997,
+        "maximum": 100,
+        "prediction": 79.99999999999997,
+        "law": 15,
+        "conservation": 4.25,
+        "position_mse": 7.317906468970211e-16,
+        "reference_variance": 16.30399111885576,
+        "normalized_error": 4.488414165355479e-17,
+        "energy_used": 15.0,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": true,
+            "expected": true,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_pdf_1101",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples correspond to 5e and conflict with that formula; this implementation uses 10e and applies the P>=40 conservation gate before display rounding.",
+        "source": "fresh_independent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 7.317906468970212e-16,
+        "velocity_mse": 3.0270753880903706e-16,
+        "position_rmse": 2.7051629283594384e-08,
+        "velocity_rmse": 1.7398492429203085e-08
+      }
+    }
+  ]
+}

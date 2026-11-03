@@ -65,6 +65,7 @@ def test_validation_freeze_submission_and_residual(runtime):
     law_id = law['law_id']
     assert law_id == 'law_1'
     before = runtime.store.get('law', law_id)
+    assert before['refinement']['position_noise_sigma'] == 0
     second = fit_fixture(runtime)
     assert second['law_id'] == 'law_2'
     assert runtime.store.get('law', law_id) == before

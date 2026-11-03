@@ -341,6 +341,68 @@ def test_token_preflight_and_legacy_main_limit_ignored(tmp_path, monkeypatch):
     client2.close()
 
 
+def test_reported_prefix_allows_next_request_without_counting_all_bytes_again(tmp_path, monkeypatch):
+    usage = {'prompt_tokens': 2000, 'completion_tokens': 100, 'total_tokens': 2100,
+             'prompt_cache_hit_tokens': 1900}
+    client, requests = make_client(tmp_path, monkeypatch,
+        [response(assistant(), usage=usage)] * 2, {'max_total_tokens': 10000})
+    messages = [{'role': 'user', 'content': 'text ' * 1600}]
+    reply = client.complete(messages, tools=SCHEMAS[:0])
+    messages += [reply, {'role': 'user', 'content': '继续'}]
+    client.complete(messages)
+    assert len(requests) == 2
+    budget = client.usage['request_budget']
+    assert budget['method'] == 'reported_prefix_plus_utf8_suffix'
+    assert budget['utf8_upper_bound'] > budget['available_tokens']
+    assert budget['estimated_prompt_tokens'] < budget['available_tokens']
+    assert budget['reference_prompt_tokens'] == 2000  # cached tokens still count
+    assert requests[1]['messages'] == messages
+    assert client.usage['total_tokens'] == 4200
+    client.close()
+
+
+@pytest.mark.parametrize('change', ['history', 'reasoning', 'tools', 'thinking', 'model'])
+def test_prompt_anchor_is_invalidated_by_changed_prefix_or_context(tmp_path, monkeypatch, change):
+    client, _ = make_client(tmp_path, monkeypatch, [response(assistant())])
+    messages = [assistant('old', reasoning='preserve exactly')]
+    client.complete(messages, tools=SCHEMAS)
+    body = {'model': client.model, 'messages': messages, 'stream': False,
+            'thinking': {'type': 'enabled'}, 'reasoning_effort': client.reasoning_effort,
+            'tools': SCHEMAS, 'tool_choice': 'auto'}
+    assert client._prompt_estimate(body)['method'] == 'reported_prefix_plus_utf8_suffix'
+    if change == 'history': messages[0]['content'] = 'new'
+    elif change == 'reasoning': messages[0]['reasoning_content'] = 'changed'
+    elif change == 'tools': body['tools'] = SCHEMAS[:-1]
+    elif change == 'thinking': body['thinking'] = {'type': 'disabled'}
+    else: body['model'] = 'another-model'
+    assert client._prompt_estimate(body)['method'] == 'utf8_upper_bound'
+    client.close()
+
+
+def test_budget_block_records_reason_without_request_or_history_leak(tmp_path, monkeypatch):
+    client, requests = make_client(tmp_path, monkeypatch, [], {'max_total_tokens': 1000})
+    with pytest.raises(ModelError, match='model_token_budget_exhausted'):
+        client.complete([{'role': 'user', 'content': 'confidential-marker ' * 100}])
+    assert not requests and client.usage['calls'] == 0
+    budget = client.usage['request_budget']
+    assert budget['status'] == 'blocked' and budget['available_tokens'] == 1000
+    assert budget['estimated_prompt_tokens'] > 1000
+    assert budget['minimum_output_tokens'] == 64
+    events = (tmp_path / 'model_events.jsonl').read_text()
+    assert 'budget_blocked' in events and 'confidential-marker' not in events
+    client.close()
+
+
+def test_unknown_usage_is_reserved_and_cannot_calibrate_prompt(tmp_path, monkeypatch):
+    payload = response(assistant()); payload.pop('usage')
+    client, _ = make_client(tmp_path, monkeypatch, [payload])
+    client.complete([{'role': 'user', 'content': 'test'}])
+    assert client._prompt_reference is None
+    assert client.usage['total_tokens'] == 0
+    assert client.usage['conservative_reserved_tokens'] > 0
+    client.close()
+
+
 def test_retry_limit_remains_enforced_without_total_call_limit(tmp_path, monkeypatch):
     monkeypatch.setattr('shore_agent.model.time.sleep', lambda seconds: None)
     client, requests = make_client(tmp_path, monkeypatch, [httpx.Response(503)] * 2,

@@ -1,0 +1,22 @@
+[
+  {
+    "candidate": "soft_inverse_distance",
+    "law_spec": {
+      "ax": "sum_b(k*(bx-x)+g*vy/sqrt((bx-x)**2+(by-y)**2+s))",
+      "ay": "sum_b(k*(by-y)-g*vx/sqrt((bx-x)**2+(by-y)**2+s))"
+    },
+    "ast_nodes": 102,
+    "accepted_by_dsl": false,
+    "error": "formula exceeds 100 total AST nodes"
+  },
+  {
+    "candidate": "soft_inverse_squared_distance",
+    "law_spec": {
+      "ax": "sum_b(k*(bx-x)+g*vy/((bx-x)**2+(by-y)**2+s))",
+      "ay": "sum_b(k*(by-y)-g*vx/((bx-x)**2+(by-y)**2+s))"
+    },
+    "ast_nodes": 96,
+    "accepted_by_dsl": true,
+    "error": null
+  }
+]

@@ -57,6 +57,81 @@ def test_integer_power_and_domain_errors():
         Expression({"ax": "sqrt(x)", "ay": "0"}, []).acceleration(0, [-1, 0], [0, 0], [], {}, {})
 
 
+def test_softened_velocity_candidate_no_longer_hits_100_node_limit():
+    law = {'ax': 'sum_b(k*(bx-x)+g*vy/sqrt((bx-x)**2+(by-y)**2+s))',
+           'ay': 'sum_b(k*(by-y)-g*vx/sqrt((bx-x)**2+(by-y)**2+s))'}
+    assert sum(len(list(ast.walk(ast.parse(s, mode='eval')))) for s in law.values()) == 102
+    params = {'k': .7, 'g': .2, 's': 1.6}
+    expr = Expression(law, [{'name': k, 'initial': v} for k, v in params.items()])
+    positions, r, v = np.array([[2, 3], [-3, 1]]), np.array([.3, -.7]), np.array([.8, -.4])
+    delta = positions-r
+    expected = np.sum(.7*delta + .2*np.array([v[1], -v[0]]) / np.sqrt(np.sum(delta**2, axis=1)+1.6)[:, None], axis=0)
+    np.testing.assert_allclose(expr.acceleration(2, r, v, positions, {}, params), expected, atol=1e-14)
+
+
+def test_expression_still_has_finite_node_budget_with_actionable_error():
+    source = 'x'
+    for _ in range(7): source = f'({source}+{source})'
+    with pytest.raises(ExpressionError, match=r'256 total AST nodes.*counted through ax.*not evidence'):
+        Expression({'ax': source, 'ay': '0'}, [])
+
+
+def linear_probe(probe_id, r0, v0, span):
+    # Analytic oscillator, independent of both fit/rollout and the simulator.
+    k = np.array([[.42, .11], [.11, .27]])
+    center = np.linalg.solve(k, [.13, -.09])
+    eigenvalues, eigenvectors = np.linalg.eigh(k)
+    w = np.sqrt(eigenvalues)
+    tau = np.linspace(0, span, 20)
+    q, u = (np.asarray(r0)-center) @ eigenvectors, np.asarray(v0) @ eigenvectors
+    r = (np.cos(tau[:, None]*w)*q + np.sin(tau[:, None]*w)*u/w) @ eigenvectors.T + center
+    v = (-np.sin(tau[:, None]*w)*q*w + np.cos(tau[:, None]*w)*u) @ eigenvectors.T
+    return {'probe_id': probe_id, 'initial_conditions': {'r0': r0, 'v0': v0, 't0': 0, 'properties': {}},
+            'times': tau.tolist(), 'r_obs': r.tolist(), 'v_obs': v.tolist()}
+
+
+LINEAR_LAW = {'ax': '-a*x-b*y+c', 'ay': '-b*x-d*y+e'}
+LINEAR_PARAMS = [{'name': k, 'initial': v, 'lower': lo, 'upper': hi}
+                 for k, v, lo, hi in zip('abcde', [.419, .111, .129, .269, -.091],
+                                         [.2, 0, 0, .1, -.3], [.6, .2, .3, .4, 0])]
+
+
+def test_noiseless_refinement_improves_long_horizon_without_using_holdout():
+    # Short trajectories can have tiny position residuals but biased parameters.
+    train = [linear_probe(str(i), r, v, .25) for i, (r, v) in enumerate([
+        ([-1, .5], [.4, -.6]), ([2, -1], [-.7, .3]), ([-.5, -2], [.2, .8])])]
+    coarse = fit(LINEAR_LAW, LINEAR_PARAMS, train, [])
+    polished = fit(LINEAR_LAW, LINEAR_PARAMS, train, [], position_noise_sigma=0)
+    assert polished['refinement']['status'] == 'refined'
+    holdout = linear_probe('new', [3, -3], [1, 2], 20)
+    def error(result):
+        prediction = rollout(LINEAR_LAW, result['fitted_parameters'], holdout, [])
+        return errors_for_rollouts([holdout], [prediction])['overall']['position_rmse']
+    assert error(polished) < min(1e-6, error(coarse)/10)
+    assert polished['errors']['overall']['position_mse'] <= coarse['errors']['overall']['position_mse']
+    assert coarse['refinement']['reason'] == 'noise_present_or_unknown'
+    noisy = fit(LINEAR_LAW, LINEAR_PARAMS, train, [], position_noise_sigma=.1)
+    assert not noisy['refinement']['attempted']
+
+
+def test_refinement_failure_keeps_coarse_solution_with_shared_budget(monkeypatch):
+    import shore_agent.numerics as numerics
+    original = numerics.least_squares
+    seen = []
+    def limited(*args, **kwargs):
+        seen.append(kwargs)
+        if len(seen) == 2: raise NumericalError('shared budget used', 'fit_limit')
+        return original(*args, **kwargs)
+    monkeypatch.setattr(numerics, 'least_squares', limited)
+    train = [linear_probe(str(i), r, v, .25) for i, (r, v) in enumerate([
+        ([-1, .5], [.4, -.6]), ([2, -1], [-.7, .3]), ([-.5, -2], [.2, .8])])]
+    result = fit(LINEAR_LAW, LINEAR_PARAMS, train, [], max_nfev=30, position_noise_sigma=0)
+    assert result['converged'] and result['errors'] is not None
+    assert result['refinement']['status'] == 'retained_coarse'
+    assert result['refinement']['reason'] == 'fit_limit'
+    assert 0 < seen[1]['max_nfev'] < seen[0]['max_nfev'] == 30
+
+
 def test_rollout_uses_absolute_time_and_controlled_initial_state():
     probe = constant_acceleration_probe()
     probe["r_obs"][0] = [99, 99]  # observation noise must not alter controlled initial state

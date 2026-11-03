@@ -30,7 +30,7 @@ FUNCTIONS = {"sin": math.sin, "cos": math.cos, "exp": math.exp,
 RESERVED = STATE_NAMES | BODY_NAMES | set(FUNCTIONS) | {"q", "sum_b"}
 ALLOWED_PROPERTIES = frozenset({"mass", "charge"})
 MAX_PARAMETERS = 5
-MAX_NODES = 100
+MAX_NODES = 256
 MAX_DEPTH = 16
 MAX_MAGNITUDE = 1e12
 
@@ -160,7 +160,10 @@ class Expression:
                 raise ExpressionError("formula is not valid DSL syntax") from exc
             total += sum(1 for _ in ast.walk(tree))
             if total > MAX_NODES:
-                raise ExpressionError(f"formula exceeds {MAX_NODES} total AST nodes")
+                raise ExpressionError(
+                    f"formula exceeds {MAX_NODES} total AST nodes ({total} counted through {component}); "
+                    "factor repeated terms or combine body sums. This is a syntax/resource limit, "
+                    "not evidence against the physical hypothesis.")
             self._check(tree.body, 0, False)
             self.nodes.append(tree.body)
         unused = self.parameter_names - self.used_parameters

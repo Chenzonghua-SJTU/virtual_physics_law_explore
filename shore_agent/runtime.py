@@ -93,6 +93,8 @@ class ToolRuntime:
                 'No attributes, indexing, imports or code. All coefficients and offsets must be named fitted parameters '
                 '(at most 5, parameter_spec list of {name,initial,lower?,upper?}). '
                 'Only structural literals 0,1 and integer exponents -3..3; no constant arithmetic or nonzero literal offsets. '
+                'Both components together allow at most 256 AST nodes and depth 16. '
+                'A syntax/resource rejection does not test the physical hypothesis; simplify an equivalent expression before changing the hypothesis. '
                 'For example a velocity-only candidate ax=-d*vx,ay=-d*vy is syntactically legal; '
                 'this is a grammar example, not evidence about this universe. Initial conditions and times use mission units.')
 
@@ -187,7 +189,8 @@ class ToolRuntime:
         body_inputs = self._body_inputs()
         result = numerics.fit(law_spec, parameter_spec, probes, body_inputs,
                               max_nfev=self.config.get('max_nfev', 80),
-                              timeout_seconds=min(25.0, self.budget()['wall_seconds_remaining']))
+                              timeout_seconds=min(25.0, self.budget()['wall_seconds_remaining']),
+                              position_noise_sigma=self.task.get('position_noise_sigma'))
         # Versions are numbered within a session; never reuse an archived ID.
         law_ids = set(self.store.records['law'])
         law_ids.update(p.stem for p in (self.store.directory / 'law').glob('*.json'))

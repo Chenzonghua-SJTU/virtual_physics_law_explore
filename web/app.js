@@ -264,6 +264,7 @@
     $('energy-progress').value = 0; $('validations-value').textContent = '0';
     $('calls-limit').textContent = '无次数上限';
     $('calls-note').textContent = '主 Agent 模型请求';
+    $('tokens-note').textContent = '累计输入与输出';
     $('tokens-limit').textContent = `/ ${compact(state.defaults.max_total_tokens ?? 2000000)}`;
     renderChart(); renderTimeline([]); renderDiscovery(); renderHistory(); setFormState();
   }
@@ -376,6 +377,12 @@
     $('calls-note').textContent = finite(legacyAnalystCalls) && legacyAnalystCalls > 0
       ? `含旧版分析子 Agent ${number(legacyAnalystCalls)} 次请求` : '主 Agent 模型请求';
     $('tokens-value').textContent = compact(usage.total_tokens);
+    const requestBudget = usage.request_budget;
+    $('tokens-note').textContent = requestBudget?.status === 'blocked' && finite(requestBudget.estimated_prompt_tokens)
+      ? `剩余 ${compact(requestBudget.available_tokens)} · 下次输入预估 ${compact(requestBudget.estimated_prompt_tokens)}`
+      : finite(requestBudget?.reported_prompt_tokens)
+        ? `最近输入：预估 ${compact(requestBudget.estimated_prompt_tokens)} / 实际 ${compact(requestBudget.reported_prompt_tokens)}`
+        : '累计输入与输出';
     const callLimit = Object.prototype.hasOwnProperty.call(config, 'max_calls') ? config.max_calls : run.max_calls;
     $('calls-limit').textContent = finite(callLimit) && callLimit > 0 ? `/ ${number(callLimit)}` : '无次数上限';
     $('tokens-limit').textContent = `/ ${compact(config.max_total_tokens ?? run.max_total_tokens ?? state.defaults.max_total_tokens ?? 2000000)}`;
@@ -571,6 +578,11 @@
         user_stopped: '已按要求停止，取得的实验记录已保留。',
       };
       let message = reasonMap[reason] || (['stopped', 'stopping'].includes(run.status) ? '已停止探索，取得的实验记录已保留。' : ['failed', 'error'].includes(run.status) ? '本次探索未能完成。请查看探索进程中的错误信息，再开启新实验。' : '已有记录已保留，可导出或继续查看各个候选规律。');
+      const requestBudget = (run.model_usage || result?.model_usage || {}).request_budget;
+      if (reason === 'model_token_budget_exhausted' && requestBudget?.status === 'blocked'
+          && finite(requestBudget.available_tokens) && finite(requestBudget.estimated_prompt_tokens)) {
+        message = `下一次请求未发送：剩余 ${number(requestBudget.available_tokens)} token，预计输入 ${number(requestBudget.estimated_prompt_tokens)} token，还需至少 ${number(requestBudget.minimum_output_tokens)} token 输出额度。已有记录已保留。`;
+      }
       if (reason && !reasonMap[reason] && !['failed', 'error', 'stopped'].includes(run.status)) message += ` 结束原因：${reason}`;
       if (run.evaluation_state && run.evaluation_state !== 'not_applicable') message = scoreExplanation(run);
       $('run-outcome').textContent = `${runLabel(run)} · ${message}`;

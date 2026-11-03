@@ -1,0 +1,15 @@
+{
+  "run_id": "web-20261103-153234-0c6d5b0b",
+  "termination": "model_token_budget_exhausted",
+  "configured_total_budget": 2000000,
+  "actual_reported_tokens": 1564274,
+  "unknown_usage_reserved_tokens": 0,
+  "remaining_budget": 435726,
+  "next_request_conservative_prompt_allowance": 450025,
+  "next_request_output_allowance_before_guard": -14299,
+  "guard_minimum_output_tokens": 64,
+  "last_successful_api_prompt_tokens": 157162,
+  "last_request_finish_reason": "tool_calls",
+  "api_errors": [],
+  "explanation": "Admission guard counts every serialized UTF-8 byte as one token; this is an upper bound, not actual token usage. No new API request was made to measure the rejected next request."
+}

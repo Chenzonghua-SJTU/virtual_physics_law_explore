@@ -173,7 +173,8 @@ def errors_for_rollouts(probes, rollouts):
             "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"}
 
 
-def fit(law_spec, parameter_spec, probes, bodies, max_nfev=80, timeout_seconds=MAX_FIT_SECONDS):
+def fit(law_spec, parameter_spec, probes, bodies, max_nfev=80, timeout_seconds=MAX_FIT_SECONDS,
+        position_noise_sigma=None):
     """Local bounded least squares, minimizing position MSE with equal trajectory weights.
 
     Velocity is diagnostic only. Failed integrations have bounded penalties; if
@@ -190,6 +191,10 @@ def fit(law_spec, parameter_spec, probes, bodies, max_nfev=80, timeout_seconds=M
         raise NumericalError("max_nfev must be an integer between 1 and 300")
     if not math.isfinite(timeout_seconds) or not 0 < timeout_seconds <= 120:
         raise NumericalError("fit timeout must be in (0,120] seconds")
+    if position_noise_sigma is not None and (
+            isinstance(position_noise_sigma, bool) or not isinstance(position_noise_sigma, (int, float))
+            or not math.isfinite(position_noise_sigma) or position_noise_sigma < 0):
+        raise NumericalError("position_noise_sigma must be nonnegative and finite, or unknown")
     expression = Expression(law_spec, parameter_spec)
     # Missing external-input coverage cannot be repaired by adjusting force-law
     # coefficients. Report it before optimization, rather than penalizing a law.
@@ -260,8 +265,49 @@ def fit(law_spec, parameter_spec, probes, bodies, max_nfev=80, timeout_seconds=M
             message += " Returning the best finite iterate; optimization did not converge."
     if last_failure:
         message += f" Invalid candidate evaluations: {invalid_evaluations}; last failure: {last_failure}"
+    refinement = {'attempted': False, 'status': 'skipped', 'tolerance': 1e-12,
+                  'position_noise_sigma': position_noise_sigma, 'reason': 'coarse_fit_not_converged'}
+    if converged:
+        # Only the task's public noise level enables polishing. A tiny residual
+        # is not evidence that noisy observations are noise-free.
+        if position_noise_sigma != 0:
+            refinement['reason'] = 'noise_present_or_unknown'
+        elif not names:
+            refinement['reason'] = 'no_parameters'
+        else:
+            scale = max(1.0, math.sqrt(float(np.mean([
+                np.mean(np.sum(np.asarray(p['r_obs']) ** 2, axis=1)) for p in probes]))))
+            rmse = metrics['overall']['position_rmse']
+            remaining_nfev = max_nfev - result.nfev
+            refinement.update(initial_position_rmse=rmse, final_position_rmse=rmse)
+            if rmse > 1e-5 * scale:
+                refinement['reason'] = 'residual_above_refinement_range'
+            elif result.optimality <= 1e-12:
+                refinement['reason'] = 'already_at_tight_gradient_tolerance'
+            elif remaining_nfev <= 0 or time.monotonic() >= deadline:
+                refinement['reason'] = 'shared_fit_budget_exhausted'
+            else:
+                refinement.update(attempted=True, status='retained_coarse', reason=None)
+                before_calls = objective_calls
+                try:
+                    refined = least_squares(residual, fitted,
+                        bounds=([p['lower'] for p in normalized], [p['upper'] for p in normalized]),
+                        max_nfev=remaining_nfev, ftol=1e-12, xtol=1e-12, gtol=1e-12, x_scale='jac')
+                    candidate = predictions(refined.x)
+                    candidate_metrics = errors_for_rollouts(probes, candidate)
+                    if refined.success and candidate_metrics['overall']['position_mse'] <= metrics['overall']['position_mse']:
+                        fitted, predicted, metrics = refined.x, candidate, candidate_metrics
+                        message = str(refined.message) + ' Noiseless parameter refinement completed.'
+                        refinement.update(status='refined', final_position_rmse=metrics['overall']['position_rmse'])
+                    else:
+                        refinement['reason'] = 'refinement_not_converged_or_not_better'
+                except (NumericalError, ValueError, OverflowError, FloatingPointError) as exc:
+                    # Keep the already valid coarse solution; no new deadline,
+                    # extra evaluation budget, validation data or truth is used.
+                    refinement['reason'] = getattr(exc, 'code', type(exc).__name__)
+                refinement['objective_calls'] = objective_calls - before_calls
     return {"fitted_parameters": dict(zip(names, map(float, fitted))), "fit_status": status,
             "converged": converged, "message": message, "errors": metrics,
             "rollouts": predicted, "objective_calls": objective_calls,
-            "invalid_evaluations": invalid_evaluations,
+            "invalid_evaluations": invalid_evaluations, "refinement": refinement,
             "objective": "equal_trajectory_position_mse", "optimizer": "scipy.least_squares (local)"}

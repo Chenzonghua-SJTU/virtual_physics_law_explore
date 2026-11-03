@@ -71,6 +71,7 @@ class DeepSeekClient:
                       'roles': {role: {'calls': 0, 'prompt_tokens': 0, 'completion_tokens': 0,
                                        'total_tokens': 0} for role in self.role_limits}}
         self.last_finish_reason = None
+        self._prompt_reference = None
         self._http = httpx.Client(transport=transport, follow_redirects=False)
         append_event(self.run_dir / 'model_events.jsonl', {
             'event': 'configuration', 'model': self.model, 'base_url': self.base_url,
@@ -91,7 +92,36 @@ class DeepSeekClient:
         if self.remaining_seconds() <= 0:
             raise ModelError('wall_time_exhausted')
         if self.usage['total_tokens'] + self.usage['conservative_reserved_tokens'] >= self.max_total_tokens:
+            self.usage['request_budget'] = {'status': 'blocked', 'reason': 'total_budget_exhausted',
+                'available_tokens': max(0, self.max_total_tokens - self.usage['total_tokens']
+                                         - self.usage['conservative_reserved_tokens'])}
             raise ModelError('model_token_budget_exhausted')
+
+    @staticmethod
+    def _prompt_context(body):
+        return {k: v for k, v in body.items() if k not in ('messages', 'max_tokens')}
+
+    def _prompt_estimate(self, body):
+        """Reuse measured tokens only for an identical, unedited message prefix.
+
+        The suffix is still bounded by UTF-8 bytes, with extra framing allowance.
+        Changing old messages, tools or model settings invalidates the anchor.
+        Never remove history/reasoning or treat provider cache hits as free tokens.
+        """
+        upper = len(json.dumps(body, ensure_ascii=False).encode('utf-8')) + 512
+        ref = self._prompt_reference
+        messages = body['messages']
+        if (ref is not None and self._prompt_context(body) == ref['context']
+                and len(messages) >= len(ref['messages'])
+                and messages[:len(ref['messages'])] == ref['messages']):
+            suffix = messages[len(ref['messages']):]
+            added = len(json.dumps(suffix, ensure_ascii=False).encode('utf-8')) if suffix else 0
+            return {'method': 'reported_prefix_plus_utf8_suffix',
+                    'estimated_prompt_tokens': ref['prompt_tokens'] + added + 512,
+                    'reference_prompt_tokens': ref['prompt_tokens'],
+                    'added_message_bytes': added, 'utf8_upper_bound': upper}
+        return {'method': 'utf8_upper_bound', 'estimated_prompt_tokens': upper,
+                'utf8_upper_bound': upper}
 
     def complete(self, messages, tools=None, role='main') -> dict:
         self._quota(role)
@@ -106,14 +136,19 @@ class DeepSeekClient:
             body['reasoning_effort'] = self.reasoning_effort
         if tools:
             body.update(tools=copy.deepcopy(tools), tool_choice='auto')
-        # UTF-8 bytes plus protocol overhead is a conservative local token allowance.
-        # The server's usage remains authoritative; unknown usage is reserved in full.
-        prompt_allowance = len(json.dumps(body, ensure_ascii=False).encode('utf-8')) + 512
+        estimate = self._prompt_estimate(body)
+        prompt_allowance = estimate['estimated_prompt_tokens']
         for attempt in range(self.max_retries + 1):
             self._quota(role)
             available = self.max_total_tokens - self.usage['total_tokens'] - self.usage['conservative_reserved_tokens']
             output_limit = min(requested_max, available - prompt_allowance)
+            self.usage['request_budget'] = dict(estimate, available_tokens=available,
+                requested_output_tokens=requested_max, output_token_limit=max(0, output_limit),
+                minimum_output_tokens=64, status='blocked' if output_limit < 64 else 'admitted')
             if output_limit < 64:
+                append_event(self.run_dir / 'model_events.jsonl', {
+                    'event': 'budget_blocked', 'role': role,
+                    'budget_usage': copy.deepcopy(self.usage)})
                 raise ModelError('model_token_budget_exhausted')
             body['max_tokens'] = int(output_limit)
             timeout = min(_positive(self.config, f'{role}_timeout_seconds', self.timeout), self.remaining_seconds())
@@ -150,6 +185,10 @@ class DeepSeekClient:
                         self.usage[k] += reported[k]
                         self.usage['roles'][role][k] += reported[k]
                     event['usage'] = reported
+                    self.usage['request_budget']['reported_prompt_tokens'] = reported['prompt_tokens']
+                    self._prompt_reference = {'context': self._prompt_context(body),
+                                              'messages': body['messages'],
+                                              'prompt_tokens': reported['prompt_tokens']}
                 else:
                     event['usage_warning'] = 'missing_or_invalid_usage; full local allowance reserved'
                 try:

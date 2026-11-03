@@ -1,0 +1,108 @@
+[
+  {
+    "world_id": "world_2",
+    "run_id": "web-20261103-151802-c2293873",
+    "law_id": "law_1",
+    "kind": "deterministic check of submitted formula only; no simulator oracle",
+    "claimed_equilibrium": [
+      0,
+      1
+    ],
+    "acceleration_at_claimed_equilibrium": [
+      -5.046444000178507e-08,
+      1.1684446596382791e-07
+    ],
+    "computed_equilibrium": [
+      -3.056677023103214e-07,
+      1.0000007064900367
+    ],
+    "root_converged": true,
+    "equilibrium_residual": 3.1031676915590914e-17,
+    "stiffness_at_equilibrium": [
+      [
+        0.34999991682382875,
+        0.08000003886426965
+      ],
+      [
+        0.08000003886426965,
+        0.1999998396340352
+      ]
+    ],
+    "normal_mode_angular_frequencies": [
+      0.40662176833275604,
+      0.620208427849708
+    ],
+    "phase_space_eigenvalues": [
+      {
+        "real": -1.591324065994221e-17,
+        "imaginary": 0.6202084278497081
+      },
+      {
+        "real": -1.591324065994221e-17,
+        "imaginary": -0.6202084278497081
+      },
+      {
+        "real": 4.1624597289702314e-17,
+        "imaginary": 0.406621768332756
+      },
+      {
+        "real": 4.1624597289702314e-17,
+        "imaginary": -0.406621768332756
+      }
+    ],
+    "explanation_issue": "A conservative anisotropic oscillator has oscillatory modes, not an attracting stable node; generic two-frequency motion need not be an ellipse."
+  },
+  {
+    "world_id": "world_3",
+    "run_id": "web-20261103-151955-5e7a19dd",
+    "law_id": "law_5",
+    "kind": "deterministic check of submitted formula only; no simulator oracle",
+    "claimed_equilibrium": [
+      0,
+      1
+    ],
+    "acceleration_at_claimed_equilibrium": [
+      -0.0,
+      -0.007999992245536991
+    ],
+    "computed_equilibrium": [
+      0.0,
+      0.9718319597775942
+    ],
+    "root_converged": true,
+    "equilibrium_residual": 2.7755575615628914e-17,
+    "stiffness_at_equilibrium": [
+      [
+        0.30000952801669173,
+        -0.0
+      ],
+      [
+        -0.0,
+        0.28402858603115977
+      ]
+    ],
+    "normal_mode_angular_frequencies": [
+      0.5329433234699162,
+      0.5477312552855568
+    ],
+    "phase_space_eigenvalues": [
+      {
+        "real": 0.0,
+        "imaginary": 0.5477312552855568
+      },
+      {
+        "real": 0.0,
+        "imaginary": -0.5477312552855568
+      },
+      {
+        "real": 0.0,
+        "imaginary": 0.5329433234699164
+      },
+      {
+        "real": 0.0,
+        "imaginary": -0.5329433234699164
+      }
+    ],
+    "explanation_issue": "Claimed (0,1) is not an equilibrium; claimed isotropy and sqrt(k1) frequency are inconsistent with the submitted nonlinear multi-source force."
+  }
+]

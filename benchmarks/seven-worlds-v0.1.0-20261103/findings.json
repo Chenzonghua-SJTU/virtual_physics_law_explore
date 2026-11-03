@@ -1,0 +1,88 @@
+{
+  "source_commit": "3dde3c77e56770b0ea4a45bffd18fb2ef749193c",
+  "findings": [
+    {
+      "id": "physical_explanation_consistency",
+      "priority": 1,
+      "title": "物理解释出现可直接反证的数学错误",
+      "evidence": {
+        "world_3": {
+          "claimed_equilibrium": [
+            0,
+            1
+          ],
+          "acceleration_at_claimed_equilibrium": [
+            0,
+            -0.007999992245536991
+          ],
+          "actual_equilibrium_of_submitted_law": [
+            0,
+            0.9718319597775942
+          ],
+          "claimed_frequency": 0.245,
+          "computed_normal_mode_frequencies": [
+            0.5329433234699162,
+            0.5477312552855568
+          ]
+        },
+        "world_2": "将无阻尼各向异性振子称为稳定节点，并将一般双频轨迹称为倾斜椭圆。"
+      },
+      "recommendation": "增加针对冻结公式的确定性性质核验：声称的平衡点代入、Jacobian/小振动频率、能量导数。解释引用计算记录；单独展示解释核验状态，不改写题目计分公式，也不需要引入子 Agent。",
+      "artifact": "physical-explanation-checks.json"
+    },
+    {
+      "id": "dsl_search_interference",
+      "priority": 1,
+      "title": "表达式节点上限干扰假设搜索",
+      "evidence": {
+        "ast_limit_rejections": 6,
+        "by_world": {
+          "world_3": 2,
+          "world_4": 1,
+          "world_5": 3
+        },
+        "world_5_soft_inverse_distance_nodes": 102,
+        "world_5_true_family_nodes": 96,
+        "true_family_currently_expressible": true,
+        "world_5_last_validation_rmse": 0.4405823989242239
+      },
+      "recommendation": "提供通用相对坐标和平方距离简写，或适当调整有界 AST 配额，并返回节点数/可化简位置。将语法失败与物理假设被数据否定明确区分；不能因某种写法被拒绝就换距离定义。世界5真式本身可表达，因此不能把失败全部归因于节点上限。",
+      "artifact": "dsl-boundary-checks.json"
+    },
+    {
+      "id": "budget_admission_estimate",
+      "priority": 2,
+      "title": "预算预检较保守，未用满总额度就停止",
+      "evidence": {
+        "world": "world_5",
+        "actual_tokens": 1564274,
+        "limit": 2000000,
+        "remaining": 435726,
+        "next_prompt_allowance": 450025,
+        "previous_actual_prompt_tokens": 157162,
+        "api_errors": 0
+      },
+      "recommendation": "改进输入 token 估计，并在界面展示实际用量、剩余额度和下一请求预留；后续对困难世界可用更大统一预算。扩大预算只能解除停止条件，不能保证修复错误的候选结构。",
+      "artifact": "world5-budget-diagnostic.json"
+    },
+    {
+      "id": "optimizer_precision",
+      "priority": 2,
+      "title": "优化器收敛状态不等于达到需要的外推精度",
+      "evidence": {
+        "world": "world_2",
+        "independent_rmse": 8.640572501563943e-06,
+        "exact_frozen_parameter_rmse": 8.635068683827624e-06,
+        "offline_tighter_tolerance_rmse": 1.4737908600707805e-08,
+        "objective_calls_before": 18,
+        "objective_calls_after": 24,
+        "same_training_data": true,
+        "same_formula": true,
+        "tolerance_before": 1e-08,
+        "tolerance_after": 1e-12
+      },
+      "recommendation": "对无噪声且结构已准确的候选增加精修阶段，以验证误差和噪声水平决定容差；优先加入长时间、新初态验证。含噪情形不应盲目收紧。离线重算仅用于定位原因，不替代原始探索成绩。",
+      "artifact": "world2-numerical-diagnostic.json"
+    }
+  ]
+}
