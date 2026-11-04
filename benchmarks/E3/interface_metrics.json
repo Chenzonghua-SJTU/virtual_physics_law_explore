@@ -1,0 +1,1493 @@
+{
+  "E3": [
+    {
+      "world_id": "world_3",
+      "runs": 5,
+      "invocations": 46,
+      "successful_executions": 43,
+      "unsuccessful_invocations": 3,
+      "unsuccessful_fraction": 0.06521739130434782,
+      "statuses": {
+        "success": 43,
+        "error": 2,
+        "protocol_error": 1
+      },
+      "errors": {
+        "ValueError": 2,
+        "TimeoutExpired": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 2,
+        "execution_environment_or_protocol_error": 1
+      },
+      "total_response_bytes": 66976,
+      "median_response_bytes": 1311.5,
+      "mean_response_bytes": 1456,
+      "max_response_bytes": 3137,
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 28,
+      "truncated_responses": 4,
+      "field_reads": 1
+    },
+    {
+      "world_id": "world_4",
+      "runs": 5,
+      "invocations": 46,
+      "successful_executions": 39,
+      "unsuccessful_invocations": 7,
+      "unsuccessful_fraction": 0.15217391304347827,
+      "statuses": {
+        "success": 39,
+        "error": 6,
+        "argument_or_runtime_error": 1
+      },
+      "errors": {
+        "LinAlgError": 2,
+        "AttributeError": 1,
+        "ValidationError": 1,
+        "ValueError": 1,
+        "NameError": 1,
+        "IndexError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 6,
+        "tool_argument_or_entry_error": 1
+      },
+      "total_response_bytes": 78793,
+      "median_response_bytes": 1577.5,
+      "mean_response_bytes": 1712.891304347826,
+      "max_response_bytes": 3752,
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 24,
+      "truncated_responses": 4,
+      "field_reads": 0
+    },
+    {
+      "world_id": "world_5",
+      "runs": 5,
+      "invocations": 84,
+      "successful_executions": 73,
+      "unsuccessful_invocations": 11,
+      "unsuccessful_fraction": 0.13095238095238096,
+      "statuses": {
+        "success": 73,
+        "error": 8,
+        "argument_or_runtime_error": 1,
+        "timeout": 2
+      },
+      "errors": {
+        "AttributeError": 1,
+        "KeyError": 2,
+        "ValueError": 2,
+        "ValidationError": 1,
+        "timeout": 2,
+        "TypeError": 1,
+        "LinAlgError": 2
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 8,
+        "tool_argument_or_entry_error": 1,
+        "timeout": 2
+      },
+      "total_response_bytes": 129623,
+      "median_response_bytes": 1466.0,
+      "mean_response_bytes": 1543.1309523809523,
+      "max_response_bytes": 2327,
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 72,
+      "truncated_responses": 16,
+      "field_reads": 1
+    },
+    {
+      "world_id": "all",
+      "runs": 15,
+      "invocations": 176,
+      "successful_executions": 155,
+      "unsuccessful_invocations": 21,
+      "unsuccessful_fraction": 0.11931818181818182,
+      "statuses": {
+        "success": 155,
+        "error": 16,
+        "argument_or_runtime_error": 2,
+        "protocol_error": 1,
+        "timeout": 2
+      },
+      "errors": {
+        "LinAlgError": 4,
+        "AttributeError": 2,
+        "ValidationError": 2,
+        "ValueError": 5,
+        "KeyError": 2,
+        "NameError": 1,
+        "TimeoutExpired": 1,
+        "timeout": 2,
+        "TypeError": 1,
+        "IndexError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 16,
+        "tool_argument_or_entry_error": 2,
+        "execution_environment_or_protocol_error": 1,
+        "timeout": 2
+      },
+      "total_response_bytes": 275392,
+      "median_response_bytes": 1446.5,
+      "mean_response_bytes": 1564.7272727272727,
+      "max_response_bytes": 3752,
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 124,
+      "truncated_responses": 24,
+      "field_reads": 2
+    }
+  ],
+  "E2": [
+    {
+      "world_id": "world_3",
+      "runs": 5,
+      "invocations": 43,
+      "successful_executions": 35,
+      "unsuccessful_invocations": 8,
+      "unsuccessful_fraction": 0.18604651162790697,
+      "statuses": {
+        "error": 8,
+        "success": 35
+      },
+      "errors": {
+        "NameError": 2,
+        "TypeError": 1,
+        "SyntaxError": 1,
+        "IndexError": 2,
+        "ValueError": 2
+      },
+      "error_categories": {
+        "script_entry_contract": 1,
+        "other_code_or_numerical_error": 7
+      },
+      "total_response_bytes": 245531,
+      "median_response_bytes": 5172,
+      "mean_response_bytes": 5710.023255813953,
+      "max_response_bytes": 21406,
+      "repeated_code_schema_bytes": 112311,
+      "print_only_calls": 0,
+      "truncated_responses": 25,
+      "field_reads": 0
+    },
+    {
+      "world_id": "world_4",
+      "runs": 5,
+      "invocations": 35,
+      "successful_executions": 26,
+      "unsuccessful_invocations": 9,
+      "unsuccessful_fraction": 0.2571428571428571,
+      "statuses": {
+        "error": 8,
+        "success": 26,
+        "schema_error": 1
+      },
+      "errors": {
+        "KeyError": 2,
+        "LinAlgError": 2,
+        "TypeError": 1,
+        "NameError": 2,
+        "ValueError": 1,
+        "OutputSchemaError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 5,
+        "script_entry_contract": 3,
+        "output_schema": 1
+      },
+      "total_response_bytes": 202131,
+      "median_response_bytes": 5335,
+      "mean_response_bytes": 5775.171428571429,
+      "max_response_bytes": 17372,
+      "repeated_code_schema_bytes": 95775,
+      "print_only_calls": 0,
+      "truncated_responses": 26,
+      "field_reads": 0
+    },
+    {
+      "world_id": "world_5",
+      "runs": 5,
+      "invocations": 92,
+      "successful_executions": 74,
+      "unsuccessful_invocations": 18,
+      "unsuccessful_fraction": 0.1956521739130435,
+      "statuses": {
+        "success": 74,
+        "error": 15,
+        "schema_error": 1,
+        "timeout": 1,
+        "argument_or_runtime_error": 1
+      },
+      "errors": {
+        "UnboundLocalError": 2,
+        "ValueError": 6,
+        "IndexError": 1,
+        "OutputSchemaError": 1,
+        "NameError": 4,
+        "timeout": 1,
+        "TypeError": 1,
+        "ValidationError": 1,
+        "SyntaxError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 10,
+        "output_schema": 1,
+        "script_entry_contract": 4,
+        "timeout": 1,
+        "scientific_type_serialization": 1,
+        "tool_argument_or_entry_error": 1
+      },
+      "total_response_bytes": 494953,
+      "median_response_bytes": 5173.0,
+      "mean_response_bytes": 5379.923913043478,
+      "max_response_bytes": 14483,
+      "repeated_code_schema_bytes": 238202,
+      "print_only_calls": 0,
+      "truncated_responses": 68,
+      "field_reads": 0
+    },
+    {
+      "world_id": "all",
+      "runs": 15,
+      "invocations": 170,
+      "successful_executions": 135,
+      "unsuccessful_invocations": 35,
+      "unsuccessful_fraction": 0.20588235294117646,
+      "statuses": {
+        "error": 31,
+        "success": 135,
+        "schema_error": 2,
+        "timeout": 1,
+        "argument_or_runtime_error": 1
+      },
+      "errors": {
+        "KeyError": 2,
+        "LinAlgError": 2,
+        "TypeError": 3,
+        "NameError": 8,
+        "SyntaxError": 2,
+        "UnboundLocalError": 2,
+        "ValueError": 9,
+        "IndexError": 3,
+        "OutputSchemaError": 2,
+        "timeout": 1,
+        "ValidationError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 22,
+        "script_entry_contract": 8,
+        "output_schema": 2,
+        "timeout": 1,
+        "scientific_type_serialization": 1,
+        "tool_argument_or_entry_error": 1
+      },
+      "total_response_bytes": 942615,
+      "median_response_bytes": 5240.0,
+      "mean_response_bytes": 5544.794117647059,
+      "max_response_bytes": 21406,
+      "repeated_code_schema_bytes": 446288,
+      "print_only_calls": 0,
+      "truncated_responses": 119,
+      "field_reads": 0
+    }
+  ],
+  "runs": [
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w3-r1",
+      "world_id": "world_3",
+      "repeat": 1,
+      "high_precision": true,
+      "code_invocations": 7,
+      "statuses": {
+        "success": 7
+      },
+      "errors": {},
+      "error_categories": {},
+      "response_bytes": 11384,
+      "median_response_bytes": 1615,
+      "max_response_bytes": 2323,
+      "response_sizes": [
+        2187,
+        1123,
+        1615,
+        1375,
+        1715,
+        1046,
+        2323
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 6,
+      "truncated_responses": 1,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 6
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w4-r1",
+      "world_id": "world_4",
+      "repeat": 1,
+      "high_precision": true,
+      "code_invocations": 14,
+      "statuses": {
+        "success": 9,
+        "error": 4,
+        "argument_or_runtime_error": 1
+      },
+      "errors": {
+        "LinAlgError": 2,
+        "AttributeError": 1,
+        "ValidationError": 1,
+        "ValueError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 4,
+        "tool_argument_or_entry_error": 1
+      },
+      "response_bytes": 20476,
+      "median_response_bytes": 1377.5,
+      "max_response_bytes": 2157,
+      "response_sizes": [
+        1497,
+        2067,
+        1565,
+        1264,
+        1264,
+        1637,
+        1282,
+        1419,
+        1042,
+        1732,
+        2157,
+        1084,
+        1130,
+        1336
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 9,
+      "truncated_responses": 0,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 12
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w5-r1",
+      "world_id": "world_5",
+      "repeat": 1,
+      "high_precision": true,
+      "code_invocations": 10,
+      "statuses": {
+        "success": 10
+      },
+      "errors": {},
+      "error_categories": {},
+      "response_bytes": 16089,
+      "median_response_bytes": 1448.0,
+      "max_response_bytes": 2188,
+      "response_sizes": [
+        2188,
+        1447,
+        2171,
+        1207,
+        1449,
+        2176,
+        1049,
+        2171,
+        1123,
+        1108
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 10,
+      "truncated_responses": 4,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 10
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w3-r2",
+      "world_id": "world_3",
+      "repeat": 2,
+      "high_precision": true,
+      "code_invocations": 7,
+      "statuses": {
+        "success": 7
+      },
+      "errors": {},
+      "error_categories": {},
+      "response_bytes": 9393,
+      "median_response_bytes": 1144,
+      "max_response_bytes": 2657,
+      "response_sizes": [
+        1287,
+        1144,
+        1446,
+        862,
+        2657,
+        982,
+        1015
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 0,
+      "truncated_responses": 1,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 7
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w4-r2",
+      "world_id": "world_4",
+      "repeat": 2,
+      "high_precision": true,
+      "code_invocations": 3,
+      "statuses": {
+        "success": 3
+      },
+      "errors": {},
+      "error_categories": {},
+      "response_bytes": 5059,
+      "median_response_bytes": 1412,
+      "max_response_bytes": 2277,
+      "response_sizes": [
+        1370,
+        1412,
+        2277
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 0,
+      "truncated_responses": 1,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 3
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w5-r2",
+      "world_id": "world_5",
+      "repeat": 2,
+      "high_precision": true,
+      "code_invocations": 19,
+      "statuses": {
+        "error": 1,
+        "success": 18
+      },
+      "errors": {
+        "AttributeError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 1
+      },
+      "response_bytes": 33104,
+      "median_response_bytes": 1745,
+      "max_response_bytes": 2186,
+      "response_sizes": [
+        1745,
+        2108,
+        2186,
+        2176,
+        2168,
+        1221,
+        1478,
+        1466,
+        1404,
+        2175,
+        2173,
+        2176,
+        1793,
+        1022,
+        1730,
+        1048,
+        1514,
+        1647,
+        1874
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 18,
+      "truncated_responses": 5,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 18
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w4-r3",
+      "world_id": "world_4",
+      "repeat": 3,
+      "high_precision": true,
+      "code_invocations": 15,
+      "statuses": {
+        "success": 15
+      },
+      "errors": {},
+      "error_categories": {},
+      "response_bytes": 23680,
+      "median_response_bytes": 1393,
+      "max_response_bytes": 2168,
+      "response_sizes": [
+        1781,
+        1153,
+        2096,
+        945,
+        1171,
+        1497,
+        1393,
+        2116,
+        2124,
+        1366,
+        2168,
+        1392,
+        1388,
+        994,
+        2096
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 15,
+      "truncated_responses": 1,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 15
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w5-r3",
+      "world_id": "world_5",
+      "repeat": 3,
+      "high_precision": true,
+      "code_invocations": 8,
+      "statuses": {
+        "error": 3,
+        "success": 4,
+        "argument_or_runtime_error": 1
+      },
+      "errors": {
+        "KeyError": 1,
+        "ValueError": 2,
+        "ValidationError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 3,
+        "tool_argument_or_entry_error": 1
+      },
+      "response_bytes": 13685,
+      "median_response_bytes": 1676.0,
+      "max_response_bytes": 2181,
+      "response_sizes": [
+        1539,
+        1620,
+        2174,
+        2181,
+        1740,
+        1732,
+        1324,
+        1375
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 4,
+      "truncated_responses": 2,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 8
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w3-r3",
+      "world_id": "world_3",
+      "repeat": 3,
+      "high_precision": true,
+      "code_invocations": 9,
+      "statuses": {
+        "success": 7,
+        "error": 2
+      },
+      "errors": {
+        "ValueError": 2
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 2
+      },
+      "response_bytes": 15530,
+      "median_response_bytes": 1482,
+      "max_response_bytes": 3137,
+      "response_sizes": [
+        1865,
+        1309,
+        1482,
+        1861,
+        1032,
+        3137,
+        2073,
+        1457,
+        1314
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 7,
+      "truncated_responses": 1,
+      "field_reads": 1,
+      "code_before_first_formal_fit": 8
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w4-r4",
+      "world_id": "world_4",
+      "repeat": 4,
+      "high_precision": true,
+      "code_invocations": 8,
+      "statuses": {
+        "success": 7,
+        "error": 1
+      },
+      "errors": {
+        "NameError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 1
+      },
+      "response_bytes": 18193,
+      "median_response_bytes": 1892.0,
+      "max_response_bytes": 3752,
+      "response_sizes": [
+        3448,
+        3752,
+        1754,
+        1128,
+        2737,
+        2014,
+        1590,
+        1770
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 0,
+      "truncated_responses": 1,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 7
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w3-r4",
+      "world_id": "world_3",
+      "repeat": 4,
+      "high_precision": true,
+      "code_invocations": 10,
+      "statuses": {
+        "success": 9,
+        "protocol_error": 1
+      },
+      "errors": {
+        "TimeoutExpired": 1
+      },
+      "error_categories": {
+        "execution_environment_or_protocol_error": 1
+      },
+      "response_bytes": 15932,
+      "median_response_bytes": 1579.5,
+      "max_response_bytes": 2324,
+      "response_sizes": [
+        2039,
+        1396,
+        2012,
+        1763,
+        2324,
+        2211,
+        901,
+        1182,
+        1207,
+        897
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 2,
+      "truncated_responses": 1,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 6
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w5-r4",
+      "world_id": "world_5",
+      "repeat": 4,
+      "high_precision": true,
+      "code_invocations": 30,
+      "statuses": {
+        "success": 26,
+        "timeout": 2,
+        "error": 2
+      },
+      "errors": {
+        "timeout": 2,
+        "KeyError": 1,
+        "TypeError": 1
+      },
+      "error_categories": {
+        "timeout": 2,
+        "other_code_or_numerical_error": 2
+      },
+      "response_bytes": 41034,
+      "median_response_bytes": 1293.5,
+      "max_response_bytes": 2327,
+      "response_sizes": [
+        1662,
+        1180,
+        1126,
+        2174,
+        2327,
+        1378,
+        1117,
+        2095,
+        1184,
+        1421,
+        1311,
+        1316,
+        1579,
+        1351,
+        2097,
+        1169,
+        1201,
+        1755,
+        1466,
+        989,
+        1040,
+        1263,
+        758,
+        758,
+        1401,
+        983,
+        1276,
+        1066,
+        1523,
+        1068
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 26,
+      "truncated_responses": 1,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 28
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w3-r5",
+      "world_id": "world_3",
+      "repeat": 5,
+      "high_precision": true,
+      "code_invocations": 13,
+      "statuses": {
+        "success": 13
+      },
+      "errors": {},
+      "error_categories": {},
+      "response_bytes": 14737,
+      "median_response_bytes": 1135,
+      "max_response_bytes": 1594,
+      "response_sizes": [
+        896,
+        969,
+        1138,
+        921,
+        1410,
+        1237,
+        944,
+        1271,
+        1319,
+        923,
+        1594,
+        980,
+        1135
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 13,
+      "truncated_responses": 0,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 13
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w5-r5",
+      "world_id": "world_5",
+      "repeat": 5,
+      "high_precision": true,
+      "code_invocations": 17,
+      "statuses": {
+        "error": 2,
+        "success": 15
+      },
+      "errors": {
+        "LinAlgError": 2
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 2
+      },
+      "response_bytes": 25711,
+      "median_response_bytes": 1509,
+      "max_response_bytes": 2180,
+      "response_sizes": [
+        854,
+        786,
+        1628,
+        1234,
+        1018,
+        1634,
+        1420,
+        765,
+        1434,
+        2171,
+        1248,
+        2171,
+        2170,
+        2180,
+        1692,
+        1509,
+        1797
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 14,
+      "truncated_responses": 4,
+      "field_reads": 1,
+      "code_before_first_formal_fit": 7
+    },
+    {
+      "experiment": "E3",
+      "run_id": "E3-code-w4-r5",
+      "world_id": "world_4",
+      "repeat": 5,
+      "high_precision": true,
+      "code_invocations": 6,
+      "statuses": {
+        "success": 5,
+        "error": 1
+      },
+      "errors": {
+        "IndexError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 1
+      },
+      "response_bytes": 11385,
+      "median_response_bytes": 1792.5,
+      "max_response_bytes": 2580,
+      "response_sizes": [
+        2256,
+        1791,
+        1710,
+        2580,
+        1794,
+        1254
+      ],
+      "repeated_code_schema_bytes": 0,
+      "print_only_calls": 0,
+      "truncated_responses": 1,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 6
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2-code-w4-r1",
+      "world_id": "world_4",
+      "repeat": 1,
+      "high_precision": true,
+      "code_invocations": 15,
+      "statuses": {
+        "error": 4,
+        "success": 11
+      },
+      "errors": {
+        "KeyError": 2,
+        "LinAlgError": 1,
+        "TypeError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 4
+      },
+      "response_bytes": 82688,
+      "median_response_bytes": 5335,
+      "max_response_bytes": 8294,
+      "response_sizes": [
+        5289,
+        5335,
+        8294,
+        7026,
+        6531,
+        5817,
+        5792,
+        3445,
+        3720,
+        7392,
+        4538,
+        4697,
+        4979,
+        3807,
+        6026
+      ],
+      "repeated_code_schema_bytes": 38085,
+      "print_only_calls": 0,
+      "truncated_responses": 13,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 10
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2-code-w3-r1",
+      "world_id": "world_3",
+      "repeat": 1,
+      "high_precision": true,
+      "code_invocations": 10,
+      "statuses": {
+        "error": 4,
+        "success": 6
+      },
+      "errors": {
+        "NameError": 2,
+        "TypeError": 1,
+        "SyntaxError": 1
+      },
+      "error_categories": {
+        "script_entry_contract": 1,
+        "other_code_or_numerical_error": 3
+      },
+      "response_bytes": 68429,
+      "median_response_bytes": 5788.0,
+      "max_response_bytes": 21406,
+      "response_sizes": [
+        3352,
+        5172,
+        5168,
+        21406,
+        6715,
+        6517,
+        2979,
+        6845,
+        6404,
+        3871
+      ],
+      "repeated_code_schema_bytes": 25774,
+      "print_only_calls": 0,
+      "truncated_responses": 0,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 9
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2-code-w5-r1",
+      "world_id": "world_5",
+      "repeat": 1,
+      "high_precision": true,
+      "code_invocations": 10,
+      "statuses": {
+        "success": 7,
+        "error": 3
+      },
+      "errors": {
+        "UnboundLocalError": 1,
+        "ValueError": 1,
+        "IndexError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 3
+      },
+      "response_bytes": 76126,
+      "median_response_bytes": 6387.5,
+      "max_response_bytes": 14483,
+      "response_sizes": [
+        6511,
+        5184,
+        14483,
+        11316,
+        4794,
+        7091,
+        8239,
+        6262,
+        5982,
+        6264
+      ],
+      "repeated_code_schema_bytes": 36452,
+      "print_only_calls": 0,
+      "truncated_responses": 9,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 10
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2-code-w3-r2",
+      "world_id": "world_3",
+      "repeat": 2,
+      "high_precision": true,
+      "code_invocations": 7,
+      "statuses": {
+        "success": 6,
+        "error": 1
+      },
+      "errors": {
+        "IndexError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 1
+      },
+      "response_bytes": 32241,
+      "median_response_bytes": 4703,
+      "max_response_bytes": 7546,
+      "response_sizes": [
+        4703,
+        3202,
+        7546,
+        5343,
+        7057,
+        2625,
+        1765
+      ],
+      "repeated_code_schema_bytes": 13907,
+      "print_only_calls": 0,
+      "truncated_responses": 4,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 5
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w4-r2",
+      "world_id": "world_4",
+      "repeat": 2,
+      "high_precision": true,
+      "code_invocations": 5,
+      "statuses": {
+        "error": 1,
+        "success": 4
+      },
+      "errors": {
+        "LinAlgError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 1
+      },
+      "response_bytes": 18348,
+      "median_response_bytes": 3929,
+      "max_response_bytes": 4740,
+      "response_sizes": [
+        3929,
+        4123,
+        4740,
+        2856,
+        2700
+      ],
+      "repeated_code_schema_bytes": 8143,
+      "print_only_calls": 0,
+      "truncated_responses": 3,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 3
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w5-r2",
+      "world_id": "world_5",
+      "repeat": 2,
+      "high_precision": true,
+      "code_invocations": 10,
+      "statuses": {
+        "success": 9,
+        "schema_error": 1
+      },
+      "errors": {
+        "OutputSchemaError": 1
+      },
+      "error_categories": {
+        "output_schema": 1
+      },
+      "response_bytes": 44519,
+      "median_response_bytes": 4425.0,
+      "max_response_bytes": 5908,
+      "response_sizes": [
+        3675,
+        4778,
+        5490,
+        4837,
+        5908,
+        5252,
+        4072,
+        3916,
+        3304,
+        3287
+      ],
+      "repeated_code_schema_bytes": 20522,
+      "print_only_calls": 0,
+      "truncated_responses": 10,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 1
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w4-r3",
+      "world_id": "world_4",
+      "repeat": 3,
+      "high_precision": true,
+      "code_invocations": 4,
+      "statuses": {
+        "error": 1,
+        "success": 3
+      },
+      "errors": {
+        "NameError": 1
+      },
+      "error_categories": {
+        "script_entry_contract": 1
+      },
+      "response_bytes": 34617,
+      "median_response_bytes": 6340.0,
+      "max_response_bytes": 17372,
+      "response_sizes": [
+        4565,
+        5187,
+        7493,
+        17372
+      ],
+      "repeated_code_schema_bytes": 10493,
+      "print_only_calls": 0,
+      "truncated_responses": 1,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 4
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w3-r3",
+      "world_id": "world_3",
+      "repeat": 3,
+      "high_precision": true,
+      "code_invocations": 13,
+      "statuses": {
+        "success": 13
+      },
+      "errors": {},
+      "error_categories": {},
+      "response_bytes": 61678,
+      "median_response_bytes": 4826,
+      "max_response_bytes": 5526,
+      "response_sizes": [
+        4249,
+        4454,
+        5526,
+        4652,
+        5322,
+        4826,
+        4374,
+        5378,
+        4213,
+        3563,
+        4933,
+        5185,
+        5003
+      ],
+      "repeated_code_schema_bytes": 32803,
+      "print_only_calls": 0,
+      "truncated_responses": 12,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 2
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w5-r3",
+      "world_id": "world_5",
+      "repeat": 3,
+      "high_precision": true,
+      "code_invocations": 23,
+      "statuses": {
+        "error": 4,
+        "success": 18,
+        "timeout": 1
+      },
+      "errors": {
+        "ValueError": 1,
+        "NameError": 1,
+        "timeout": 1,
+        "UnboundLocalError": 1,
+        "TypeError": 1
+      },
+      "error_categories": {
+        "script_entry_contract": 1,
+        "other_code_or_numerical_error": 2,
+        "timeout": 1,
+        "scientific_type_serialization": 1
+      },
+      "response_bytes": 128330,
+      "median_response_bytes": 5724,
+      "max_response_bytes": 7455,
+      "response_sizes": [
+        4773,
+        6746,
+        5074,
+        5652,
+        6422,
+        7159,
+        5767,
+        7182,
+        7455,
+        6443,
+        6020,
+        6737,
+        7150,
+        3072,
+        3046,
+        3539,
+        6141,
+        5503,
+        5162,
+        5422,
+        3450,
+        5724,
+        4691
+      ],
+      "repeated_code_schema_bytes": 74874,
+      "print_only_calls": 0,
+      "truncated_responses": 18,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 23
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w3-r4",
+      "world_id": "world_3",
+      "repeat": 4,
+      "high_precision": true,
+      "code_invocations": 5,
+      "statuses": {
+        "success": 4,
+        "error": 1
+      },
+      "errors": {
+        "ValueError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 1
+      },
+      "response_bytes": 39120,
+      "median_response_bytes": 8386,
+      "max_response_bytes": 9363,
+      "response_sizes": [
+        8594,
+        9363,
+        8386,
+        5995,
+        6782
+      ],
+      "repeated_code_schema_bytes": 20030,
+      "print_only_calls": 0,
+      "truncated_responses": 3,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 5
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w5-r4",
+      "world_id": "world_5",
+      "repeat": 4,
+      "high_precision": false,
+      "code_invocations": 22,
+      "statuses": {
+        "error": 3,
+        "success": 18,
+        "argument_or_runtime_error": 1
+      },
+      "errors": {
+        "NameError": 3,
+        "ValidationError": 1
+      },
+      "error_categories": {
+        "script_entry_contract": 2,
+        "tool_argument_or_entry_error": 1,
+        "other_code_or_numerical_error": 1
+      },
+      "response_bytes": 128868,
+      "median_response_bytes": 5971.0,
+      "max_response_bytes": 9205,
+      "response_sizes": [
+        3977,
+        4062,
+        5846,
+        4226,
+        4661,
+        6437,
+        9205,
+        1718,
+        5825,
+        4369,
+        7442,
+        7428,
+        6058,
+        5884,
+        5393,
+        6214,
+        7200,
+        7908,
+        6652,
+        5603,
+        6435,
+        6325
+      ],
+      "repeated_code_schema_bytes": 43133,
+      "print_only_calls": 0,
+      "truncated_responses": 17,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 20
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w4-r4",
+      "world_id": "world_4",
+      "repeat": 4,
+      "high_precision": true,
+      "code_invocations": 8,
+      "statuses": {
+        "error": 1,
+        "success": 6,
+        "schema_error": 1
+      },
+      "errors": {
+        "ValueError": 1,
+        "OutputSchemaError": 1
+      },
+      "error_categories": {
+        "script_entry_contract": 1,
+        "output_schema": 1
+      },
+      "response_bytes": 49852,
+      "median_response_bytes": 6055.5,
+      "max_response_bytes": 8432,
+      "response_sizes": [
+        5255,
+        6024,
+        6084,
+        5259,
+        6595,
+        6176,
+        8432,
+        6027
+      ],
+      "repeated_code_schema_bytes": 29031,
+      "print_only_calls": 0,
+      "truncated_responses": 6,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 4
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w5-r5",
+      "world_id": "world_5",
+      "repeat": 5,
+      "high_precision": false,
+      "code_invocations": 27,
+      "statuses": {
+        "error": 5,
+        "success": 22
+      },
+      "errors": {
+        "ValueError": 4,
+        "SyntaxError": 1
+      },
+      "error_categories": {
+        "script_entry_contract": 1,
+        "other_code_or_numerical_error": 4
+      },
+      "response_bytes": 117110,
+      "median_response_bytes": 4242,
+      "max_response_bytes": 5631,
+      "response_sizes": [
+        5552,
+        4505,
+        4573,
+        4088,
+        4614,
+        3852,
+        3673,
+        4245,
+        4553,
+        5631,
+        3977,
+        3868,
+        5228,
+        4358,
+        4016,
+        4026,
+        3687,
+        4470,
+        4355,
+        4051,
+        4137,
+        4043,
+        4566,
+        4094,
+        4829,
+        3877,
+        4242
+      ],
+      "repeated_code_schema_bytes": 63221,
+      "print_only_calls": 0,
+      "truncated_responses": 14,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 26
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w4-r5",
+      "world_id": "world_4",
+      "repeat": 5,
+      "high_precision": true,
+      "code_invocations": 3,
+      "statuses": {
+        "error": 1,
+        "success": 2
+      },
+      "errors": {
+        "NameError": 1
+      },
+      "error_categories": {
+        "script_entry_contract": 1
+      },
+      "response_bytes": 16626,
+      "median_response_bytes": 5932,
+      "max_response_bytes": 6397,
+      "response_sizes": [
+        4297,
+        5932,
+        6397
+      ],
+      "repeated_code_schema_bytes": 10023,
+      "print_only_calls": 0,
+      "truncated_responses": 3,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 3
+    },
+    {
+      "experiment": "E2",
+      "run_id": "E2R1-code-w3-r5",
+      "world_id": "world_3",
+      "repeat": 5,
+      "high_precision": true,
+      "code_invocations": 8,
+      "statuses": {
+        "error": 2,
+        "success": 6
+      },
+      "errors": {
+        "IndexError": 1,
+        "ValueError": 1
+      },
+      "error_categories": {
+        "other_code_or_numerical_error": 2
+      },
+      "response_bytes": 44063,
+      "median_response_bytes": 4806.5,
+      "max_response_bytes": 9085,
+      "response_sizes": [
+        4243,
+        4356,
+        4146,
+        8143,
+        5913,
+        9085,
+        5257,
+        2920
+      ],
+      "repeated_code_schema_bytes": 19797,
+      "print_only_calls": 0,
+      "truncated_responses": 6,
+      "field_reads": 0,
+      "code_before_first_formal_fit": 7
+    }
+  ],
+  "notes": [
+    "E2/E3 are separate batches, not paired trajectories of the same model decisions.",
+    "truncated_responses counts explicit truncated=true flags recursively, including the older nested previews; it does not detect unmarked omissions.",
+    "Print-only scripts now count as execution success with an explicit missing-result warning; do not treat this definition change alone as improved scientific reasoning.",
+    "Response bytes measure tool message JSON, not billed tokens or total model context. Earlier code requests still remain in conversation history."
+  ]
+}
