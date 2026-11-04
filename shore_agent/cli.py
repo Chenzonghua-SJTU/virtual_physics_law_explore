@@ -48,7 +48,7 @@ def main():
     key_env, key_required = model_auth_config(config['model'])
     env = Environment(config['environment'], secret_env_names=(key_env,))
     try:
-        runtime = ToolRuntime(env, directory, config=config.get('numerics'))
+        runtime = ToolRuntime(env, directory, config=config.get('numerics'), code_config=config.get('code_execution'))
         mission = runtime.mission()
         if not mission['ok']:
             raise RuntimeError(mission['error'])

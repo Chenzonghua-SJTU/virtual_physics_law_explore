@@ -33,7 +33,7 @@ PRIVATE_FIELDS = {'api_key', 'deepseek_api_key', 'authorization', 'access_token'
                   'raw_response', 'raw_messages', 'model_messages', 'password', 'secret'}
 RECORD_KINDS = {'probes': 'probe', 'laws': 'law', 'validations': 'validation',
                 'summaries': 'data_summary', 'submissions': 'submission',
-                'body_observations': 'body_observation'}
+                'body_observations': 'body_observation', 'code_executions': 'code_execution'}
 MAX_FILE_BYTES = 32 * 1024 * 1024
 
 
@@ -311,6 +311,7 @@ class RunManager:
         return [{'id': item, 'name': labels.get(item, item)} for item in names]
 
     def client_configuration(self):
+        from .code_execution import sandbox_info
         config = self._server_config()
         model, environment = config['model'], config['environment']
         key_env, key_required = model_auth_config(model)
@@ -318,11 +319,13 @@ class RunManager:
             'models': self._model_options(config),
             'api_key_configured': bool(os.environ.get(key_env, '').strip()),
             'api_key_required': key_required,
+            'code_sandbox': sandbox_info(config.get('code_execution')),
             'defaults': {
                 **{name: environment[name] for name in ('noise', 'seed', 'world_id')},
                 **{name: model[name] for name in ('model', 'max_total_tokens', 'max_tokens_per_call',
                                                   'thinking', 'reasoning_effort')},
                 'max_calls': None,
+                'code_enabled': config.get('code_execution', {}).get('enabled', False),
             },
         }
 
@@ -336,7 +339,7 @@ class RunManager:
 
     def _config(self, payload):
         allowed = {'model', 'noise', 'seed', 'max_calls', 'max_total_tokens', 'max_tokens_per_call',
-                   'thinking', 'reasoning_effort', 'api_key', 'world_id'}
+                   'thinking', 'reasoning_effort', 'api_key', 'world_id', 'code_enabled'}
         if not isinstance(payload, dict) or set(payload) - allowed:
             raise ValidationError('invalid_run_configuration')
         config = self._server_config()
@@ -344,7 +347,7 @@ class RunManager:
             config['environment']['world_id'] = validate_world_id(payload.get('world_id', config['environment']['world_id']))
         except ValueError:
             raise ValidationError('invalid_world_id') from None
-        for name in ('noise', 'thinking'):
+        for name in ('noise', 'thinking', 'code_enabled'):
             if name in payload and type(payload[name]) is not bool:
                 raise ValidationError('invalid_run_configuration')
         if 'model' in payload:
@@ -367,6 +370,12 @@ class RunManager:
             config['environment']['noise'] = payload['noise']
         if 'thinking' in payload:
             config['model']['thinking'] = payload['thinking']
+        if 'code_enabled' in payload:
+            config.setdefault('code_execution', {})['enabled'] = payload['code_enabled']
+        if config.get('code_execution', {}).get('enabled'):
+            from .code_execution import sandbox_info
+            if not sandbox_info(config.get('code_execution'))['available']:
+                raise ValidationError('code_sandbox_unavailable')
         # Old browser tabs can still send max_calls; it no longer constrains new
         # sessions. Keep explicit nulls so snapshots distinguish the new policy.
         config['model']['max_calls'] = None
@@ -602,6 +611,21 @@ class RunManager:
         rows.sort(key=lambda row: str(row['deleted_at']), reverse=True)
         return _public(rows)
 
+    def code_artifact(self, run_id, execution_id, filename):
+        from .code_execution import ARTIFACT_NAME, MIMES
+        directory = self._directory(run_id)
+        if not re.fullmatch(r'code_[0-9a-f]{12}', execution_id) or not ARTIFACT_NAME.fullmatch(filename):
+            raise FileNotFoundError('unknown_artifact')
+        record = _read(directory / 'records' / 'code_execution' / (execution_id + '.json'), directory, {})
+        meta = next((a for a in record.get('artifacts', []) if a.get('name') == filename), None)
+        path = directory / 'code_executions' / execution_id / 'artifacts' / filename
+        if not meta or not _safe_file(path, directory) or path.suffix not in MIMES:
+            raise FileNotFoundError('unknown_artifact')
+        content = path.read_bytes()
+        if hashlib.sha256(content).hexdigest() != meta.get('sha256'):
+            raise FileNotFoundError('artifact_changed')
+        return content, MIMES[path.suffix]
+
     def close(self):
         with self._lock:
             if self._closed:
@@ -737,6 +761,8 @@ class RunManager:
                             'limits': {k: model_config.get(k) for k in ('max_calls', 'max_total_tokens', 'max_tokens_per_call')},
                             'model_settings': {k: model_config.get(k) for k in
                                                ('model', 'thinking', 'reasoning_effort', 'reasoning_protocol')},
+                            'code_enabled': configuration.get('code_execution', {}).get('enabled', False),
+                            'experiment_id': metadata.get('experiment_id'), 'experiment_arm': metadata.get('arm'),
                             'budget': budget, 'model_usage': usage, 'records': records, 'result': result,
                             'evaluation': evaluation,
                             **_evaluation_projection(directory, status, metadata, configuration, mission, evaluation, running),

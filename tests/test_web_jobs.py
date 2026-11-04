@@ -68,6 +68,7 @@ def launch(monkeypatch):
         return process
 
     monkeypatch.setattr(web_jobs.subprocess, 'Popen', popen)
+    monkeypatch.setattr('shore_agent.code_execution.sandbox_info', lambda *_: {'available': False, 'reason': 'test environment'})
     monkeypatch.setattr(web_jobs.os, 'killpg', lambda pid, sig: signals.append((pid, sig)))
     return calls, signals
 

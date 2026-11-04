@@ -40,3 +40,31 @@ SCHEMAS = [
           'claims': obj({'dynamics_order': {'type': 'integer', 'enum': [1, 2]},
                                                    'hidden_matter': {'type': 'boolean'}, 'time_dependence': {'type': 'boolean'}})})
 ]
+
+# Baseline is deliberately byte-for-byte unchanged for E2's control arm.
+CODE_SCHEMA = tool('run_code',
+    '在隔离Python环境中运行自编分析。定义analyze(inputs)并返回符合output_schema的有限JSON数据；'
+    'inputs各别名映射为所引用记录的完整内容列表（单条也是列表），不必抄写观测。'
+    '预装numpy/scipy/sympy/matplotlib；可在output/保存png/json/csv/txt文件。'
+    '每次全新容器，90秒/1GiB/1CPU，无网络和宿主文件；不产生新观测，不访问真实规律。'
+    '返回结果、日志/报错、执行编号和产物；失败可修改代码重试。输出是计算结果，不是自动验证通过；'
+    '拟合及最终验证/submit仍使用原工具。',
+    {'code': {'type': 'string', 'minLength': 1, 'maxLength': 60000},
+     'inputs': {'type': 'object', 'minProperties': 0, 'maxProperties': 16,
+                'propertyNames': {'pattern': r'^[A-Za-z][A-Za-z0-9_]{0,39}$'},
+                'additionalProperties': obj({
+                    'record_type': {'type': 'string', 'enum': ['body_observation', 'probe', 'law', 'validation', 'residual', 'code_execution']},
+                    'record_ids': IDS})},
+     'output_schema': {'type': 'object', 'description':
+         '返回值JSON Schema；支持type/properties/required/items/additionalProperties/enum/数值及长度界限。'
+         '不支持$ref、pattern、组合schema。numpy数组须.tolist()，标量须.item()，不可返回NaN/Infinity。'}})
+
+
+def tool_schemas(code_enabled=False):
+    if not code_enabled:
+        return SCHEMAS
+    import copy
+    schemas = copy.deepcopy(SCHEMAS)
+    callback = next(s for s in schemas if s['function']['name'] == 'call_back')
+    callback['function']['parameters']['properties']['record_type']['enum'].append('code_execution')
+    return schemas + [copy.deepcopy(CODE_SCHEMA)]

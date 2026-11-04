@@ -7,12 +7,13 @@
     selected: null, busy: false, connected: false, timer: null, generation: 0,
     renderedEvents: new Set(), liveIds: new Set(), lastChartSignature: '', toastTimer: null,
     listAt: 0, manuallySelectedLaw: false, lawNames: new Map(),
-    deletedRuns: [], historyBusy: null, historyRevision: 0, worlds: [], bodyTime: null,
+    deletedRuns: [], historyBusy: null, historyRevision: 0, worlds: [], bodyTime: null, codeAvailable: false,
   };
   const tools = {
     observe_body: '观测公开天体', insert_probe: '投放探针', summarize_data: '分析实验数据',
     fit_law_and_rollout: '拟合候选规律', validate_law: '验证独立轨迹',
     call_back: '查阅实验档案', analyze_residual: '分析预测残差', submit: '提交候选规律',
+    run_code: '运行分析代码',
   };
   const statuses = {
     running: '正在探索', starting: '正在启动', stopping: '正在停止', stopped: '已停止', evaluating: '独立评测中', interrupted: '探索已中断',
@@ -31,6 +32,7 @@
     server_error: '实验台暂时无法完成请求，请稍后重试。',
     invalid_model: '模型名称无效，请检查后重试。',
     invalid_reasoning_effort: '推理强度无效，请选择低、高或最高。',
+    code_sandbox_unavailable: '代码执行环境未就绪，请先启动 Docker 并构建执行镜像。',
     invalid_world_id: '实验世界无效，请重新选择世界后再试。',
     invalid_seed: '随机种子超出允许范围，请检查后重试。',
     invalid_max_total_tokens: 'Token 预算超出允许范围，请检查后重试。',
@@ -160,6 +162,7 @@
     $('stop-button').disabled = state.busy || (state.run?.id === state.active && state.run?.status === 'stopping');
     for (const id of ['model', 'api-key', 'world-select', 'noise', 'thinking', 'seed', 'max-tokens', 'output-tokens']) $(id).disabled = active || state.busy;
     $('reasoning-effort').disabled = active || state.busy || !$('thinking').checked;
+    $('code-enabled').disabled = active || state.busy || !state.codeAvailable;
   }
   function formatDate(value) {
     if (!value) return '时间未记录';
@@ -445,6 +448,7 @@
     }
     if (event.kind === 'tool_result') {
       if (event.ok === false) return '执行未成功；Agent 将依据返回结果继续判断。';
+      if (data.execution_id) return `${data.execution_id} · ${data.status === 'success' ? '计算完成' : '计算未完成：' + data.status} · ${scientific(data.elapsed_seconds)} 秒`;
       if (data.law_id) return `${lawName(data.law_id)}${data.errors?.overall ? ` · 位置 RMSE ${scientific(data.errors.overall.position_rmse)}` : ''}`;
       if (data.submission_id) return data.status === 'accepted' ? '本地提交已受理；受理仅表示格式与执行检查完成。' : '已收到本地提交检查结果。';
       if (data.probe_ids) return `已取得 ${asArray(data.probe_ids).length} 条轨迹`;
@@ -468,12 +472,13 @@
       const key = event.seq ?? index;
       if (state.renderedEvents.has(key)) return;
       state.renderedEvents.add(key);
-      const row = node('article', `timeline-event ${['progress', 'tool_start', 'tool_result', 'status'].includes(event.kind) ? event.kind : 'progress'}${event.ok === false ? ' failed' : ''}`);
+      const failed = event.ok === false || (event.tool === 'run_code' && event.kind === 'tool_result' && event.data?.status !== 'success');
+      const row = node('article', `timeline-event ${['progress', 'tool_start', 'tool_result', 'status'].includes(event.kind) ? event.kind : 'progress'}${failed ? ' failed' : ''}`);
       row.append(node('span', 'event-dot'));
       const heading = node('div', 'event-heading');
       let title = event.kind === 'progress' ? 'Agent 进展' : event.kind === 'status' ? '会话状态' : tools[event.tool] || '执行工具';
       if (event.kind === 'tool_start') title += ' · 开始';
-      if (event.kind === 'tool_result') title += event.ok === false ? ' · 未完成' : ' · 返回';
+      if (event.kind === 'tool_result') title += failed ? ' · 未完成' : ' · 返回';
       heading.append(node('span', 'event-title', title), node('span', 'event-seq', String(index + 1).padStart(2, '0')));
       row.append(heading);
       const description = eventDescription(event);
@@ -483,6 +488,16 @@
         details.append(node('summary', '', event.tool || '查看记录'));
         details.append(node('pre', '', displayPrintable({arguments: event.arguments, ok: event.ok, data: event.data, error: event.error})));
         row.append(details);
+      }
+      if (event.tool === 'run_code' && event.kind === 'tool_result' && /^code_[0-9a-f]{12}$/.test(event.data?.execution_id || '')) {
+        const execution = asArray(state.run?.records?.code_executions).find((item) => item.execution_id === event.data.execution_id) || event.data;
+        for (const artifact of asArray(execution.artifacts)) {
+          if (!/^[A-Za-z0-9][A-Za-z0-9_.-]{0,95}$/.test(artifact.name)) continue;
+          const link = node('a', 'text-action', `下载 ${artifact.name}`);
+          link.href = `/api/runs/${encodeURIComponent(state.selected)}/code/${execution.execution_id}/artifacts/${encodeURIComponent(artifact.name)}`;
+          link.download = artifact.name;
+          row.append(link);
+        }
       }
       timeline.append(row);
     });
@@ -772,6 +787,7 @@
       model: $('model').value.trim(), world_id: $('world-select').value, noise: $('noise').checked, seed: Number($('seed').value),
       max_total_tokens: Number($('max-tokens').value), max_tokens_per_call: Number($('output-tokens').value), thinking: $('thinking').checked,
       reasoning_effort: $('reasoning-effort').value,
+      code_enabled: $('code-enabled').checked && state.codeAvailable,
     };
     if ($('api-key').value.trim()) body.api_key = $('api-key').value.trim();
     $('api-key').value = '';
@@ -805,6 +821,8 @@
     try {
       const data = await api('/api/bootstrap');
       state.token = data.token; state.configured = data.api_key_configured; state.keyRequired = data.api_key_required ?? true; state.defaults = data.defaults || {};
+      state.codeAvailable = Boolean(data.code_sandbox?.available);
+      $('code-note').textContent = state.codeAvailable ? '用已取得的数据进行自定义计算；每次最多 90 秒。' : data.code_sandbox?.reason || '代码执行环境未就绪。';
       const selectedModel = $('model').value;
       const models = asArray(data.models);
       if (models.length) $('model').replaceChildren(...models.map((model) => new Option(model.name, model.id)));
@@ -824,6 +842,7 @@
         $('noise').checked = Boolean(state.defaults.noise);
         $('thinking').checked = state.defaults.thinking ?? true;
         $('reasoning-effort').value = state.defaults.reasoning_effort || 'low';
+        $('code-enabled').checked = Boolean(state.defaults.code_enabled) && state.codeAvailable;
         $('seed').value = state.defaults.seed ?? 42;
         $('max-tokens').value = state.defaults.max_total_tokens ?? 5000000;
         $('output-tokens').value = state.defaults.max_tokens_per_call ?? 65536;

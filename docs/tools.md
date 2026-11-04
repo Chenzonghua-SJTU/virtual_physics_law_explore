@@ -1,6 +1,6 @@
-# 七个科研工具与数据约定
+# 科研工具与数据约定
 
-本文按当前 [工具 JSON Schema](../shore_agent/schemas.py)、[执行层](../shore_agent/runtime.py)、[记录库](../shore_agent/store.py)、[表达式解释器](../shore_agent/expressions.py)、[数值工具](../shore_agent/numerics.py) 和 [提交生成器](../shore_agent/submission.py) 编写。运行时模型只有下面七个工具，没有 Shell、任意 Python、任意文件读取或隐藏评测接口。本文不包含环境真实动力学。已移除 summarize_data 工具和分析子 Agent；旧会话中的 data_summary 档案与日志只为历史查看保留，不再由新探索生成。
+本文按 [工具 JSON Schema](../shore_agent/schemas.py)、[执行层](../shore_agent/runtime.py)、[记录库](../shore_agent/store.py)、[表达式解释器](../shore_agent/expressions.py)、[数值工具](../shore_agent/numerics.py) 和 [提交生成器](../shore_agent/submission.py) 编写。默认提供下面七个工具；可选的第八个工具 `run_code` 及其隔离执行、输入输出协议见[代码工具说明](code_execution.md)。没有宿主文件访问或隐藏评测接口。本文不包含环境真实动力学。已移除 summarize_data 工具和分析子 Agent；旧会话中的 data_summary 档案与日志只为历史查看保留，不再由新探索生成。
 
 ## 统一返回与时间
 

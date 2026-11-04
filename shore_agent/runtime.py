@@ -8,7 +8,7 @@ from pathlib import Path
 
 import numpy as np
 from jsonschema import validate
-from .schemas import SCHEMAS
+from .schemas import SCHEMAS, tool_schemas
 from .store import Store, preview, append_event
 from .observations import estimate_static_bodies, estimate_body_trajectories
 from .expressions import Expression
@@ -34,12 +34,17 @@ def statistics(a):
 class ToolRuntime:
     schemas = SCHEMAS
 
-    def __init__(self, environment, run_dir, config=None):
+    def __init__(self, environment, run_dir, config=None, code_config=None):
         self.environment = environment
         self.run_dir = Path(run_dir)
         self.run_dir.mkdir(parents=True, exist_ok=True)
         self.store = Store(self.run_dir / 'records')
         self.config = config or {}
+        self.code_config = code_config or {}
+        self.code_enabled = self.code_config.get('enabled', False)
+        if type(self.code_enabled) is not bool:
+            raise ValueError('code_execution.enabled must be boolean')
+        self.schemas = tool_schemas(self.code_enabled)
         self.task = None
         self.known_bodies = []
         self.body_position_estimate = None
@@ -262,6 +267,36 @@ class ToolRuntime:
         if law.get('body_input_protocol') == 'instantaneous_visible_state':
             record.update(body_context=body_inputs, body_input_protocol='instantaneous_visible_state')
         self.store.add('residual', record, rid)
+        return preview(record)
+
+    def run_code(self, code, inputs, output_schema):
+        import hashlib
+        from .code_execution import execute_code, validate_output_schema
+        if not self.code_enabled:
+            raise ValueError('Code execution is disabled')
+        validate_output_schema(output_schema)
+        loaded, provenance = {}, {}
+        for alias, reference in inputs.items():
+            loaded[alias] = [self.store.get(reference['record_type'], rid) for rid in reference['record_ids']]
+            provenance[alias] = dict(reference, sha256=[hashlib.sha256(
+                json.dumps(item, sort_keys=True, ensure_ascii=False, allow_nan=False).encode()).hexdigest()
+                for item in loaded[alias]])
+        rid = 'code_' + uuid.uuid4().hex[:12]
+        parent = self.run_dir / 'code_executions' / rid
+        parent.mkdir(parents=True, exist_ok=False)
+        (parent / 'analysis.py').write_text(code, encoding='utf-8')
+        (parent / 'inputs.json').write_text(json.dumps(loaded, ensure_ascii=False, allow_nan=False), encoding='utf-8')
+        (parent / 'output_schema.json').write_text(json.dumps(output_schema), encoding='utf-8')
+        try:
+            result = execute_code(code, loaded, output_schema, parent / 'artifacts', self.code_config,
+                                  max(0, self.budget()['wall_seconds_remaining'] - 10))
+        except (ValueError, OSError) as exc:
+            result = {'status': 'unavailable', 'result': None, 'error': {'type': type(exc).__name__,
+                      'message': str(exc)[:1500]}, 'stdout': '', 'stderr': '', 'artifacts': []}
+        record = dict(result, execution_id=rid, code=code, inputs=provenance,
+                      output_schema=output_schema,
+                      meaning='Computed from acquired data; not an independent experiment or correctness verdict.')
+        self.store.add('code_execution', record, rid)
         return preview(record)
 
     def submit(self, law_id, claims, physical_explanation):

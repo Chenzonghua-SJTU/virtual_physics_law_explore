@@ -112,6 +112,11 @@ class Handler(BaseHTTPRequestHandler):
             if path == '/api/runs':
                 return self._reply(200, self.server.manager.list_runs())
             pieces = (path or '').strip('/').split('/')
+            if (len(pieces) == 7 and pieces[:2] == ['api', 'runs'] and RUN_ID.fullmatch(pieces[2])
+                    and pieces[3] == 'code' and pieces[5] == 'artifacts'):
+                content, mime = self.server.manager.code_artifact(pieces[2], pieces[4], pieces[6])
+                return self._reply(200, content, mime, extra={
+                    'Content-Disposition': f'attachment; filename="{pieces[6]}"'})
             if len(pieces) in (3, 4) and pieces[:2] == ['api', 'runs'] and RUN_ID.fullmatch(pieces[2]):
                 if len(pieces) == 4 and pieces[3] != 'export':
                     return self._error(404, 'not_found')

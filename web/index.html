@@ -38,6 +38,7 @@
             <div class="thinking-setting"><label class="thinking-toggle" for="thinking"><input id="thinking" name="thinking" type="checkbox" checked>启用思考模式</label><p class="field-hint">关闭可缩短响应时间；探索质量需结合验证判断。</p></div>
             <label class="field-label" for="reasoning-effort">推理强度</label><select id="reasoning-effort" name="reasoning_effort" aria-describedby="reasoning-effort-note"><option value="low">低 · low</option><option value="high">高 · high</option><option value="max">最高 · max</option></select>
             <p id="reasoning-effort-note" class="field-hint">在思考模式下生效；更高档位可能增加推理时间和用量。</p>
+            <div class="thinking-setting"><label class="thinking-toggle" for="code-enabled"><input id="code-enabled" name="code_enabled" type="checkbox">允许 Agent 编写分析代码</label><p id="code-note" class="field-hint">用已取得的数据进行自定义计算；每次最多 90 秒。</p></div>
             <label class="field-label" for="seed">随机种子</label><input id="seed" name="seed" type="number" min="0" max="2147483647" value="42" required>
             <label class="field-label" for="max-tokens">Token 总预算</label><input id="max-tokens" name="max_total_tokens" type="number" min="1000" max="10000000" value="5000000" step="1000" required>
             <label class="field-label" for="output-tokens">单次输出上限</label><input id="output-tokens" name="max_tokens_per_call" type="number" min="64" max="393216" value="65536" step="1" required aria-describedby="output-token-note">

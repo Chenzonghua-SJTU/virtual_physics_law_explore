@@ -78,6 +78,11 @@ class Agent:
         mission = self.runtime.mission()
         self.last_budget = mission.get('budget') or {}
         prompt = (Path(__file__).parent / 'prompts' / 'main.txt').read_text(encoding='utf-8')
+        if getattr(self.runtime, 'code_enabled', False):
+            prompt = prompt.replace('7 个工具', '8 个工具')
+            prompt = prompt.replace('不可访问任意文件、Shell、网络、源码或任意 Python。',
+                                    '代码只可通过run_code在隔离环境执行，不可访问宿主文件、网络或仿真源码。')
+            prompt += '\n\n' + (Path(__file__).parent / 'prompts' / 'code.txt').read_text(encoding='utf-8')
         self.messages = [{'role': 'system', 'content': prompt},
                          {'role': 'user', 'content': '当前任务与合法初始观测：\n' +
                           json.dumps(mission, ensure_ascii=False, allow_nan=False)}]

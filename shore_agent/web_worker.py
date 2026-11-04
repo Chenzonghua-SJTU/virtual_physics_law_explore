@@ -35,7 +35,7 @@ def run(directory):
         from .runtime import ToolRuntime
         from .store import append_event
         environment = Environment(config['environment'], secret_env_names=(key_env,))
-        runtime = ToolRuntime(environment, directory, config=config.get('numerics'))
+        runtime = ToolRuntime(environment, directory, config=config.get('numerics'), code_config=config.get('code_execution'))
         mission = runtime.mission()
         _metadata(directory, session_started_at=_now(), initial_budget=mission.get('budget') or {})
         append_event(directory / 'events.jsonl', {'event': 'session_started', 'budget': mission.get('budget')})

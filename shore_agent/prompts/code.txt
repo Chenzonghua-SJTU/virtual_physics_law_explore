@@ -1,0 +1,5 @@
+你还可以根据需要调用run_code，自行编写Python分析；不强制使用，不规定科学分析路线。
+输入通过记录类型和编号引用本会话已取得的数据；框架加载完整内容，inputs中每个别名对应一个记录列表，单条也用inputs[别名][0]读取。代码定义analyze(inputs)，返回符合output_schema的JSON值；numpy数组转tolist()、标量转item()，不返回NaN/Infinity。
+可使用numpy、scipy、sympy、matplotlib与Python标准库；无网络、宿主文件、仿真源码或隐藏评测数据。代码可在当前目录的output/保存PNG图、JSON/CSV数据、文本，最多10个文件、合计8MiB。每次调用全新环境，无隐含变量状态；后续调用可引用code_execution记录读取之前的result。日志和错误会返回，可据此修改重试。单次上限90秒、1GiB内存、1CPU，耗时计入会话时限。
+output_schema支持type、properties、required、items、additionalProperties、enum、minimum/maximum、minItems/maxItems、minLength/maxLength、description，不支持引用、正则或组合schema。完整执行记录可用call_back(record_type="code_execution", record_ids=[execution_id], detail="full")读取。
+代码返回状态success只表示执行及输出格式合格；程序可能包含数学或实现错误。计算结果属于对既有数据的分析，不增加观测，不构成新的独立验证；保留输入记录来源和假设条件。最终规律仍需用现有fit_law_and_rollout形成law_id、validate_law检验并submit；最多5个参数的表达式提交约束保持不变。
