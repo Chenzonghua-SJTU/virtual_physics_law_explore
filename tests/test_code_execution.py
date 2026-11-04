@@ -62,7 +62,7 @@ def test_input_record_provenance_full_arrays_and_immutable_cache(tmp_path, monke
             return dict(status='success', result={'n': 8}, elapsed_seconds=.01, artifacts=[])
 
         monkeypatch.setattr('shore_agent.code_execution.execute_code', run)
-        args = dict(code='def analyze(inputs): return {}', inputs={'p': {'record_type': 'probe', 'record_ids': [rid]}}, output_schema={})
+        args = dict(code='result = {}', inputs={'p': {'record_type': 'probe', 'record_ids': [rid]}})
         reply = rt.execute('run_code', args)
         assert reply['ok'] and reply['data']['status'] == 'success'
         execution = reply['data']['execution_id']

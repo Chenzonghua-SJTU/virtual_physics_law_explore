@@ -17,7 +17,7 @@ import uuid
 
 from jsonschema import Draft202012Validator
 
-IMAGE = 'shore-code:e2-v1'
+IMAGE = 'shore-code:e3-v2'
 MAX_RESPONSE = 14 * 1024 * 1024
 MAX_INPUT = 24 * 1024 * 1024
 ARTIFACT_NAME = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,95}')
@@ -84,6 +84,10 @@ def _decode(response, output_dir, schema):
         raise ValueError('invalid sandbox response')
     record = {key: response.get(key) for key in ('status', 'result', 'error', 'stdout', 'stderr',
               'compute_seconds', 'cpu_seconds_reported', 'peak_rss_kib_reported')}
+    warnings = response.get('warnings', [])
+    if not isinstance(warnings, list) or len(warnings) > 10 or any(not isinstance(w,str) or len(w)>2000 for w in warnings):
+        raise ValueError('invalid sandbox warnings')
+    record['warnings'] = warnings
     for key in ('stdout', 'stderr'):
         if not isinstance(record[key], str):
             raise ValueError('invalid sandbox log')

@@ -1,5 +1,13 @@
-你还可以根据需要调用run_code，自行编写Python分析；不强制使用，不规定科学分析路线。
-输入通过记录类型和编号引用本会话已取得的数据；框架加载完整内容，inputs中每个别名对应一个记录列表，单条也用inputs[别名][0]读取。代码定义analyze(inputs)，返回符合output_schema的JSON值；numpy数组转tolist()、标量转item()，不返回NaN/Infinity。
-可使用numpy、scipy、sympy、matplotlib与Python标准库；无网络、宿主文件、仿真源码或隐藏评测数据。代码可在当前目录的output/保存PNG图、JSON/CSV数据、文本，最多10个文件、合计8MiB。每次调用全新环境，无隐含变量状态；后续调用可引用code_execution记录读取之前的result。日志和错误会返回，可据此修改重试。单次上限90秒、1GiB内存、1CPU，耗时计入会话时限。
-output_schema支持type、properties、required、items、additionalProperties、enum、minimum/maximum、minItems/maxItems、minLength/maxLength、description，不支持引用、正则或组合schema。完整执行记录可用call_back(record_type="code_execution", record_ids=[execution_id], detail="full")读取。
-代码返回状态success只表示执行及输出格式合格；程序可能包含数学或实现错误。计算结果属于对既有数据的分析，不增加观测，不构成新的独立验证；保留输入记录来源和假设条件。最终规律仍需用现有fit_law_and_rollout形成law_id、validate_law检验并submit；最多5个参数的表达式提交约束保持不变。
+你还可以按需调用run_code，自行编写普通Python脚本；不强制使用，不规定科学分析路线。
+只提供code和inputs。inputs按记录类型及编号引用本会话已取得的数据，框架加载完整内容；每个别名始终对应记录列表，单条也用inputs[别名][0]。同类记录用同一个别名即可，不必每条单独起名；最多16个别名、每别名102条记录。
+脚本中inputs已可用，将输出赋给result，不需要定义analyze函数或编写output_schema。仅print的脚本也可执行，stdout返回输出并提示没有可复用的result，不会因缺少函数或result而要求重跑。NumPy数组、标量和元组自动转换为JSON；NaN/Infinity会明确报错，不静默替换。确实缺失的值可以显式用None并说明原因。
+例：inputs={"probes":{"record_type":"probe","record_ids":["probe_0001","probe_0002"]}}，code可写：
+import numpy as np
+p = inputs["probes"][0]
+v = np.asarray(p["v_obs"])
+result = {"samples":len(p["times"]), "mean_speed":np.linalg.norm(v,axis=1).mean()}
+探针记录的times为(N,)时刻，r_obs和v_obs为(N,2)的位置/速度；a_est是差分估计加速度，a_est_times是它自己的时刻，二者可能缺失，不能假设与times等长。检查记录字段、长度和时刻后再组合数据；没有名为positions的统一字段。输入只包含已取得记录，不包含隐藏真值。
+可使用numpy/scipy/sympy/matplotlib及Python标准库。小型结果完整返回，大数组/长文本会明确标记预览，原始允许大小内的结果仍完整存档。不要只返回{"ok":1}而把全部结果打印出来；直接将需要比较的数值放进result即可，不要求另写研究报告。output/可保存PNG/JSON/CSV/TXT文件，最多10个、合计8MiB。
+需要细看结果时可调用call_back(record_type="code_execution",record_ids=[execution_id],field_path=["result","fits"],offset=0,limit=20)。field_path逐层指定字典键或列表下标，offset/limit用于列表切片或字符串字符范围；每次最多1000项/字符，过大仍标记预览，可缩小范围。完整记录也可用detail="full"读取；后续代码可直接引用code_execution记录的result，无需把全部数据先读回对话。
+每次新容器，无隐含变量状态，无网络/宿主文件/仿真源码/隐藏评测访问。单次90秒、1GiB、1CPU，耗时计入会话时限。错误返回类型、行号、相关代码行和输入字段/形状，可据此修正。完整代码、输入来源、结果和日志保留在记录中。
+success只表示执行及输出格式合格，程序可能有数学或实现错误。代码计算不增加观测，也不构成新的独立验证。最终规律仍需用fit_law_and_rollout形成law_id、validate_law检验并submit；最多5个参数的表达式提交约束保持不变。

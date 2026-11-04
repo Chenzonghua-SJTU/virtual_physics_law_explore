@@ -237,8 +237,22 @@ class ToolRuntime:
         self.store.add('validation', data, rid)
         return preview(data)
 
-    def call_back(self, record_type='all', record_ids=None, detail='summary'):
-        return {'records': self.store.query(record_type, record_ids, detail)}
+    def call_back(self, record_type='all', record_ids=None, detail='summary', field_path=None, offset=None, limit=None):
+        from .code_response import execution_preview, select_field
+        if field_path is not None:
+            if not self.code_enabled or record_type == 'all' or not record_ids or len(record_ids) != 1:
+                raise ValueError('Field retrieval requires code mode, one explicit record type and one acquired record ID')
+            selected = select_field(self.store.get(record_type, record_ids[0]), field_path,
+                                    0 if offset is None else offset, 20 if limit is None else limit)
+            return dict(selected, record_type=record_type, record_id=record_ids[0], field_path=field_path)
+        if offset is not None or limit is not None:
+            raise ValueError('offset/limit require field_path')
+        records = self.store.query(record_type, record_ids, detail)
+        if self.code_enabled and detail == 'summary':
+            for item in records:
+                if item['record_type'] == 'code_execution':
+                    item['content'] = execution_preview(self.store.get('code_execution',item['record_id']))
+        return {'records': records}
 
     def analyze_residual(self, law_id, probe_ids):
         law = self._law(law_id)
@@ -269,12 +283,13 @@ class ToolRuntime:
         self.store.add('residual', record, rid)
         return preview(record)
 
-    def run_code(self, code, inputs, output_schema):
+    def run_code(self, code, inputs):
         import hashlib
-        from .code_execution import execute_code, validate_output_schema
+        from .code_execution import execute_code
+        from .code_response import execution_preview
         if not self.code_enabled:
             raise ValueError('Code execution is disabled')
-        validate_output_schema(output_schema)
+        output_schema = {}  # no model-authored output contract required
         loaded, provenance = {}, {}
         for alias, reference in inputs.items():
             loaded[alias] = [self.store.get(reference['record_type'], rid) for rid in reference['record_ids']]
@@ -297,7 +312,7 @@ class ToolRuntime:
                       output_schema=output_schema,
                       meaning='Computed from acquired data; not an independent experiment or correctness verdict.')
         self.store.add('code_execution', record, rid)
-        return preview(record)
+        return execution_preview(record)
 
     def submit(self, law_id, claims, physical_explanation):
         from .submission import export_submission

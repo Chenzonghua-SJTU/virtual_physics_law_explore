@@ -8,10 +8,10 @@
 
 ```sh
 colima start shore-code --cpu 4 --memory 6 --disk 20 --mount none --activate=false --ssh-config=false
-docker --context colima-shore-code build -t shore-code:e2-v1 code_sandbox
+docker --context colima-shore-code build -t shore-code:e3-v2 code_sandbox
 ```
 
-Linux / 其他 Docker 环境可使用 `docker build -t shore-code:e2-v1 code_sandbox`，配置中的 `docker_context` 可指定受信任服务端 context。Mac 存在上述 profile 的 socket 时自动选用它。镜像仅包含执行器及 numpy/scipy/sympy/matplotlib，不复制项目、实验记录或仿真源码。构建 context 由 `.dockerignore` 限制为 Dockerfile 和 runner.py。
+Linux / 其他 Docker 环境可使用 `docker build -t shore-code:e3-v2 code_sandbox`，配置中的 `docker_context` 可指定受信任服务端 context。Mac 存在上述 profile 的 socket 时自动选用它。镜像仅包含执行器及 numpy/scipy/sympy/matplotlib，不复制项目、实验记录或仿真源码。构建 context 由 `.dockerignore` 限制为 Dockerfile 和 runner.py。
 
 若官方默认下载源不可达，本次本机构建使用：
 
@@ -19,42 +19,57 @@ Linux / 其他 Docker 环境可使用 `docker build -t shore-code:e2-v1 code_san
 docker --context colima-shore-code build \
   --build-arg BASE_IMAGE=public.ecr.aws/docker/library/python:3.11-slim \
   --build-arg PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
-  -t shore-code:e2-v1 code_sandbox
+  -t shore-code:e3-v2 code_sandbox
 ```
 
 默认每次1CPU、1GiB内存、90秒计算期限（容器启动/传输有最多8秒宽限）、64进程/线程、128MiB工作目录、32MiB临时目录。限时也受会话剩余时间限制；主机监督超时强制结束容器。容器非root、只读根文件系统、无网络、无宿主挂载、无Docker socket、丢弃全部 capabilities、禁止新增权限；Docker默认seccomp继续生效。每次重新创建并最终删除容器。标准库和任意Python语法可用，安全边界是容器，不是Python字符串或AST过滤器。
 
-## 工具协议
+## 工具协议（v2）
+
+`run_code`只有两个必填参数：`code`和`inputs`。不要求Agent编写输出schema。
 
 ```json
 {
-  "code": "import numpy as np\ndef analyze(inputs):\n    p = inputs['trajectories'][0]\n    return {'n_samples': len(p['times']), 'mean_speed': float(np.linalg.norm(p['v_obs'], axis=1).mean())}",
+  "code": "import numpy as np\np = inputs['trajectories'][0]\nresult = {'n_samples': len(p['times']), 'mean_speed': np.linalg.norm(p['v_obs'], axis=1).mean()}",
   "inputs": {
     "trajectories": {"record_type": "probe", "record_ids": ["probe_0001"]}
-  },
-  "output_schema": {
-    "type": "object",
-    "required": ["n_samples", "mean_speed"],
-    "properties": {"n_samples": {"type": "integer"}, "mean_speed": {"type": "number"}}
   }
 }
 ```
 
-每个输入别名映射为完整记录内容的列表，单条也是列表。支持本会话已有 `probe/body_observation/law/validation/residual/code_execution`；不接受文件路径，也不传入真实世界配置、隐藏评测、模型消息或凭证。后续代码通过 `inputs['previous'][0]['result']` 复用已有计算结果。输入记录逐个保存SHA256，原始记录不会被修改。代码可以自行处理这些公开输入，不能借工具产生新观测。
+脚本直接使用预置的`inputs`，把输出赋给`result`；旧的`analyze(inputs)`函数形式仍兼容（脚本定义result时以它为准）。仅print的脚本也能运行：结果为null、返回stdout及无结构化结果提示，不会仅因缺少函数或result要求重跑。执行成功不等于科学正确，也不保证返回了有用分析。
 
-`analyze(inputs)` 的返回值须可序列化为有限JSON（最大2MiB）；numpy数组显式转`.tolist()`，标量转`.item()`。输出schema支持type、properties、required、items、additionalProperties、enum、数值/长度界限、description；不支持$ref、正则及组合schema，避免远程schema读取和复杂验证。
+每个别名对应完整记录的列表，单条也是列表；同类记录建议合并到一个别名。支持已有`probe/body_observation/law/validation/residual/code_execution`；最多16别名，每别名102条。只通过记录编号引用数据，不接受文件路径，不传入真实规律、隐藏评测、模型消息或密钥。输入逐条保留SHA256。探针`times/r_obs/v_obs`和`a_est_times/a_est`的时间轴可能不同，后者可能缺失；读取时应检查字段及形状。
 
-返回 `execution_id/status/result/stdout/stderr/error/artifacts/elapsed_seconds`，以及容器镜像ID、资源限制、执行器报告的CPU时间/峰值RSS。`success` 只表示代码运行和输出格式合格，不能解释为科学正确。`schema_error/error/timeout/memory_limit/output_limit/protocol_error/unavailable` 均是可供Agent调整的结果；外层`ok=true`只代表工具完成归档。代码计算耗时计入现实会话预算，不额外扣探针能量。
+NumPy数组和标量、元组自动转换为JSON；NaN/Infinity明确报错，不能静默补零或变null。最大结果2MiB；大表可主动输出到`output/`。对支持的结果只进行序列化，不替模型修改公式、填缺失值、插值或修复算法。
 
-`output/` 内可输出最多10个PNG/JSON/CSV/TXT文件，合计不超过8MiB。文件名仅ASCII字母数字及`_.-`，不递归导出目录或符号链接。日志每路最多16000字符，超出标注截断。宿主再次校验输出格式、大小、文件名与PNG签名，只写出已验证文件；不解压来自模型的归档。图片和数据可从网页日志下载；下载也核验记录中的文件哈希并拒绝符号链接。以纯附件方式返回产物，不把代码文本当HTML执行。
+完整执行记录保存在`records/code_execution/`，代码、输入及产物仍保存在`code_executions/`。默认返回执行编号、状态、结果、精简日志、错误位置与输入字段/形状、产物清单；不重复回传代码、输出schema、来源哈希或容器元信息。小型比较表不再因超过6行而被截成3行。结果预览约8000字符，stdout/stderr各1500字符；超限显式标记truncated。原始记录保留允许大小内完整结果与有界日志（每路16000字符），不是由另一个模型总结。
 
-完整结果保存为 `records/code_execution/code_<id>.json`，并支持`call_back`。`code_executions/code_<id>/`保留analysis.py、完整inputs.json、output_schema.json和artifacts。网页导出的实验JSON包含分析代码、数据引用与计算结果，不包含私有思考。
+按字段及行读取示例：
+
+```json
+{"record_type":"code_execution","record_ids":["code_example"],"field_path":["result","fits"],"offset":0,"limit":20}
+```
+
+上述参数交给`call_back`，要求唯一已取得记录及明确类型。field_path由字典键和非负列表下标组成；offset/limit对列表或字符串分页（最多1000项/字符），大页仍可能预览，可继续缩小范围。默认summary也使用精简代码结果视图；detail=full显式取回完整记录。后续代码可直接引用之前的code_execution记录并读`result`，不必先将数组全部送回对话。
+
+`output/`导出最多10个PNG/JSON/CSV/TXT文件、总计8MiB；ASCII简单文件名、不递归目录/符号链接，校验格式/大小/哈希。网页可下载产物；完整实验导出继续保留代码和科学记录，不包含私有思考。
+
+错误包含类型、错误行、相关代码和已取得输入的字段/形状。完整堆栈留档，默认返回精简版本。框架不自动更改代码重试。每次新容器、无隐含变量状态；资源、网络与宿主隔离约束不变。会话历史仍完整发送，本次不增加历史压缩、子Agent或研究状态更新。
 
 ## 科研边界
 
 代码是对已有观测的计算；代码自行估计的系数仍需通过正式候选拟合、整条轨迹独立验证与提交。最终law.py仍由受限表达式和冻结参数生成；本次不开放任意Python规律提交。训练/验证数据来源继续留档，按验证结果修改候选后须再取新实验验证。
 
 控制组使用原始main.txt与7个schema。实验组只把工具数量/代码权限文字改为8个，再追加code.txt的接口、资源与证据说明；不加反思步骤，不强制调用代码，不规定假设或分析路线。
+
+## E3 预注册设计
+
+E3重新运行世界3/4/5 × baseline/简化code × 每组5次，共30次，不复用E2为本轮控制。high、总5M、单次输出393216、会话3600秒、3并发、单线程数值库、seed=42、v4、无噪声、隐藏评测20条/seed=1871与E2一致。调度seed=2026110403。主指标仍为完整隐藏位置RMSE<1e-6；同时记录题目分、耗时、Token、代码错误类别和返回大小。
+
+对比中的baseline仍为原main.txt和7工具；code使用普通脚本、自动科学类型序列化、精简返回、按字段读取及必要接口说明。只改上述接口，不增加强制反思、拟合频率或科学策略。E2作为跨批次描述性对照；错误率下降需区分接口改进与“仅print不再报协议错”的状态定义变化，不能据此单独推断科学能力提高。
+
+启动前冻结源码、配置及新镜像ID，保留E2镜像及原记录。每个单元只运行一次，科学失败不补跑；遇到账户401/402停止队列，不把余下任务全部烧成账户失败。运行`.venv/bin/python benchmark_code_v2.py --ask-key`，输出在`benchmarks/E3/`及`runs/E3-*`。本轮实验进行时不修改冻结代码。
 
 ## E2 预注册设计
 
