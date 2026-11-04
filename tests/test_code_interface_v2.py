@@ -15,7 +15,8 @@ def test_script_contract_and_baseline_callback_unchanged():
     before = copy.deepcopy(SCHEMAS)
     schemas = tool_schemas(True)
     code = schemas[-1]['function']['parameters']
-    assert set(code['properties']) == set(code['required']) == {'code','inputs'}
+    assert set(code['properties']) == {'code','inputs'}
+    assert code['required'] == ['code']
     baseline = next(s for s in SCHEMAS if s['function']['name']=='call_back')
     assert 'field_path' not in baseline['function']['parameters']['properties']
     assert SCHEMAS == before

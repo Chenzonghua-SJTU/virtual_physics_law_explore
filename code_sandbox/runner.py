@@ -21,6 +21,65 @@ MAX_LOG = 16000
 MAX_RESULT = 2 * 1024 * 1024
 MAX_ARTIFACTS = 8 * 1024 * 1024
 
+ID_FIELDS = ('validation_id', 'residual_id', 'execution_id', 'observation_id', 'probe_id', 'law_id')
+
+
+def record_id(record):
+    return next((record[k] for k in ID_FIELDS if k in record), None) if isinstance(record, dict) else None
+
+
+def get_record(inputs, alias, rid):
+    if alias not in inputs:
+        raise KeyError(f'Unknown input alias {alias!r}; available aliases: {list(inputs)}')
+    records = inputs[alias]
+    if not isinstance(records, list):
+        raise ValueError(f'Input {alias!r} is not a record list')
+    matches = [r for r in records if record_id(r) == rid]
+    if len(matches) != 1:
+        raise KeyError(f'Expected one record {rid!r} in {alias!r}; available IDs: {[record_id(r) for r in records]}')
+    return matches[0]
+
+
+def probe_arrays(record, time_axis='observed', interpolation='exact'):
+    """Only reformat acquired values; time alignment is explicit, never extrapolated."""
+    import numpy as np
+    if time_axis not in ('observed', 'acceleration') or interpolation not in ('exact', 'linear'):
+        raise ValueError('time_axis must be observed/acceleration; interpolation must be exact/linear')
+    def array(key, shape):
+        if key not in record:
+            raise ValueError(f'Missing probe field {key!r}; available fields: {list(record)}')
+        a = np.array(record[key], dtype=float, copy=True)
+        if a.shape != shape or not np.isfinite(a).all():
+            raise ValueError(f'{key}: expected finite shape {shape}, got {a.shape}; no truncation is performed')
+        return a
+    raw_t = record.get('times')
+    if not isinstance(raw_t, list) or not raw_t:
+        raise ValueError('times must be a nonempty list')
+    t = array('times', (len(raw_t),))
+    if np.any(np.diff(t) <= 0):
+        raise ValueError('times must be strictly increasing')
+    r, v = array('r_obs', (len(t), 2)), array('v_obs', (len(t), 2))
+    result = {'t': t, 'r': r, 'v': v, 'time_axis': time_axis, 'alignment': 'observed'}
+    if time_axis == 'observed':
+        return result
+    raw_a_t = record.get('a_est_times')
+    if not isinstance(raw_a_t, list) or not raw_a_t:
+        raise ValueError('No estimated acceleration samples: a_est_times is missing or empty')
+    at = array('a_est_times', (len(raw_a_t),))
+    a = array('a_est', (len(at), 2))
+    if np.any(np.diff(at) <= 0) or at[0] < t[0] or at[-1] > t[-1]:
+        raise ValueError('a_est_times must increase within observed times; no extrapolation')
+    idx = np.searchsorted(t, at)
+    if interpolation == 'exact':
+        if np.any(idx >= len(t)) or not np.array_equal(t[idx], at):
+            raise ValueError('Acceleration times do not exactly match observed times; request interpolation="linear" explicitly if appropriate')
+        rr, vv = r[idx].copy(), v[idx].copy()
+    else:
+        rr = np.column_stack([np.interp(at, t, r[:, j]) for j in range(2)])
+        vv = np.column_stack([np.interp(at, t, v[:, j]) for j in range(2)])
+    return {'t': at, 'r': rr, 'v': vv, 'a': a, 'time_axis': time_axis,
+            'alignment': interpolation, 'acceleration_source': 'a_est (finite-difference estimate, not true acceleration)'}
+
 
 def json_value(value):
     """Convert scientific containers, never silently replace nonfinite values."""
@@ -57,6 +116,7 @@ def input_layout(inputs):
     for name, records in inputs.items():
         first = records[0] if isinstance(records, list) and records else records
         layout[name] = {'count': len(records) if isinstance(records, list) else None,
+                        'record_ids': [record_id(r) for r in records] if isinstance(records, list) else [],
                         'first_record_fields': {k: describe(v) for k, v in list(first.items())[:40]}
                         if isinstance(first, dict) else describe(first)}
     return layout
@@ -100,7 +160,9 @@ def main():
     with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
         try:
             namespace = {'__name__': '__analysis__', '__file__': '/work/analysis.py',
-                         'inputs': envelope['inputs']}
+                         'inputs': envelope['inputs'], 'input_info': input_layout(envelope['inputs']),
+                         'get_record': lambda alias, rid: get_record(envelope['inputs'], alias, rid),
+                         'probe_arrays': probe_arrays}
             Path('/work/analysis.py').write_text(envelope['code'])
             exec(compile(envelope['code'], '/work/analysis.py', 'exec'), namespace)
             if 'result' in namespace:

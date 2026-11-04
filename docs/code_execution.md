@@ -8,10 +8,10 @@
 
 ```sh
 colima start shore-code --cpu 4 --memory 6 --disk 20 --mount none --activate=false --ssh-config=false
-docker --context colima-shore-code build -t shore-code:e3-v2 code_sandbox
+docker --context colima-shore-code build -t shore-code:e2-r03 code_sandbox
 ```
 
-Linux / 其他 Docker 环境可使用 `docker build -t shore-code:e3-v2 code_sandbox`，配置中的 `docker_context` 可指定受信任服务端 context。Mac 存在上述 profile 的 socket 时自动选用它。镜像仅包含执行器及 numpy/scipy/sympy/matplotlib，不复制项目、实验记录或仿真源码。构建 context 由 `.dockerignore` 限制为 Dockerfile 和 runner.py。
+Linux / 其他 Docker 环境可使用 `docker build -t shore-code:e2-r03 code_sandbox`，配置中的 `docker_context` 可指定受信任服务端 context。Mac 存在上述 profile 的 socket 时自动选用它。镜像仅包含执行器及 numpy/scipy/sympy/matplotlib，不复制项目、实验记录或仿真源码。构建 context 由 `.dockerignore` 限制为 Dockerfile 和 runner.py。
 
 若官方默认下载源不可达，本次本机构建使用：
 
@@ -19,14 +19,14 @@ Linux / 其他 Docker 环境可使用 `docker build -t shore-code:e3-v2 code_san
 docker --context colima-shore-code build \
   --build-arg BASE_IMAGE=public.ecr.aws/docker/library/python:3.11-slim \
   --build-arg PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
-  -t shore-code:e3-v2 code_sandbox
+  -t shore-code:e2-r03 code_sandbox
 ```
 
 默认每次1CPU、1GiB内存、90秒计算期限（容器启动/传输有最多8秒宽限）、64进程/线程、128MiB工作目录、32MiB临时目录。限时也受会话剩余时间限制；主机监督超时强制结束容器。容器非root、只读根文件系统、无网络、无宿主挂载、无Docker socket、丢弃全部 capabilities、禁止新增权限；Docker默认seccomp继续生效。每次重新创建并最终删除容器。标准库和任意Python语法可用，安全边界是容器，不是Python字符串或AST过滤器。
 
-## 工具协议（v2）
+## 工具协议（v3 / E2 R03）
 
-`run_code`只有两个必填参数：`code`和`inputs`。不要求Agent编写输出schema。
+`run_code`只有`code`必填。`inputs`可省略，默认空对象`{}`；显式传入null仍属于错误参数。需要已取得的数据时，通过inputs传入记录引用。不要求Agent编写输出schema。
 
 ```json
 {
@@ -38,6 +38,24 @@ docker --context colima-shore-code build \
 ```
 
 脚本直接使用预置的`inputs`，把输出赋给`result`；旧的`analyze(inputs)`函数形式仍兼容（脚本定义result时以它为准）。仅print的脚本也能运行：结果为null、返回stdout及无结构化结果提示，不会仅因缺少函数或result要求重跑。执行成功不等于科学正确，也不保证返回了有用分析。
+
+开启代码工具时，任务包和新观测返回`code_inputs`：按实际字段与形状分组，列出可引用记录编号、字段名、数组形状和字典键。只包含已经取得的记录，不增加观测或泄露真值。未开启代码工具的任务包及工具返回保持原样。
+
+脚本额外提供以下读取辅助能力：
+
+- `input_info`：本次显式传入的记录编号及各别名首条记录的字段/形状；完整原始列表仍为`inputs[alias]`。
+- `get_record(alias, record_id)`：按编号取本次已加载记录，找不到时报告实际可用编号；不会自动取得本次未传入的数据。
+- `probe_arrays(record)`：返回观测时刻上的NumPy数组`t/r/v`。
+- `probe_arrays(record, time_axis="acceleration")`：返回`a_est_times`上的`t/r/v/a`。默认精确匹配时刻，长度或时刻不符就报错，不会静默截短；`a`仍是差分估计加速度。只有显式指定`interpolation="linear"`才插值r/v，输出alignment标记该方法，禁止外推。返回数组是副本，不修改原始记录。
+
+```python
+p = get_record("trajectories", "probe_0001")
+s = probe_arrays(p, time_axis="acceleration")
+result = {"t": s["t"], "r": s["r"], "v": s["v"], "a_est": s["a"],
+          "alignment": s["alignment"]}
+```
+
+天体位置记录使用`times/body_ids/positions_obs`，位置数组轴为(时间,天体,xy)，不应假设存在bodies字段或将天体运动忽略。辅助函数不替模型构造候选、拟合规律或修复数值算法。
 
 每个别名对应完整记录的列表，单条也是列表；同类记录建议合并到一个别名。支持已有`probe/body_observation/law/validation/residual/code_execution`；最多16别名，每别名102条。只通过记录编号引用数据，不接受文件路径，不传入真实规律、隐藏评测、模型消息或密钥。输入逐条保留SHA256。探针`times/r_obs/v_obs`和`a_est_times/a_est`的时间轴可能不同，后者可能缺失；读取时应检查字段及形状。
 

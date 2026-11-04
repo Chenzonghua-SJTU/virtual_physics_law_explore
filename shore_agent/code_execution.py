@@ -17,7 +17,7 @@ import uuid
 
 from jsonschema import Draft202012Validator
 
-IMAGE = 'shore-code:e3-v2'
+IMAGE = 'shore-code:e2-r03'
 MAX_RESPONSE = 14 * 1024 * 1024
 MAX_INPUT = 24 * 1024 * 1024
 ARTIFACT_NAME = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,95}')

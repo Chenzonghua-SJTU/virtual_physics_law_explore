@@ -44,7 +44,8 @@ SCHEMAS = [
 # Baseline is deliberately byte-for-byte unchanged for E2's control arm.
 CODE_SCHEMA = tool('run_code',
     '在隔离Python环境运行普通脚本。inputs已可用，把计算结果赋给result；无需定义函数或输出schema。'
-    'inputs各别名映射为所引用记录的完整内容列表（单条也是列表），不必抄写观测。'
+    'inputs可省略，默认{}；引用记录时各别名对应完整记录列表，不必抄写观测。'
+    'input_info给出实际字段/形状/编号；get_record(alias,id)取记录，probe_arrays(record,time_axis="acceleration")按估计加速度时刻精确对齐。'
     '预装numpy/scipy/sympy/matplotlib；可在output/保存png/json/csv/txt文件。'
     '每次全新容器，90秒/1GiB/1CPU，无网络和宿主文件；不产生新观测，不访问真实规律。'
     'NumPy数组/标量自动转JSON，NaN/Infinity明确报错。返回精简结果、日志/报错、执行编号和产物；'
@@ -55,7 +56,7 @@ CODE_SCHEMA = tool('run_code',
                 'propertyNames': {'pattern': r'^[A-Za-z][A-Za-z0-9_]{0,39}$'},
                 'additionalProperties': obj({
                     'record_type': {'type': 'string', 'enum': ['body_observation', 'probe', 'law', 'validation', 'residual', 'code_execution']},
-                    'record_ids': IDS})}})
+                    'record_ids': IDS})}}, required=['code'])
 
 
 def tool_schemas(code_enabled=False):

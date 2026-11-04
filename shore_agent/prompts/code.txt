@@ -1,12 +1,15 @@
 你还可以按需调用run_code，自行编写普通Python脚本；不强制使用，不规定科学分析路线。
-只提供code和inputs。inputs按记录类型及编号引用本会话已取得的数据，框架加载完整内容；每个别名始终对应记录列表，单条也用inputs[别名][0]。同类记录用同一个别名即可，不必每条单独起名；最多16个别名、每别名102条记录。
+只需提供code；inputs可省略，默认{}。需要实验数据时用inputs按记录类型及编号引用本会话已取得的完整记录，不要从预览抄写或四舍五入数值。每个别名始终对应记录列表，单条也用inputs[别名][0]。同类记录用同一别名；最多16个别名、每别名102条记录。任务包及新观测返回的code_inputs列出实际可引用编号、字段与数组形状；只有显式传入本次inputs的记录才可在代码中使用。
 脚本中inputs已可用，将输出赋给result，不需要定义analyze函数或编写output_schema。仅print的脚本也可执行，stdout返回输出并提示没有可复用的result，不会因缺少函数或result而要求重跑。NumPy数组、标量和元组自动转换为JSON；NaN/Infinity会明确报错，不静默替换。确实缺失的值可以显式用None并说明原因。
 例：inputs={"probes":{"record_type":"probe","record_ids":["probe_0001","probe_0002"]}}，code可写：
 import numpy as np
-p = inputs["probes"][0]
-v = np.asarray(p["v_obs"])
-result = {"samples":len(p["times"]), "mean_speed":np.linalg.norm(v,axis=1).mean()}
+p = get_record("probes", "probe_0001")
+s = probe_arrays(p, time_axis="acceleration")
+result = {"samples":len(s["t"]), "mean_speed":np.linalg.norm(s["v"],axis=1).mean(), "alignment":s["alignment"]}
+input_info含本次各别名的实际记录编号及首条记录字段/形状；不确定时可查看或返回它。get_record(alias,id)只取本次传入的记录，找不到时列出实际可用编号；不要通过连续编号猜测已传入哪些探针。
+probe_arrays(p)返回观测时刻上的t/r/v；time_axis="acceleration"返回a_est_times上的t/r/v/a，a仍是估计加速度。默认interpolation="exact"，要求时刻精确匹配；不匹配会报错，不会截短数组。确需线性插值时显式指定interpolation="linear"，返回alignment注明方法，禁止外推。原始inputs不被改变。该函数不拟合规律或增加观测。
 探针记录的times为(N,)时刻，r_obs和v_obs为(N,2)的位置/速度；a_est是差分估计加速度，a_est_times是它自己的时刻，二者可能缺失，不能假设与times等长。检查记录字段、长度和时刻后再组合数据；没有名为positions的统一字段。输入只包含已取得记录，不包含隐藏真值。
+天体观测记录使用times、body_ids、positions_obs；positions_obs的轴顺序为(时间,天体,xy)，不是bodies字段。天体可能运动，按观测时刻取位置，不要默认只用第一帧。
 可使用numpy/scipy/sympy/matplotlib及Python标准库。小型结果完整返回，大数组/长文本会明确标记预览，原始允许大小内的结果仍完整存档。不要只返回{"ok":1}而把全部结果打印出来；直接将需要比较的数值放进result即可，不要求另写研究报告。output/可保存PNG/JSON/CSV/TXT文件，最多10个、合计8MiB。
 需要细看结果时可调用call_back(record_type="code_execution",record_ids=[execution_id],field_path=["result","fits"],offset=0,limit=20)。field_path逐层指定字典键或列表下标，offset/limit用于列表切片或字符串字符范围；每次最多1000项/字符，过大仍标记预览，可缩小范围。完整记录也可用detail="full"读取；后续代码可直接引用code_execution记录的result，无需把全部数据先读回对话。
 每次新容器，无隐含变量状态，无网络/宿主文件/仿真源码/隐藏评测访问。单次90秒、1GiB、1CPU，耗时计入会话时限。错误返回类型、行号、相关代码行和输入字段/形状，可据此修正。完整代码、输入来源、结果和日志保留在记录中。

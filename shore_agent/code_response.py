@@ -2,6 +2,31 @@
 import json
 
 
+def input_hints(store, kinds, ids=None):
+    """Actual acquired record layouts, grouped to avoid repeating identical schemas."""
+    import numpy as np
+    groups = {}
+    for kind in kinds:
+        for rid, record in store.records[kind].items():
+            if ids is not None and rid not in ids:
+                continue
+            fields = {}
+            for key, value in record.items():
+                info = {'type': type(value).__name__}
+                if isinstance(value, list):
+                    try:
+                        info['shape'] = list(np.asarray(value).shape)
+                    except ValueError:
+                        info.update(shape=None, ragged=True)
+                elif isinstance(value, dict):
+                    info['keys'] = list(value)
+                fields[key] = info
+            signature = json.dumps([kind, fields], sort_keys=True)
+            group = groups.setdefault(signature, {'record_type': kind, 'record_ids': [], 'fields': fields})
+            group['record_ids'].append(rid)
+    return list(groups.values())
+
+
 def size(value):
     return len(json.dumps(value, ensure_ascii=False, allow_nan=False))
 

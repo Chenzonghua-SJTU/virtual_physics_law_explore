@@ -79,6 +79,9 @@ class ToolRuntime:
                 light['body_observation'] = self._acquire_body_observation(light['body_observation'])
             for p in light['probes']:
                 self.store.add('probe', p, p['probe_id'])
+            if self.code_enabled:
+                from .code_response import input_hints
+                data['code_inputs'] = input_hints(self.store, ['probe', 'body_observation'])
             self._initial_mission = copy.deepcopy(data)
             (self.run_dir / 'mission.json').write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
         data = copy.deepcopy(self._initial_mission)
@@ -118,6 +121,12 @@ class ToolRuntime:
             if self.task is None:
                 raise ValueError('Framework must initialize mission first')
             result = getattr(self, name)(**args)
+            if self.code_enabled and name in ('observe_body', 'insert_probe'):
+                from .code_response import input_hints
+                kind = 'body_observation' if name == 'observe_body' else 'probe'
+                ids = ([result['observation_id']] if name == 'observe_body'
+                       else [p['probe_id'] for p in result['probes']])
+                result['code_inputs'] = input_hints(self.store, [kind], ids)
             if self.budget()['wall_seconds_remaining'] <= 0 and not self.session_ended:
                 raise ValueError('Session wall time exhausted during tool execution')
             response = {'ok': True, 'data': result, 'error': None, 'budget': self.budget()}
@@ -283,7 +292,7 @@ class ToolRuntime:
         self.store.add('residual', record, rid)
         return preview(record)
 
-    def run_code(self, code, inputs):
+    def run_code(self, code, inputs=None):
         import hashlib
         from .code_execution import execute_code
         from .code_response import execution_preview
@@ -291,7 +300,7 @@ class ToolRuntime:
             raise ValueError('Code execution is disabled')
         output_schema = {}  # no model-authored output contract required
         loaded, provenance = {}, {}
-        for alias, reference in inputs.items():
+        for alias, reference in ({} if inputs is None else inputs).items():
             loaded[alias] = [self.store.get(reference['record_type'], rid) for rid in reference['record_ids']]
             provenance[alias] = dict(reference, sha256=[hashlib.sha256(
                 json.dumps(item, sort_keys=True, ensure_ascii=False, allow_nan=False).encode()).hexdigest()
