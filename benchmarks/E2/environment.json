@@ -1,0 +1,30 @@
+{
+  "host_python": "3.9.6 (default, Apr  7 2026, 02:38:40) \n[Clang 21.0.0 (clang-2100.0.123.102)]",
+  "host_packages": {
+    "numpy": "2.0.2",
+    "scipy": "1.13.1"
+  },
+  "code_python": "3.11.18 (main, Oct 28 2026, 03:03:40) [GCC 14.2.0]",
+  "code_packages": {
+    "numpy": "2.0.2",
+    "scipy": "1.13.1",
+    "sympy": "1.13.3",
+    "matplotlib": "3.9.4"
+  },
+  "docker_context": "colima-shore-code",
+  "vm": {
+    "cpus": 4,
+    "memory_gib": 6,
+    "host_mounts": false
+  },
+  "code_limits": {
+    "cpus": 1,
+    "memory_mib": 1024,
+    "timeout_seconds": 90,
+    "network": "none"
+  },
+  "engineering_verification": {
+    "tests_passed": 707,
+    "real_container_tests_included": true
+  }
+}

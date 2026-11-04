@@ -1,0 +1,1647 @@
+{
+  "experiment_id": "E2",
+  "started_at": "2026-11-04T06:30:00.964327+00:00",
+  "status": "completed_all_attempts",
+  "git_commit": "44e05bc9e82c592a99e66422e96ee4f45029692c",
+  "sandbox": {
+    "available": true,
+    "backend": "docker",
+    "image_id": "sha256:01334ee5bd76931fc585dc543f281eb2bc9f2107318e33a9426dd06dbc201f81"
+  },
+  "reasoning_effort": "high",
+  "source_sha256": {
+    "benchmark_code.py": "52a9d854829a51dbe94b6215cbe4b4f704c6f5371dfffd7fdc054ee5ee88ca02",
+    "code_sandbox/Dockerfile": "ae6cd79ad32fbc0e96a1ca02287fe8ad6ab5bf72658b129899133d6f839ed733",
+    "code_sandbox/runner.py": "1f010d2c06f7aa30797bc35b47f813c47baaf757f8eada414c1e71338999bbd4",
+    "config.example.json": "a95dfa3c2095d02d475e9f164e0d5ec764a01482da64e138ace893a7e359558d",
+    "evaluate.py": "4c49dcce59f5663b4abe78ee1580fd68a535147852bfb84a4068522d3cb038da",
+    "shore_agent/__init__.py": "0547ccfeb2e41c0e42a47e4e2b97f50c5dbe01b7a6fd99dd789d2ca25cf530f6",
+    "shore_agent/agent.py": "7485d404a6b08b87a162fda332c00e06ebcf438fbe7fd12ffaf6d056dd608cd2",
+    "shore_agent/cli.py": "dff305833a365d97b0370fa6bdb961915c35564c9f15c401cc13ae41ae5f90fb",
+    "shore_agent/code_execution.py": "57d1539557be6ceacd12b280d31c4b7ccff2d8b29da9f7d5613d935566b30b6e",
+    "shore_agent/environment.py": "0f861a2a89b8a897b68fb73727d4b4cb50ac417dd987142f84a8e6c866a110ea",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_agent/model.py": "010cfbcbea41019df00cf56dba76fd8207ad9fc2f49d6b27cdb0606bc55007df",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "shore_agent/observations.py": "2462c3ecc85d263be1b6f4bbcf1411e2a553f9225900e5cc4aaa4125f7e79197",
+    "shore_agent/prompts/code.txt": "e2985f1bab5df849200b6ea5b5749045ef77d54830372dccac1f14b2027d93f6",
+    "shore_agent/prompts/main.txt": "ed2a8916a100549535c3892610d82c4215b7a94e02ef0c0bd14ee3423bac49a2",
+    "shore_agent/runtime.py": "3447c8fc2420fb9ce7ceb9b0bdebc4184c2edd514429ec65ebcbe32085168b6a",
+    "shore_agent/schemas.py": "877ca7065d5d5f5dfc89a2416a555e913b8c5bfe161eed473df6832324c8b1c4",
+    "shore_agent/store.py": "c75c5f37d8edf1f9335724d6f2c26e1d709b71a58d9e0983db046d14e38a3333",
+    "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+    "shore_agent/web.py": "22b0c5a679474f7a10e15e3cdfd4d19df744a9cf9809e932e8f758fef936e727",
+    "shore_agent/web_jobs.py": "ede208d96c569db552996540bda4f648fd82c92c3cbb84592ba01570404a7fb0",
+    "shore_agent/web_worker.py": "96950bac5fe38b01c17065ff956ec64f5ad23e34af4b1efa240dfc692949b488",
+    "shore_scoring.py": "6e1d5053cfc5c973e37d16fc09ad81e3c5ba7410b0a71ffa3acf31cde76daa4d",
+    "shore_sim/__init__.py": "80a3a6d299d3ed301568429572db86c62b8da48616ca4e0ab5ab620bcaf933f0",
+    "shore_sim/simulator.py": "13486aa1396b356a4b4e8a278faf78f5dc455ae4de0a5a92d58abb0e30cbb58a",
+    "shore_sim/worker.py": "d3e3f5c1d6f2bc8f90e694a52f23c78f5e6c24c6e25303acbd62bd0c404acbbb",
+    "shore_sim/worlds.py": "597d44890b6683063b3f461706886000780a4af7553f291b194753c423d77e15",
+    "shore_worlds.py": "20e9aea879a93d35b4ca5ca0324a100205bcce8cfe225b4fa5474a6734957c49"
+  },
+  "schedule_seed": 2026110402,
+  "concurrency": 3,
+  "numerical_threads": 1,
+  "automatic_reruns": false,
+  "evaluation": {
+    "n_probes": 20,
+    "seed": 1871
+  },
+  "primary_diagnostic": "Complete independent position RMSE < 1e-6, denominator all scheduled attempts",
+  "model_version_note": "Provider-managed deepseek-flash alias; returned model metadata recorded per request; weights not pinned.",
+  "rows": [
+    {
+      "world_id": "world_4",
+      "arm": "code",
+      "repeat": 1,
+      "order": 1,
+      "run_id": "E2-code-w4-r1",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:30:01.000923+00:00",
+      "worker_pid": 13222,
+      "finished_at": "2026-11-04T06:35:31.737999+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "code",
+      "repeat": 1,
+      "order": 2,
+      "run_id": "E2-code-w3-r1",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:30:01.038802+00:00",
+      "worker_pid": 13224,
+      "finished_at": "2026-11-04T06:35:55.865953+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "code",
+      "repeat": 1,
+      "order": 3,
+      "run_id": "E2-code-w5-r1",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:30:01.076831+00:00",
+      "worker_pid": 13226,
+      "finished_at": "2026-11-04T06:38:48.392978+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_4",
+      "arm": "baseline",
+      "repeat": 1,
+      "order": 4,
+      "run_id": "E2-baseline-w4-r1",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:35:33.807949+00:00",
+      "worker_pid": 13754,
+      "finished_at": "2026-11-04T06:38:18.198890+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "baseline",
+      "repeat": 1,
+      "order": 5,
+      "run_id": "E2-baseline-w5-r1",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:35:57.915489+00:00",
+      "worker_pid": 13803,
+      "finished_at": "2026-11-04T06:41:10.785496+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "baseline",
+      "repeat": 1,
+      "order": 6,
+      "run_id": "E2-baseline-w3-r1",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:38:20.302713+00:00",
+      "worker_pid": 14016,
+      "finished_at": "2026-11-04T06:47:55.928516+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "code",
+      "repeat": 2,
+      "order": 7,
+      "run_id": "E2-code-w3-r2",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:38:50.493976+00:00",
+      "worker_pid": 14078,
+      "finished_at": "2026-11-04T06:41:46.985095+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_4",
+      "arm": "baseline",
+      "repeat": 2,
+      "order": 8,
+      "run_id": "E2-baseline-w4-r2",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:41:12.897347+00:00",
+      "worker_pid": 14336,
+      "finished_at": "2026-11-04T06:45:43.596074+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_4",
+      "arm": "code",
+      "repeat": 2,
+      "order": 9,
+      "run_id": "E2-code-w4-r2",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:41:49.133533+00:00",
+      "worker_pid": 14413,
+      "finished_at": "2026-11-04T06:53:43.036586+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "baseline",
+      "repeat": 2,
+      "order": 10,
+      "run_id": "E2-baseline-w3-r2",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:45:45.672645+00:00",
+      "worker_pid": 14747,
+      "finished_at": "2026-11-04T06:51:10.424399+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "baseline",
+      "repeat": 2,
+      "order": 11,
+      "run_id": "E2-baseline-w5-r2",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:47:58.038806+00:00",
+      "worker_pid": 14952,
+      "finished_at": "2026-11-04T06:53:36.847107+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "code",
+      "repeat": 2,
+      "order": 12,
+      "run_id": "E2-code-w5-r2",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:51:12.543568+00:00",
+      "worker_pid": 15283,
+      "finished_at": "2026-11-04T06:53:36.862076+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "baseline",
+      "repeat": 3,
+      "order": 13,
+      "run_id": "E2-baseline-w5-r3",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:38.970522+00:00",
+      "worker_pid": 15504,
+      "finished_at": "2026-11-04T06:53:43.044844+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_4",
+      "arm": "code",
+      "repeat": 3,
+      "order": 14,
+      "run_id": "E2-code-w4-r3",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:39.010627+00:00",
+      "worker_pid": 15506,
+      "finished_at": "2026-11-04T06:53:43.053534+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "code",
+      "repeat": 3,
+      "order": 15,
+      "run_id": "E2-code-w3-r3",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:43.102086+00:00",
+      "worker_pid": 15521,
+      "finished_at": "2026-11-04T06:53:45.205285+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "code",
+      "repeat": 3,
+      "order": 16,
+      "run_id": "E2-code-w5-r3",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:43.145220+00:00",
+      "worker_pid": 15523,
+      "finished_at": "2026-11-04T06:53:45.213404+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "baseline",
+      "repeat": 3,
+      "order": 17,
+      "run_id": "E2-baseline-w3-r3",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:43.193071+00:00",
+      "worker_pid": 15525,
+      "finished_at": "2026-11-04T06:53:47.330070+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_4",
+      "arm": "baseline",
+      "repeat": 3,
+      "order": 18,
+      "run_id": "E2-baseline-w4-r3",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:47.273116+00:00",
+      "worker_pid": 15542,
+      "finished_at": "2026-11-04T06:53:51.417557+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "code",
+      "repeat": 4,
+      "order": 19,
+      "run_id": "E2-code-w3-r4",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:47.319329+00:00",
+      "worker_pid": 15544,
+      "finished_at": "2026-11-04T06:53:51.427336+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "code",
+      "repeat": 4,
+      "order": 20,
+      "run_id": "E2-code-w5-r4",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:49.398240+00:00",
+      "worker_pid": 15552,
+      "finished_at": "2026-11-04T06:53:51.437049+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_4",
+      "arm": "baseline",
+      "repeat": 4,
+      "order": 21,
+      "run_id": "E2-baseline-w4-r4",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:51.486330+00:00",
+      "worker_pid": 15559,
+      "finished_at": "2026-11-04T06:53:55.629545+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "baseline",
+      "repeat": 4,
+      "order": 22,
+      "run_id": "E2-baseline-w5-r4",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:51.538968+00:00",
+      "worker_pid": 15561,
+      "finished_at": "2026-11-04T06:53:55.638751+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "baseline",
+      "repeat": 4,
+      "order": 23,
+      "run_id": "E2-baseline-w3-r4",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:51.604174+00:00",
+      "worker_pid": 15563,
+      "finished_at": "2026-11-04T06:53:55.647756+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_4",
+      "arm": "code",
+      "repeat": 4,
+      "order": 24,
+      "run_id": "E2-code-w4-r4",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:55.696905+00:00",
+      "worker_pid": 15581,
+      "finished_at": "2026-11-04T06:53:59.897313+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "baseline",
+      "repeat": 5,
+      "order": 25,
+      "run_id": "E2-baseline-w5-r5",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:55.746573+00:00",
+      "worker_pid": 15583,
+      "finished_at": "2026-11-04T06:53:57.817550+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_5",
+      "arm": "code",
+      "repeat": 5,
+      "order": 26,
+      "run_id": "E2-code-w5-r5",
+      "configuration": {
+        "environment": {
+          "world_id": "world_5",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:55.795077+00:00",
+      "worker_pid": 15585,
+      "finished_at": "2026-11-04T06:53:59.907322+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "baseline",
+      "repeat": 5,
+      "order": 27,
+      "run_id": "E2-baseline-w3-r5",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:53:59.886470+00:00",
+      "worker_pid": 15614,
+      "finished_at": "2026-11-04T06:54:02.017496+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_4",
+      "arm": "code",
+      "repeat": 5,
+      "order": 28,
+      "run_id": "E2-code-w4-r5",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:54:01.958685+00:00",
+      "worker_pid": 15619,
+      "finished_at": "2026-11-04T06:54:04.089562+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_4",
+      "arm": "baseline",
+      "repeat": 5,
+      "order": 29,
+      "run_id": "E2-baseline-w4-r5",
+      "configuration": {
+        "environment": {
+          "world_id": "world_4",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:54:02.007090+00:00",
+      "worker_pid": 15623,
+      "finished_at": "2026-11-04T06:54:04.099315+00:00",
+      "returncode": 0
+    },
+    {
+      "world_id": "world_3",
+      "arm": "code",
+      "repeat": 5,
+      "order": 30,
+      "run_id": "E2-code-w3-r5",
+      "configuration": {
+        "environment": {
+          "world_id": "world_3",
+          "physics_version": "v4",
+          "noise": false,
+          "seed": 42,
+          "reference_length": 10.0,
+          "position_limit": 5.0,
+          "velocity_limit": 3.0,
+          "time_max": 30.0,
+          "wall_seconds": 3600
+        },
+        "model": {
+          "base_url": "https://api.deepseek.com",
+          "model": "deepseek-flash",
+          "thinking": true,
+          "reasoning_protocol": "deepseek",
+          "reasoning_effort": "high",
+          "timeout_seconds": 1800,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 393216,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "cloud",
+          "api_key_env": "DEEPSEEK_API_KEY",
+          "api_key_required": true
+        },
+        "agent": {
+          "max_no_action": 3
+        },
+        "code_execution": {
+          "enabled": true,
+          "image": "shore-code:e2-v1",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80
+        }
+      },
+      "state": "finished",
+      "started_at": "2026-11-04T06:54:04.078154+00:00",
+      "worker_pid": 15641,
+      "finished_at": "2026-11-04T06:54:06.113857+00:00",
+      "returncode": 0
+    }
+  ],
+  "source_unchanged": true,
+  "finished_at": "2026-11-04T06:54:06.125075+00:00"
+}
