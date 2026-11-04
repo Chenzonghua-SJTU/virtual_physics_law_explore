@@ -124,9 +124,9 @@
 
 预算参数持久化、网页 HTTP 边界、模型请求参数、共享用量统计与基准驱动共 207 项相关测试通过；JavaScript 语法检查通过；浏览器验证高级设置显示总预算 2,000,000、单次输出 65,536。
 
-- [机器可读结果](../benchmarks/five-worlds-large-budget-002/summary.json)
-- [配置、运行映射和提示词哈希](../benchmarks/five-worlds-large-budget-002/manifest.json)
-- [工具错误及回复 token 统计](../benchmarks/five-worlds-large-budget-002/diagnostics.json)
+- [机器可读结果](../experiments/five-worlds-large-budget-002/summary.json)
+- [配置、运行映射和提示词哈希](../experiments/five-worlds-large-budget-002/manifest.json)
+- [工具错误及回复 token 统计](../experiments/five-worlds-large-budget-002/diagnostics.json)
 - [首轮原始结果](five-worlds-results.md)
 
 - [world_1 · web-20261102-085517-530d06fa](http://127.0.0.1:8765/?run=web-20261102-085517-530d06fa)

@@ -22,7 +22,7 @@
 | 04 | 软化多源吸引力 | 预算保护停止，未提交 | 14 | 217,816 | 8 | — | — |
 | 05 | 回复力与速度偏转力 | 首次回复截断，未调用工具 | 1 | 12,635 | 0 | — | — |
 
-合计 **20 次模型调用、314,865 token**，未知用量的保守预留为 0。原始仪表数据与机器可读表格见 [summary.json](../benchmarks/five-worlds-live-001/summary.json)，配置、世界映射与提示词哈希见 [manifest.json](../benchmarks/five-worlds-live-001/manifest.json)。
+合计 **20 次模型调用、314,865 token**，未知用量的保守预留为 0。原始仪表数据与机器可读表格见 [summary.json](../experiments/five-worlds-live-001/summary.json)，配置、世界映射与提示词哈希见 [manifest.json](../experiments/five-worlds-live-001/manifest.json)。
 
 ## 失败原因与能力边界
 
@@ -34,7 +34,7 @@
 
 世界 04 实际用了 217,816 token，低于 300,000；停止原因是完整历史增长后，下一次请求的保守输入加输出预留已无法放进剩余预算。它不是“实际使用恰好达到 30 万”。
 
-详细工具错误与回复用量计数见 [diagnostics.json](../benchmarks/five-worlds-live-001/diagnostics.json)。报告没有复制模型的隐藏思考内容。
+详细工具错误与回复用量计数见 [diagnostics.json](../experiments/five-worlds-live-001/diagnostics.json)。报告没有复制模型的隐藏思考内容。
 
 ## 已实现与已验证
 

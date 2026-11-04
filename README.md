@@ -4,6 +4,20 @@
 
 这是开发原型：DeepSeek 外部 API 不满足正式比赛的模型和外网限制，也没有连接官方环境。未来只需替换 `environment.py` 的观测适配和 `model.py` 的模型适配，并按正式协议调整提交状态编码。
 
+## 实验与迭代
+
+所有实验记录存放在[experiments目录](experiments/)，[experiment.md总记录](experiments/experiment.md)说明每轮新增内容、实验设置、结果、失败与范围调整。推理强度实验记作E1；general code工具实验统一记作E2，并按R01、R02……迭代。
+
+| 实验轮次 | 对应迭代 | 做了哪些实验 | 主要结果 | 详细记录 / Git提交 |
+|---|---|---|---|---|
+| E1 | 增加可配置的low/high/max推理强度 | 世界3/4/5 × 三档强度 × 各5次，共45次 | 高精度low 9/15、high 15/15、max 13/15；后续固定high | [报告](experiments/E1/README.md) · 实现`f0291f2` / 结果`e340213` |
+| E2 R01 | 首次加入可选隔离Python工具run_code，支持自编数据分析与产物导出 | 固定high，世界3/4/5 × 原工具/加代码 × 各5次，共30个计划单元 | 原工具12/15、加代码13/15；代码组世界3改善，世界5退步 | [报告](experiments/E2/R01.md) · 实现`44e05bc` / 结果`1ea408e` |
+| E2 R02 | 普通脚本入口、自动NumPy转换、精简结果返回及按字段读取 | 固定high，仅重测修改后的代码组，世界3/4/5各5次，共15次 | 高精度15/15；代码未成功调用比例20.6%→11.9%，返回消息中位大小减少约72% | [报告](experiments/E2/R02.md) · 实现`7fc4e94` / 结果`13a063e` |
+
+高精度指完整独立隐藏轨迹评测的位置RMSE<1e-6。R01的额度恢复补跑仍属于同一轮；R02误排的原工具组尝试单独保留，不计入15次主结果。R01与R02是跨批次比较，且简化后允许纯print脚本正常执行，不能把指标变化直接解释为推理能力提升。完整协议、耗时、用量和失败案例见各轮报告。
+
+[E2轮次索引](experiments/E2/README.md)汇总general code迭代；更早的五世界扩展、观测来源、时间项及七世界工程改动可从[世界与版本说明](docs/worlds.md)、[初期五世界报告](docs/five-worlds-results.md)和[experiments目录](experiments/)追溯。历史会话ID与JSON中的旧路径保留为原始证据，目录迁移映射见[总记录](experiments/experiment.md)。
+
 ## 快速开始
 
 克隆仓库，在项目目录打开终端（Python 3.9 或更新版本）：
@@ -34,14 +48,6 @@ python -m pytest -q
 这是一套本机网页与 Python 服务：Python/SciPy 负责真实拟合和模拟，启动后保持终端运行即可。详细操作和运行边界见 [网页使用说明](docs/web.md)。
 
 高级设置中的「允许 Agent 编写分析代码」需要先准备 Docker 执行镜像，见[代码工具与实验设计](docs/code_execution.md)。现在使用普通脚本接口：直接读取inputs、设置result，NumPy结果自动转换，不必编写函数或输出schema。模型收到精简结果，完整记录及产物保留；代码只能在无网络、无宿主挂载的容器中运行。
-
-[E2 R01 实验报告](benchmarks/E2/R01.md)：固定 high，在世界3/4/5各比较5次，原工具组高精度12/15，加代码组13/15。世界3从2/5提高到5/5，世界5从5/5降到3/5；代码能力保持可选，尚不能据此认为普遍更优。报告保留额度中断后的补跑说明、耗时、失败案例和公开代码审计。
-
-[E2 R02 接口简化复测](benchmarks/E2/R02.md)：固定 high，仅重测简化后的代码组，世界3/4/5各5次，15/15完整独立测评RMSE<1e-6。代码调用未成功比例为11.9%，上一批为20.6%；这是跨批次描述性比较，且纯print脚本现在允许正常执行，不能直接归因为推理能力提高。误排的原工具组记录单独保留并排除于主结果。
-
-所有general code实验统一归入[E2轮次索引](benchmarks/E2/README.md)。完整的[实验与修改记录（E1 → E2 R01 → E2 R02）](docs/experiment_history.md)汇总了每轮新增能力、实验设计、结果、额度中断/范围调整及对应Git提交；从推理强度选择到general code工具加入、接口简化，可按此文档追溯。
-
-2026-11-02 已扩展为五个可选世界，并完成同预算、每世界一次的真实 Agent 基准：1/5 完成自主提交与独立评测，其他尝试的失败记录完整保留。详见 [五世界测试报告](docs/five-worlds-results.md) 和 [批量基准命令](docs/benchmark.md)。
 
 ### 命令行运行
 
@@ -134,7 +140,7 @@ tests/                        数值、资源、隔离及模型协议测试
 
 `config.example.json` 可以设置模型、base_url、思考模式/强度、超时、重试、单次输出及总 token 上限。主 Agent 不再限制模型调用总次数或对话轮次，旧配置中的 `max_calls`、`main_max_calls`、`max_turns`、`max_rounds` 不再约束新运行；有效调用限额记录为 `null`。每次输出默认最多 65,536 token（含思考），总预算 5,000,000 token，单次请求超时 600 秒。每次 HTTP 尝试包括重试仍计入调用统计，实际 token 用量由服务端 usage 记录，未知用量另外保守预留。总 token、现实时间、单次重试次数及连续三次无工具回复的限制继续生效；未成功提交时如实结束为未完成。
 
-网页高级设置可选择 low / high / max 推理强度；本地模型接入见[部署说明](docs/local_deployment.md)。主 Agent 默认启用 low 强度思考。45次推理强度消融的完整结果见[E1报告](benchmarks/E1/README.md)，本轮建议在高级设置选择high。新探索不创建分析子 Agent，也不提供 summarize_data 工具；数据解释和假设生成由主 Agent 完成，精确计算继续交给数值工具。旧会话、分析报告和原始失败记录保留，历史用量按其原配置展示。
+网页高级设置可选择 low / high / max 推理强度；本地模型接入见[部署说明](docs/local_deployment.md)。主 Agent 默认启用 low 强度思考。45次推理强度消融的完整结果见[E1报告](experiments/E1/README.md)，本轮建议在高级设置选择high。新探索不创建分析子 Agent，也不提供 summarize_data 工具；数据解释和假设生成由主 Agent 完成，精确计算继续交给数值工具。旧会话、分析报告和原始失败记录保留，历史用量按其原配置展示。
 
 核验日期：2026-11-01。当前默认 `deepseek-flash`；官方页面显示它对应 DeepSeek-V4.1-Flash-1017，旧 `deepseek-v4-flash` 名称虽可接受，已经重定向至新模型，不能声称锁定原权重。使用显式 `thinking` 和 `reasoning_effort`；带工具的历史中所有 assistant 的 `reasoning_content` 完整保留，包括没有调用工具的回复。[官方模型页面](https://api-docs.deepseek.com/quick_start/pricing/)、[思考与工具协议](https://api-docs.deepseek.com/guides/thinking_mode/)。
 

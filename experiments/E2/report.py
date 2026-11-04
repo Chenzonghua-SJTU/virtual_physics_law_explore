@@ -113,7 +113,7 @@ def main():
         '- 统计、来源审计与逐次拟合/验证记录见[diagnostics.json](diagnostics.json)；所有代码记录见[code_audit.json](code_audit.json)。',
         '- 审计校验两组实际提示词、逐次配置、输入记录哈希、产物哈希及冻结源码一致；有效本机会话保存在runs/E2-*与runs/E2R1-*。21次402原始记录已在runs/.trash/中，审计只读它们，不恢复历史列表。每条实际路径见diagnostics.json。',
         '- [environment.json](environment.json)记录容器/科学库版本及707项测试通过（包含真实容器隔离、超时、内存、科学计算、产物与网页接口）。',
-        '- 复核命令：`.venv/bin/python benchmarks/E2/analyze.py`，再运行`.venv/bin/python benchmarks/E2/report.py`。不调用模型。',
+        '- 复核命令：`.venv/bin/python experiments/E2/analyze.py`，再运行`.venv/bin/python experiments/E2/report.py`。不调用模型。',
         '- 此目录仅保存白名单科学结果、代码和请求元数据；不保存API密钥、原始模型响应或私有思考。', '',
         '## 逐次有效结果', '', '| 世界 | 组 | 重复 | 会话 | 隐藏位置RMSE | 高精度 | 结束原因 | 耗时(s) |',
         '|---|---|---:|---|---:|---|---|---:|']
@@ -122,7 +122,7 @@ def main():
         lines.append(f'| {r["world_id"]} | {r["arm"]} | {r["repeat"]} | {r["run_id"]} | {rmse} | '
             f'{"是" if r["high_precision"] else "否"} | {r["reason"]} | {r["elapsed_seconds"]:.1f} |')
     (OUT/'R01.md').write_text('\n'.join(lines)+'\n')
-    print('Wrote benchmarks/E2/R01.md')
+    print('Wrote experiments/E2/R01.md')
 
 
 if __name__ == '__main__':

@@ -22,7 +22,7 @@ from shore_agent.web_jobs import _write
 
 
 def run(key):
-    parent = ROOT/'benchmarks/E2'
+    parent = ROOT/'experiments/E2'
     initial = json.loads((parent/'summary.json').read_text())
     registered = json.loads((parent/'manifest.json').read_text())
     assert initial['status'] == 'completed_all_attempts'

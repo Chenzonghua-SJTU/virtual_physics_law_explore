@@ -271,7 +271,7 @@ def run(output, key, *, project=PROJECT, poll_seconds=2):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output-dir', default=str(PROJECT / 'benchmarks' / 'E1'))
+    parser.add_argument('--output-dir', default=str(PROJECT / 'experiments' / 'E1'))
     parser.add_argument('--ask-key', action='store_true')
     args = parser.parse_args()
     key = getpass.getpass('API key (hidden; memory only): ') if args.ask_key else os.environ.get('DEEPSEEK_API_KEY')

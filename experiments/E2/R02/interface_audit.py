@@ -5,7 +5,7 @@ from pathlib import Path
 import statistics
 
 OUT=Path(__file__).resolve().parent
-ROOT=OUT.parents[1]
+ROOT=OUT.parents[2]
 
 
 def read(p):
@@ -102,7 +102,7 @@ def aggregate(rows):
 
 def main():
     s=read(OUT/'summary.json');assert s['status']=='completed_all_attempts' and len(s['rows'])==15
-    old=read(ROOT/'benchmarks/E2/combined_summary.json')
+    old=read(ROOT/'experiments/E2/combined_summary.json')
     current_rows=measure(s,'E3');old_rows=measure(old,'E2')
     assert all(r['repeated_code_schema_bytes']==0 for r in current_rows)
     result={'E3':aggregate(current_rows),'E2':aggregate(old_rows),'runs':current_rows+old_rows,

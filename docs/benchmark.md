@@ -5,7 +5,7 @@
 `benchmark_reasoning.py` 是单独的 E1 驱动：世界3、4、5 × `low/high/max` × 每格5次，共45次真实自主探索；固定3个并行进程，数值库每进程1线程。以下配置在启动前写入 manifest，不能在批次中途修改：环境种子42、无噪声、5M总预算、393216单次输出、1800秒请求超时、3600秒会话时限、每请求最多1次重试。模型调用次数不限。主提示词、工具和优化器沿用当前版本，不增加反思或研究状态要求。
 
 ```bash
-.venv/bin/python benchmark_reasoning.py --ask-key --output-dir benchmarks/E1
+.venv/bin/python benchmark_reasoning.py --ask-key --output-dir experiments/E1
 ```
 
 密钥无回显读取，仅在内存和子进程标准输入中传递。无需网页服务启动；完成并结束独立评测后，会话才移入工作台历史。活动进程在 `runs/.E1-active/`，以免网页误判为中断。请避免同时从网页启动额外探索，以免CPU争用影响数值工具时限。
@@ -30,7 +30,7 @@ cd virtual_physics_law_explore
 ```bash
 .venv/bin/python benchmark_worlds.py \
   --base-url http://127.0.0.1:8765 \
-  --output-dir benchmarks/my-single-agent-benchmark
+  --output-dir experiments/my-single-agent-benchmark
 ```
 
 若服务没有配置密钥，可以增加 `--ask-key`，通过 `getpass` 在终端无回显输入。密钥仅保留在内存，经回环 HTTP 交给服务，不写入参数、配置、报告或日志。不传 `--ask-key` 时可使用服务已有密钥或当前进程的 `DEEPSEEK_API_KEY`。

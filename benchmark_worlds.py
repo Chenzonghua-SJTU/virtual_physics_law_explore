@@ -331,7 +331,7 @@ def main():
         parser.error('--poll-seconds must be between 0.25 and 60')
     if not math.isfinite(args.wait_seconds) or args.wait_seconds <= 0:
         parser.error('--wait-seconds must be positive and finite')
-    output = args.output_dir or str(PROJECT / 'benchmarks' / datetime.now(timezone.utc).strftime('five-worlds-%Y%m%d-%H%M%S'))
+    output = args.output_dir or str(PROJECT / 'experiments' / datetime.now(timezone.utc).strftime('five-worlds-%Y%m%d-%H%M%S'))
     api_key = getpass.getpass('DeepSeek API key (not saved): ') if args.ask_key else os.environ.get('DEEPSEEK_API_KEY')
     service = None
     try:

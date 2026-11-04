@@ -8,7 +8,7 @@ import statistics
 import sys
 
 OUT = Path(__file__).resolve().parent
-ROOT = OUT.parents[1]
+ROOT = OUT.parents[2]
 sys.path.insert(0, str(ROOT))
 from benchmark_code_v2 import source_hashes
 

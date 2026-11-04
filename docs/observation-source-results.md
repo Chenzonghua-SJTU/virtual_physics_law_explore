@@ -46,9 +46,9 @@
 
 ## 证据
 
-- [首批配置与结果](../benchmarks/five-worlds-observation-source-20261103/summary.json)
-- [改动前后输入对比](../benchmarks/five-worlds-observation-source-20261103/input-comparison.json)
-- [工具序列回放](../benchmarks/five-worlds-observation-source-20261103/tool-replay-audit.json)
-- [首批研究判断审查](../benchmarks/five-worlds-observation-source-20261103/research-review.json)
-- [不改版本的两次真实复测](../benchmarks/observation-source-unchanged-repeats-20261103/summary.json)
-- [复测观测来源审计](../benchmarks/observation-source-unchanged-repeats-20261103/observation-audit.json)
+- [首批配置与结果](../experiments/five-worlds-observation-source-20261103/summary.json)
+- [改动前后输入对比](../experiments/five-worlds-observation-source-20261103/input-comparison.json)
+- [工具序列回放](../experiments/five-worlds-observation-source-20261103/tool-replay-audit.json)
+- [首批研究判断审查](../experiments/five-worlds-observation-source-20261103/research-review.json)
+- [不改版本的两次真实复测](../experiments/observation-source-unchanged-repeats-20261103/summary.json)
+- [复测观测来源审计](../experiments/observation-source-unchanged-repeats-20261103/observation-audit.json)

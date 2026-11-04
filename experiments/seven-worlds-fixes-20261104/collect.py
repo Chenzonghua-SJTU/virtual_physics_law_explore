@@ -6,7 +6,7 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parent
 ROOT = OUT.parents[1]
-PREVIOUS = ROOT / 'benchmarks/seven-worlds-v0.1.0-20261103'
+PREVIOUS = ROOT / 'experiments/seven-worlds-v0.1.0-20261103'
 
 
 def read(path, default=None):

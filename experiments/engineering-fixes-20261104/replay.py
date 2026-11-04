@@ -1,6 +1,6 @@
 """Offline regression using archived runs; no model calls or archive mutations.
 
-Run from the project root with `.venv/bin/python benchmarks/engineering-fixes-20261104/replay.py`.
+Run from the project root with `.venv/bin/python experiments/engineering-fixes-20261104/replay.py`.
 The original runs are local-only and intentionally excluded from Git.
 """
 import ast
@@ -32,7 +32,7 @@ def archive_hashes():
             for d in directories for p in d.rglob('*') if p.is_file()}
 
 
-batch = read(ROOT / 'benchmarks/seven-worlds-v0.1.0-20261103/summary.json')
+batch = read(ROOT / 'experiments/seven-worlds-v0.1.0-20261103/summary.json')
 directories = [ROOT / 'runs' / row['run_id'] for row in batch['worlds']]
 before = archive_hashes()
 dsl = []

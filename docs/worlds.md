@@ -74,7 +74,7 @@ cd virtual_physics_law_explore
 
 世界07候选为 `(k+c*sin(w*t))*sum_b(bx-x)` 及对应y式，等价于开发者设定的周期强度模型，满足最多5参数和DSL字面量限制。拟合时只使用公开初态、探针轨迹与天体位置观测；后评测按v4瞬时可见状态契约执行。
 
-[核验记录](../benchmarks/time-worlds-v4-engineering-20261103-114856/summary.json)；工作台可查看[世界06工程记录](http://127.0.0.1:8765/?run=offline-time-v4-6-20261103-114856)与[世界07工程记录](http://127.0.0.1:8765/?run=offline-time-v4-7-20261103-114856)。
+[核验记录](../experiments/time-worlds-v4-engineering-20261103-114856/summary.json)；工作台可查看[世界06工程记录](http://127.0.0.1:8765/?run=offline-time-v4-6-20261103-114856)与[世界07工程记录](http://127.0.0.1:8765/?run=offline-time-v4-7-20261103-114856)。
 
 ## 2026-11-03 v2 各一次真实探索（历史结果）
 
@@ -94,12 +94,12 @@ cd virtual_physics_law_explore
 
 本批共56次模型调用、2,192,238 token。单次实验不代表稳定成功率。
 
-- [逐世界完整结果、参数与用量](../benchmarks/five-worlds-source-v2-20261103/comparison.md)
-- [原始汇总JSON](../benchmarks/five-worlds-source-v2-20261103/summary.json)
-- [观测来源、版本及冻结后验证审计](../benchmarks/five-worlds-source-v2-20261103/execution-audit.json)
-- [物理解释审查意见](../benchmarks/five-worlds-source-v2-20261103/scientific-review.json)
+- [逐世界完整结果、参数与用量](../experiments/five-worlds-source-v2-20261103/comparison.md)
+- [原始汇总JSON](../experiments/five-worlds-source-v2-20261103/summary.json)
+- [观测来源、版本及冻结后验证审计](../experiments/five-worlds-source-v2-20261103/execution-audit.json)
+- [物理解释审查意见](../experiments/five-worlds-source-v2-20261103/scientific-review.json)
 
-对世界5另做了明确标注的人工工程回放：在原20个未见初态和相同时间网格上，手工指定批准的逐源公式及参数，现有DSL与推演工具得到位置RMSE `5.61088e-8`。这排除了该公式无法表达或推演器不支持的疑虑；不算自主发现、不替代原失败结果，也没有修改原会话档案。详见[人工工程核验](../benchmarks/five-worlds-source-v2-20261103/engineering-world5-known-law.json)。
+对世界5另做了明确标注的人工工程回放：在原20个未见初态和相同时间网格上，手工指定批准的逐源公式及参数，现有DSL与推演工具得到位置RMSE `5.61088e-8`。这排除了该公式无法表达或推演器不支持的疑虑；不算自主发现、不替代原失败结果，也没有修改原会话档案。详见[人工工程核验](../experiments/five-worlds-source-v2-20261103/engineering-world5-known-law.json)。
 
 ## 2026-11-03 v3 世界 05 单次探索（s=1、g=1）
 
@@ -109,5 +109,5 @@ cd virtual_physics_law_explore
 
 此次属于接口中断，不能据此判断s=1、g=1是否改善自主发现能力。没有补跑或人工提示；生产代码与提示词在运行期间哈希一致。参数变更同时改变了空间分布和整体偏转强度，未来比较结果也不能仅归因于空间对比度。
 
-- [配置、代码哈希、终止原因及用量](../benchmarks/world5-source-v3-s1-g1-20261103/manifest.json)
-- [单次运行审计](../benchmarks/world5-source-v3-s1-g1-20261103/audit.json)
+- [配置、代码哈希、终止原因及用量](../experiments/world5-source-v3-s1-g1-20261103/manifest.json)
+- [单次运行审计](../experiments/world5-source-v3-s1-g1-20261103/audit.json)

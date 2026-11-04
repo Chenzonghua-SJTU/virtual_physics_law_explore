@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 
 OUT=Path(__file__).resolve().parent
-ROOT=OUT.parents[1]
+ROOT=OUT.parents[2]
 
 
 def read(p):return json.loads(p.read_text())
@@ -15,7 +15,7 @@ def main():
     assert s['status']=='completed_all_attempts' and len(s['rows'])==15
     m=read(OUT/'manifest.json');groups=d['groups']
     allgroups={g['arm']:g for g in groups if g['world_id']=='all'}
-    old=read(ROOT/'benchmarks/E2/combined_summary.json')
+    old=read(ROOT/'experiments/E2/combined_summary.json')
     lines=['# E2 R02：简化代码接口与结果返回', '',
         f'本轮按用户调整完成15次简化代码组复测，高精度 **{allgroups["code"]["high_precision"]}/15**。高精度是完整隐藏位置RMSE<1e-6；执行成功、局部验证和独立隐藏测评分别统计。','',
         '## 改了什么','',
@@ -82,7 +82,7 @@ def main():
         '- [diagnostics.json](diagnostics.json)、[code_audit.json](code_audit.json)：实际提示词、输入及产物哈希校验，公开代码和输出预览。',
         '- [interface_metrics.json](interface_metrics.json)：E2 R01/E2 R02代码调用、错误、返回体积及逐次记录。',
         '- [environment.json](environment.json)：环境版本及720项测试通过，含真实Docker与HTTP接口。',
-        '- 复核顺序：运行归档目录benchmarks/E3/下的analyze.py、interface_audit.py、report.py；不会调用模型。',
+        '- 复核顺序：运行归档目录experiments/E2/R02/下的analyze.py、interface_audit.py、report.py；不会调用模型。',
         '- 每世界仅5次，固定布局及同一隐藏集。结果主要反映本次模型随机性，不覆盖跨布局、噪声、其他模型。服务商模型别名并非固定权重。',
         '- 完整本机会话在runs/E3-*；发布目录只含白名单科学数据和请求元数据，不含密钥、私有推理或原始提供商响应。','',
         f'15次代码组累计用量：{sum(r["tokens"] for r in s["rows"]):,} Token；原工具组附加尝试的消耗另存excluded_baseline_summary.json。', '',
@@ -94,10 +94,10 @@ def main():
         lines.append(f'| {r["world_id"]} | {r["arm"]} | {r["repeat"]} | {r["run_id"]} | {"是" if r["high_precision"] else "否"} | '
             f'{rmse} | {r["elapsed_seconds"]:.1f} | {r["tool_counts"].get("run_code",0)} |')
     content='\n'.join(lines)+'\n'
-    content=re.sub(r'\]\(([^)]+)\)', lambda m: ']('+('../E3/'+m[1] if '://' not in m[1] else m[1])+')', content)
-    content=content.replace('## 改了什么', '原始会话前缀与归档路径保留E3，仅报告编号统一为E2 R02；见[E2轮次索引](README.md)。\n\n## 改了什么', 1)
-    (ROOT/'benchmarks/E2/R02.md').write_text(content)
-    print('Wrote benchmarks/E2/R02.md')
+    content=re.sub(r'\]\(([^)]+)\)', lambda m: ']('+('R02/'+m[1] if '://' not in m[1] else m[1])+')', content)
+    content=content.replace('## 改了什么', '原始会话编号保留E3前缀，归档已迁入experiments/E2/R02；本轮统一记为E2 R02；见[E2轮次索引](README.md)。\n\n## 改了什么', 1)
+    (ROOT/'experiments/E2/R02.md').write_text(content)
+    print('Wrote experiments/E2/R02.md')
 
 
 if __name__=='__main__':main()

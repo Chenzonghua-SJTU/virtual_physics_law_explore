@@ -11,7 +11,7 @@ import subprocess
 import sys
 import time
 
-ROOT=Path(__file__).resolve().parents[2]
+ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT))
 import benchmark_code_v2 as bench
 from shore_agent.code_execution import sandbox_info
@@ -24,7 +24,7 @@ def live(pid):
 
 
 def main(key):
-    out=ROOT/'benchmarks/E3';staging=ROOT/'runs/.E3-active'
+    out=ROOT/'experiments/E2/R02';staging=ROOT/'runs/.E3-active'
     registered=json.loads((out/'original_schedule/manifest.json').read_text())
     original=json.loads((out/'original_schedule/summary.json').read_text())
     amendment=json.loads((out/'scope_change.json').read_text())

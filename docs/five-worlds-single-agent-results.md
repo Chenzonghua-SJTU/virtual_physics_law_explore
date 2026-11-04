@@ -58,9 +58,9 @@
 
 ## 原始记录
 
-- [结果、表达式与参数](../benchmarks/five-worlds-single-agent-003/summary.json)
-- [配置、工具清单、提示词哈希与运行映射](../benchmarks/five-worlds-single-agent-003/manifest.json)
-- [模型角色、工具计数、错误与回复用量](../benchmarks/five-worlds-single-agent-003/diagnostics.json)
+- [结果、表达式与参数](../experiments/five-worlds-single-agent-003/summary.json)
+- [配置、工具清单、提示词哈希与运行映射](../experiments/five-worlds-single-agent-003/manifest.json)
+- [模型角色、工具计数、错误与回复用量](../experiments/five-worlds-single-agent-003/diagnostics.json)
 - [上一轮扩大预算结果](five-worlds-large-budget-results.md)
 - [世界 01](http://127.0.0.1:8765/?run=web-20261102-113701-c80b7165)
 - [世界 02](http://127.0.0.1:8765/?run=web-20261102-113744-82cc725b)
