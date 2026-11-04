@@ -18,7 +18,7 @@ def main():
     groups = audit['groups']
     overall = {g['arm']:g for g in groups if g['world_id'] == 'all'}
     base, code = overall['baseline'], overall['code']
-    lines = ['# E2：开放 Python 分析能力是否有帮助', '',
+    lines = ['# E2 R01：开放 Python 分析能力是否有帮助', '',
         f'30个计划单元完成：原工具组高精度成功 **{base["high_precision"]}/15**，增加 `run_code` 组 **{code["high_precision"]}/15**。'
         '高精度指完整独立评测位置 RMSE < 1e-6；代码执行成功与高精度成功分别统计。', '',
         '## 实验设计与额度中断', '',
@@ -121,8 +121,8 @@ def main():
         rmse=f'{r["position_rmse"]:.8e}' if r['position_rmse'] is not None else '—'
         lines.append(f'| {r["world_id"]} | {r["arm"]} | {r["repeat"]} | {r["run_id"]} | {rmse} | '
             f'{"是" if r["high_precision"] else "否"} | {r["reason"]} | {r["elapsed_seconds"]:.1f} |')
-    (OUT/'README.md').write_text('\n'.join(lines)+'\n')
-    print('Wrote benchmarks/E2/README.md')
+    (OUT/'R01.md').write_text('\n'.join(lines)+'\n')
+    print('Wrote benchmarks/E2/R01.md')
 
 
 if __name__ == '__main__':
