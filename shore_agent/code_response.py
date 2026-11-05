@@ -24,6 +24,8 @@ def input_hints(store, kinds, ids=None):
             signature = json.dumps([kind, fields], sort_keys=True)
             group = groups.setdefault(signature, {'record_type': kind, 'record_ids': [], 'fields': fields})
             group['record_ids'].append(rid)
+            from .workspace import FOLDERS
+            group.setdefault('paths', []).append(f'{FOLDERS[kind]}/{rid}.json')
     return list(groups.values())
 
 
@@ -89,9 +91,7 @@ def execution_preview(record):
         data[field], cut = compact(record.get(field, ''), 1500)
         truncated |= cut
     data['truncated'] = truncated
-    data['retrieve'] = {'tool':'call_back', 'record_type':'code_execution',
-                        'record_ids':[record['execution_id']],
-                        'field_path':['result'], 'offset':0, 'limit':20}
+    data['retrieve'] = {'tool':'read_file', 'path':f'analyses/{record["execution_id"]}/result.json', 'offset':0}
     data['meaning'] = 'Computed from acquired data; execution success is not a scientific correctness verdict.'
     return data
 

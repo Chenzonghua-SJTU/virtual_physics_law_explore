@@ -16,6 +16,7 @@ import stat
 import sys
 import time
 import traceback
+from types import MappingProxyType
 
 MAX_LOG = 16000
 MAX_RESULT = 2 * 1024 * 1024
@@ -38,6 +39,31 @@ def get_record(inputs, alias, rid):
     if len(matches) != 1:
         raise KeyError(f'Expected one record {rid!r} in {alias!r}; available IDs: {[record_id(r) for r in records]}')
     return matches[0]
+
+
+def file_readers(encoded):
+    """Read-only virtual files supplied by the host's acquired-file registry."""
+    import re
+    if not isinstance(encoded, dict) or len(encoded) > 128:
+        raise ValueError('Invalid input file snapshot')
+    decoded = {}
+    for path, value in encoded.items():
+        if (not isinstance(path, str) or not path or len(path) > 300
+                or any(p in ('', '.', '..') or not re.fullmatch(r'[A-Za-z0-9_.-]+', p) for p in path.split('/'))):
+            raise ValueError('Invalid snapshot path')
+        decoded[path] = base64.b64decode(value, validate=True)
+    files = MappingProxyType(decoded)
+    def read_bytes(path):
+        if path not in files:
+            raise ValueError(f'File not included in this execution: {path!r}; available_files={list(files)}')
+        return files[path]
+    def read_file(path):
+        return read_bytes(path).decode('utf-8')
+    def read_json(path):
+        # Parsing afresh keeps mutations local to the caller, never the snapshot.
+        return json.loads(read_file(path))
+    return {'available_files': tuple(sorted(files)), 'read_file': read_file,
+            'read_json': read_json, 'read_bytes': read_bytes}
 
 
 def probe_arrays(record, time_axis='observed', interpolation='exact'):
@@ -163,6 +189,7 @@ def main():
                          'inputs': envelope['inputs'], 'input_info': input_layout(envelope['inputs']),
                          'get_record': lambda alias, rid: get_record(envelope['inputs'], alias, rid),
                          'probe_arrays': probe_arrays}
+            namespace.update(file_readers(envelope.get('files', {})))
             Path('/work/analysis.py').write_text(envelope['code'])
             exec(compile(envelope['code'], '/work/analysis.py', 'exec'), namespace)
             if 'result' in namespace:

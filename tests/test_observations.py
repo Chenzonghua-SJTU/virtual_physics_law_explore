@@ -72,7 +72,7 @@ def test_noisy_observations_are_the_only_positions_and_freeze_with_each_law(tmp_
         current = copy.deepcopy(runtime.body_position_estimate)
         # Re-reading cached first light never re-weights samples or resets the current estimate.
         assert runtime.mission()['data'] == mission
-        execute('call_back', record_type='body_observation', record_ids=[first['observation_id']], detail='full')
+        execute('read_file', path=f"observations/{first['observation_id']}.json")
         assert runtime.body_position_estimate == current
         assert runtime.budget()['observations_remaining'] == 18
         after = execute('validate_law', law_id=law_id, test_probe_ids=[pid])

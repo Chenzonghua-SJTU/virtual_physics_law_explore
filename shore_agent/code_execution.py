@@ -17,7 +17,7 @@ import uuid
 
 from jsonschema import Draft202012Validator
 
-IMAGE = 'shore-code:e2-r03'
+IMAGE = 'shore-code:e2-r04'
 MAX_RESPONSE = 14 * 1024 * 1024
 MAX_INPUT = 24 * 1024 * 1024
 ARTIFACT_NAME = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,95}')
@@ -129,7 +129,7 @@ def _decode(response, output_dir, schema):
     return record
 
 
-def execute_code(code, inputs, schema, artifact_dir, config, timeout_seconds):
+def execute_code(code, inputs, schema, artifact_dir, config, timeout_seconds, files=None):
     started = time.monotonic()
     name = 'shore-code-' + uuid.uuid4().hex
     command, env = docker_command(config), docker_env()
@@ -142,7 +142,7 @@ def execute_code(code, inputs, schema, artifact_dir, config, timeout_seconds):
     memory = int(config.get('memory_mb', 1024))
     if not 128 <= memory <= 4096 or not 1 <= timeout <= 300:
         raise ValueError('invalid_code_execution_limits')
-    payload = json.dumps({'code': code, 'inputs': inputs}, allow_nan=False, ensure_ascii=False).encode()
+    payload = json.dumps({'code': code, 'inputs': inputs, 'files': files or {}}, allow_nan=False, ensure_ascii=False).encode()
     if len(payload) > MAX_INPUT:
         raise ValueError('code_input_too_large')
     # No bind mounts, host directories, sockets, credentials, ports or environment inheritance.

@@ -61,7 +61,7 @@ def test_helpers_only_expose_explicitly_loaded_records():
     assert info['p']['first_record_fields']['a_est']['first_item_shape'] == [2, 2]
 
 
-def test_optional_inputs_and_acquired_metadata(tmp_path, monkeypatch):
+def test_optional_files_and_acquired_metadata(tmp_path, monkeypatch):
     env = Environment({'physics_version': 'v4', 'noise': False})
     try:
         rt = ToolRuntime(env, tmp_path, code_config={'enabled': True})
@@ -74,15 +74,15 @@ def test_optional_inputs_and_acquired_metadata(tmp_path, monkeypatch):
         bh = next(h for h in hints if h['record_type'] == 'body_observation')
         assert bh['fields']['positions_obs']['shape'] == [8, 3, 2]
         seen = []
-        def run(code, inputs, *args):
-            seen.append(inputs)
+        def run(code, inputs, *args, files=None):
+            seen.append(files)
             return {'status': 'success', 'result': 2, 'stdout': '', 'stderr': '', 'artifacts': []}
         monkeypatch.setattr('shore_agent.code_execution.execute_code', run)
         out = rt.execute('run_code', {'code': 'result = 1 + 1'})
         assert out['ok'] and seen == [{}]
-        assert rt.store.get('code_execution', out['data']['execution_id'])['inputs'] == {}
-        assert not rt.execute('run_code', {'code': 'result=1', 'inputs': None})['ok']
-        bad = rt.execute('run_code', {'code': 'result=1', 'inputs': {'p': {'record_type': 'probe', 'record_ids': ['probe_9999']}}})
+        assert rt.store.get('code_execution', out['data']['execution_id'])['files'] == []
+        assert not rt.execute('run_code', {'code': 'result=1', 'files': None})['ok']
+        bad = rt.execute('run_code', {'code': 'result=1', 'files': ['observations/probe_9999.json']})
         assert not bad['ok'] and seen == [{}]
         observed = rt.execute('observe_body', {'times': [0., .5]})
         assert observed['ok']

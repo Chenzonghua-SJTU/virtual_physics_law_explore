@@ -1,4 +1,4 @@
-# 可选 Python 分析工具与 E2/E3
+# 可选 Python 分析工具与 E2
 
 `run_code` 由主 Agent 直接使用，没有新增子 Agent。默认关闭；网页高级设置的「允许 Agent 编写分析代码」可开启。执行环境不可用时开关禁用；不会自动降级为宿主 Python。CLI 在配置中设置 `code_execution.enabled=true`。
 
@@ -8,10 +8,10 @@
 
 ```sh
 colima start shore-code --cpu 4 --memory 6 --disk 20 --mount none --activate=false --ssh-config=false
-docker --context colima-shore-code build -t shore-code:e2-r03 code_sandbox
+docker --context colima-shore-code build -t shore-code:e2-r04 code_sandbox
 ```
 
-Linux / 其他 Docker 环境可使用 `docker build -t shore-code:e2-r03 code_sandbox`，配置中的 `docker_context` 可指定受信任服务端 context。Mac 存在上述 profile 的 socket 时自动选用它。镜像仅包含执行器及 numpy/scipy/sympy/matplotlib，不复制项目、实验记录或仿真源码。构建 context 由 `.dockerignore` 限制为 Dockerfile 和 runner.py。
+Linux / 其他 Docker 环境可使用 `docker build -t shore-code:e2-r04 code_sandbox`，配置中的 `docker_context` 可指定受信任服务端 context。Mac 存在上述 profile 的 socket 时自动选用它。镜像仅包含执行器及 numpy/scipy/sympy/matplotlib，不复制项目、实验记录或仿真源码。构建 context 由 `.dockerignore` 限制为 Dockerfile 和 runner.py。
 
 若官方默认下载源不可达，本次本机构建使用：
 
@@ -19,67 +19,74 @@ Linux / 其他 Docker 环境可使用 `docker build -t shore-code:e2-r03 code_sa
 docker --context colima-shore-code build \
   --build-arg BASE_IMAGE=public.ecr.aws/docker/library/python:3.11-slim \
   --build-arg PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
-  -t shore-code:e2-r03 code_sandbox
+  -t shore-code:e2-r04 code_sandbox
 ```
 
 默认每次1CPU、1GiB内存、90秒计算期限（容器启动/传输有最多8秒宽限）、64进程/线程、128MiB工作目录、32MiB临时目录。限时也受会话剩余时间限制；主机监督超时强制结束容器。容器非root、只读根文件系统、无网络、无宿主挂载、无Docker socket、丢弃全部 capabilities、禁止新增权限；Docker默认seccomp继续生效。每次重新创建并最终删除容器。标准库和任意Python语法可用，安全边界是容器，不是Python字符串或AST过滤器。
 
-## 工具协议（v3 / E2 R03）
+## 工具协议（v4 / E2 R04）
 
-`run_code`只有`code`必填。`inputs`可省略，默认空对象`{}`；显式传入null仍属于错误参数。需要已取得的数据时，通过inputs传入记录引用。不要求Agent编写输出schema。
+`call_back`已从当前模型工具和运行时移除，改为`list_files`和`read_file`。默认8个工具，启用run_code后9个。旧日志仍可在前端展示，但不会重新开放旧接口。
+
+### 当前会话文件目录
+
+这些是应用提供的虚拟路径，不是宿主操作系统路径：
+
+```text
+observations/probe_0001.json
+observations/body_0001.json
+laws/law_1.json
+validations/validation_*.json
+residuals/residual_*.json
+submissions/submission_*.json
+analyses/code_*/analysis.py
+analyses/code_*/result.json
+analyses/code_*/record.json
+analyses/code_*/stdout.txt
+analyses/code_*/stderr.txt
+analyses/code_*/artifacts/output.csv
+```
+
+只登记当前会话已经取得的记录，以及通过导出校验的分析产物。任务包的workspace列出初始文件；后续工具的workspace_files列出新增文件。不会扫描运行目录或宿主磁盘，不提供历史会话、仿真源码、模型消息、配置密钥或独立隐藏评测。字面路径穿越、绝对路径和符号链接均不可用于获取额外数据。
+
+```json
+{"path":"observations/","offset":0,"limit":100}
+```
+
+上述参数调用list_files：返回直接子目录/文件，按路径排序，最多200项，用next_offset继续分页。
+
+```json
+{"path":"observations/probe_0001.json","offset":0,"limit":12000}
+```
+
+上述参数调用read_file：offset/limit是Unicode字符位置/数量，最多20000字符，返回content、total_chars、next_offset、truncated及完整文件SHA256。没有field_path或record_type；JSON保留完整结构，由代码自行解析。二进制产物应传给run_code读取。
+
+### 代码读取相同路径
+
+run_code只要求code；files可省略，默认空列表。需要数据时显式选择至多128个路径，总计不超过16MiB。框架验证路径属于当前会话，将完整字节快照发送给容器，不挂载宿主目录。
 
 ```json
 {
-  "code": "import numpy as np\np = inputs['trajectories'][0]\nresult = {'n_samples': len(p['times']), 'mean_speed': np.linalg.norm(p['v_obs'], axis=1).mean()}",
-  "inputs": {
-    "trajectories": {"record_type": "probe", "record_ids": ["probe_0001"]}
-  }
+  "files": ["observations/probe_0001.json"],
+  "code": "p = read_json('observations/probe_0001.json')\ns = probe_arrays(p, time_axis='acceleration')\nresult = {'t': s['t'], 'r': s['r'], 'a_est': s['a'], 'alignment': s['alignment']}"
 }
 ```
 
-脚本直接使用预置的`inputs`，把输出赋给`result`；旧的`analyze(inputs)`函数形式仍兼容（脚本定义result时以它为准）。仅print的脚本也能运行：结果为null、返回stdout及无结构化结果提示，不会仅因缺少函数或result要求重跑。执行成功不等于科学正确，也不保证返回了有用分析。
+脚本中read_json(path)解析完整JSON，read_file(path)返回完整UTF-8文本，read_bytes(path)返回二进制字节，available_files列出本次传入路径。它们读取只读快照；read_json每次返回独立对象，修改对象不会改写快照或原记录。未在files中选择的文件不能读取，即使它已经属于当前会话。虚拟路径不支持宿主open访问；CSV可用StringIO(read_file(path))处理，PNG可用BytesIO(read_bytes(path))处理。写入仅通过output/显式产物。
 
-开启代码工具时，任务包和新观测返回`code_inputs`：按实际字段与形状分组，列出可引用记录编号、字段名、数组形状和字典键。只包含已经取得的记录，不增加观测或泄露真值。未开启代码工具的任务包及工具返回保持原样。
+任务包与新观测的code_inputs列出真实字段、路径和数组形状。探针记录times为(N,)，r_obs/v_obs为(N,2)；a_est有自己的a_est_times。probe_arrays(p)返回观测时刻的t/r/v；time_axis="acceleration"按估计加速度时刻返回t/r/v/a。默认精确匹配；需插值时显式interpolation="linear"，禁止外推、静默截短或补零。a仍是差分估计，alignment说明方法。天体记录使用times/body_ids/positions_obs，位置轴为(时间,天体,xy)，不能默认天体静止。
 
-脚本额外提供以下读取辅助能力：
+普通脚本赋值result即可；兼容已有analyze(inputs)形式及仅print输出，但新模型接口不再使用inputs/别名协议。NumPy数组/标量和元组自动转换，NaN/Infinity明确报错。结果最多2MiB；默认结果预览约8000字符，stdout/stderr各1500字符，超限明确标注。允许大小内完整结果及每路最多16000字符日志保留。精简返回不重复代码/来源哈希，详细信息见analyses下的文件。
 
-- `input_info`：本次显式传入的记录编号及各别名首条记录的字段/形状；完整原始列表仍为`inputs[alias]`。
-- `get_record(alias, record_id)`：按编号取本次已加载记录，找不到时报告实际可用编号；不会自动取得本次未传入的数据。
-- `probe_arrays(record)`：返回观测时刻上的NumPy数组`t/r/v`。
-- `probe_arrays(record, time_axis="acceleration")`：返回`a_est_times`上的`t/r/v/a`。默认精确匹配时刻，长度或时刻不符就报错，不会静默截短；`a`仍是差分估计加速度。只有显式指定`interpolation="linear"`才插值r/v，输出alignment标记该方法，禁止外推。返回数组是副本，不修改原始记录。
+output/最多导出10个PNG/JSON/CSV/TXT文件，总计8MiB；只接受普通文件，校验名称、格式及哈希，不递归或导出符号链接。产物可经read_file或后续run_code读取，也可从网页下载。输入文件路径/哈希/字节数及实际快照分别保存在执行记录和code_executions/<id>/input_files.json；旧档案格式不改写。
 
-```python
-p = get_record("trajectories", "probe_0001")
-s = probe_arrays(p, time_axis="acceleration")
-result = {"t": s["t"], "r": s["r"], "v": s["v"], "a_est": s["a"],
-          "alignment": s["alignment"]}
-```
-
-天体位置记录使用`times/body_ids/positions_obs`，位置数组轴为(时间,天体,xy)，不应假设存在bodies字段或将天体运动忽略。辅助函数不替模型构造候选、拟合规律或修复数值算法。
-
-每个别名对应完整记录的列表，单条也是列表；同类记录建议合并到一个别名。支持已有`probe/body_observation/law/validation/residual/code_execution`；最多16别名，每别名102条。只通过记录编号引用数据，不接受文件路径，不传入真实规律、隐藏评测、模型消息或密钥。输入逐条保留SHA256。探针`times/r_obs/v_obs`和`a_est_times/a_est`的时间轴可能不同，后者可能缺失；读取时应检查字段及形状。
-
-NumPy数组和标量、元组自动转换为JSON；NaN/Infinity明确报错，不能静默补零或变null。最大结果2MiB；大表可主动输出到`output/`。对支持的结果只进行序列化，不替模型修改公式、填缺失值、插值或修复算法。
-
-完整执行记录保存在`records/code_execution/`，代码、输入及产物仍保存在`code_executions/`。默认返回执行编号、状态、结果、精简日志、错误位置与输入字段/形状、产物清单；不重复回传代码、输出schema、来源哈希或容器元信息。小型比较表不再因超过6行而被截成3行。结果预览约8000字符，stdout/stderr各1500字符；超限显式标记truncated。原始记录保留允许大小内完整结果与有界日志（每路16000字符），不是由另一个模型总结。
-
-按字段及行读取示例：
-
-```json
-{"record_type":"code_execution","record_ids":["code_example"],"field_path":["result","fits"],"offset":0,"limit":20}
-```
-
-上述参数交给`call_back`，要求唯一已取得记录及明确类型。field_path由字典键和非负列表下标组成；offset/limit对列表或字符串分页（最多1000项/字符），大页仍可能预览，可继续缩小范围。默认summary也使用精简代码结果视图；detail=full显式取回完整记录。后续代码可直接引用之前的code_execution记录并读`result`，不必先将数组全部送回对话。
-
-`output/`导出最多10个PNG/JSON/CSV/TXT文件、总计8MiB；ASCII简单文件名、不递归目录/符号链接，校验格式/大小/哈希。网页可下载产物；完整实验导出继续保留代码和科学记录，不包含私有思考。
-
-错误包含类型、错误行、相关代码和已取得输入的字段/形状。完整堆栈留档，默认返回精简版本。框架不自动更改代码重试。每次新容器、无隐含变量状态；资源、网络与宿主隔离约束不变。会话历史仍完整发送，本次不增加历史压缩、子Agent或研究状态更新。
+每次新容器，无网络、宿主挂载或隐含变量状态。没有自动修代码重试、历史压缩或额外子Agent。执行成功不代表科学正确，读取文件不产生新的观测。
 
 ## 科研边界
 
 代码是对已有观测的计算；代码自行估计的系数仍需通过正式候选拟合、整条轨迹独立验证与提交。最终law.py仍由受限表达式和冻结参数生成；本次不开放任意Python规律提交。训练/验证数据来源继续留档，按验证结果修改候选后须再取新实验验证。
 
-控制组使用原始main.txt与7个schema。实验组只把工具数量/代码权限文字改为8个，再追加code.txt的接口、资源与证据说明；不加反思步骤，不强制调用代码，不规定假设或分析路线。
+历史E2 R01/R02控制组使用原始main.txt与7个schema，代码组增加run_code。E2 R04改变了读取接口，不能将新配置直接当作历史控制组；重新比较需另行冻结配置。
 
 ## E2 R02 预注册设计
 

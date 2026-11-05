@@ -1,6 +1,6 @@
 # 科研工具与数据约定
 
-本文按 [工具 JSON Schema](../shore_agent/schemas.py)、[执行层](../shore_agent/runtime.py)、[记录库](../shore_agent/store.py)、[表达式解释器](../shore_agent/expressions.py)、[数值工具](../shore_agent/numerics.py) 和 [提交生成器](../shore_agent/submission.py) 编写。默认提供下面七个工具；可选的第八个工具 `run_code` 及其隔离执行、输入输出协议见[代码工具说明](code_execution.md)。没有宿主文件访问或隐藏评测接口。本文不包含环境真实动力学。已移除 summarize_data 工具和分析子 Agent；旧会话中的 data_summary 档案与日志只为历史查看保留，不再由新探索生成。
+本文按 [工具 JSON Schema](../shore_agent/schemas.py)、[执行层](../shore_agent/runtime.py)、[记录库](../shore_agent/store.py)、[表达式解释器](../shore_agent/expressions.py)、[数值工具](../shore_agent/numerics.py) 和 [提交生成器](../shore_agent/submission.py) 编写。默认提供下面八个工具；可选的第九个工具 `run_code` 及其隔离执行、输入输出协议见[代码工具说明](code_execution.md)。没有宿主文件访问或隐藏评测接口。本文不包含环境真实动力学。已移除 summarize_data 工具和分析子 Agent；旧会话中的 data_summary 档案与日志只为历史查看保留，不再由新探索生成。
 
 ## 统一返回与时间
 
@@ -28,7 +28,7 @@
 
 ## 记录与预览
 
-记录的完整 JSON 保存到运行目录的 `records/<record_type>/<record_id>.json`；写入后不覆盖。模型按编号读取已经取得的记录，编号不是文件路径。
+记录的完整 JSON 保存到运行目录的 `records/<record_type>/<record_id>.json`；写入后不覆盖。对模型另提供当前会话虚拟文件路径，见任务包workspace和工具返回workspace_files；路径不是宿主磁盘地址。
 
 | 含义 | 字段 / 记录类型 | 当前编号形式 |
 | --- | --- | --- |
@@ -51,14 +51,14 @@
   "preview": ["第1项", "第2项", "第3项"],
   "total_items": 30,
   "truncated": true,
-  "retrieve": "call_back(detail=\"full\", record_ids=[id])"
+  "retrieve": "read_file(path=the returned workspace path, offset=0)"
 }
 ```
 
 这意味着预览里的 `times`、`r_obs`、`rollouts` 等字段可能是对象，不能当作完整数组直接计算。下面注明的数组形状均指完整记录。获取完整轨迹：
 
 ```json
-{"record_type":"probe","record_ids":["probe_0001"],"detail":"full"}
+{"path":"observations/probe_0001.json","offset":0,"limit":12000}
 ```
 
 ## 1. `observe_body(times)`
@@ -77,7 +77,7 @@
 
 即使天体静止，也保留时间维度。只返回可见天体位置观测，不返回作用强度、隐藏天体或真实力场。结果先完整存档，再返回预览。
 
-Agent 初始任务包仅公开可见天体编号与静态环境约定，不含 `task.visible_bodies`、`first_light.body_observation` 或位置估计。坐标须通过显式 `observe_body` 取得；首次调用也消耗一次观察机会。观察前 `call_back` 没有天体位置记录，使用 `sum_b` 拟合会提示先观察；不依赖天体的候选不受影响。每次成功观察后，运行时按天体编号汇总已取得的独立样本，用逐坐标算术平均得到 `body_position_estimate`：
+Agent 初始任务包仅公开可见天体编号与静态环境约定，不含 `task.visible_bodies`、`first_light.body_observation` 或位置估计。坐标须通过显式 `observe_body` 取得；首次调用也消耗一次观察机会。观察前虚拟工作目录没有天体位置文件，使用 `sum_b` 拟合会提示先观察；不依赖天体的候选不受影响。每次成功观察后，运行时按天体编号汇总已取得的独立样本，用逐坐标算术平均得到 `body_position_estimate`：
 
 - `version`：当前会话的 `body_estimate_1`、`body_estimate_2` 等版本。
 - `observation_ids`：实际使用的观测编号；`sample_count_per_body`：各天体样本数。
@@ -169,19 +169,17 @@ errors.definition = 指标定义文本
 
 这些误差相对观测计算，没有预设通过阈值，不是隐藏测试得分。看过这批验证数据后调整候选，该批数据就属于开发数据；最终检查应使用新实验。
 
-## 5. `call_back(record_type="all", record_ids=None, detail="summary")`
+## 5. `list_files(path="", offset=0, limit=100)`
 
-`record_type` 可选 `all, body_observation, probe, law, validation, residual, submission`。`record_ids` 可省略、为 `null` 或最多 102 项的数组。`detail` 为 `summary` 或 `full`。
+列出当前探索会话的公开文件，返回直接子目录/文件、总数及next_offset，最多200项。路径由已取得记录注册表生成，不扫描宿主或其他会话。观测在observations/，规律在laws/，验证在validations/，残差在residuals/，代码及产物在analyses/。初始目录见任务包workspace；新增文件见工具workspace_files。
 
-不指定编号时，`summary` 返回该类型已有记录的目录和递归预览；`full` 必须指定非空编号列表。指定未取得编号会失败，不能读取其他会话或路径。返回：
+## 6. `read_file(path, offset=0, limit=12000)`
 
-```json
-{"records":[{"record_type":"probe","record_id":"probe_0001","content":{}}]}
-```
+按同一虚拟路径读取UTF-8文本，offset/limit使用字符偏移，最多20000字符。返回content、total_chars、next_offset、truncated和完整文件sha256；按next_offset继续读取，不会把预览冒充全文。二进制文件交run_code的read_bytes读取。完整JSON既可查看，也可直接作为run_code(files=[path])输入而不经聊天抄写。
 
-此工具不产生观测、不重新抽噪声、不重新拟合、不重新计算验证。会话结束后，主 Agent 工具统一停止；保存的 JSON 仍可由人离线检查。当前 CLI 不支持将已有记录目录恢复为继续进行的会话。
+只允许当前会话已取得记录与校验过的导出产物，不能读取其他会话、源码、密钥、模型消息或隐藏评测。路径遍历、绝对路径及产物符号链接被拒绝；读取产物还检查归档哈希。这两个工具不产生观测，不重新计算或拟合。会话结束后主Agent工具停止；人仍可在网页查看或离线检查原始档案。
 
-## 6. `analyze_residual(law_id, probe_ids)`
+## 7. `analyze_residual(law_id, probe_ids)`
 
 输入已拟合规律版本和不重复的已有轨迹编号，可含训练轨迹和验证轨迹。确定性程序按固定参数重新推演并计算残差统计。
 
@@ -196,7 +194,7 @@ errors.definition = 指标定义文本
 
 相关性使用同一轨迹的观测状态特征，速度和位置残差用全部点，加速度残差用内部点。少于 3 点或变量标准差低于 `1e-12` 时，相关系数为 `null` 并说明原因。这里的分量 RMSE 与验证工具的二维向量 RMSE 含义不同。相关性不等于因果关系，加速度差分也有离散偏差，工具不自动断言缺少某种力项。
 
-## 7. `submit(law_id, claims, physical_explanation)`
+## 8. `submit(law_id, claims, physical_explanation)`
 
 `physical_explanation` 是必填的非空字符串（最多 20,000 字符，可分段），与所提交 `law_id` 的冻结公式和参数绑定。说明各项作用方向与状态依赖、参数含义和单位、由公式支持的运动性质、实验/验证记录依据、适用范围与不可辨识性。区分观测证据、数学推论和待检验的物理假说；低误差不代表已唯一识别机制。该字段是面向用户的答案，不是模型隐藏思考过程。缺失、空白或类型错误会在结束会话前被拒绝，Agent 可以补充后重试。
 

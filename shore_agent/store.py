@@ -1,4 +1,4 @@
-"""Append-only scientific records. Model input never becomes a filesystem path."""
+"""Append-only scientific records. Public workspace paths never become arbitrary host paths."""
 import copy
 import json
 import re
@@ -14,7 +14,7 @@ def preview(value):
     if isinstance(value, list):
         if len(value) > 6:
             return {'preview': [preview(v) for v in value[:3]], 'total_items': len(value),
-                    'truncated': True, 'retrieve': 'call_back(detail="full", record_ids=[id])'}
+                    'truncated': True, 'retrieve': 'read_file(path=the returned workspace path, offset=0)'}
         return [preview(v) for v in value]
     return value
 

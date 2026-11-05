@@ -12,7 +12,7 @@
   const tools = {
     observe_body: '观测公开天体', insert_probe: '投放探针', summarize_data: '分析实验数据',
     fit_law_and_rollout: '拟合候选规律', validate_law: '验证独立轨迹',
-    call_back: '查阅实验档案', analyze_residual: '分析预测残差', submit: '提交候选规律',
+    call_back: '查阅实验档案', list_files: '浏览实验文件', read_file: '读取实验文件', analyze_residual: '分析预测残差', submit: '提交候选规律',
     run_code: '运行分析代码',
   };
   const statuses = {
@@ -441,6 +441,9 @@
     const data = event.data || {};
     if (event.kind === 'tool_start') {
       const args = event.arguments || {};
+      if (event.tool === 'list_files') return `浏览 ${args.path || '当前会话根目录'}`;
+      if (event.tool === 'read_file') return `读取 ${args.path || '文件'}`;
+      if (event.tool === 'run_code' && Array.isArray(args.files)) return `使用 ${args.files.length} 个当前会话文件进行计算`;
       if (event.tool === 'insert_probe') return `投放 ${asArray(args.probes).length} 条轨迹 · 每条 ${args.n_samples ?? '—'} 个采样点`;
       if (event.tool === 'fit_law_and_rollout') return `使用 ${asArray(args.train_probe_ids).length} 条训练轨迹拟合候选公式`;
       if (event.tool === 'validate_law') return `使用 ${asArray(args.test_probe_ids).length} 条未参与拟合的轨迹检验预测`;
@@ -448,6 +451,8 @@
     }
     if (event.kind === 'tool_result') {
       if (event.ok === false) return '执行未成功；Agent 将依据返回结果继续判断。';
+      if (event.tool === 'list_files') return `${asArray(data.entries).length} 项 · 共 ${data.total ?? '—'} 项`;
+      if (event.tool === 'read_file') return `${data.path || '文件'} · ${typeof data.content === 'string' ? data.content.length : 0} 字符${data.next_offset != null ? ' · 还有后续内容' : ''}`;
       if (data.execution_id) return `${data.execution_id} · ${data.status === 'success' ? '计算完成' : '计算未完成：' + data.status} · ${scientific(data.elapsed_seconds)} 秒`;
       if (data.law_id) return `${lawName(data.law_id)}${data.errors?.overall ? ` · 位置 RMSE ${scientific(data.errors.overall.position_rmse)}` : ''}`;
       if (data.submission_id) return data.status === 'accepted' ? '本地提交已受理；受理仅表示格式与执行检查完成。' : '已收到本地提交检查结果。';

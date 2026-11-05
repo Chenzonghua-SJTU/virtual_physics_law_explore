@@ -15,10 +15,10 @@ def test_script_contract_and_baseline_callback_unchanged():
     before = copy.deepcopy(SCHEMAS)
     schemas = tool_schemas(True)
     code = schemas[-1]['function']['parameters']
-    assert set(code['properties']) == {'code','inputs'}
+    assert set(code['properties']) == {'code','files'}
     assert code['required'] == ['code']
-    baseline = next(s for s in SCHEMAS if s['function']['name']=='call_back')
-    assert 'field_path' not in baseline['function']['parameters']['properties']
+    assert 'call_back' not in {s['function']['name'] for s in schemas}
+    assert {'read_file','list_files'} <= {s['function']['name'] for s in schemas}
     assert SCHEMAS == before
 
 
@@ -70,22 +70,24 @@ def test_runtime_compact_record_and_selective_read_do_not_change_original(tmp_pa
     env=Environment({'physics_version':'v4','noise':False})
     try:
         rt=ToolRuntime(env,tmp_path,code_config={'enabled':True});rt.mission()
-        def run(*args):
+        def run(*args, **kwargs):
             return {'status':'success','result':{'rows':list(range(2000))},'stdout':'','stderr':'','artifacts':[]}
         monkeypatch.setattr('shore_agent.code_execution.execute_code',run)
-        out=rt.execute('run_code',{'code':'result = {}','inputs':{}})
+        out=rt.execute('run_code',{'code':'result = {}'})
         assert out['ok'] and out['data']['truncated'] and 'code' not in out['data']
         rid=out['data']['execution_id']
         full=rt.store.get('code_execution',rid)
         assert full['result']['rows']==list(range(2000)) and full['code']=='result = {}'
-        args={'record_type':'code_execution','record_ids':[rid], 'field_path':['result','rows'],'offset':23,'limit':4}
-        assert rt.execute('call_back',args)['data']['value']==[23,24,25,26]
-        summary=rt.execute('call_back',{'record_type':'code_execution','record_ids':[rid]})
-        assert 'code' not in summary['data']['records'][0]['content']
+        path=f'analyses/{rid}/result.json'
+        text=''; offset=0
+        while True:
+            page=rt.execute('read_file',{'path':path,'offset':offset,'limit':250})['data']
+            text+=page['content']; offset=page['next_offset']
+            if offset is None:break
+        assert json.loads(text)['rows']==list(range(2000))
         assert rt.store.get('code_execution',rid)==full
-        for bad in [dict(args, record_ids=['not_acquired']),dict(args,offset=-1),dict(args,limit=1001),dict(args,record_ids=[rid,rid])]:
-            assert not rt.execute('call_back',bad)['ok']
-        assert not rt.execute('call_back',{'offset':2})['ok']
+        for bad in [{'path':'../other.json'},{'path':path,'offset':-1},{'path':path,'limit':20001}]:
+            assert not rt.execute('read_file',bad)['ok']
     finally:env.close()
 
 

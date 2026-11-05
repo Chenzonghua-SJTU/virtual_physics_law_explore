@@ -1,4 +1,4 @@
-"""Seven scientific tools. Reads only acquired records, never simulator internals."""
+"""Scientific tools and current-session files. Reads only acquired records, never simulator internals."""
 import ast
 import copy
 import json
@@ -39,6 +39,8 @@ class ToolRuntime:
         self.run_dir = Path(run_dir)
         self.run_dir.mkdir(parents=True, exist_ok=True)
         self.store = Store(self.run_dir / 'records')
+        from .workspace import SessionFiles
+        self.files = SessionFiles(self.store, self.run_dir)
         self.config = config or {}
         self.code_config = code_config or {}
         self.code_enabled = self.code_config.get('enabled', False)
@@ -82,6 +84,8 @@ class ToolRuntime:
             if self.code_enabled:
                 from .code_response import input_hints
                 data['code_inputs'] = input_hints(self.store, ['probe', 'body_observation'])
+            data['workspace'] = {'scope': 'current_session_only', 'files': sorted(self.files.entries()),
+                                 'note': 'Paths are shared by list_files, read_file and run_code; no historical sessions or hidden evaluation.'}
             self._initial_mission = copy.deepcopy(data)
             (self.run_dir / 'mission.json').write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
         data = copy.deepcopy(self._initial_mission)
@@ -120,7 +124,11 @@ class ToolRuntime:
                 raise ValueError('Session ended or wall time exhausted')
             if self.task is None:
                 raise ValueError('Framework must initialize mission first')
+            before_files = set(self.files.entries())
             result = getattr(self, name)(**args)
+            added = sorted(set(self.files.entries()) - before_files)
+            if added:
+                result['workspace_files'] = added
             if self.code_enabled and name in ('observe_body', 'insert_probe'):
                 from .code_response import input_hints
                 kind = 'body_observation' if name == 'observe_body' else 'probe'
@@ -246,22 +254,11 @@ class ToolRuntime:
         self.store.add('validation', data, rid)
         return preview(data)
 
-    def call_back(self, record_type='all', record_ids=None, detail='summary', field_path=None, offset=None, limit=None):
-        from .code_response import execution_preview, select_field
-        if field_path is not None:
-            if not self.code_enabled or record_type == 'all' or not record_ids or len(record_ids) != 1:
-                raise ValueError('Field retrieval requires code mode, one explicit record type and one acquired record ID')
-            selected = select_field(self.store.get(record_type, record_ids[0]), field_path,
-                                    0 if offset is None else offset, 20 if limit is None else limit)
-            return dict(selected, record_type=record_type, record_id=record_ids[0], field_path=field_path)
-        if offset is not None or limit is not None:
-            raise ValueError('offset/limit require field_path')
-        records = self.store.query(record_type, record_ids, detail)
-        if self.code_enabled and detail == 'summary':
-            for item in records:
-                if item['record_type'] == 'code_execution':
-                    item['content'] = execution_preview(self.store.get('code_execution',item['record_id']))
-        return {'records': records}
+    def list_files(self, path='', offset=0, limit=100):
+        return self.files.list_files(path, offset, limit)
+
+    def read_file(self, path, offset=0, limit=12000):
+        return self.files.read_file(path, offset, limit)
 
     def analyze_residual(self, law_id, probe_ids):
         law = self._law(law_id)
@@ -292,34 +289,34 @@ class ToolRuntime:
         self.store.add('residual', record, rid)
         return preview(record)
 
-    def run_code(self, code, inputs=None):
+    def run_code(self, code, files=None):
         import hashlib
+        import base64
         from .code_execution import execute_code
         from .code_response import execution_preview
         if not self.code_enabled:
             raise ValueError('Code execution is disabled')
-        output_schema = {}  # no model-authored output contract required
-        loaded, provenance = {}, {}
-        for alias, reference in ({} if inputs is None else inputs).items():
-            loaded[alias] = [self.store.get(reference['record_type'], rid) for rid in reference['record_ids']]
-            provenance[alias] = dict(reference, sha256=[hashlib.sha256(
-                json.dumps(item, sort_keys=True, ensure_ascii=False, allow_nan=False).encode()).hexdigest()
-                for item in loaded[alias]])
+        loaded, provenance, total = {}, [], 0
+        for path in files or []:
+            raw = self.files.read_bytes(path)
+            total += len(raw)
+            if total > 16 * 1024 * 1024:
+                raise ValueError('Selected files exceed 16 MiB; select fewer files')
+            loaded[path] = base64.b64encode(raw).decode('ascii')
+            provenance.append({'path':path, 'sha256':hashlib.sha256(raw).hexdigest(), 'bytes':len(raw)})
         rid = 'code_' + uuid.uuid4().hex[:12]
         parent = self.run_dir / 'code_executions' / rid
         parent.mkdir(parents=True, exist_ok=False)
         (parent / 'analysis.py').write_text(code, encoding='utf-8')
-        (parent / 'inputs.json').write_text(json.dumps(loaded, ensure_ascii=False, allow_nan=False), encoding='utf-8')
-        (parent / 'output_schema.json').write_text(json.dumps(output_schema), encoding='utf-8')
+        (parent / 'input_files.json').write_text(json.dumps(loaded, ensure_ascii=False), encoding='utf-8')
         try:
-            result = execute_code(code, loaded, output_schema, parent / 'artifacts', self.code_config,
-                                  max(0, self.budget()['wall_seconds_remaining'] - 10))
+            result = execute_code(code, {}, {}, parent / 'artifacts', self.code_config,
+                                  max(0, self.budget()['wall_seconds_remaining'] - 10), files=loaded)
         except (ValueError, OSError) as exc:
-            result = {'status': 'unavailable', 'result': None, 'error': {'type': type(exc).__name__,
-                      'message': str(exc)[:1500]}, 'stdout': '', 'stderr': '', 'artifacts': []}
-        record = dict(result, execution_id=rid, code=code, inputs=provenance,
-                      output_schema=output_schema,
-                      meaning='Computed from acquired data; not an independent experiment or correctness verdict.')
+            result = {'status':'unavailable', 'result':None, 'error':{'type':type(exc).__name__,
+                      'message':str(exc)[:1500]}, 'stdout':'', 'stderr':'', 'artifacts':[]}
+        record = dict(result, execution_id=rid, code=code, files=provenance,
+                      meaning='Computed from acquired current-session files; not an independent experiment or correctness verdict.')
         self.store.add('code_execution', record, rid)
         return execution_preview(record)
 

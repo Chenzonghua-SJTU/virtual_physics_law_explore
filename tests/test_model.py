@@ -75,7 +75,7 @@ def test_reasoning_survives_content_only_turn_and_auto_tools(tmp_path, monkeypat
     assert requests[0]['tool_choice'] == 'auto'
     assert requests[0]['thinking'] == {'type': 'enabled'}
     assert requests[0]['reasoning_effort'] == 'high'
-    assert len(requests[0]['tools']) == 7
+    assert len(requests[0]['tools']) == 8
     assert all(t['function']['name'] != 'summarize_data' for t in requests[0]['tools'])
     saved = json.loads((tmp_path / 'messages.json').read_text())
     assert saved[-2] == second
@@ -153,7 +153,7 @@ def test_legacy_body_positions_reach_model_and_web_only_after_explicit_observati
 
     manager = RunManager(tmp_path.parent, runs_dir=tmp_path.parent)
     client, requests = make_client(tmp_path, monkeypatch, [
-        response(assistant(calls=[call('call_back', 'before_observation', '{"record_type":"all"}')]),
+        response(assistant(calls=[call('list_files', 'before_observation', '{"path":"observations/"}')]),
                  'tool_calls'),
         response(assistant(calls=[call('observe_body', 'explicit_observation', '{"times":[0,1]}')]),
                  'tool_calls'),
@@ -181,7 +181,7 @@ def test_legacy_body_positions_reach_model_and_web_only_after_explicit_observati
             assert callback['tool_call_id'] == 'before_observation'
             callback_result = json.loads(callback['content'])
             assert callback_result['ok']
-            assert {r['record_type'] for r in callback_result['data']['records']} == {'probe'}
+            assert {r['path'] for r in callback_result['data']['entries']} == {'observations/probe_0001.json', 'observations/probe_0002.json'}
             assert_no_body_coordinates(callback_result)
 
             observed = requests[2]['messages'][-1]
@@ -215,7 +215,7 @@ def test_v4_model_receives_known_initial_states_and_cached_free_body_series(tmp_
     config = {'noise': False, 'seed': 12, 'world_id': 'world_6', 'physics_version': 'v4'}
     (tmp_path / 'config.json').write_text(json.dumps({'environment': config}))
     client, requests = make_client(tmp_path, monkeypatch, [
-        response(assistant(calls=[call('call_back', 'initial_records', '{"record_type":"all"}')]),
+        response(assistant(calls=[call('list_files', 'initial_records', '{"path":"observations/"}')]),
                  'tool_calls'),
         response(assistant('协议测试结束，不声称发现规律。')),
     ])
@@ -237,7 +237,7 @@ def test_v4_model_receives_known_initial_states_and_cached_free_body_series(tmp_
             initial = json.loads(requests[0]['messages'][1]['content'].split('\n', 1)[1])
             assert initial['data'] == mission
             callback = json.loads(requests[1]['messages'][-1]['content'])
-            assert {r['record_type'] for r in callback['data']['records']} == {'probe', 'body_observation'}
+            assert {r['path'] for r in callback['data']['entries']} == {'observations/probe_0001.json', 'observations/probe_0002.json', 'observations/' + free['observation_id'] + '.json'}
             assert runtime.budget()['observations_remaining'] == 20
             assert runtime.budget()['energy_remaining'] == 100
             snapshot = manager.snapshot(tmp_path.name)
@@ -522,7 +522,7 @@ def test_main_continues_past_old_default_and_web_call_caps(tmp_path, monkeypatch
 
 
 def test_agent_continues_past_old_turn_limit_until_accepted_submission(tmp_path, monkeypatch):
-    replies = [response(assistant(calls=[call('call_back', f'lookup-{i}')]), 'tool_calls')
+    replies = [response(assistant(calls=[call('list_files', f'lookup-{i}')]), 'tool_calls')
                for i in range(35)]
     replies.append(response(assistant(calls=[call()]), 'tool_calls'))
     client, requests = make_client(tmp_path, monkeypatch, replies)

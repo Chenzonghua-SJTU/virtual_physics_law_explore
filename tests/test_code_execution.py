@@ -16,7 +16,7 @@ from shore_agent.schemas import SCHEMAS, tool_schemas
 def test_baseline_surface_unchanged_and_code_is_opt_in():
     original = copy.deepcopy(SCHEMAS)
     enabled = tool_schemas(True)
-    assert len(SCHEMAS) == 7 and len(enabled) == 8
+    assert len(SCHEMAS) == 8 and len(enabled) == 9
     assert tool_schemas(False) == original
     assert SCHEMAS == original
     assert enabled[-1]['function']['name'] == 'run_code'
@@ -55,22 +55,24 @@ def test_input_record_provenance_full_arrays_and_immutable_cache(tmp_path, monke
         original = copy.deepcopy(rt.store.records['probe'][rid])
         seen = []
 
-        def run(code, inputs, schema, artifact_dir, config, timeout):
-            seen.append(copy.deepcopy(inputs))
-            assert len(inputs['p'][0]['r_obs']) == 8
-            inputs['p'][0]['r_obs'][0][0] = 999
+        def run(code, inputs, schema, artifact_dir, config, timeout, files=None):
+            seen.append(copy.deepcopy(files))
+            data=json.loads(base64.b64decode(files[f'observations/{rid}.json']))
+            assert len(data['r_obs']) == 8
+            data['r_obs'][0][0] = 999
             return dict(status='success', result={'n': 8}, elapsed_seconds=.01, artifacts=[])
 
         monkeypatch.setattr('shore_agent.code_execution.execute_code', run)
-        args = dict(code='result = {}', inputs={'p': {'record_type': 'probe', 'record_ids': [rid]}})
+        args = dict(code='result = {}', files=[f'observations/{rid}.json'])
         reply = rt.execute('run_code', args)
         assert reply['ok'] and reply['data']['status'] == 'success'
         execution = reply['data']['execution_id']
         record = rt.store.get('code_execution', execution)
-        assert record['inputs']['p']['sha256'] == [hashlib.sha256(json.dumps(original, sort_keys=True, ensure_ascii=False, allow_nan=False).encode()).hexdigest()]
+        raw=rt.files.read_bytes(f'observations/{rid}.json')
+        assert record['files'][0]['sha256'] == hashlib.sha256(raw).hexdigest()
         assert rt.store.get('probe', rid) == original
-        assert rt.execute('call_back', {'record_type': 'code_execution', 'record_ids': [execution], 'detail': 'full'})['ok']
-        args['inputs']['p']['record_ids'] = ['probe_never_acquired']
+        assert rt.execute('read_file', {'path':f'analyses/{execution}/record.json'})['ok']
+        args['files'] = ['observations/probe_never_acquired.json']
         assert not rt.execute('run_code', args)['ok']
         assert len(seen) == 1
     finally:

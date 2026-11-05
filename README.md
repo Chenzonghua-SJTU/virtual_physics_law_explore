@@ -1,6 +1,6 @@
 # 物理规律发现 Agent · 本地原型
 
-一个普通 CPU 可运行、没有 Agent 框架依赖的 Python 项目。由一个主 Agent 自主决定实验和工具顺序，确定性程序完成拟合、推演、残差诊断、验证和归档。默认提供七个工具，可额外启用隔离的 `run_code`，让主 Agent 编写 Python 分析代码；已移除分析子 Agent 和 summarize_data 工具。
+一个普通 CPU 可运行、没有 Agent 框架依赖的 Python 项目。由一个主 Agent 自主决定实验和工具顺序，确定性程序完成拟合、推演、残差诊断、验证和归档。默认提供八个工具，可额外启用隔离的 `run_code`，让主 Agent 编写 Python 分析代码；已移除分析子 Agent 和 summarize_data 工具。
 
 这是开发原型：DeepSeek 外部 API 不满足正式比赛的模型和外网限制，也没有连接官方环境。未来只需替换 `environment.py` 的观测适配和 `model.py` 的模型适配，并按正式协议调整提交状态编码。
 
@@ -14,6 +14,7 @@
 | E2 R01 | 首次加入可选隔离Python工具run_code，支持自编数据分析与产物导出 | 固定high，世界3/4/5 × 原工具/加代码 × 各5次，共30个计划单元 | 原工具12/15、加代码13/15；代码组世界3改善，世界5退步 | [报告](experiments/E2/R01.md) · 实现`44e05bc` / 结果`1ea408e` |
 | E2 R02 | 普通脚本入口、自动NumPy转换、精简结果返回及按字段读取 | 固定high，仅重测修改后的代码组，世界3/4/5各5次，共15次 | 高精度15/15；代码未成功调用比例20.6%→11.9%，返回消息中位大小减少约72% | [报告](experiments/E2/R02.md) · 实现`7fc4e94` / 结果`13a063e` |
 | E2 R03 | inputs可省略；实际字段/形状提示、按编号读取和显式时间对齐 | 工程回归、真实容器与HTTP接口检查；尚未运行新探索 | 731项测试通过，尚无新探索成功率 | [迭代记录](experiments/E2/R03.md) |
+| E2 R04 | 删除call_back，以当前会话文件路径统一浏览、读取和代码输入 | 完整回归及真实Docker文件读取；未新增真实探索 | 748项测试通过；历史独立会话不开放 | [迭代记录](experiments/E2/R04.md) |
 
 高精度指完整独立隐藏轨迹评测的位置RMSE<1e-6。R01的额度恢复补跑仍属于同一轮；R02误排的原工具组尝试单独保留，不计入15次主结果。R01与R02是跨批次比较，且简化后允许纯print脚本正常执行，不能把指标变化直接解释为推理能力提升。完整协议、耗时、用量和失败案例见各轮报告。
 
@@ -48,7 +49,7 @@ python -m pytest -q
 
 这是一套本机网页与 Python 服务：Python/SciPy 负责真实拟合和模拟，启动后保持终端运行即可。详细操作和运行边界见 [网页使用说明](docs/web.md)。
 
-高级设置中的「允许 Agent 编写分析代码」需要先准备 Docker 执行镜像，见[代码工具与实验设计](docs/code_execution.md)。现在使用普通脚本接口：直接读取inputs、设置result，NumPy结果自动转换，不必编写函数或输出schema。模型收到精简结果，完整记录及产物保留；代码只能在无网络、无宿主挂载的容器中运行。
+高级设置中的「允许 Agent 编写分析代码」需要先准备 Docker 执行镜像，见[代码工具与实验设计](docs/code_execution.md)。现在使用普通脚本接口：按当前会话文件路径直接读取完整数据、设置result，NumPy结果自动转换，不必编写函数或输出schema。模型收到精简结果，完整记录及产物保留；代码只能在无网络、无宿主挂载的容器中运行。
 
 ### 命令行运行
 
@@ -98,7 +99,7 @@ python evaluate.py --run-dir runs/my-offline-noisy
 shore_agent/agent.py           主循环、进展、完整消息和结束状态
 shore_agent/model.py           HTTP/主 Agent 模型预算
 shore_agent/prompts/           主 Agent 提示词
-shore_agent/schemas.py         七个模型工具 JSON Schema
+shore_agent/schemas.py         八个默认工具及可选代码工具 JSON Schema
 shore_agent/runtime.py         工具执行、档案、残差诊断与提交
 shore_agent/expressions.py     AST 数学解释器（不执行模型代码）
 shore_agent/numerics.py        观测驱动的拟合与候选推演
@@ -116,7 +117,7 @@ offline_smoke.py               明确标记的手工候选工程测试
 tests/                        数值、资源、隔离及模型协议测试
 ```
 
-仿真后端通过 `python -m shore_sim.worker` 子进程运行，API Key 从它的环境移除。运行时数值模块没有仿真器导入；原七工具通过接口/进程隔离提供合法数据。可选 `run_code` 单独使用 Docker 容器，不挂载项目、宿主文件或凭证，不开放网络和隐藏评测；不能在宿主直接执行模型代码。新版天体状态只来自题目允许的已知t=0初态、第一束光及后续位置观测；拟合只读取这些合法输入。
+仿真后端通过 `python -m shore_sim.worker` 子进程运行，API Key 从它的环境移除。运行时数值模块没有仿真器导入；观测和数值工具通过接口/进程隔离提供合法数据。可选 `run_code` 单独使用 Docker 容器，不挂载项目、宿主文件或凭证，不开放网络和隐藏评测；不能在宿主直接执行模型代码。新版天体状态只来自题目允许的已知t=0初态、第一束光及后续位置观测；拟合只读取这些合法输入。
 
 每个运行目录包含：
 
@@ -124,7 +125,7 @@ tests/                        数值、资源、隔离及模型协议测试
 |---|---|
 | `config.json`, `mission.json` | 生效配置、任务包与缓存第一束光 |
 | `records/<type>/<id>.json` | 完整不可变科学记录；每次拟合生成新 law_id |
-| `code_executions/<id>/` | 自编分析代码、完整输入、输出schema及图表/数据产物 |
+| `code_executions/<id>/` | 自编分析代码、输入文件快照、来源哈希及图表/数据产物（旧档案保留原协议） |
 | `tools.jsonl` | 工具参数、返回、实验预算与耗时 |
 | `messages.json` | 完整主 Agent 历史，包含 reasoning_content 和匹配的 tool_call_id |
 | `model_messages.jsonl` | 主 Agent 模型请求消息和完整回复；旧档案可能包含分析子 Agent 调用 |

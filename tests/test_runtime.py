@@ -32,7 +32,7 @@ def fit_fixture(rt):
 
 
 def test_exact_surface_and_cache(runtime):
-    assert len(SCHEMAS) == 7
+    assert len(SCHEMAS) == 8
     original = copy.deepcopy(runtime.store.records)
     initial = runtime.budget()
     runtime.mission()
@@ -41,11 +41,11 @@ def test_exact_surface_and_cache(runtime):
     assert not runtime.execute('shell', {'command': 'ls'})['ok']
     invalid = runtime.execute('observe_body', {'times': [float('nan')]})
     assert not invalid['ok'] and invalid['error']
-    assert not runtime.execute('call_back', {'detail': 'full'})['ok']
+    assert not runtime.execute('call_back', {})['ok']
     rid = next(iter(runtime.store.records['probe']))
-    full = call(runtime, 'call_back', record_type='probe', record_ids=[rid], detail='full')
-    assert len(full['records'][0]['content']['r_obs']) == 8
-    assert full == call(runtime, 'call_back', record_type='probe', record_ids=[rid], detail='full')
+    full = call(runtime, 'read_file', path=f'observations/{rid}.json')
+    assert len(json.loads(full['content'])['r_obs']) == 8
+    assert full == call(runtime, 'read_file', path=f'observations/{rid}.json')
 
 
 def test_removed_summary_tool_is_unavailable(runtime):

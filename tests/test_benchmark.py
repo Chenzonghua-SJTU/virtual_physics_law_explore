@@ -75,7 +75,7 @@ def test_driver_schedules_each_world_once_and_retains_all_failures(tmp_path):
     manifest = json.loads((output / 'manifest.json').read_text())
     assert manifest['settings'] == SETTINGS and manifest['evaluation'] == EVALUATION
     assert manifest['agent_architecture'] == 'single_agent'
-    assert len(manifest['tool_names']) == 7 and 'summarize_data' not in manifest['tool_names']
+    assert len(manifest['tool_names']) == 8 and 'summarize_data' not in manifest['tool_names']
     assert manifest['automatic_reruns'] is manifest['automatic_budget_expansion'] is False
     assert all(len(row['configuration_sha256']) == 64 for row in manifest['worlds'])
     assert set(manifest['prompt_sha256']) == {'main.txt'}
