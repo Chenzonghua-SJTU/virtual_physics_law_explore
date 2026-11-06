@@ -46,7 +46,7 @@ def run(directory):
         config = _read(directory / 'config.json', directory, {})
         from shore_rules import apply_rules
         config = apply_rules(config)
-        e4 = config['environment'].get('ruleset') == 'e4'
+        e4 = config['environment'].get('ruleset') in ('e4', 'e5')
         from .model import DeepSeekClient, model_auth_config
         key_env, key_required = model_auth_config(config.get('model', {}))
         if key_required and (not isinstance(key, str) or not key):

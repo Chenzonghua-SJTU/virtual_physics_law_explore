@@ -106,15 +106,16 @@ def test_v15_requires_accepted_ended_submission(tmp_path, monkeypatch):
         evaluate_run(tmp_path)
 
 
-def test_e4_evaluation_reads_actual_mission_energy_and_separate_formula(tmp_path):
+@pytest.mark.parametrize('ruleset', ['e4', 'e5'])
+def test_e4_evaluation_reads_actual_mission_energy_and_separate_formula(tmp_path, ruleset):
     archive(tmp_path)
     config_path = tmp_path / 'config.json'
     config = json.loads(config_path.read_text())
-    config['environment'].update(ruleset='e4', energy_budget=10, wall_seconds=300, noise=True)
+    config['environment'].update(ruleset=ruleset, energy_budget=10, wall_seconds=300, noise=(ruleset == 'e4'))
     config_path.write_text(json.dumps(config))
     mission_path = tmp_path / 'mission.json'
     mission = json.loads(mission_path.read_text())
-    mission['task'].update(ruleset='e4', limits={'initial_energy': 10})
+    mission['task'].update(ruleset=ruleset, limits={'initial_energy': 10})
     mission_path.write_text(json.dumps(mission))
     result_path = tmp_path / 'result.json'
     result = json.loads(result_path.read_text())
@@ -125,7 +126,7 @@ def test_e4_evaluation_reads_actual_mission_energy_and_separate_formula(tmp_path
     assert evaluated['score']['energy_budget'] == 10
     assert evaluated['score']['conservation'] == 3
     assert evaluated['score']['formula_version'] == 'shore_e4_10energy'
-    assert evaluated['ruleset'] == 'e4'
+    assert evaluated['ruleset'] == ruleset
 
 
 def test_v15_candidate_failure_zeroes_prediction_not_claims(tmp_path):

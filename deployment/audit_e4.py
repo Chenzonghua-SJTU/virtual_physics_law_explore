@@ -1,4 +1,4 @@
-"""Post-run E4 audit; reads archives and writes only <batch>/audit.json.
+"""Post-run E4/E5 audit; reads archives and writes only <batch>/audit.json.
 
 Example (from physics_discovery, after the benchmark has finished):
     .venv/bin/python deployment/audit_e4.py \
@@ -24,6 +24,8 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 ACTIVE = {'queued', 'starting', 'running', 'evaluating'}
 WORLDS = [f'world_{n}' for n in range(1, 7)]
+PROFILES = {'e4': {'group': 'E4', 'noise': True}, 'e5': {'group': 'E5', 'noise': False}}
+NO_NOISE_REFERENCE = 'Unmodified v15 DevelopmentSimulator and fixed public validation cases; no noise'
 
 
 def number(value):
@@ -190,12 +192,12 @@ def tool_audit(log, event_log):
             'note': 'Interrupted tools may have no tools.jsonl completion row; their duration is not invented.'}
 
 
-def noise_audit(directory, mission, errors):
+def noise_audit(directory, mission, errors, *, enabled=True):
     task = mission.get('task', {})
     sigmas = {key: task.get(key) for key in ('position_noise_sigma', 'velocity_noise_sigma')}
     for key, value in sigmas.items():
-        if not number(value) or value <= 0:
-            errors.append('mission_noise_not_enabled:' + key)
+        if not number(value) or (value <= 0 if enabled else value != 0):
+            errors.append(('mission_noise_not_enabled:' if enabled else 'mission_noise_not_disabled:') + key)
     differences = {'position': [], 'velocity': []}
     matched = 0
     for path in sorted((directory / 'records' / 'probe').glob('*.json')):
@@ -214,7 +216,12 @@ def noise_audit(directory, mission, errors):
                 if (isinstance(measured, list) and len(measured) == len(control) == 2
                         and all(number(v) for v in measured + control)):
                     differences[label].extend(a-b for a, b in zip(measured, control))
-    return {**sigmas, 'noise_note': task.get('noise_note'), 't0_readings_compared': matched,
+    if not enabled:
+        for label, values in differences.items():
+            if any(abs(value) > 1e-10 for value in values):
+                errors.append('noiseless_t0_readout_differs_from_launch:' + label)
+    return {**sigmas, 'expected_noise_enabled': enabled,
+            'noise_note': task.get('noise_note'), 't0_readings_compared': matched,
             't0_position_max_abs_difference': max(map(abs, differences['position']), default=None),
             't0_velocity_max_abs_difference': max(map(abs, differences['velocity']), default=None),
             'note': 'Measured t0 readings are compared with exact launch controls, without loading hidden truth. '
@@ -273,8 +280,9 @@ def submission_audit(directory, result, metadata, event_log, errors):
     return out
 
 
-def world_audit(root, world, run_id):
+def world_audit(root, world, run_id, *, ruleset='e4'):
     errors, warnings = [], []
+    profile = PROFILES[ruleset]
     directory = inside(root / 'runs', run_id)
     config = read(directory / 'config.json', errors)
     metadata = read(directory / 'web.json', errors)
@@ -282,11 +290,12 @@ def world_audit(root, world, run_id):
     mission = read(directory / 'mission.json', errors)
     env, model = config.get('environment', {}), config.get('model', {})
     task = mission.get('task', {})
-    checks = {'ruleset_e4': env.get('ruleset') == 'e4', 'world_v15': env.get('world_set') == 'v15',
+    checks = {'ruleset_' + ruleset: env.get('ruleset') == ruleset, 'world_v15': env.get('world_set') == 'v15',
               'world_id': env.get('world_id') == world == task.get('world_id'),
               'energy_10': env.get('energy_budget') == 10, 'wall_300': env.get('wall_seconds') == 300,
-              'noise_on': env.get('noise') is True, 'thinking_off': model.get('thinking') is False,
-              'model_ruleset_e4': model.get('ruleset') == 'e4',
+              ('noise_on' if profile['noise'] else 'noise_off'): env.get('noise') is profile['noise'],
+              'thinking_off': model.get('thinking') is False,
+              'model_ruleset_' + ruleset: model.get('ruleset') == ruleset,
               'output_cap_le_4096': type(model.get('max_tokens_per_call')) is int and 0 < model['max_tokens_per_call'] <= 4096,
               'mission_energy_10': task.get('limits', {}).get('initial_energy') == 10,
               'mission_wall_300': task.get('limits', {}).get('wall_seconds') == 300}
@@ -313,9 +322,12 @@ def world_audit(root, world, run_id):
                        'submission_identity': evaluation.get('submission_id') == submission.get('submission_id') and submission['accepted_count'] == 1,
                        'law_identity': evaluation.get('law_id') == submission.get('law_id'),
                        'world_identity': evaluation.get('world_id') == world and evaluation.get('world_set') == 'v15',
-                       'ruleset_e4': evaluation.get('ruleset') == 'e4',
+                       'ruleset_' + ruleset: evaluation.get('ruleset') == ruleset,
                        'energy_10': evaluation.get('score', {}).get('energy_budget') == 10,
-                       'all_fixed_cases': evaluation.get('n_trajectories') == (32 if world == 'world_6' else 24)}
+                       'all_fixed_cases': evaluation.get('n_trajectories') == (32 if world == 'world_6' else 24),
+                       'no_noise_truth_reference': evaluation.get('truth_reference') == NO_NOISE_REFERENCE,
+                       'all_cases_completed': (evaluation.get('complete') is True and evaluation.get('failures') == []
+                                               and evaluation.get('n_successful') == evaluation.get('n_trajectories'))}
         errors.extend('evaluation:' + key for key, passed in eval_checks.items() if not passed)
     else:
         eval_checks = {}
@@ -334,7 +346,9 @@ def world_audit(root, world, run_id):
               'unattributed_exploration_seconds': exploration-model_seconds-tools_seconds if number(exploration) else None,
               'note': 'Total excludes queue; exploration includes final sealing and bookkeeping. Deadline compliance uses the timely pair, '
                       'not total or finalization time. Unattributed time may include interrupted tools; it is not measured Python overhead.'}
-    noise = noise_audit(directory, mission, errors)
+    noise = noise_audit(directory, mission, errors, enabled=profile['noise'])
+    score = evaluation.get('score', {}).get('total')
+    scored = evaluation.get('score', {}).get('status') == 'scored' and number(score) and 0 <= score <= 100
     return {'world_id': world, 'run_id': run_id, 'status': metadata.get('status', result.get('status')),
             'reason': result.get('reason'), 'configuration_checks': checks,
             'model_name': model.get('model'), 'model_endpoint': metadata.get('model_endpoint'),
@@ -343,7 +357,8 @@ def world_audit(root, world, run_id):
             'energy_used': 10-result['budget']['energy_remaining'] if number(result.get('budget', {}).get('energy_remaining')) else None,
             'timing': timing, 'model': model_data, 'tools': tools, 'noise': noise, 'submission': submission,
             'evaluation': {'checks': eval_checks, 'complete': evaluation.get('complete'),
-                           'score': evaluation.get('score', {}).get('total'), 'position_rmse': (evaluation.get('overall') or {}).get('position_rmse'),
+                           'score': score, 'score_at_or_above_90': bool(scored and score >= 90 and eval_checks and all(eval_checks.values())),
+                           'position_rmse': (evaluation.get('overall') or {}).get('position_rmse'),
                            'failures_count': len(evaluation.get('failures', [])), 'official_score': False},
             'errors': errors, 'warnings': warnings}
 
@@ -361,9 +376,14 @@ def audit(root, batch):
     mapping = manifest.get('runs', {})
     if sorted(mapping) != WORLDS:
         errors.append('manifest_must_contain_exactly_six_worlds')
-    if manifest.get('ruleset') != 'e4':
-        errors.append('manifest_ruleset_not_e4')
-    rows = [world_audit(root, world, mapping[world]) for world in WORLDS if world in mapping]
+    ruleset = manifest.get('ruleset')
+    profile = PROFILES.get(ruleset)
+    if profile is None:
+        errors.append('unsupported_manifest_ruleset')
+    elif manifest.get('experiment_group') != profile['group']:
+        errors.append('manifest_experiment_group_ruleset_mismatch')
+    rows = ([world_audit(root, world, mapping[world], ruleset=ruleset) for world in WORLDS if world in mapping]
+            if profile else [])
     errors.extend(row['world_id'] + ':' + error for row in rows for error in row['errors'])
     aggregate = {}
     for field in ('total_seconds_including_evaluation', 'exploration_seconds', 'evaluation_seconds', 'model_seconds_logged', 'tools_seconds_logged'):
@@ -380,13 +400,22 @@ def audit(root, batch):
                      calls_above_4096=sum(r['model']['calls_above_4096'] for r in rows),
                      usage_complete=complete_usage,
                      model_fraction_of_exploration=aggregate['model_seconds_logged']['sum']/exploration if exploration > 0 else None)
-    return {'schema_version': 1, 'audited_at': datetime.now(timezone.utc).isoformat(),
-            'experiment_id': manifest.get('experiment_id', batch.name), 'experiment_group': 'E4',
+    target_count = sum(r['evaluation']['score_at_or_above_90'] for r in rows)
+    all_finished = len(rows) == 6 and all(r['status'] not in ACTIVE and r['status'] is not None for r in rows)
+    target_met = (all_finished and target_count >= 5 and not errors and complete_usage
+                  and all(r['submission']['timely_pair'] for r in rows))
+    return {'schema_version': 2, 'audited_at': datetime.now(timezone.utc).isoformat(),
+            'experiment_id': manifest.get('experiment_id', batch.name),
+            'experiment_group': profile['group'] if profile else None, 'ruleset': ruleset,
             'manifest_sha256': digest(batch/'manifest.json') if (batch/'manifest.json').is_file() else None,
-            'all_finished': len(rows) == 6 and all(r['status'] not in ACTIVE and r['status'] is not None for r in rows),
+            'all_finished': all_finished,
             'submitted_worlds': sum(r['submission']['accepted_count'] == 1 for r in rows),
             'timely_submitted_worlds': sum(r['submission']['timely_pair'] for r in rows),
             'evaluated_worlds': sum(r['evaluation']['complete'] is True for r in rows),
+            'worlds_at_or_above_90': target_count, 'five_world_target_met': target_met,
+            'target_note': 'At least five scores >=90 in this single six-world batch; no rounding or best-of-run selection. '
+                           'Target confirmation also requires a clean audit, complete token usage and six timely submissions. '
+                           'This is a user baseline target, not an official contest pass threshold.',
             'source_checks': source, 'source_note': 'Compares current on-disk source with the run manifest; cannot prove historical file immutability.',
             'aggregate': aggregate, 'worlds': rows, 'errors': errors,
             'read_only_scope': 'No execution, scoring, model requests or feedback to Agent; only this derived audit.json is written.',
@@ -395,12 +424,12 @@ def audit(root, batch):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--batch', required=True, help='Existing experiments/E4/<batch> directory')
+    parser.add_argument('--batch', required=True, help='Existing experiments/E4/<batch> or experiments/E5/<batch> directory')
     parser.add_argument('--require-complete', action='store_true', help='Fail if any of the six attempts is still active or missing')
     args = parser.parse_args()
     batch = Path(args.batch).resolve()
-    if not batch.is_dir() or not batch.is_relative_to(ROOT / 'experiments' / 'E4'):
-        parser.error('--batch must be an existing directory under this project experiments/E4')
+    if not batch.is_dir() or not any(batch.is_relative_to(ROOT / 'experiments' / p['group']) for p in PROFILES.values()):
+        parser.error('--batch must be an existing directory under this project experiments/E4 or experiments/E5')
     result = audit(ROOT, batch)
     destination = batch / 'audit.json'
     # A unique atomic output avoids touching or replacing any original run record.
@@ -412,9 +441,11 @@ def main():
         temporary.replace(destination)
     finally:
         temporary.unlink(missing_ok=True)
-    print(json.dumps({'audit': str(destination), 'all_finished': result['all_finished'],
+    print(json.dumps({'audit': str(destination), 'experiment_group': result['experiment_group'], 'all_finished': result['all_finished'],
                       'submitted_worlds': result['submitted_worlds'], 'timely_submitted_worlds': result['timely_submitted_worlds'],
-                      'evaluated_worlds': result['evaluated_worlds'], 'errors': result['errors'],
+                      'evaluated_worlds': result['evaluated_worlds'],
+                      'worlds_at_or_above_90': result['worlds_at_or_above_90'],
+                      'five_world_target_met': result['five_world_target_met'], 'errors': result['errors'],
                       'aggregate': result['aggregate']}, ensure_ascii=False))
     return 1 if result['errors'] or (args.require_complete and not result['all_finished']) else 0
 

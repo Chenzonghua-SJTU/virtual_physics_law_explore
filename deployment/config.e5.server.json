@@ -1,0 +1,22 @@
+{
+  "environment": {
+    "world_set": "v15",
+    "ruleset": "e5",
+    "noise": false,
+    "wall_seconds": 300
+  },
+  "model": {
+    "deployment": "local",
+    "ruleset": "e5",
+    "base_url": "http://127.0.0.1:8000/v1",
+    "model": "qwen3.8-27b",
+    "api_key_env": "LOCAL_LLM_API_KEY",
+    "api_key_required": false,
+    "reasoning_protocol": "qwen",
+    "thinking": false,
+    "max_tokens_per_call": 4096,
+    "local_model_endpoints": {
+      "qwen3.8-27b": "http://127.0.0.1:8000/v1"
+    }
+  }
+}

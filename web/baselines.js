@@ -11,7 +11,7 @@ const duration=(seconds)=>typeof seconds==='number'&&Number.isFinite(seconds)?`$
 let latestBatches=[], lastRefreshed=null;
 function render(batch) {
   const section=element('section');
-  const repeat=batch.id.endsWith('r02')?'R02':'R01';
+  const repeat=(batch.id.match(/r\d+$/i)?.[0]||'R01').toUpperCase();
   section.append(element('h2',`${batch.experiment_group} · ${batch.model} · ${repeat} · ${states[batch.status]||batch.status}`));
   section.append(element('div',batch.id,'batch-id'));
   section.append(element('p',`${batch.energy_budget} 能量 · ${batch.wall_seconds} 秒探索 · 噪声${batch.noise?'开启':'关闭'} · 思考${batch.thinking?'开启':'关闭'} · 单次输出上限 ${batch.output_limit??'未记录'} token`,'batch-id'));
@@ -40,7 +40,7 @@ function render(batch) {
 }
 function renderAll(){
   const selected=document.getElementById('experiment-group').value;
-  const sorted=latestBatches.filter(b=>selected==='all'||b.experiment_group===selected).sort((a,b)=>a.experiment_group!==b.experiment_group?(a.experiment_group==='E4'?-1:1):a.id.localeCompare(b.id));
+  const sorted=latestBatches.filter(b=>selected==='all'||b.experiment_group===selected).sort((a,b)=>b.experiment_group.localeCompare(a.experiment_group)||a.id.localeCompare(b.id));
   document.getElementById('batches').replaceChildren(...sorted.map(render));
   const rows=sorted.flatMap(b=>b.worlds), completed=rows.filter(r=>r.evaluation_complete).length;
   document.getElementById('connection').textContent=`当前筛选已完成独立评测 ${completed} / ${rows.length} · 更新于 ${lastRefreshed??'—'} · 每 5 秒刷新`;

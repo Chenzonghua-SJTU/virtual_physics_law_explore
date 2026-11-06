@@ -122,6 +122,7 @@ class Handler(BaseHTTPRequestHandler):
                 sources = sorted((experiment_root / 'E3').rglob('summary.json'))
                 sources += sorted(experiment_root.glob('v15-local-*/summary.json'))
                 sources += sorted((experiment_root / 'E4').rglob('summary.json'))
+                sources += sorted((experiment_root / 'E5').rglob('summary.json'))
                 seen = set()
                 for source in sources:
                     try:
@@ -132,7 +133,7 @@ class Handler(BaseHTTPRequestHandler):
                         environment = data['configuration'].get('environment', {})
                         profile = rules_for(environment)
                         ruleset = profile['ruleset']
-                        group = data.get('experiment_group', 'E4' if ruleset == 'e4' else 'E3')
+                        group = data.get('experiment_group', ruleset.upper())
                         seen.add(data['experiment_id'])
                         batches.append(dict(id=data['experiment_id'], status=data['status'],
                             experiment_group=group, ruleset=ruleset,

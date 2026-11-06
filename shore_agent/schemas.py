@@ -57,7 +57,7 @@ CODE_SCHEMA = tool('run_code',
 def tool_schemas(code_enabled=False, *, ruleset='e3'):
     import copy
     schemas = copy.deepcopy(SCHEMAS + ([CODE_SCHEMA] if code_enabled else []))
-    if ruleset == 'e4':
+    if ruleset in ('e4', 'e5'):
         draft = copy.deepcopy(next(s for s in schemas if s['function']['name'] == 'submit'))
         draft['function']['name'] = 'save_draft'
         draft['function']['description'] = ('保存你明确选择的已拟合law_id及你依据观测判断的claims。'

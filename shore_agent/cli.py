@@ -45,8 +45,8 @@ def main():
         config['environment']['noise'] = True
     from shore_rules import apply_rules
     config = apply_rules(config)
-    if config['environment'].get('ruleset') == 'e4' and world_set != 'v15':
-        parser.error('E4 requires v15 worlds')
+    if config['environment'].get('ruleset') in ('e4', 'e5') and world_set != 'v15':
+        parser.error(config['environment']['ruleset'].upper() + ' requires v15 worlds')
     if args.command == 'inspect':
         if not args.run_dir:
             parser.error('inspect requires --run-dir')
@@ -66,9 +66,9 @@ def main():
     config['agent'].pop('max_rounds', None)
     (directory / 'config.json').write_text(json.dumps(config, indent=2), encoding='utf-8')
     key_env, key_required = model_auth_config(config['model'])
-    if args.command == 'run' and config['environment'].get('ruleset') == 'e4':
+    if args.command == 'run' and config['environment'].get('ruleset') in ('e4', 'e5'):
         # Reuse the same process watchdog, draft sealing and separate evaluator
-        # as web/batch E4. No parent-side mission call can start a second clock.
+        # as web/batch E4/E5. No parent-side mission call can start a second clock.
         child_env = dict(os.environ)
         for name in ('DEEPSEEK_API_KEY', 'DASHSCOPE_API_KEY', 'OPENAI_API_KEY', key_env):
             child_env.pop(name, None)

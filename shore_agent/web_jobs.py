@@ -278,7 +278,7 @@ def _evaluation_projection(directory, status, metadata, configuration, mission=N
     rules = rules_for(environment)
     if (score.get('formula_version') != rules['score_formula_version']
             or score.get('status') not in ('scored', 'unavailable')
-            or (rules['ruleset'] == 'e4' and score.get('energy_budget') != initial_energy(mission, environment))):
+            or (rules['ruleset'] in ('e4', 'e5') and score.get('energy_budget') != initial_energy(mission, environment))):
         return projection('unavailable', reason='invalid_score_record')
     if score['status'] == 'unavailable':
         return projection('unavailable', dict(score, total=None), score.get('reason'))
@@ -427,11 +427,13 @@ class RunManager:
             raise ValidationError('invalid_run_configuration')
         config = self._server_config()
         rules = rules_for(config.get('environment'))
-        if rules['ruleset'] == 'e4':
+        if rules['ruleset'] in ('e4', 'e5'):
             if payload.get('thinking') is True:
-                raise ValidationError('e4_requires_no_thinking')
-            if payload.get('noise') is False:
+                raise ValidationError(rules['ruleset'] + '_requires_no_thinking')
+            if rules['ruleset'] == 'e4' and payload.get('noise') is False:
                 raise ValidationError('e4_requires_noise')
+            if rules['ruleset'] == 'e5' and payload.get('noise') is True:
+                raise ValidationError('e5_requires_no_noise')
             if type(payload.get('max_tokens_per_call')) is int and payload['max_tokens_per_call'] > 4096:
                 raise ValidationError('invalid_output_budget')
         try:
@@ -439,8 +441,8 @@ class RunManager:
                 'v15' if config['environment'].get('physics_version') == V15_PHYSICS_VERSION else 'legacy')))
         except ValueError:
             raise ValidationError('invalid_world_set') from None
-        if rules['ruleset'] == 'e4' and world_set != 'v15':
-            raise ValidationError('e4_requires_v15')
+        if rules['ruleset'] in ('e4', 'e5') and world_set != 'v15':
+            raise ValidationError(rules['ruleset'] + '_requires_v15')
         try:
             config['environment']['world_id'] = validate_world_id(payload.get('world_id', config['environment']['world_id']), world_set)
         except ValueError:

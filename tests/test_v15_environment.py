@@ -127,6 +127,22 @@ def test_v15_vendor_snapshot_hashes_are_unchanged():
         assert hashlib.sha256((vendor / relative).read_bytes()).hexdigest() == digest
 
 
+@pytest.mark.parametrize('number', range(1, 7))
+def test_e5_first_light_matches_clean_e3_data_with_ten_energy_and_300_seconds(number):
+    config = {'world_id': f'world_{number}', 'seed': 42}
+    clean = Simulator(config).request('mission')
+    sim = Simulator(dict(config, ruleset='e5', noise=True))
+    mission = sim.request('mission')
+    assert mission['ok']
+    assert mission['data']['first_light'] == clean['data']['first_light']
+    task = mission['data']['task']
+    assert task['position_noise_sigma'] == task['velocity_noise_sigma'] == 0
+    assert task['limits']['initial_energy'] == 10
+    assert task['limits']['wall_seconds'] == 300
+    assert mission['budget']['energy_remaining'] == 10
+    assert sim.config['noise'] is False
+
+
 def test_e4_ten_energy_noisy_cached_first_light_and_atomic_probe_budget():
     sim = Simulator({'world_id': 'world_1', 'ruleset': 'e4', 'noise': False})
     mission = sim.request('mission')

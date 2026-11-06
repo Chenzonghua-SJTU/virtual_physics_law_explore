@@ -142,20 +142,23 @@ def test_archived_call_limit_and_failure_remain_visible_without_rewriting(manage
     assert {path.name: path.read_bytes() for path in directory.iterdir()} == originals
 
 
-def test_e4_backend_bootstrap_and_payload_cannot_expand_rules(manager):
+@pytest.mark.parametrize('ruleset', ['e4', 'e5'])
+def test_e4_backend_bootstrap_and_payload_cannot_expand_rules(manager, ruleset):
     override = manager.project_root / 'e4.json'
-    _write(override, json.loads((PROJECT / 'config.e4.example.json').read_text()))
+    source = json.loads((PROJECT / 'config.e4.example.json').read_text())
+    source['environment']['ruleset'] = ruleset
+    _write(override, source)
     manager.config_path = override
     settings = manager.client_configuration()
-    assert settings['defaults']['ruleset'] == 'e4'
+    assert settings['defaults']['ruleset'] == ruleset
     assert settings['defaults']['energy_budget'] == 10
     assert settings['defaults']['wall_seconds'] == 300
     assert settings['max_output_tokens_cap'] == 4096
     assert all(item['max_output_tokens'] == 4096 for item in settings['models'])
     for payload, code in [({'max_tokens_per_call': 65536}, 'invalid_output_budget'),
-                          ({'thinking': True}, 'e4_requires_no_thinking'),
-                          ({'noise': False}, 'e4_requires_noise'),
-                          ({'world_set': 'legacy'}, 'e4_requires_v15')]:
+                          ({'thinking': True}, ruleset + '_requires_no_thinking'),
+                          ({'noise': ruleset != 'e4'}, 'e4_requires_noise' if ruleset == 'e4' else 'e5_requires_no_noise'),
+                          ({'world_set': 'legacy'}, ruleset + '_requires_v15')]:
         with pytest.raises(ValidationError, match=code):
             manager._config(payload)
     config, key = manager._config({'max_tokens_per_call': 2048})
@@ -164,16 +167,19 @@ def test_e4_backend_bootstrap_and_payload_cannot_expand_rules(manager):
     assert config['model']['thinking'] is False and not key
 
 
-def test_history_keeps_its_own_energy_limit_under_e4_server(manager):
+@pytest.mark.parametrize('ruleset', ['e4', 'e5'])
+def test_history_keeps_its_own_energy_limit_under_e4_server(manager, ruleset):
     override = manager.project_root / 'e4.json'
-    _write(override, json.loads((PROJECT / 'config.e4.example.json').read_text()))
+    source = json.loads((PROJECT / 'config.e4.example.json').read_text())
+    source['environment']['ruleset'] = ruleset
+    _write(override, source)
     manager.config_path = override
-    for name, ruleset, energy in [('old', 'e3', 100), ('new', 'e4', 10)]:
+    for name, ruleset, energy in [('old', 'e3', 100), ('new', 'e4', 10), ('clean', 'e5', 10)]:
         directory = manager.runs_dir / name
         directory.mkdir()
         environment = {'world_set': 'v15', 'physics_version': 'shore_v15'}
-        if ruleset == 'e4':
-            environment['ruleset'] = 'e4'
+        if ruleset in ('e4', 'e5'):
+            environment['ruleset'] = ruleset
         _write(directory / 'config.json', {'environment': environment})
         _write(directory / 'mission.json', {'task': {'limits': {'initial_energy': energy}}})
         _write(directory / 'result.json', {'status': 'incomplete', 'budget': {'energy_remaining': energy - 2}})

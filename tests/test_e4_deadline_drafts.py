@@ -20,12 +20,12 @@ from shore_agent.web_worker import ExplorationDeadline, exploration_watchdog
 CLAIMS = {'dynamics_order': 2, 'hidden_matter': False, 'time_dependence': False}
 
 
-@pytest.fixture
-def runtime(tmp_path):
+@pytest.fixture(params=['e4', 'e5'])
+def runtime(tmp_path, request):
     # The real legacy observation worker provides arbitrary data for format-only
     # draft checks. Test declarations below make no scientific correctness claim.
     env = Environment({'noise': False, 'seed': 12})
-    env.ruleset = 'e4'
+    env.ruleset = request.param
     rt = ToolRuntime(env, tmp_path)
     assert rt.mission()['ok']
     rt.exploration_started_monotonic = time.monotonic()
@@ -143,9 +143,10 @@ def test_legacy_environment_metadata_is_not_forwarded_to_old_simulator():
 
 
 @pytest.mark.parametrize('submitted', [False, True])
-def test_worker_deadline_and_post_session_evaluation_are_separate(tmp_path, monkeypatch, submitted):
+@pytest.mark.parametrize('ruleset', ['e4', 'e5'])
+def test_worker_deadline_and_post_session_evaluation_are_separate(tmp_path, monkeypatch, submitted, ruleset):
     from shore_agent import agent, environment, model, runtime as runtime_module, web_worker
-    (tmp_path/'config.json').write_text(json.dumps({'environment': {'world_set': 'v15', 'ruleset': 'e4'},
+    (tmp_path/'config.json').write_text(json.dumps({'environment': {'world_set': 'v15', 'ruleset': ruleset},
         'model': {'deployment': 'local', 'base_url': 'http://127.0.0.1:8000/v1',
                   'api_key_required': False}}))
     monkeypatch.setattr(sys, 'stdin', io.StringIO('{"api_key":""}\n'))
@@ -159,7 +160,7 @@ def test_worker_deadline_and_post_session_evaluation_are_separate(tmp_path, monk
         def budget(self): return {'wall_seconds_remaining': .05}
     class ClientStub:
         def __init__(self, config, *a, **k):
-            assert config['ruleset'] == 'e4' and config['max_tokens_per_call'] == 4096
+            assert config['ruleset'] == ruleset and config['max_tokens_per_call'] == 4096
         def close(self): pass
     class AgentStub:
         def __init__(self, *a, **k): pass
@@ -197,11 +198,12 @@ def test_worker_deadline_and_post_session_evaluation_are_separate(tmp_path, monk
         assert metadata['status'] == 'incomplete' and 'evaluation_started_at' not in metadata
 
 
-def test_cli_e4_reuses_worker_without_parent_mission_or_secret_argv(tmp_path, monkeypatch):
+@pytest.mark.parametrize('ruleset', ['e4', 'e5'])
+def test_cli_e4_reuses_worker_without_parent_mission_or_secret_argv(tmp_path, monkeypatch, ruleset):
     from shore_agent import cli
     config = tmp_path/'input.json'
     config.write_text(json.dumps({'environment': {'world_set': 'v15', 'world_id': 'world_1',
-        'ruleset': 'e4', 'wall_seconds': 3600, 'noise': False}, 'model': {
+        'ruleset': ruleset, 'wall_seconds': 3600, 'noise': False}, 'model': {
         'deployment': 'local', 'base_url': 'http://127.0.0.1:8000/v1', 'api_key_required': False,
         'api_key_env': 'E4_TEST_KEY', 'max_tokens_per_call': 65536}}))
     directory = tmp_path/'run'
@@ -216,7 +218,7 @@ def test_cli_e4_reuses_worker_without_parent_mission_or_secret_argv(tmp_path, mo
         assert json.loads(kwargs['input']) == {'api_key': 'synthetic-cli-secret'}
         saved = json.loads((directory/'config.json').read_text())
         assert saved['model']['max_tokens_per_call'] == 4096
-        assert saved['environment']['wall_seconds'] == 300 and saved['environment']['noise'] is True
+        assert saved['environment']['wall_seconds'] == 300 and saved['environment']['noise'] is (ruleset == 'e4')
         observed.append(True)
         return type('Process', (), {'returncode': 0})()
     monkeypatch.setattr(cli.subprocess, 'run', launch)

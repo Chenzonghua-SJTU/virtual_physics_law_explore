@@ -107,8 +107,8 @@
     $('world-select').value = state.worlds.some((world) => world.id === selected) ? selected : state.worlds[0]?.id || '';
     $('world-set-label').textContent = `${worldSetLabel(set.id)} · ${state.worlds.length} 个世界`;
     $('world-set-note').textContent = set.id === 'v15'
-      ? state.defaults.ruleset === 'e4' ? 'E4 · 六个公开开发世界，10 能量、300 秒；位置与速度均加噪声，关闭思考，单次输出至多 4096 token。本地规则适配，不是正式 SDK。' : 'E3 · 接入 shore-contest-starter-v15 的六个公开开发世界，本地预算为 100 能量、60 分钟。'
-      : state.defaults.ruleset === 'e4' ? 'E4 服务中旧版七世界仅供查看历史记录。新探索请切换到新版六世界。' : '使用原有七个实验世界。沿用现有 Agent，本地预算为 100 能量、60 分钟。';
+      ? ['e4', 'e5'].includes(state.defaults.ruleset) ? `${state.defaults.ruleset.toUpperCase()} · 六个公开开发世界，10 能量、300 秒；${state.defaults.ruleset === 'e5' ? '探索无噪声' : '位置与速度均加噪声'}，关闭思考，单次输出至多 4096 token。独立测评无噪声，本地规则适配。` : 'E3 · 接入 shore-contest-starter-v15 的六个公开开发世界，本地预算为 100 能量、60 分钟。'
+      : ['e4', 'e5'].includes(state.defaults.ruleset) ? '限时服务中旧版七世界仅供查看历史记录。新探索请切换到新版六世界。' : '使用原有七个实验世界。沿用现有 Agent，本地预算为 100 能量、60 分钟。';
     $('world-note').textContent = `${set.id === 'v15' ? '新版' : '旧版'}世界用于下一次探索；查看历史会话会自动切换到对应版本。`;
     for (const button of $('world-set-options').querySelectorAll('button')) {
       const selected = button.dataset.worldSet === set.id;
@@ -206,7 +206,7 @@
   function updateModelLimits() {
     const max = state.models.find((model) => model.id === $('model').value)?.max_output_tokens;
     state.maxOutputTokens = Number.isInteger(max) && max >= 64 ? max : 393216;
-    if (state.defaults.ruleset === 'e4') state.maxOutputTokens = Math.min(state.maxOutputTokens, 4096);
+    if (['e4', 'e5'].includes(state.defaults.ruleset)) state.maxOutputTokens = Math.min(state.maxOutputTokens, 4096);
     $('output-tokens').max = String(state.maxOutputTokens);
     if (Number($('output-tokens').value) > state.maxOutputTokens) $('output-tokens').value = state.maxOutputTokens;
     errors.invalid_output_budget = `单次输出上限应在 64–${number(state.maxOutputTokens)} 之间。`;
@@ -214,15 +214,15 @@
   }
   function setFormState() {
     const active = Boolean(state.active);
-    const historicalWorldsOnly = state.defaults.ruleset === 'e4' && state.worldSet !== 'v15';
+    const historicalWorldsOnly = ['e4', 'e5'].includes(state.defaults.ruleset) && state.worldSet !== 'v15';
     $('start-button').disabled = !state.connected || active || state.busy || Boolean(state.historyBusy) || historicalWorldsOnly;
     $('start-button').querySelector('span').textContent = state.busy ? '正在启动…' : active ? '探索正在进行' : historicalWorldsOnly ? '旧版仅查看历史' : '开始探索';
     $('stop-button').hidden = !active;
     $('stop-button').lastChild.textContent = state.active && state.selected !== state.active ? '停止正在运行的探索' : '停止本次探索';
     $('stop-button').disabled = state.busy || (state.run?.id === state.active && state.run?.status === 'stopping');
     for (const id of ['model', 'api-key', 'world-select', 'noise', 'thinking', 'seed', 'max-tokens', 'output-tokens']) $(id).disabled = active || state.busy;
-    if (state.defaults.ruleset === 'e4') {
-      $('noise').checked = true; $('noise').disabled = true;
+    if (['e4', 'e5'].includes(state.defaults.ruleset)) {
+      $('noise').checked = state.defaults.ruleset === 'e4'; $('noise').disabled = true;
       $('thinking').checked = false; $('thinking').disabled = true;
     }
     $('reasoning-effort').disabled = active || state.busy || !$('thinking').checked || !state.reasoningEffortSupported;
@@ -259,7 +259,7 @@
       if (run.model_settings?.model) {
         const batch = run.experiment_id?.match(/r\d+$/i)?.[0]?.toUpperCase();
         const origin = run.model_settings.deployment === 'local' ? '本地' : '云端';
-        const group = run.ruleset === 'e4' ? 'E4' : run.experiment_id?.startsWith('v15-local-') ? 'E3' : '';
+        const group = ['e4', 'e5'].includes(run.ruleset) ? run.ruleset.toUpperCase() : run.experiment_id?.startsWith('v15-local-') ? 'E3' : '';
         button.append(node('span', 'muted small', `${run.model_settings.model} · ${origin}${group ? ` · ${group}` : ''}${batch ? ` · ${batch}` : ''}`));
       }
       button.addEventListener('click', () => selectRun(run.id));
@@ -450,7 +450,7 @@
     const effortLabels = {low: '低', high: '高', max: '最高'};
     const effort = settings.thinking === false ? '思考关闭' : settings.reasoning_protocol === 'qwen' ? '思考开启' : effortLabels[settings.reasoning_effort]
       ? `推理：${effortLabels[settings.reasoning_effort]}` : '推理强度未记录';
-    $('session-caption').textContent = `${history ? '历史会话' : '当前会话'} · ${run.ruleset === 'e4' ? 'E4' : '原规则'} · ${worldLabel(run)} · ${settings.model || '模型未记录'} · ${settings.deployment === 'local' ? '服务器本地' : '云端'} · ${effort} · ${formatDate(run.created_at)} · ${run.id}`;
+    $('session-caption').textContent = `${history ? '历史会话' : '当前会话'} · ${['e4', 'e5'].includes(run.ruleset) ? run.ruleset.toUpperCase() : '原规则'} · ${worldLabel(run)} · ${settings.model || '模型未记录'} · ${settings.deployment === 'local' ? '服务器本地' : '云端'} · ${effort} · ${formatDate(run.created_at)} · ${run.id}`;
     $('live-dot').className = `live-dot${isRunning(run) ? ' running' : ''}`;
     $('timeline-caption').textContent = run.status === 'queued' ? '等待批量运行器分配执行位置' : history ? '历史记录 · 非实时运行' : run.status === 'stopping' ? '正在停止，请稍候' : isRunning(run) ? run.managed_externally ? '批量运行器任务 · 实时更新 · 网页只读' : '实时更新 · 每秒同步' : '本次探索已结束';
     renderModelProgress(run);
@@ -667,7 +667,7 @@
     if (evaluationVisible) {
       const score = run?.evaluation_score && typeof run.evaluation_score === 'object' ? run.evaluation_score : null;
       $('evaluation-formula').textContent = score?.source_note || '采用本次实验记录的预测分、声明分与能量分规则；完整评分依据保存在导出记录中。';
-      $('evaluation-example-note').hidden = run.ruleset === 'e4';
+      $('evaluation-example-note').hidden = ['e4', 'e5'].includes(run.ruleset);
       $('evaluation-block').className = `evaluation-block ${runTone(run)}`;
       $('evaluation-summary').textContent = runLabel(run);
       $('evaluation-score').textContent = scoreNumber(hasScore(run) ? score?.total : null);

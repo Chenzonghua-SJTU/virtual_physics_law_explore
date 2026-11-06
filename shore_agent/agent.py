@@ -26,7 +26,8 @@ class Agent:
         self.last_budget = {}
         self.submission = None
         self.session_ended = False
-        self.e4 = getattr(tool_runtime, 'ruleset', 'e3') == 'e4'
+        self.ruleset = getattr(tool_runtime, 'ruleset', 'e3')
+        self.e4 = self.ruleset in ('e4', 'e5')
         self.finish_reserve_seconds = 30.0 if self.e4 else 0.0
         self.max_no_action = config.get('max_no_action', 3)
         if isinstance(self.max_no_action, bool) or not isinstance(self.max_no_action, int) or self.max_no_action < 1:
@@ -88,13 +89,15 @@ class Agent:
         mission = self.runtime.mission()
         self.last_budget = mission.get('budget') or {}
         prompt = (Path(__file__).parent / 'prompts' / 'main.txt').read_text(encoding='utf-8')
-        if self.e4:
+        if self.ruleset == 'e4':
             prompt += ('\n\nE4时间约束：首次mission开始后总探索预算300秒，包含模型与科学工具。'
                        '调用save_draft明确保存你选择的law_id和你根据观测判断的三个claims；'
                        '保存成功后可继续改进，最后及时有效配对会在截止或提前结束时保留。'
                        '未明确给出claims的候选不会自动成为草稿。剩余时间少时优先save_draft或submit，'
                        '不要等待长篇说明。系统在最后30秒优先封存已保存配对；没有草稿时仍由你决定提交，'
                        '截止时没有有效配对会如实记为未完成。')
+        elif self.ruleset == 'e5':
+            prompt += '\n\n' + (Path(__file__).parent / 'prompts' / 'e5.txt').read_text(encoding='utf-8')
         if getattr(self.runtime, 'code_enabled', False):
             prompt = prompt.replace('不可访问任意文件、Shell、网络、源码或任意 Python。',
                                     '代码只可通过run_code在隔离环境执行，不可访问宿主文件、网络或仿真源码。')

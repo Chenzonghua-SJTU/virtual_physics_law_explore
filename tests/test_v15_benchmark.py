@@ -191,17 +191,18 @@ def test_thinking_requires_an_actual_boolean(tmp_path, value):
         benchmark.configuration(tmp_path, thinking=value)
 
 
-def test_e4_profile_and_queue_are_reserved_before_mission(tmp_path):
+@pytest.mark.parametrize('ruleset', ['e4', 'e5'])
+def test_e4_profile_and_queue_are_reserved_before_mission(tmp_path, ruleset):
     project, _ = project_config(tmp_path)
-    config = benchmark.configuration(project, ruleset='e4')
-    assert config['environment']['ruleset'] == 'e4'
+    config = benchmark.configuration(project, ruleset=ruleset)
+    assert config['environment']['ruleset'] == ruleset
     assert config['environment']['wall_seconds'] == 300
     assert config['environment']['energy_budget'] == 10
-    assert config['environment']['noise'] is True
+    assert config['environment']['noise'] is (ruleset == 'e4')
     assert config['model']['thinking'] is False
     assert config['model']['max_tokens_per_call'] == 4096
     endpoints = ['http://127.0.0.1:8000/v1', 'http://127.0.0.1:8001/v1']
-    manifest, runs = benchmark.prepare(project / 'experiments/E4/test-e4', config,
+    manifest, runs = benchmark.prepare(project / f'experiments/{ruleset.upper()}/test-{ruleset}', config,
                                        workers=4, project=project, model_endpoints=endpoints)
     assert manifest['workers'] == 2
     assert manifest['protocol']['energy_budget'] == 10
@@ -209,7 +210,7 @@ def test_e4_profile_and_queue_are_reserved_before_mission(tmp_path):
     assert manifest['protocol']['official_sdk_compatible'] is False
     for directory in runs.values():
         metadata = benchmark.read_json(directory / 'web.json')
-        assert metadata['status'] == 'queued' and metadata['experiment_group'] == 'E4'
+        assert metadata['status'] == 'queued' and metadata['experiment_group'] == ruleset.upper()
         assert 'session_started_at' not in metadata
         assert not (directory / 'mission.json').exists()
     with pytest.raises(ValueError, match='distinct'):
@@ -277,14 +278,15 @@ def test_summary_separates_exploration_evaluation_and_checks_each_output(tmp_pat
     assert row['output_cap_compliant'] is False
 
 
-def test_e4_watchdog_uses_mission_deadline_and_excludes_evaluation():
+@pytest.mark.parametrize('ruleset', ['e4', 'e5'])
+def test_e4_watchdog_uses_mission_deadline_and_excludes_evaluation(ruleset):
     from datetime import datetime, timezone
     current = datetime(2026, 11, 7, 0, 5, 11, tzinfo=timezone.utc)
-    metadata = {'ruleset': 'e4', 'status': 'running', 'exploration_deadline_at': '2026-11-07T00:05:00+00:00'}
+    metadata = {'ruleset': ruleset, 'status': 'running', 'exploration_deadline_at': '2026-11-07T00:05:00+00:00'}
     assert benchmark.watchdog_expired(metadata, current)
     assert not benchmark.watchdog_expired(dict(metadata, status='evaluating'), current)
     assert not benchmark.watchdog_expired(dict(metadata, exploration_finished_at='2026-11-07T00:05:00+00:00'), current)
-    assert not benchmark.watchdog_expired({'ruleset': 'e4', 'status': 'queued'}, current)
+    assert not benchmark.watchdog_expired({'ruleset': ruleset, 'status': 'queued'}, current)
     assert not benchmark.watchdog_expired(dict(metadata, ruleset='e3'), current)
 
 

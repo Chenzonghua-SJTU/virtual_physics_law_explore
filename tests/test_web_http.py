@@ -146,7 +146,7 @@ def test_local_baseline_summary_projects_only_result_fields(local_server, monkey
     assert b'not-in-overview' not in body
 
 
-def test_e3_derived_summary_preferred_and_e4_kept_separate(local_server, monkeypatch, tmp_path):
+def test_e3_derived_summary_preferred_and_timed_profiles_kept_separate(local_server, monkeypatch, tmp_path):
     import shore_agent.web as web
     monkeypatch.setattr(web, 'PROJECT', tmp_path)
     base = {'experiment_id': 'v15-local-original', 'status': 'completed', 'updated_at': 'now',
@@ -165,14 +165,22 @@ def test_e3_derived_summary_preferred_and_e4_kept_separate(local_server, monkeyp
     new['worlds'][0]['run_id'] = 'e4-world_1'
     e4 = tmp_path / 'experiments/E4/R01/summary.json'
     e4.parent.mkdir(parents=True); e4.write_text(json.dumps(new))
+    clean = copy.deepcopy(new)
+    clean['experiment_id'] = 'new-e5'
+    clean['configuration']['environment'].update(ruleset='e5', noise=False)
+    clean['worlds'][0]['run_id'] = 'e5-world_1'
+    e5 = tmp_path / 'experiments/E5/R01/summary.json'
+    e5.parent.mkdir(parents=True); e5.write_text(json.dumps(clean))
     server, _ = local_server
     status, _, body = request(server, path='/api/baselines')
     assert status == 200
     batches = {b['experiment_group']: b for b in json.loads(body)['batches']}
-    assert set(batches) == {'E3', 'E4'}
+    assert set(batches) == {'E3', 'E4', 'E5'}
     assert batches['E3']['worlds'][0]['exploration_seconds'] == 297
     assert batches['E3']['worlds'][0]['run_id'] == 'original-world_1'
     assert batches['E4']['energy_budget'] == 10 and batches['E4']['wall_seconds'] == 300
+    assert batches['E5']['energy_budget'] == 10 and batches['E5']['noise'] is False
+    assert batches['E5']['worlds'][0]['run_id'] == 'e5-world_1'
     assert old.read_text() == json.dumps(base)
 
 

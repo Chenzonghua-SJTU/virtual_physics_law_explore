@@ -345,7 +345,7 @@ class ToolRuntime:
                                        self._probes(law['train_probe_ids']), physical_explanation)
             if self.budget()['wall_seconds_remaining'] <= 0:
                 raise ValueError('Wall time exhausted during submission checks')
-            if self.ruleset == 'e4':
+            if self.ruleset in ('e4', 'e5'):
                 timing = self._pair_timing()
             ended = self._environment_call('end_session')
             self.session_ended = True
@@ -363,8 +363,8 @@ class ToolRuntime:
 
     def save_draft(self, law_id, claims, physical_explanation):
         """Only a model's explicit, timely, validated pair can become a fallback."""
-        if self.ruleset != 'e4':
-            raise ValueError('Draft preservation is available only in E4')
+        if self.ruleset not in ('e4', 'e5'):
+            raise ValueError('Draft preservation is available only in E4/E5')
         from .submission import export_submission
         from .agent import _save
         law = self._law(law_id)
@@ -386,7 +386,7 @@ class ToolRuntime:
 
     def finalize_draft(self, reason):
         """Seal previously checked bytes; do not infer claims or run new science after expiry."""
-        if self.ruleset != 'e4' or self.last_valid_draft is None:
+        if self.ruleset not in ('e4', 'e5') or self.last_valid_draft is None:
             return None
         draft = copy.deepcopy(self.last_valid_draft)
         rid = 'submission_' + uuid.uuid4().hex[:12]

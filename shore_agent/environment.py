@@ -23,8 +23,8 @@ class Environment:
         if world_set == 'legacy' and config.get('physics_version') == V15_PHYSICS_VERSION:
             raise ValueError('world_set and physics_version disagree')
         if world_set == 'legacy':
-            if self.ruleset == 'e4':
-                raise ValueError('E4 requires v15 worlds')
+            if self.ruleset in ('e4', 'e5'):
+                raise ValueError(self.ruleset.upper() + ' requires v15 worlds')
             config.pop('ruleset', None)
             config.pop('energy_budget', None)
         if world_set == 'v15':

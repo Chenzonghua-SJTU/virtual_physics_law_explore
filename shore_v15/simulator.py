@@ -3,7 +3,7 @@
 The scientific Agent, tool schemas and fitting/integration tools are unchanged.
 The true field, background, first-light request and clean trajectory integrator
 come from the vendored public simulator. E3 retains 100 energy/3600 seconds;
-E4 uses 10 energy/300 seconds. This is not the standard contest Console.
+E4/E5 use 10 energy/300 seconds; E5 disables observation noise. This is not the standard contest Console.
 """
 import math
 
@@ -46,8 +46,8 @@ class Simulator(LocalProtocol):
                                           or config['energy_budget'] != rules['energy_budget']):
             raise ValueError('energy_budget must match ruleset')
         self.config['energy_budget'] = rules['energy_budget']
-        if rules['ruleset'] == 'e4':
-            self.config['noise'] = True
+        if rules['ruleset'] in ('e4', 'e5'):
+            self.config['noise'] = rules['ruleset'] == 'e4'
         if type(self.config['noise']) is not bool:
             raise ValueError('noise must be boolean')
         if type(self.config['seed']) is not int or self.config['seed'] < 0:

@@ -59,14 +59,14 @@ def configuration(project=PROJECT, model='qwen3.8-27b', config_path=None, *, thi
         else:
             config[section] = value
     config['environment'].update(world_set='v15', physics_version=V15_PHYSICS_VERSION, seed=42)
-    if ruleset not in (None, 'e4'):
+    if ruleset not in (None, 'e4', 'e5'):
         raise ValueError('unknown_baseline_ruleset')
     if ruleset is None:
         config['environment'].update(noise=False, wall_seconds=3600)
         config['environment'].pop('ruleset', None)
         config['environment'].pop('energy_budget', None)
     else:
-        config['environment']['ruleset'] = 'e4'
+        config['environment']['ruleset'] = ruleset
     for name in ('reference_length', 'position_limit', 'velocity_limit', 'time_max'):
         config['environment'].pop(name, None)
     config['model'].update(model=model, thinking=thinking, max_calls=None, main_max_calls=None)
@@ -93,7 +93,7 @@ def configuration(project=PROJECT, model='qwen3.8-27b', config_path=None, *, thi
 
 
 def _hashes(project):
-    paths = ['shore_agent/agent.py', 'shore_agent/prompts/main.txt', 'shore_agent/schemas.py',
+    paths = ['shore_agent/agent.py', 'shore_agent/prompts/main.txt', 'shore_agent/prompts/e5.txt', 'shore_agent/schemas.py',
              'shore_agent/runtime.py', 'shore_agent/numerics.py', 'shore_agent/expressions.py',
              'shore_agent/model.py', 'shore_agent/web_worker.py', 'shore_agent/store.py',
              'shore_agent/submission.py', 'shore_rules.py', 'shore_v15/simulator.py',
@@ -104,7 +104,7 @@ def _hashes(project):
 
 def _endpoints(config, model_endpoints):
     if model_endpoints is None:
-        return [config['model']['base_url'].rstrip('/')] if config['environment'].get('ruleset') == 'e4' else []
+        return [config['model']['base_url'].rstrip('/')] if config['environment'].get('ruleset') in ('e4', 'e5') else []
     endpoints = [item.strip().rstrip('/') for item in model_endpoints]
     if not endpoints or any(not item for item in endpoints) or len(set(endpoints)) != len(endpoints):
         raise ValueError('model_endpoints_must_be_distinct_nonempty_urls')
@@ -127,7 +127,7 @@ def prepare(output, config, workers=3, project=PROJECT, model_endpoints=None):
         workers = min(workers, len(endpoints))
     profile = rules_for(config['environment'])
     ruleset = profile['ruleset']
-    group = 'E4' if ruleset == 'e4' else 'E3'
+    group = ruleset.upper()
     energy_budget = profile['energy_budget']
     wall_seconds = config['environment'].get('wall_seconds', profile['wall_seconds'])
     runs = {world: project / 'runs' / f'{slug}-{world}' for world in V15_WORLD_IDS}
@@ -145,7 +145,7 @@ def prepare(output, config, workers=3, project=PROJECT, model_endpoints=None):
             'experiment_kind': 'v15_baseline', 'autonomous_discovery': True,
             'runner_owned': True, 'worker_pid': None, 'benchmark_id': output.name,
             'experiment_id': output.name, 'experiment_group': group, 'ruleset': ruleset,
-            'arm': 'e4_local_rules_baseline' if ruleset == 'e4' else 'unchanged_agent_v15_baseline',
+            'arm': ruleset + '_local_rules_baseline' if ruleset in ('e4', 'e5') else 'unchanged_agent_v15_baseline',
             'created_at': created, 'model': effective['model']['model'],
             'world_set': 'v15', 'world_set_name': '新版 · v15',
             'world_id': world, 'world_name': world_name(world, 'v15'),
@@ -222,8 +222,8 @@ def finished(directory, returncode, elapsed_seconds, *, reason=None):
 
 
 def watchdog_expired(metadata, current=None):
-    """Hard fallback for a stuck E4 worker, excluding post-submission evaluation."""
-    if (metadata.get('ruleset') != 'e4' or metadata.get('exploration_finished_at')
+    """Hard fallback for a stuck timed worker, excluding post-submission evaluation."""
+    if (metadata.get('ruleset') not in ('e4', 'e5') or metadata.get('exploration_finished_at')
             or metadata.get('status') not in ('starting', 'running')):
         return False
     try:
@@ -284,7 +284,7 @@ def summarize(snapshot, directory):
         exploration = max(0., wall_limit - wall_remaining)
         timing_source = 'mission_budget_elapsed'
     return {'world_id': snapshot.get('world_id'), 'world_set': 'v15', 'run_id': directory.name,
-            'ruleset': ruleset, 'experiment_group': 'E4' if ruleset == 'e4' else 'E3',
+            'ruleset': ruleset, 'experiment_group': ruleset.upper(),
             'model_endpoint': metadata.get('model_endpoint'),
             'status': snapshot.get('status'), 'reason': result.get('reason'),
             'running': snapshot.get('running', False), 'worker_returncode': metadata.get('worker_returncode'),
@@ -339,7 +339,7 @@ def markdown(summary):
     env = config['environment']
     profile = rules_for(env)
     ruleset = profile['ruleset']
-    group = summary.get('experiment_group', 'E4' if ruleset == 'e4' else 'E3')
+    group = summary.get('experiment_group', ruleset.upper())
     energy = profile['energy_budget']
     wall = env.get('wall_seconds', profile['wall_seconds'])
     lines = ['# v15 六世界自主探索 Baseline', '',
@@ -472,7 +472,7 @@ def main():
     parser.add_argument('--model', default='qwen3.8-27b')
     parser.add_argument('--no-thinking', action='store_true', help='Disable model thinking for all six runs')
     parser.add_argument('--config', type=Path, help='Trusted override; default config.local.web.json')
-    parser.add_argument('--ruleset', choices=['e4'], help='E4 local rule profile: 10 energy, 300s, noise, 4096 output tokens')
+    parser.add_argument('--ruleset', choices=['e4', 'e5'], help='10 energy, 300s, 4096 output tokens; E4 noisy, E5 noise-free')
     parser.add_argument('--model-endpoints', help='Comma-separated distinct API base URLs; one active world per endpoint')
     parser.add_argument('--ask-key', action='store_true', help='Read key using a hidden terminal prompt')
     args = parser.parse_args()
