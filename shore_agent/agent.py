@@ -111,6 +111,7 @@ class Agent:
         if self.last_budget.get('session_ended') is True:
             return self._finish('incomplete', 'session_already_ended')
         no_action = 0
+        length_recoveries = 0
         # A turn cap would impose another model-call cap. Continue until submit,
         # a resource/error termination, or repeated replies without tool actions.
         turn = 0
@@ -136,6 +137,21 @@ class Agent:
             finish_reason = self.client.last_finish_reason
             # A length-limited reply may end halfway through JSON: never execute it.
             if finish_reason not in ('stop', 'tool_calls'):
+                if self.ruleset == 'e5' and finish_reason == 'length' and length_recoveries == 0:
+                    length_recoveries += 1
+                    self._event('model_length_recovered', turn=turn,
+                                original_message=copy.deepcopy(message),
+                                model_usage=copy.deepcopy(self.client.usage))
+                    # Keep valid earlier exchanges, but do not resend a partial
+                    # tool call or feed a repetitive truncated reply back in.
+                    self.messages[-1] = {'role': 'assistant', 'content':
+                        '上一条回复达到单次输出上限，已中止；其中没有工具被执行。'}
+                    self.messages.append({'role': 'user', 'content':
+                        '这是本次探索唯一一次输出截断恢复，原有时间、能量和每次输出上限不变。'
+                        '停止重复文字与手算，利用已有观测和工具继续；重新给出完整、简洁的工具调用，'
+                        '不要续写上条回复或残缺JSON。'})
+                    self._persist()
+                    continue  # The unchanged deadline checks run before any new request.
                 return self._finish('incomplete', f'model_finish_{finish_reason}')
             calls = message.get('tool_calls') or []
             if not self._valid_calls(calls):
