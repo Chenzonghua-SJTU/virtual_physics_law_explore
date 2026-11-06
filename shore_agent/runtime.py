@@ -2,6 +2,7 @@
 import ast
 import copy
 import json
+import math
 import time
 import uuid
 from datetime import datetime, timezone
@@ -207,6 +208,58 @@ class ToolRuntime:
             raise ValueError('Specify distinct existing probe ids')
         return [self.store.get('probe', rid) for rid in ids]
 
+    def _property_coverage(self, training, validation=None):
+        """Summarize acquired public inputs, without inferring their physical effects."""
+        names = self.task.get('allowed_properties', [])
+        controls = self.task.get('property_controls', {})
+
+        def summarize(probes):
+            rows, defaulted = [], {name: 0 for name in names}
+            for probe in probes:
+                initial = probe['initial_conditions']
+                supplied = initial.get('properties', {})
+                values = {}
+                for name in names:
+                    value = supplied.get(name, controls.get(name, {}).get('default'))
+                    if type(value) not in (int, float) or not math.isfinite(value):
+                        value = None
+                    elif name not in supplied:
+                        defaulted[name] += 1
+                    values[name] = value
+                rows.append((probe, initial, values))
+            observed = {name: sorted({values[name] for _, _, values in rows if values[name] is not None})
+                        for name in names}
+            pairs = {name: 0 for name in names}
+            for index, (probe, initial, values) in enumerate(rows):
+                for other, other_initial, other_values in rows[index + 1:]:
+                    if (any(key not in initial or key not in other_initial or initial[key] != other_initial[key]
+                            for key in ('r0', 'v0', 't0')) or not probe.get('times')
+                            or probe['times'] != other.get('times')
+                            or any(values[name] is None or other_values[name] is None for name in names)):
+                        continue
+                    changed = [name for name in names if values[name] != other_values[name]]
+                    if len(changed) == 1:
+                        pairs[changed[0]] += 1
+            return {'probe_ids': [probe['probe_id'] for probe in probes],
+                    'property_values': observed,
+                    'unvaried_controls': [name for name in names if len(observed[name]) < 2],
+                    'unknown_value_counts': {name: sum(values[name] is None for _, _, values in rows) for name in names},
+                    'public_default_value_counts': defaulted,
+                    'single_control_pair_counts': pairs}
+
+        coverage = {'training': summarize(training),
+                    'all_acquired': summarize(list(self.store.records['probe'].values())),
+                    'interpretation': (
+                        'Only current-session acquired public inputs are counted. Unvaried controls have fewer than two '
+                        'known values: low residuals cannot establish independence from those controls. '
+                        'A single-control pair has identical recorded r0, v0, t0 and readout times, '
+                        'with only that public property changed. Varied values or pairs do not establish a physical effect '
+                        'or prove coverage; inspect the measured motion. Missing values use only published defaults, '
+                        'otherwise remain unknown.')}
+        if validation is not None:
+            coverage['validation'] = summarize(validation)
+        return coverage
+
     def fit_law_and_rollout(self, law_spec, parameter_spec, train_probe_ids):
         probes = self._probes(train_probe_ids)
         if not self.known_bodies:
@@ -230,6 +283,8 @@ class ToolRuntime:
                       body_position_estimate=copy.deepcopy(self.body_position_estimate))
         if self._time_series_bodies():
             record.update(body_context=body_inputs, body_input_protocol='instantaneous_visible_state')
+        if self.ruleset == 'e5':
+            record['property_coverage'] = self._property_coverage(probes)
         self.store.add('law', record, rid)
         return preview(record)
 
@@ -257,6 +312,8 @@ class ToolRuntime:
         if law.get('body_input_protocol') == 'instantaneous_visible_state':
             data.update(body_context=body_inputs, body_input_protocol='instantaneous_visible_state')
             data['warnings'].append('Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty.')
+        if self.ruleset == 'e5':
+            data['property_coverage'] = self._property_coverage(self._probes(law['train_probe_ids']), probes)
         self.store.add('validation', data, rid)
         return preview(data)
 
