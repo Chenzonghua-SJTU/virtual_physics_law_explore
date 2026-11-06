@@ -14,6 +14,24 @@ import threading
 class Environment:
     def __init__(self, config=None, *, secret_env_names=()):
         config = dict(config or {})
+        from shore_rules import rules_for
+        self.ruleset = rules_for(config)['ruleset']
+        from shore_worlds import V15_PHYSICS_VERSION, validate_world_set
+        world_set = validate_world_set(config.pop('world_set',
+            'v15' if config.get('physics_version') == V15_PHYSICS_VERSION else 'legacy'))
+        worker = 'shore_v15.worker' if world_set == 'v15' else 'shore_sim.worker'
+        if world_set == 'legacy' and config.get('physics_version') == V15_PHYSICS_VERSION:
+            raise ValueError('world_set and physics_version disagree')
+        if world_set == 'legacy':
+            if self.ruleset == 'e4':
+                raise ValueError('E4 requires v15 worlds')
+            config.pop('ruleset', None)
+            config.pop('energy_budget', None)
+        if world_set == 'v15':
+            # Legacy config templates carry rectangular-domain defaults. The
+            # public v15 catalog owns these ranges and noise reference scales.
+            for field in ('reference_length', 'position_limit', 'velocity_limit', 'time_max'):
+                config.pop(field, None)
         env = dict(os.environ)
         env.pop("DEEPSEEK_API_KEY", None)
         for name in secret_env_names:
@@ -21,7 +39,7 @@ class Environment:
         project = str(Path(__file__).resolve().parents[1])
         env["PYTHONPATH"] = project
         self._process = subprocess.Popen(
-            [sys.executable, "-u", "-m", "shore_sim.worker", json.dumps(config, allow_nan=False)],
+            [sys.executable, "-u", "-m", worker, json.dumps(config, allow_nan=False)],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
             text=True, encoding="utf-8", env=env, cwd=project, bufsize=1)
         self._lock = threading.Lock()

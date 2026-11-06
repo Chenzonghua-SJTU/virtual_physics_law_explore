@@ -1,0 +1,78 @@
+{
+  "experiment_id": "v15-local-qwen38-nothink-20261107-r02",
+  "created_at": "2026-11-06T20:28:57.971377+00:00",
+  "status": "completed",
+  "kind": "real_autonomous_v15_baseline",
+  "workers": 3,
+  "configuration": {
+    "environment": {
+      "world_id": "world_1",
+      "physics_version": "shore_v15",
+      "noise": false,
+      "seed": 42,
+      "wall_seconds": 3600,
+      "world_set": "v15"
+    },
+    "model": {
+      "base_url": "http://127.0.0.1:8001/v1",
+      "model": "qwen3.8-27b",
+      "thinking": false,
+      "reasoning_protocol": "qwen",
+      "reasoning_effort": "low",
+      "timeout_seconds": 600,
+      "max_calls": null,
+      "main_max_calls": null,
+      "max_tokens_per_call": 65536,
+      "max_total_tokens": 5000000,
+      "max_retries": 1,
+      "deployment": "local",
+      "api_key_env": "LOCAL_LLM_API_KEY",
+      "api_key_required": false,
+      "local_model_endpoints": {
+        "qwen3.8-27b": "http://127.0.0.1:8001/v1",
+        "qwen3.5-122b-a10b": "http://127.0.0.1:8002/v1"
+      }
+    },
+    "agent": {
+      "max_no_action": 3
+    },
+    "code_execution": {
+      "enabled": false,
+      "image": "shore-code:e2-r04",
+      "timeout_seconds": 90,
+      "memory_mb": 1024
+    },
+    "numerics": {
+      "max_nfev": 80
+    }
+  },
+  "source_sha256": {
+    "shore_agent/agent.py": "be2c89d151190add69b645a112c688407b9d900a3231a9e0825c88186345de98",
+    "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+    "shore_agent/schemas.py": "d2869fc5a30f935430484f2411e3a48008afd1d75f9b16fc346321668c085727",
+    "shore_agent/runtime.py": "82c8c223309e02b5cf5929f4ef0af194c65f9661f0aff39218a0d9e7407101da",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_agent/model.py": "40e795b1acb6ec720658aa5cf998b3aba0317fca275726d73211324963651985",
+    "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2"
+  },
+  "runs": {
+    "world_1": "v15-local-qwen38-nothink-20261107-r02-world_1",
+    "world_2": "v15-local-qwen38-nothink-20261107-r02-world_2",
+    "world_3": "v15-local-qwen38-nothink-20261107-r02-world_3",
+    "world_4": "v15-local-qwen38-nothink-20261107-r02-world_4",
+    "world_5": "v15-local-qwen38-nothink-20261107-r02-world_5",
+    "world_6": "v15-local-qwen38-nothink-20261107-r02-world_6"
+  },
+  "protocol": {
+    "attempts_per_world": 1,
+    "automatic_session_retries": false,
+    "resume_sessions": false,
+    "candidate_answers_supplied": false,
+    "energy_budget": 100,
+    "wall_seconds_per_world": 3600,
+    "evaluation": "all_fixed_v15_cases_after_accepted_submission",
+    "official_score": false
+  },
+  "finished_at": "2026-11-06T21:12:14.898955+00:00"
+}

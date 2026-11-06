@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>六世界 Baseline · 彼岸</title><link rel="stylesheet" href="/baselines.css"><script src="/baselines.js" defer></script></head>
+<body><main>
+<header><a href="/">← 返回规律发现实验台</a><span>服务器本地推理 · v15</span></header>
+<p class="eyebrow">SIX WORLDS / INDEPENDENT ATTEMPTS</p>
+<h1>六世界 Baseline</h1>
+<p class="intro">E3 保留此前本地基线，E4 使用新预算与噪声规则。各世界、批次与模型分别保留，不择优合并。</p>
+<div class="protocol">E3：100 能量 / 60 分钟 / 无噪声。E4：10 能量 / 300 秒 / 位置与速度噪声 / 单次输出至多 4096 token。<br>均为本地适配实验，不表示兼容正式 SDK，不是比赛成绩。交卷后独立评测全部固定轨迹（世界 1–5 各 24 条，世界 6 为 32 条）。<br>探索耗时从 mission 开始，交卷后评测单列；总耗时不含排队。平均每轮输出 = 累计 completion_tokens ÷ 请求次数（含重试，不含输入 token）。平均值与逐次最大值分别展示。</div>
+<label for="experiment-group">显示批次：</label> <select id="experiment-group"><option value="all">E4 与 E3</option><option value="E4">E4 · 新规则</option><option value="E3">E3 · 已归档</option></select>
+<p id="connection" role="status">正在读取服务器实验记录…</p>
+<div id="batches"></div>
+<footer>点击世界可查看原始观测、候选规律、模型调用与提交记录。未完成、超时和缺失用量均如实保留。</footer>
+</main></body></html>

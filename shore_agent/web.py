@@ -6,18 +6,23 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import secrets
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from shore_worlds import public_worlds
+from shore_worlds import public_worlds, public_world_sets
+from shore_rules import rules_for
 
 PROJECT = Path(__file__).resolve().parents[1]
 MAX_BODY = 64 * 1024
 RUN_ID = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_-]{0,99}$')
 STATIC = {'/': ('index.html', 'text/html; charset=utf-8'),
+          '/baselines': ('baselines.html', 'text/html; charset=utf-8'),
+          '/baselines.js': ('baselines.js', 'text/javascript; charset=utf-8'),
+          '/baselines.css': ('baselines.css', 'text/css; charset=utf-8'),
           '/index.html': ('index.html', 'text/html; charset=utf-8'),
           '/app.js': ('app.js', 'text/javascript; charset=utf-8'),
           '/styles.css': ('styles.css', 'text/css; charset=utf-8')}
@@ -107,10 +112,51 @@ class Handler(BaseHTTPRequestHandler):
             if path == '/api/bootstrap':
                 listing = self.server.manager.list_runs()
                 return self._reply(200, dict(listing, token=self.server.session_token,
-                    worlds=public_worlds(),
+                    worlds=public_worlds(), world_sets=public_world_sets(),
                     **self.server.manager.client_configuration()))
             if path == '/api/runs':
                 return self._reply(200, self.server.manager.list_runs())
+            if path == '/api/baselines':
+                batches = []
+                experiment_root = PROJECT / 'experiments'
+                sources = sorted((experiment_root / 'E3').rglob('summary.json'))
+                sources += sorted(experiment_root.glob('v15-local-*/summary.json'))
+                sources += sorted((experiment_root / 'E4').rglob('summary.json'))
+                seen = set()
+                for source in sources:
+                    try:
+                        data = json.loads(source.read_text())
+                        if data['experiment_id'] in seen:
+                            continue
+                        model = data['configuration']['model']
+                        environment = data['configuration'].get('environment', {})
+                        profile = rules_for(environment)
+                        ruleset = profile['ruleset']
+                        group = data.get('experiment_group', 'E4' if ruleset == 'e4' else 'E3')
+                        seen.add(data['experiment_id'])
+                        batches.append(dict(id=data['experiment_id'], status=data['status'],
+                            experiment_group=group, ruleset=ruleset,
+                            protocol=data.get('protocol', {}),
+                            energy_budget=data.get('protocol', {}).get('energy_budget', profile['energy_budget']),
+                            wall_seconds=environment.get('wall_seconds', profile['wall_seconds']),
+                            noise=environment.get('noise', False), output_limit=model.get('max_tokens_per_call'),
+                            updated_at=data['updated_at'], model=model['model'],
+                            thinking=model['thinking'], deployment=model['deployment'],
+                            worlds=[{key: row.get(key) for key in (
+                                'world_id', 'run_id', 'status', 'reason', 'calls', 'tokens',
+                                'completion_tokens', 'conservative_reserved_tokens',
+                                'wall_seconds_including_evaluation',
+                                'exploration_seconds', 'evaluation_seconds', 'exploration_deadline_met',
+                                'average_output_tokens_per_call', 'max_call_output_tokens',
+                                'output_limit_exceeded_calls', 'output_cap_compliant',
+                                'requests_above_4096',
+                                'requests_without_reported_usage',
+                                'energy_used', 'evaluation_complete', 'evaluation_score',
+                                'independent_rmse', 'n_test_trajectories')}
+                                for row in data['worlds']]))
+                    except (OSError, ValueError, KeyError):
+                        continue
+                return self._reply(200, {'batches': batches})
             pieces = (path or '').strip('/').split('/')
             if (len(pieces) == 7 and pieces[:2] == ['api', 'runs'] and RUN_ID.fullmatch(pieces[2])
                     and pieces[3] == 'code' and pieces[5] == 'artifacts'):
@@ -211,8 +257,21 @@ def main():
     parser = argparse.ArgumentParser(description='Local physical-law discovery console')
     parser.add_argument('--port', type=int, default=8765)
     parser.add_argument('--config', type=Path, help='Trusted server JSON settings; overrides config.example.json')
+    parser.add_argument('--prompt-api-key', action='store_true', help='Read the model key without echo; keep it only in this process')
     args = parser.parse_args()
+    if args.config is None and (PROJECT / 'config.local.web.json').is_file():
+        args.config = PROJECT / 'config.local.web.json'
     server = make_server(port=args.port, config_path=args.config)
+    if args.prompt_api_key:
+        import getpass
+        from .model import model_auth_config
+        key_env, _ = model_auth_config(server.manager._server_config()['model'])
+        key = getpass.getpass('Model API key (hidden): ').strip()
+        if not key or len(key) > 512 or any(ord(char) < 32 or ord(char) == 127 for char in key):
+            server.server_close()
+            parser.error('Invalid API key format')
+        os.environ[key_env] = key
+        del key
     print(f'彼岸研究台已启动：http://127.0.0.1:{server.server_port}', flush=True)
     try:
         server.serve_forever(poll_interval=0.3)

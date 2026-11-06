@@ -52,6 +52,23 @@ def test_score_visible_in_snapshot_history_and_recycle_bin_without_rewriting_evi
     assert manager.snapshot(directory.name)['evaluation_score'] == evaluation['score']
 
 
+def test_e4_score_version_and_energy_limit_are_bound_to_archived_rules(scored_run):
+    manager, directory, config, evaluation = scored_run
+    config['environment'].update(ruleset='e4', world_set='v15', physics_version='shore_v15')
+    evaluation['physics_version'] = 'shore_v15'
+    _write(directory / 'config.json', config)
+    _write(directory / 'mission.json', {'task': {'limits': {'initial_energy': 10}}})
+    _write(directory / 'evaluation.json', evaluation)
+    # An old E3 score must never be shown as an E4 score merely by changing UI mode.
+    assert manager.snapshot(directory.name)['evaluation_state'] == 'unavailable'
+    evaluation['score'].update(formula_version='shore_e4_10energy', energy_budget=10)
+    _write(directory / 'evaluation.json', evaluation)
+    assert manager.snapshot(directory.name)['evaluation_state'] == 'scored'
+    evaluation['score']['energy_budget'] = 100
+    _write(directory / 'evaluation.json', evaluation)
+    assert manager.snapshot(directory.name)['evaluation_state'] == 'unavailable'
+
+
 def test_historical_score_sidecar_requires_exact_original_evaluation_hash(scored_run):
     manager, directory, _, evaluation = scored_run
     score = evaluation.pop('score')

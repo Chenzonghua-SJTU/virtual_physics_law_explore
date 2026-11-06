@@ -8,6 +8,8 @@
     renderedEvents: new Set(), liveIds: new Set(), lastChartSignature: '', toastTimer: null,
     listAt: 0, manuallySelectedLaw: false, lawNames: new Map(),
     deletedRuns: [], historyBusy: null, historyRevision: 0, worlds: [], bodyTime: null, codeAvailable: false,
+    worldSets: [], worldSet: 'v15', worldSelections: {}, supportsWorldSets: false,
+    reasoningEffortSupported: true, maxOutputTokens: 393216, models: [],
   };
   const tools = {
     observe_body: '观测公开天体', insert_probe: '投放探针', summarize_data: '分析实验数据',
@@ -16,16 +18,17 @@
     run_code: '运行分析代码',
   };
   const statuses = {
-    running: '正在探索', starting: '正在启动', stopping: '正在停止', stopped: '已停止', evaluating: '独立评测中', interrupted: '探索已中断',
+    queued: '排队等待', running: '正在探索', starting: '正在启动', stopping: '正在停止', stopped: '已停止', evaluating: '独立评测中', interrupted: '探索已中断',
     submitted: '已本地受理', accepted: '已本地受理', failed: '探索失败',
     error: '探索失败', incomplete: '探索未完成', completed: '已结束', finished: '已结束',
   };
   const errors = {
-    missing_api_key: '请填写 API 密钥，或在启动实验台时配置 DEEPSEEK_API_KEY。',
+    missing_api_key: '请填写当前模型服务的 API Key，或使用实验台已配置的密钥。',
     invalid_api_key: 'API 密钥格式不正确，请重新填写。',
     invalid_run_configuration: '实验配置无效，请检查模型、随机种子和预算。',
     run_already_active: '已有探索正在进行，请等待结束或先停止当前探索。',
     run_is_active: '正在运行的会话不能删除，请先等待结束或停止探索。',
+    run_managed_externally: '此探索由批量运行器管理，请在运行器中停止；网页仅展示进度。',
     run_already_exists: '历史会话中已存在相同编号，暂时无法恢复，请刷新列表。',
     invalid_session_token: '实验台连接已更新，请点击“重新连接”后再试。',
     run_not_found: '找不到这次探索记录，请刷新历史会话。',
@@ -34,10 +37,14 @@
     invalid_reasoning_effort: '推理强度无效，请选择低、高或最高。',
     code_sandbox_unavailable: '代码执行环境未就绪，请先启动 Docker 并构建执行镜像。',
     invalid_world_id: '实验世界无效，请重新选择世界后再试。',
+    invalid_world_set: '世界版本无效，请重新连接实验台后再试。',
     invalid_seed: '随机种子超出允许范围，请检查后重试。',
     invalid_max_total_tokens: 'Token 预算超出允许范围，请检查后重试。',
     invalid_output_budget: '单次输出上限应在 64–393,216 之间。',
     invalid_budget: 'Token 预算应在 1,000–10,000,000 之间。',
+    e4_requires_no_thinking: 'E4 实验需要关闭思考。',
+    e4_requires_noise: 'E4 实验需要开启位置与速度观测噪声。',
+    e4_requires_v15: 'E4 仅用于新版六世界；旧版历史记录仍可查看。',
   };
   const colors = ['#377e8a', '#6c8c6a', '#9b7760', '#65819d', '#9b8b4d', '#8c7a9a', '#588f87', '#b27e64'];
   const modes = {autonomous_discovery: '自主探索', manual_engineering_smoke: '手工工程检查', standalone_analyst_diagnostic: '历史分析诊断', historical_unverified: '早期记录'};
@@ -67,21 +74,64 @@
     return ['failed', 'error'].includes(run?.status) ? 'bad' : '';
   }
   function scoreExplanation(run) {
+    const source = runWorldSet(run) === 'v15' ? 'v15 公开开发案例' : '本地隐藏测试集';
     if (hasScore(run)) return run.evaluation_score.reason === 'candidate_prediction_invalid'
-      ? '候选预测无效或超时，预测分按题目计为 0；声明仍单独计分。使用本地隐藏测试集，非官方成绩。'
-      : '按题目公式与本地隐藏测试集计分；不是官方成绩，也不评价物理解释的质量。';
+      ? `候选预测无效或超时，预测分按题目计为 0；声明仍单独计分。使用${source}，非官方成绩。`
+      : `按题目公式与${source}计分；不是官方成绩，也不评价物理解释的质量。`;
     return {pending: '提交已受理，等待独立测评计算得分。', running: '正在对最终提交进行独立测评，完成后显示得分。',
       error: '独立测评发生异常，暂不展示得分。', unavailable: '当前记录缺少计算题目得分所需的数据，未将缺失项记为零。',
       scored: '当前评分记录不完整，暂不展示得分。'}[run?.evaluation_state]
       || '提交已受理；独立测评得分以评测记录为准。';
   }
-  const worldLabel = (run) => state.worlds.find((world) => world.id === (run?.world_id || 'world_1'))?.name || run?.world_name || '世界 01';
+  const runWorldSet = (run) => run?.world_set || run?.config?.world_set || 'legacy';
+  const worldSetLabel = (id) => state.worldSets.find((set) => set.id === id)?.name || (id === 'v15' ? '新版 · v15' : '旧版');
+  const worldLabel = (run) => {
+    const setId = runWorldSet(run);
+    const name = state.worldSets.find((set) => set.id === setId)?.worlds.find((world) => world.id === (run?.world_id || 'world_1'))?.name || run?.world_name || '世界 01';
+    return `${setId === 'v15' ? '新版' : '旧版'} · ${name}`;
+  };
   const node = (tag, className, content) => {
     const el = document.createElement(tag);
     if (className) el.className = className;
     if (content != null) el.textContent = content;
     return el;
   };
+  function setWorldSet(id, preferredWorld) {
+    const set = state.worldSets.find((item) => item.id === id) || state.worldSets[0];
+    if (!set) return;
+    state.worldSelections[state.worldSet] = $('world-select').value;
+    state.worldSet = set.id;
+    state.worlds = asArray(set.worlds);
+    const selected = preferredWorld || state.worldSelections[set.id] || state.defaults.world_id || 'world_1';
+    $('world-select').replaceChildren(...state.worlds.map((world) => new Option(world.name, world.id)));
+    $('world-select').value = state.worlds.some((world) => world.id === selected) ? selected : state.worlds[0]?.id || '';
+    $('world-set-label').textContent = `${worldSetLabel(set.id)} · ${state.worlds.length} 个世界`;
+    $('world-set-note').textContent = set.id === 'v15'
+      ? state.defaults.ruleset === 'e4' ? 'E4 · 六个公开开发世界，10 能量、300 秒；位置与速度均加噪声，关闭思考，单次输出至多 4096 token。本地规则适配，不是正式 SDK。' : 'E3 · 接入 shore-contest-starter-v15 的六个公开开发世界，本地预算为 100 能量、60 分钟。'
+      : state.defaults.ruleset === 'e4' ? 'E4 服务中旧版七世界仅供查看历史记录。新探索请切换到新版六世界。' : '使用原有七个实验世界。沿用现有 Agent，本地预算为 100 能量、60 分钟。';
+    $('world-note').textContent = `${set.id === 'v15' ? '新版' : '旧版'}世界用于下一次探索；查看历史会话会自动切换到对应版本。`;
+    for (const button of $('world-set-options').querySelectorAll('button')) {
+      const selected = button.dataset.worldSet === set.id;
+      button.setAttribute('aria-pressed', String(selected));
+      button.classList.toggle('selected', selected);
+    }
+  }
+  function renderWorldSets() {
+    $('world-set-options').replaceChildren();
+    for (const set of [...state.worldSets].sort((a, b) => Number(b.id === 'v15') - Number(a.id === 'v15'))) {
+      const button = node('button', 'world-mode-button');
+      button.type = 'button';
+      button.dataset.worldSet = set.id;
+      button.append(node('span', '', set.id === 'v15' ? '新版' : set.name), node('small', '', `${asArray(set.worlds).length} 个世界`));
+      button.addEventListener('click', () => {
+        if (set.id === state.worldSet || state.active || state.busy || state.historyBusy) return;
+        setWorldSet(set.id);
+        clearSelectedRun();
+        $('form-error').hidden = true;
+      });
+      $('world-set-options').append(button);
+    }
+  }
   function printable(value) {
     return JSON.stringify(value, (key, item) => ['reasoning_content', 'api_key', 'authorization', 'token'].includes(key.toLowerCase()) ? undefined : item, 2);
   }
@@ -153,16 +203,32 @@
     $('connection-message').textContent = message;
     $('connection-banner').hidden = false;
   }
+  function updateModelLimits() {
+    const max = state.models.find((model) => model.id === $('model').value)?.max_output_tokens;
+    state.maxOutputTokens = Number.isInteger(max) && max >= 64 ? max : 393216;
+    if (state.defaults.ruleset === 'e4') state.maxOutputTokens = Math.min(state.maxOutputTokens, 4096);
+    $('output-tokens').max = String(state.maxOutputTokens);
+    if (Number($('output-tokens').value) > state.maxOutputTokens) $('output-tokens').value = state.maxOutputTokens;
+    errors.invalid_output_budget = `单次输出上限应在 64–${number(state.maxOutputTokens)} 之间。`;
+    $('output-token-note').textContent = `模型调用无次数上限；Token 总预算与实验时限仍生效。单次输出含思考、正文和工具参数，最多 ${number(state.maxOutputTokens)} Token。`;
+  }
   function setFormState() {
     const active = Boolean(state.active);
-    $('start-button').disabled = !state.connected || active || state.busy || Boolean(state.historyBusy);
-    $('start-button').querySelector('span').textContent = state.busy ? '正在启动…' : active ? '探索正在进行' : '开始探索';
+    const historicalWorldsOnly = state.defaults.ruleset === 'e4' && state.worldSet !== 'v15';
+    $('start-button').disabled = !state.connected || active || state.busy || Boolean(state.historyBusy) || historicalWorldsOnly;
+    $('start-button').querySelector('span').textContent = state.busy ? '正在启动…' : active ? '探索正在进行' : historicalWorldsOnly ? '旧版仅查看历史' : '开始探索';
     $('stop-button').hidden = !active;
     $('stop-button').lastChild.textContent = state.active && state.selected !== state.active ? '停止正在运行的探索' : '停止本次探索';
     $('stop-button').disabled = state.busy || (state.run?.id === state.active && state.run?.status === 'stopping');
     for (const id of ['model', 'api-key', 'world-select', 'noise', 'thinking', 'seed', 'max-tokens', 'output-tokens']) $(id).disabled = active || state.busy;
-    $('reasoning-effort').disabled = active || state.busy || !$('thinking').checked;
+    if (state.defaults.ruleset === 'e4') {
+      $('noise').checked = true; $('noise').disabled = true;
+      $('thinking').checked = false; $('thinking').disabled = true;
+    }
+    $('reasoning-effort').disabled = active || state.busy || !$('thinking').checked || !state.reasoningEffortSupported;
+    for (const id of ['reasoning-effort-label', 'reasoning-effort', 'reasoning-effort-note']) $(id).hidden = !state.reasoningEffortSupported;
     $('code-enabled').disabled = active || state.busy || !state.codeAvailable;
+    for (const button of $('world-set-options').querySelectorAll('button')) button.disabled = !state.connected || active || state.busy || Boolean(state.historyBusy);
   }
   function formatDate(value) {
     if (!value) return '时间未记录';
@@ -181,7 +247,7 @@
       button.type = 'button';
       button.disabled = Boolean(state.historyBusy);
       button.setAttribute('aria-pressed', String(run.id === state.selected));
-      button.title = run.id;
+      button.title = `${worldLabel(run)} · ${run.id}`;
       const top = node('span', 'history-item-top');
       const label = runLabel(run, true);
       top.append(node('span', 'history-item-date', formatDate(run.created_at)));
@@ -190,10 +256,16 @@
       bottom.append(node('span', 'history-id', `${worldLabel(run)} · ${modes[run.mode] || '探索记录'}`));
       bottom.append(node('span', '', finite(run.energy_remaining) ? `${number(run.energy_remaining)} 能量` : '查看记录'));
       button.append(top, bottom);
+      if (run.model_settings?.model) {
+        const batch = run.experiment_id?.match(/r\d+$/i)?.[0]?.toUpperCase();
+        const origin = run.model_settings.deployment === 'local' ? '本地' : '云端';
+        const group = run.ruleset === 'e4' ? 'E4' : run.experiment_id?.startsWith('v15-local-') ? 'E3' : '';
+        button.append(node('span', 'muted small', `${run.model_settings.model} · ${origin}${group ? ` · ${group}` : ''}${batch ? ` · ${batch}` : ''}`));
+      }
       button.addEventListener('click', () => selectRun(run.id));
       const remove = node('button', 'history-delete');
       remove.type = 'button';
-      const active = run.id === state.active || isRunning(run) || run.status === 'evaluating';
+      const active = run.id === state.active || isRunning(run) || ['queued', 'evaluating'].includes(run.status);
       remove.disabled = active || Boolean(state.historyBusy) || !state.connected || state.busy;
       remove.title = active ? '运行中的会话不能删除' : '删除会话，可从回收站恢复';
       remove.setAttribute('aria-label', `删除会话 ${run.id}（可恢复）`);
@@ -261,11 +333,13 @@
     $('mode-badge').textContent = '准备就绪'; $('mode-badge').className = 'badge badge-neutral';
     $('run-status').textContent = '配置完成后即可开始';
     $('run-status').className = 'status-text';
-    $('session-caption').textContent = '选择历史会话，或配置实验开始新的探索。';
+    $('session-caption').textContent = `${worldSetLabel(state.worldSet)} · 选择实验世界开始探索，或查看已有会话。`;
     $('wall-clock').textContent = '剩余时间 —';
     $('live-dot').className = 'live-dot'; $('timeline-caption').textContent = '等待探索开始';
     $('export-link').hidden = true; $('export-link').href = '#';
     for (const id of ['energy-value', 'calls-value', 'tokens-value', 'probes-value']) $(id).textContent = '—';
+    $('energy-maximum').textContent = number(state.defaults.energy_budget ?? 100);
+    $('energy-progress').max = state.defaults.energy_budget ?? 100;
     $('energy-progress').value = 0; $('validations-value').textContent = '0';
     $('calls-limit').textContent = '无次数上限';
     $('calls-note').textContent = '主 Agent 模型请求';
@@ -277,7 +351,7 @@
     if (!['delete', 'restore'].includes(action) || state.historyBusy || state.busy || !state.connected) return;
     const run = (action === 'delete' ? state.runs : state.deletedRuns).find((item) => item.id === id);
     if (!run) return;
-    if (action === 'delete' && (state.active === id || isRunning(run) || run.status === 'evaluating')) { toast(errors.run_is_active); return; }
+    if (action === 'delete' && (state.active === id || isRunning(run) || ['queued', 'evaluating'].includes(run.status))) { toast(errors.run_is_active); return; }
     state.historyBusy = {action, id}; state.historyRevision += 1;
     if (action === 'delete' && state.selected === id) { clearTimeout(state.timer); state.generation += 1; }
     renderHistory(); setFormState();
@@ -313,6 +387,7 @@
     state.renderedEvents.clear(); state.lastChartSignature = ''; state.manuallySelectedLaw = false;
     state.bodyTime = null;
     $('body-time-control').hidden = true;
+    $('model-progress').hidden = true;
     state.lawNames.clear();
     $('timeline').replaceChildren();
     $('probe-select').replaceChildren(new Option('全部轨迹', 'all'));
@@ -323,6 +398,8 @@
     clearTimeout(state.timer);
     state.generation += 1;
     state.selected = id; state.run = null;
+    const summary = state.runs.find((run) => run.id === id);
+    if (summary) setWorldSet(runWorldSet(summary), summary.world_id || 'world_1');
     resetView(); renderHistory();
     $('run-status').textContent = '正在读取探索记录';
     $('run-status').className = 'status-text';
@@ -339,12 +416,17 @@
     try {
       const run = await api(`/api/runs/${encodeURIComponent(id)}`);
       if (generation !== state.generation) return;
+      if (!state.run) setWorldSet(runWorldSet(run), run.world_id || 'world_1');
       state.run = run;
-      if (isRunning(run)) { state.active = id; state.liveIds.add(id); }
+      if (isRunning(run)) {
+        if (run.can_stop !== false) state.active = id;
+        else if (state.active === id) state.active = null;
+        state.liveIds.add(id);
+      }
       else if (state.active === id) state.active = null;
       $('connection-banner').hidden = true;
       renderRun(run);
-      shouldContinue = isRunning(run);
+      shouldContinue = isRunning(run) || run.status === 'queued';
       if (Date.now() - state.listAt > 5000 || !shouldContinue) await refreshHistory();
     } catch (error) {
       if (generation !== state.generation) return;
@@ -359,18 +441,19 @@
   }
   function renderRun(run) {
     updateLawNames(run);
-    const history = !isRunning(run) && !state.liveIds.has(run.id);
-    $('mode-badge').textContent = history ? '历史记录' : isRunning(run) ? '实时探索' : '本次探索';
+    const history = run.status !== 'queued' && !isRunning(run) && !state.liveIds.has(run.id);
+    $('mode-badge').textContent = history ? '历史记录' : run.status === 'queued' ? '排队等待' : isRunning(run) ? '实时探索' : '本次探索';
     $('mode-badge').className = `badge ${history ? 'badge-history' : isRunning(run) ? 'badge-live' : ['failed', 'error'].includes(run.status) ? 'badge-error' : 'badge-neutral'}`;
     $('run-status').textContent = runLabel(run);
     $('run-status').className = `status-text ${runTone(run)}`;
     const settings = run.model_settings || run.config?.model || {};
     const effortLabels = {low: '低', high: '高', max: '最高'};
-    const effort = settings.thinking === false ? '思考关闭' : effortLabels[settings.reasoning_effort]
+    const effort = settings.thinking === false ? '思考关闭' : settings.reasoning_protocol === 'qwen' ? '思考开启' : effortLabels[settings.reasoning_effort]
       ? `推理：${effortLabels[settings.reasoning_effort]}` : '推理强度未记录';
-    $('session-caption').textContent = `${history ? '历史会话' : '当前会话'} · ${worldLabel(run)} · ${modes[run.mode] || '探索记录'} · ${effort} · ${formatDate(run.created_at)} · ${run.id}`;
+    $('session-caption').textContent = `${history ? '历史会话' : '当前会话'} · ${run.ruleset === 'e4' ? 'E4' : '原规则'} · ${worldLabel(run)} · ${settings.model || '模型未记录'} · ${settings.deployment === 'local' ? '服务器本地' : '云端'} · ${effort} · ${formatDate(run.created_at)} · ${run.id}`;
     $('live-dot').className = `live-dot${isRunning(run) ? ' running' : ''}`;
-    $('timeline-caption').textContent = history ? '历史记录 · 非实时运行' : run.status === 'stopping' ? '正在停止，请稍候' : isRunning(run) ? '实时更新 · 每秒同步' : '本次探索已结束';
+    $('timeline-caption').textContent = run.status === 'queued' ? '等待批量运行器分配执行位置' : history ? '历史记录 · 非实时运行' : run.status === 'stopping' ? '正在停止，请稍候' : isRunning(run) ? run.managed_externally ? '批量运行器任务 · 实时更新 · 网页只读' : '实时更新 · 每秒同步' : '本次探索已结束';
+    renderModelProgress(run);
     $('export-link').href = `/api/runs/${encodeURIComponent(run.id)}/export`;
     $('export-link').hidden = false;
     const budget = run.budget || run.result?.budget || {};
@@ -378,9 +461,12 @@
     const config = run.limits || run.config?.model || run.config || {};
     const records = run.records || {};
     $('energy-value').textContent = number(budget.energy_remaining);
+    const energyMaximum = run.energy_budget ?? run.task?.limits?.energy_budget ?? run.task?.limits?.initial_energy ?? 100;
+    $('energy-maximum').textContent = number(energyMaximum);
+    $('energy-progress').max = energyMaximum;
     const seconds = budget.wall_seconds_remaining;
     $('wall-clock').textContent = finite(seconds) ? `剩余时间 ${String(Math.floor(Math.max(0, seconds) / 60)).padStart(2, '0')}:${String(Math.floor(Math.max(0, seconds)) % 60).padStart(2, '0')}` : '剩余时间 —';
-    $('energy-progress').value = finite(budget.energy_remaining) ? Math.max(0, Math.min(100, budget.energy_remaining)) : 0;
+    $('energy-progress').value = finite(budget.energy_remaining) ? Math.max(0, Math.min(energyMaximum, budget.energy_remaining)) : 0;
     $('calls-value').textContent = number(usage.calls);
     const legacyAnalystCalls = usage.roles?.analyst?.calls;
     $('calls-note').textContent = finite(legacyAnalystCalls) && legacyAnalystCalls > 0
@@ -401,6 +487,22 @@
     const signature = printable({selectedLaw: $('law-select').value, probes: records.probes, laws: records.laws, validations: records.validations, bodies: run.bodies, body_estimate: run.body_position_estimate, body_source: run.body_position_source, body_observations: records.body_observations});
     if (signature !== state.lastChartSignature) { renderChart(); state.lastChartSignature = signature; }
     renderDiscovery(); renderTimeline(asArray(run.events)); setFormState();
+  }
+  function renderModelProgress(run) {
+    const progress = run?.model_progress;
+    const active = isRunning(run) && progress?.active === true;
+    $('model-progress').hidden = !active && !(isRunning(run) && !progress);
+    if ($('model-progress').hidden) return;
+    const phases = {waiting_first_byte: '等待模型首字', thinking: '模型思考中', tool_calls: '生成工具调用', content: '生成模型回复'};
+    $('model-progress-phase').textContent = progress?.status === 'retrying' ? '准备重试模型请求'
+      : phases[progress?.phase] || '探索运行中 · 等待进度上报';
+    $('model-progress-elapsed').textContent = finite(progress?.elapsed_seconds)
+      ? `${progress.phase === 'waiting_first_byte' ? '已等待' : '本次请求已用时'} ${Math.floor(progress.elapsed_seconds)} 秒` : '';
+    const last = finite(progress?.seconds_since_last_received) ? `最后数据 ${Math.floor(progress.seconds_since_last_received)} 秒前` : '尚未收到模型数据';
+    const counts = finite(progress?.received_characters)
+      ? ` · 已接收 ${number(progress.received_characters)} 字符、${number(progress.received_chunks)} 个数据片段` : '';
+    $('model-progress-received').textContent = progress ? last + counts : '模型请求尚未写入实时进度，现有记录仍会持续更新。';
+    $('model-progress-note').textContent = `${run.managed_externally ? '本任务由批量运行器管理，网页仅查看进度。' : ''}字符量仅表示数据接收进度，不是 Token 用量；Token 统计在服务端返回用量后更新。`;
   }
   function updateSelectors(records) {
     const probeSelect = $('probe-select');
@@ -432,7 +534,7 @@
   }
   function eventDescription(event) {
     if (event.kind === 'status' && typeof event.content === 'string') {
-      const statusMessages = {autonomous_session_started: '实验已启动，Agent 开始读取任务与公开观测。', submission_accepted_locally: '候选规律已被本地受理，会话结束。', accepted_before_stop: '停止前已有提交被本地受理。', stopped_by_user: '已按要求停止探索，实验记录已保留。', model_call_budget_exhausted: '已达到模型调用上限，会话结束。', model_token_budget_exhausted: '剩余 Token 预算不足以继续请求，会话结束。', model_finish_length: '本次回复达到单次输出上限，未执行截断的工具调用。可在高级设置中提高「单次输出上限」后重新探索；仅提高总预算不能解决单次截断。', model_finish_content_filter: '模型回复被内容过滤，未执行该回复中的工具调用。已有记录已保留。', content_filter: '模型回复被内容过滤，未执行该回复中的工具调用。已有记录已保留。'};
+      const statusMessages = {autonomous_session_started: '实验已启动，Agent 开始读取任务与公开观测。', submission_accepted_locally: '候选规律已被本地受理，会话结束。', accepted_before_stop: '停止前已有提交被本地受理。', stopped_by_user: '已按要求停止探索，实验记录已保留。', model_call_budget_exhausted: '已达到模型调用上限，会话结束。', model_token_budget_exhausted: '剩余 Token 预算不足以继续请求，会话结束。', model_finish_length: '本次回复达到单次输出上限，未执行截断的工具调用。请在本批次允许的输出预算内使用更紧凑的完整调用；仅提高总预算不能解决单次截断。', model_finish_content_filter: '模型回复被内容过滤，未执行该回复中的工具调用。已有记录已保留。', content_filter: '模型回复被内容过滤，未执行该回复中的工具调用。已有记录已保留。'};
       if (statusMessages[event.content]) return statusMessages[event.content];
     }
     if (event.content) return typeof event.content === 'string' ? displayLawText(event.content) : displayPrintable(event.content);
@@ -564,6 +666,8 @@
     $('evaluation-block').hidden = !evaluationVisible;
     if (evaluationVisible) {
       const score = run?.evaluation_score && typeof run.evaluation_score === 'object' ? run.evaluation_score : null;
+      $('evaluation-formula').textContent = score?.source_note || '采用本次实验记录的预测分、声明分与能量分规则；完整评分依据保存在导出记录中。';
+      $('evaluation-example-note').hidden = run.ruleset === 'e4';
       $('evaluation-block').className = `evaluation-block ${runTone(run)}`;
       $('evaluation-summary').textContent = runLabel(run);
       $('evaluation-score').textContent = scoreNumber(hasScore(run) ? score?.total : null);
@@ -575,6 +679,7 @@
       const subject = evaluation?.law_id && law && evaluation.law_id !== law.law_id ? '评测对象为最终提交版本，与当前所选候选不同。' : '评测对象为最终提交版本。';
       const counts = evaluation ? `${evaluation.n_successful ?? '—'} / ${evaluation.n_trajectories ?? '—'} 条未见初态取得有效预测。` : '';
       $('evaluation-note').textContent = `${subject}${counts}${scoreExplanation(run)}`;
+      $('evaluation-source-note').textContent = `V 为参考轨迹的位置方差，E 为已用实验能量。按题目公式与${runWorldSet(run) === 'v15' ? 'v15 公开开发案例' : '本地隐藏测试集'}计分，不是官方成绩，不对物理解释质量打分。`;
       $('evaluation-inputs').textContent = score
         ? `位置 MSE = ${scientific(score.position_mse)} · 参考方差 V = ${scientific(score.reference_variance)} · 归一化误差 e = ${scientific(score.normalized_error)} · 已用能量 E = ${number(score.energy_used)}`
         : '评分输入尚不完整。';
@@ -595,7 +700,7 @@
         model_call_budget_exhausted: '此历史会话达到当时的模型调用上限；新会话已取消次数限制。',
         token_budget_exhausted: '剩余 Token 预算不足以继续请求。可以调整预算，开启新的探索。',
         model_token_budget_exhausted: '剩余 Token 预算不足以继续请求。可以调整预算，开启新的探索。',
-        model_finish_length: '本次回复达到单次输出上限，未执行截断的工具调用。可在高级设置中提高「单次输出上限」后重新探索；仅提高总预算不能解决单次截断。',
+        model_finish_length: '本次回复达到单次输出上限，未执行截断的工具调用。请在本批次允许的输出预算内使用更紧凑的完整调用；仅提高总预算不能解决单次截断。',
         model_finish_content_filter: '模型回复被内容过滤，未执行该回复中的工具调用。已有记录已保留。',
         content_filter: '模型回复被内容过滤，未执行该回复中的工具调用。已有记录已保留。',
         stopped_by_user: '已按要求停止，取得的实验记录已保留。',
@@ -791,9 +896,10 @@
     const body = {
       model: $('model').value.trim(), world_id: $('world-select').value, noise: $('noise').checked, seed: Number($('seed').value),
       max_total_tokens: Number($('max-tokens').value), max_tokens_per_call: Number($('output-tokens').value), thinking: $('thinking').checked,
-      reasoning_effort: $('reasoning-effort').value,
       code_enabled: $('code-enabled').checked && state.codeAvailable,
     };
+    if (state.reasoningEffortSupported) body.reasoning_effort = $('reasoning-effort').value;
+    if (state.supportsWorldSets) body.world_set = state.worldSet;
     if ($('api-key').value.trim()) body.api_key = $('api-key').value.trim();
     $('api-key').value = '';
     state.busy = true; setFormState();
@@ -826,38 +932,48 @@
     try {
       const data = await api('/api/bootstrap');
       state.token = data.token; state.configured = data.api_key_configured; state.keyRequired = data.api_key_required ?? true; state.defaults = data.defaults || {};
+      state.reasoningEffortSupported = data.reasoning_effort_supported ?? data.model_protocol !== 'qwen';
       state.codeAvailable = Boolean(data.code_sandbox?.available);
       $('code-note').textContent = state.codeAvailable ? '用已取得的数据进行自定义计算；每次最多 90 秒。' : data.code_sandbox?.reason || '代码执行环境未就绪。';
       const selectedModel = $('model').value;
       const models = asArray(data.models);
-      if (models.length) $('model').replaceChildren(...models.map((model) => new Option(model.name, model.id)));
-      $('model').value = state.selected && models.some((model) => model.id === selectedModel) ? selectedModel : state.defaults.model || 'deepseek-flash';
-      state.worlds = asArray(data.worlds);
-      if (!state.worlds.length) state.worlds = [{id: 'world_1', name: '世界 01'}];
+      const availableModels = models.length ? models : state.defaults.model ? [{id: state.defaults.model, name: state.defaults.model}] : [];
+      state.models = availableModels;
+      $('model').replaceChildren(...availableModels.map((model) => {
+        const option = new Option(model.name || model.id, model.id);
+        option.disabled = model.available === false;
+        return option;
+      }));
+      const defaultModel = availableModels.some((model) => model.id === state.defaults.model) ? state.defaults.model : availableModels[0]?.id || '';
+      $('model').value = state.selected && availableModels.some((model) => model.id === selectedModel) ? selectedModel : defaultModel;
+      updateModelLimits();
+      state.worldSets = asArray(data.world_sets);
+      state.supportsWorldSets = state.worldSets.length > 0;
+      if (!state.worldSets.length) state.worldSets = [{id: 'legacy', name: '旧版', worlds: asArray(data.worlds).length ? data.worlds : [{id: 'world_1', name: '世界 01'}]}];
       const selectedWorld = $('world-select').value;
-      $('world-select').replaceChildren(...state.worlds.map((world) => new Option(world.name, world.id)));
-      $('world-select').value = state.selected && state.worlds.some((world) => world.id === selectedWorld) ? selectedWorld : state.defaults.world_id || 'world_1';
+      renderWorldSets();
+      setWorldSet(state.connected ? state.worldSet : state.defaults.world_set || 'v15', state.connected ? selectedWorld : state.defaults.world_id);
       state.runs = asArray(data.runs); state.deletedRuns = asArray(data.deleted_runs); state.active = data.active_run_id || null; state.connected = true; state.listAt = Date.now();
       $('connection-banner').hidden = true;
       $('key-state').textContent = state.configured ? '服务已配置' : state.keyRequired ? '仅本次使用' : '无需密钥';
-      $('api-key').placeholder = state.configured ? '已配置，可直接开始探索' : state.keyRequired ? '输入 API Key' : '本地服务无需密钥，可留空';
+      $('api-key').placeholder = state.configured ? '已配置，可直接开始探索' : state.keyRequired ? '输入模型 API Key' : '本地服务无需密钥，可留空';
       $('key-note').textContent = state.configured ? '可直接使用已配置的密钥，或填入本次使用的密钥。' : state.keyRequired ? '密钥仅用于启动本次探索，不保存在浏览器中。' : '当前本地模型服务已配置为无需认证。';
       if (!state.selected) {
-        $('model').value = state.defaults.model || 'deepseek-flash';
+        $('model').value = defaultModel;
         $('noise').checked = Boolean(state.defaults.noise);
         $('thinking').checked = state.defaults.thinking ?? true;
         $('reasoning-effort').value = state.defaults.reasoning_effort || 'low';
         $('code-enabled').checked = Boolean(state.defaults.code_enabled) && state.codeAvailable;
         $('seed').value = state.defaults.seed ?? 42;
         $('max-tokens').value = state.defaults.max_total_tokens ?? 5000000;
-        $('output-tokens').value = state.defaults.max_tokens_per_call ?? 65536;
+        $('output-tokens').value = Math.min(state.defaults.max_tokens_per_call ?? 65536, state.maxOutputTokens);
       }
       renderHistory(); setFormState();
       const requestedId = new URLSearchParams(window.location.search).get('run');
       const linkedId = !state.selected && state.runs.some((r) => r.id === requestedId) ? requestedId : null;
-      const preferred = linkedId || state.active || state.selected || state.runs.find((r) => ['submitted', 'accepted'].includes(r.status) && r.mode === 'autonomous_discovery')?.id;
+      const preferred = linkedId || state.active || state.selected || state.runs.find((r) => runWorldSet(r) === state.worldSet && ['submitted', 'accepted'].includes(r.status) && r.mode === 'autonomous_discovery')?.id;
       if (preferred) await selectRun(preferred);
-      else { $('run-status').textContent = '配置完成后即可开始'; renderChart(); }
+      else clearSelectedRun();
     } catch (error) {
       state.connected = false; setFormState(); connectionError(errorMessage(error));
       $('run-status').textContent = '未连接实验台';
@@ -869,6 +985,7 @@
   $('refresh-history').addEventListener('click', () => refreshHistory(true));
   $('reconnect-button').addEventListener('click', bootstrap);
   $('thinking').addEventListener('change', setFormState);
+  $('model').addEventListener('change', updateModelLimits);
   $('probe-select').addEventListener('change', renderChart);
   $('body-time').addEventListener('input', () => { state.bodyTime = Number($('body-time').value); renderChart(); });
   $('body-time-latest').addEventListener('click', () => { state.bodyTime = null; renderChart(); });

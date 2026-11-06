@@ -16,13 +16,16 @@ def finite_nonnegative(value):
 
 def problem_score(position_mse, reference_variance, submitted_claims, expected_claims,
                   energy_used, n_trajectories, *, candidate_failed=False,
-                  truth_failed=False, unavailable_reason=None):
+                  truth_failed=False, unavailable_reason=None, energy_budget=100,
+                  formula_version=FORMULA_VERSION):
     """Implement PDF page 7 exactly, without inventing a pass/fail threshold.
 
     Position errors are squared vector norms. V uses the global mean reference
     position across all trajectories and sample times. A candidate execution
     failure zeros P (and hence C), while an oracle failure yields no score.
     """
+    if not finite_nonnegative(energy_budget) or energy_budget <= 0:
+        raise ValueError('energy_budget must be positive and finite')
     submitted_claims = submitted_claims if isinstance(submitted_claims, dict) else {}
     expected_claims = expected_claims if isinstance(expected_claims, dict) else {}
     checks = []
@@ -37,8 +40,9 @@ def problem_score(position_mse, reference_variance, submitted_claims, expected_c
               'position_mse': float(position_mse) if finite_nonnegative(position_mse) else None,
               'reference_variance': float(reference_variance) if finite_nonnegative(reference_variance) else None,
               'normalized_error': None,
-              'energy_used': float(energy_used) if finite_nonnegative(energy_used) and energy_used <= 100 else None,
-              'claim_checks': checks, 'reason': unavailable_reason, 'formula_version': FORMULA_VERSION,
+              'energy_used': float(energy_used) if finite_nonnegative(energy_used) and energy_used <= energy_budget else None,
+              'energy_budget': energy_budget,
+              'claim_checks': checks, 'reason': unavailable_reason, 'formula_version': formula_version,
               'local_only': True, 'official_score': False,
               'source_note': (
                   'Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples '
@@ -77,7 +81,7 @@ def problem_score(position_mse, reference_variance, submitted_claims, expected_c
         result['reason'] = 'energy_usage_unavailable'
         return result
     else:
-        conservation = 5.0 * (1.0 - result['energy_used'] / 100.0)
+        conservation = 5.0 * (1.0 - result['energy_used'] / energy_budget)
     result.update(status='scored', conservation=conservation,
                   total=prediction + law + conservation, reason=None)
     return result

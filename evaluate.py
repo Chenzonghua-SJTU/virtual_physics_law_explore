@@ -15,7 +15,9 @@ import numpy as np
 
 from shore_agent.numerics import errors_for_rollouts, rollout
 from shore_scoring import finite_nonnegative, problem_score
+from shore_rules import initial_energy
 from shore_worlds import (DEFAULT_WORLD_ID, LEGACY_PHYSICS_VERSION,
+                          V15_PHYSICS_VERSION, validate_world_set,
                           validate_physics_version, validate_world_id, validate_world_physics)
 
 
@@ -46,7 +48,8 @@ def _evaluation_environment(run_dir):
     env = _read(config_path).get("environment", {}) if config_path.exists() else {}
     if not isinstance(env, dict):
         raise ValueError("Invalid environment configuration")
-    world_id = validate_world_id(env.get("world_id", DEFAULT_WORLD_ID))
+    world_set = validate_world_set(env.get("world_set", "legacy"))
+    world_id = validate_world_id(env.get("world_id", DEFAULT_WORLD_ID), world_set)
     configured_version = (validate_physics_version(env["physics_version"])
                           if "physics_version" in env else None)
     physics_version = configured_version or LEGACY_PHYSICS_VERSION
@@ -56,7 +59,10 @@ def _evaluation_environment(run_dir):
         task = mission.get("task", {})
         if not isinstance(task, dict):
             raise ValueError("Invalid saved mission")
-        mission_world = validate_world_id(task.get("world_id", DEFAULT_WORLD_ID))
+        mission_set = validate_world_set(task.get("world_set", "legacy"))
+        if mission_set != world_set:
+            raise ValueError("Mission/config world set mismatch; evaluation refused")
+        mission_world = validate_world_id(task.get("world_id", DEFAULT_WORLD_ID), mission_set)
         if mission_world != world_id:
             raise ValueError("Mission/config world identity mismatch; evaluation refused")
         mission_version = validate_physics_version(task.get("physics_version", LEGACY_PHYSICS_VERSION))
@@ -66,6 +72,8 @@ def _evaluation_environment(run_dir):
     # Missing version tags belong to archived v1 sessions, never today's default.
     # Return a copy rather than altering the saved historical configuration.
     env = dict(env, physics_version=physics_version)
+    if (world_set == "v15") != (physics_version == V15_PHYSICS_VERSION):
+        raise ValueError("World set/physics version mismatch; evaluation refused")
     validate_world_physics(world_id, physics_version)
     return env, world_id
 
@@ -78,9 +86,17 @@ def _matching_submission(value, submission):
 
 def _energy_used(run_dir, submission):
     """Read an explicit final budget; missing records are not free experiments."""
+    run_dir = Path(run_dir)
+    def optional_record(name):
+        try:
+            value = _read(run_dir / name)
+            return value if isinstance(value, dict) else {}
+        except (OSError, ValueError, TypeError):
+            return {}
+    initial = initial_energy(optional_record('mission.json'), optional_record('config.json').get('environment', {}))
     def energy(budget):
         remaining = budget.get('energy_remaining') if isinstance(budget, dict) else None
-        return 100.0 - remaining if finite_nonnegative(remaining) and remaining <= 100 else None
+        return initial - remaining if finite_nonnegative(remaining) and remaining <= initial else None
 
     result_path = run_dir / 'result.json'
     if result_path.exists():
@@ -156,6 +172,10 @@ def evaluate_run(run_dir, seed=1871, n_probes=20):
         raise ValueError("seed must be a nonnegative integer")
     env, world_id = _evaluation_environment(run_dir)
     physics_version = env["physics_version"]
+    if physics_version == V15_PHYSICS_VERSION:
+        from shore_v15.evaluation import evaluate_submission
+        return evaluate_submission(run_dir, submission, law, dict(env, world_id=world_id),
+                                   seed=seed, requested_n_probes=n_probes)
     # Deliberate truth boundary: this import is never reachable by a runtime tool.
     # Identity checks precede oracle access; legacy archives default to world_1.
     from shore_sim.simulator import truth_trajectory, truth_reference
@@ -273,6 +293,13 @@ def score_existing_evaluation(run_dir, evaluation, reference_cache=None):
         result.update(source=source, energy_source=None)
         return result
     version = env['physics_version']
+    if version == V15_PHYSICS_VERSION:
+        # v15 always writes its score with the original evaluation. Its fixed
+        # catalog and property bridge are not the legacy random-probe oracle.
+        result = problem_score(None, None, {}, {}, None, 0,
+                               unavailable_reason='v15_requires_fresh_evaluation')
+        result.update(source=source, energy_source=None)
+        return result
     count = evaluation.get('n_trajectories') if isinstance(evaluation, dict) else None
 
     def unavailable(reason, *, mse=None):

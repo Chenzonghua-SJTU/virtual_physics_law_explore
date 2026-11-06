@@ -9,7 +9,7 @@ import time
 import numpy as np
 from scipy.integrate import solve_ivp
 
-from shore_worlds import (CURRENT_PHYSICS_VERSION, DEFAULT_WORLD_ID,
+from shore_worlds import (CURRENT_PHYSICS_VERSION, DEFAULT_WORLD_ID, PHYSICS_VERSIONS,
                           validate_physics_version, validate_world_id, world_name)
 from .worlds import (analytic_trajectory, body_initial_states, body_positions_at,
                      make_dynamics, truth_reference, truth_trajectory)
@@ -38,6 +38,8 @@ class Simulator:
         self.config.update(config)
         self._world_id = validate_world_id(self.config["world_id"])
         self._physics_version = validate_physics_version(self.config["physics_version"])
+        if self._physics_version not in PHYSICS_VERSIONS:
+            raise ValueError("Legacy simulator requires a legacy physics version")
         self._dynamics = make_dynamics(self._world_id, physics_version=self._physics_version)
         if type(self.config["noise"]) is not bool:
             raise ValueError("noise must be boolean")

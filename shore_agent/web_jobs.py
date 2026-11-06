@@ -14,20 +14,25 @@ import math
 import os
 from pathlib import Path
 import re
+import shlex
 import signal
 import subprocess
 import sys
 import threading
 import uuid
+from shore_rules import apply_rules, initial_energy, rules_for
 
-from shore_worlds import DEFAULT_WORLD_ID, validate_world_id, world_name
+from shore_worlds import (DEFAULT_WORLD_ID, CURRENT_PHYSICS_VERSION, V15_PHYSICS_VERSION,
+                          validate_world_id, world_name, validate_world_set, world_set_name)
 from .model import model_auth_config
 from .observations import estimate_body_trajectories, estimate_static_bodies
 
 MODELS = ('deepseek-flash', 'deepseek-v4-pro')
+QWEN_MODELS = ('qwen3.8-27b', 'qwen3.6-35b-a3b', 'qwen3.5-122b-a10b')
+QWEN_OUTPUT_LIMITS = {'qwen3.8-27b': 131072, 'qwen3.6-35b-a3b': 65536, 'qwen3.5-122b-a10b': 65536}
 REASONING_EFFORTS = ('low', 'high', 'max')
 RUN_ID = re.compile(r'[A-Za-z0-9_-]{1,120}')
-SECRET = re.compile(r'\bsk-[A-Za-z0-9_-]{8,}|\bBearer\s+\S+', re.I)
+SECRET = re.compile(r'\bsk-[A-Za-z0-9_.-]{8,}|\bBearer\s+\S+', re.I)
 PRIVATE_FIELDS = {'api_key', 'deepseek_api_key', 'authorization', 'access_token',
                   'reasoning_content', 'reasoning', 'messages', 'assistant', 'headers',
                   'raw_response', 'raw_messages', 'model_messages', 'password', 'secret'}
@@ -173,6 +178,59 @@ def _result_status(result, fallback='incomplete'):
     return value if value in {'submitted', 'incomplete', 'error', 'stopped', 'initialized_only', 'analyst_checked'} else fallback
 
 
+def _external_worker_running(directory, metadata):
+    """Read-only recognition of a runner worker; never grants process control."""
+    if metadata.get('runner_owned') is not True or metadata.get('status') not in ('starting', 'running', 'evaluating'):
+        return False
+    pid = metadata.get('worker_pid')
+    if type(pid) is not int or pid <= 1:
+        return False
+    try:
+        os.kill(pid, 0)
+        result = subprocess.run(['ps', '-ww', '-p', str(pid), '-o', 'command='],
+                                capture_output=True, text=True, timeout=1, check=False)
+        command = shlex.split(result.stdout.strip())
+        index = command.index('--run-dir')
+        return (result.returncode == 0 and 'shore_agent.web_worker' in command
+                and index + 1 < len(command) and Path(command[index + 1]).resolve() == directory.resolve())
+    except (OSError, ValueError, subprocess.TimeoutExpired):
+        return False
+
+
+def _model_progress_projection(directory, running):
+    """Only expose typed counters and lifecycle metadata, never stream text."""
+    value = _read(directory / 'model_progress.json', directory)
+    if not isinstance(value, dict) or value.get('schema_version') != 1:
+        return None
+    statuses = {'running', 'completed', 'error', 'retrying'}
+    phases = {'waiting_first_byte', 'thinking', 'tool_calls', 'content', 'completed', 'error'}
+    if value.get('status') not in statuses or value.get('phase') not in phases:
+        return None
+    projected = {'schema_version': 1, 'status': value['status'], 'phase': value['phase'],
+                 'active': running and value['status'] in ('running', 'retrying')}
+    for key in ('call_number', 'attempt', 'elapsed_seconds', 'timeout_seconds', 'received_chunks',
+                'received_characters', 'reasoning_characters', 'content_characters', 'tool_call_characters'):
+        item = value.get(key)
+        if type(item) in (int, float) and math.isfinite(item) and 0 <= item <= 1e15:
+            projected[key] = item
+    now = datetime.now(timezone.utc)
+    parsed = {}
+    for key in ('started_at', 'updated_at', 'last_received_at'):
+        try:
+            item = datetime.fromisoformat(value.get(key))
+            if item.tzinfo is None:
+                continue
+            parsed[key] = item
+            projected[key] = item.astimezone(timezone.utc).isoformat()
+        except (TypeError, ValueError):
+            continue
+    if projected['active'] and 'started_at' in parsed:
+        projected['elapsed_seconds'] = max(0, (now - parsed['started_at']).total_seconds())
+    projected['seconds_since_last_received'] = (max(0, (now - parsed['last_received_at']).total_seconds())
+                                                if 'last_received_at' in parsed else None)
+    return projected
+
+
 def _evaluation_projection(directory, status, metadata, configuration, mission=None, evaluation=None, running=False):
     """Read post-session scores; this web projection never imports hidden truth.
 
@@ -217,7 +275,10 @@ def _evaluation_projection(directory, status, metadata, configuration, mission=N
     if not isinstance(score, dict):
         return projection('error' if evaluation.get('complete') is False else 'unavailable',
                           reason='score_not_available')
-    if score.get('formula_version') != 'shore_pdf_1101' or score.get('status') not in ('scored', 'unavailable'):
+    rules = rules_for(environment)
+    if (score.get('formula_version') != rules['score_formula_version']
+            or score.get('status') not in ('scored', 'unavailable')
+            or (rules['ruleset'] == 'e4' and score.get('energy_budget') != initial_energy(mission, environment))):
         return projection('unavailable', reason='invalid_score_record')
     if score['status'] == 'unavailable':
         return projection('unavailable', dict(score, total=None), score.get('reason'))
@@ -262,10 +323,16 @@ def _world_fields(configuration=None, metadata=None):
     environment = configuration.get('environment')
     environment = environment if isinstance(environment, dict) else {}
     try:
-        world_id = validate_world_id(environment.get('world_id', metadata.get('world_id', DEFAULT_WORLD_ID)))
+        world_set = validate_world_set(environment.get('world_set', metadata.get('world_set',
+            'v15' if environment.get('physics_version') == V15_PHYSICS_VERSION else 'legacy')))
+    except ValueError:
+        world_set = 'legacy'
+    try:
+        world_id = validate_world_id(environment.get('world_id', metadata.get('world_id', DEFAULT_WORLD_ID)), world_set)
     except ValueError:
         world_id = DEFAULT_WORLD_ID
-    return {'world_id': world_id, 'world_name': world_name(world_id)}
+    return {'world_id': world_id, 'world_name': world_name(world_id, world_set),
+            'world_set': world_set, 'world_set_name': world_set_name(world_set)}
 
 
 class RunManager:
@@ -297,30 +364,46 @@ class RunManager:
             raise ValueError('invalid_server_reasoning_effort')
         config['model']['reasoning_effort'] = effort
         model_auth_config(config['model'])
-        return config
+        return apply_rules(config)
 
     def _model_options(self, config):
         model = config['model']
+        cap = rules_for(config.get('environment'))['max_tokens_per_call']
         name = model['model']
+        if model.get('reasoning_protocol') == 'qwen' and name in QWEN_MODELS:
+            labels = ('Qwen3.8-27B', 'Qwen3.6-35B-A3B', 'Qwen3.5-122B-A10B')
+            endpoints = model.get('local_model_endpoints') if model.get('deployment') == 'local' else None
+            return [{'id': item, 'name': label + ('（本机未部署）' if endpoints is not None and item not in endpoints else ''),
+                     'available': endpoints is None or item in endpoints,
+                     'max_output_tokens': min(QWEN_OUTPUT_LIMITS[item], cap) if cap else QWEN_OUTPUT_LIMITS[item]}
+                    for item, label in zip(QWEN_MODELS, labels)]
         # A custom endpoint/model is selected only by the trusted startup config.
         cloud_defaults = (self.config_path is None and model.get('deployment', 'cloud') != 'local'
                           and model.get('base_url', '').rstrip('/') == 'https://api.deepseek.com'
                           and name in MODELS)
         names = MODELS if cloud_defaults else (name,)
         labels = {'deepseek-flash': 'DeepSeek Flash', 'deepseek-v4-pro': 'DeepSeek V4 Pro'}
-        return [{'id': item, 'name': labels.get(item, item)} for item in names]
+        return [{'id': item, 'name': labels.get(item, item), **({'max_output_tokens': cap} if cap else {})} for item in names]
 
     def client_configuration(self):
         from .code_execution import sandbox_info
         config = self._server_config()
         model, environment = config['model'], config['environment']
+        rules = rules_for(environment)
         key_env, key_required = model_auth_config(model)
         return {
             'models': self._model_options(config),
             'api_key_configured': bool(os.environ.get(key_env, '').strip()),
             'api_key_required': key_required,
+            'api_key_env': key_env,
+            'model_protocol': model.get('reasoning_protocol', 'deepseek'),
+            'reasoning_effort_supported': model.get('reasoning_protocol') != 'qwen',
+            'max_output_tokens_cap': rules['max_tokens_per_call'],
             'code_sandbox': sandbox_info(config.get('code_execution')),
             'defaults': {
+                'world_set': environment.get('world_set', 'v15'),
+                'ruleset': rules['ruleset'], 'energy_budget': rules['energy_budget'],
+                'wall_seconds': environment.get('wall_seconds', rules['wall_seconds']),
                 **{name: environment[name] for name in ('noise', 'seed', 'world_id')},
                 **{name: model[name] for name in ('model', 'max_total_tokens', 'max_tokens_per_call',
                                                   'thinking', 'reasoning_effort')},
@@ -339,21 +422,47 @@ class RunManager:
 
     def _config(self, payload):
         allowed = {'model', 'noise', 'seed', 'max_calls', 'max_total_tokens', 'max_tokens_per_call',
-                   'thinking', 'reasoning_effort', 'api_key', 'world_id', 'code_enabled'}
+                   'thinking', 'reasoning_effort', 'api_key', 'world_id', 'world_set', 'code_enabled'}
         if not isinstance(payload, dict) or set(payload) - allowed:
             raise ValidationError('invalid_run_configuration')
         config = self._server_config()
+        rules = rules_for(config.get('environment'))
+        if rules['ruleset'] == 'e4':
+            if payload.get('thinking') is True:
+                raise ValidationError('e4_requires_no_thinking')
+            if payload.get('noise') is False:
+                raise ValidationError('e4_requires_noise')
+            if type(payload.get('max_tokens_per_call')) is int and payload['max_tokens_per_call'] > 4096:
+                raise ValidationError('invalid_output_budget')
         try:
-            config['environment']['world_id'] = validate_world_id(payload.get('world_id', config['environment']['world_id']))
+            world_set = validate_world_set(payload.get('world_set', config['environment'].get('world_set',
+                'v15' if config['environment'].get('physics_version') == V15_PHYSICS_VERSION else 'legacy')))
+        except ValueError:
+            raise ValidationError('invalid_world_set') from None
+        if rules['ruleset'] == 'e4' and world_set != 'v15':
+            raise ValidationError('e4_requires_v15')
+        try:
+            config['environment']['world_id'] = validate_world_id(payload.get('world_id', config['environment']['world_id']), world_set)
         except ValueError:
             raise ValidationError('invalid_world_id') from None
+        if 'world_set' in payload or 'world_set' in config['environment'] or world_set == 'v15':
+            config['environment']['world_set'] = world_set
+        if world_set == 'v15':
+            config['environment']['physics_version'] = V15_PHYSICS_VERSION
+            # Physical domains come from the selected v15 world catalog.
+            for field in ('reference_length', 'position_limit', 'velocity_limit', 'time_max'):
+                config['environment'].pop(field, None)
+        elif config['environment'].get('physics_version') == V15_PHYSICS_VERSION:
+            config['environment']['physics_version'] = CURRENT_PHYSICS_VERSION
         for name in ('noise', 'thinking', 'code_enabled'):
             if name in payload and type(payload[name]) is not bool:
                 raise ValidationError('invalid_run_configuration')
         if 'model' in payload:
-            if payload['model'] not in [item['id'] for item in self._model_options(config)]:
+            if payload['model'] not in [item['id'] for item in self._model_options(config) if item.get('available', True)]:
                 raise ValidationError('invalid_model')
             config['model']['model'] = payload['model']
+        if config['model'].get('deployment') == 'local' and config['model'].get('local_model_endpoints'):
+            config['model']['base_url'] = config['model']['local_model_endpoints'][config['model']['model']]
         if 'reasoning_effort' in payload:
             if payload['reasoning_effort'] not in REASONING_EFFORTS:
                 raise ValidationError('invalid_reasoning_effort')
@@ -368,6 +477,10 @@ class RunManager:
                 config['environment' if name == 'seed' else 'model'][name] = value
         if 'noise' in payload:
             config['environment']['noise'] = payload['noise']
+        if (config['model'].get('reasoning_protocol') == 'qwen'
+                and config['model']['model'] in QWEN_OUTPUT_LIMITS
+                and config['model']['max_tokens_per_call'] > QWEN_OUTPUT_LIMITS[config['model']['model']]):
+            raise ValidationError('invalid_output_budget')
         if 'thinking' in payload:
             config['model']['thinking'] = payload['thinking']
         if 'code_enabled' in payload:
@@ -389,7 +502,7 @@ class RunManager:
         key = key.strip() or os.environ.get(key_env, '').strip()
         if not key and key_required:
             raise ValidationError('missing_api_key')
-        return config, key
+        return apply_rules(config), key
 
     def start(self, payload):
         with self._lock:
@@ -483,6 +596,8 @@ class RunManager:
             self._refresh()
             process = self._owned.get(run_id)
             if process is None:
+                if _external_worker_running(directory, _read(directory / 'web.json', directory, {})):
+                    raise ConflictError('run_managed_externally')
                 return self.snapshot(run_id)
             self._terminate(process)
             self._owned.pop(run_id, None)
@@ -533,7 +648,7 @@ class RunManager:
             if not any(_safe_file(directory / name, directory) for name in ('web.json', 'result.json', 'mission.json')):
                 raise FileNotFoundError('unknown_run')
             self._refresh()
-            if run_id in self._owned:
+            if run_id in self._owned or _external_worker_running(directory, _read(directory / 'web.json', directory, {})):
                 raise ConflictError('run_is_active')
             trash = self._trash_directory(create=True)
             destination = trash / run_id
@@ -542,7 +657,8 @@ class RunManager:
             metadata_directory = self._trash_metadata_directory(trash, create=True)
             metadata_path = metadata_directory / (run_id + '.json')
             snapshot = self.snapshot(run_id)
-            metadata = {key: snapshot[key] for key in ('id', 'created_at', 'mode', 'status', 'world_id', 'world_name')}
+            metadata = {key: snapshot[key] for key in ('id', 'created_at', 'mode', 'status', 'world_id', 'world_name',
+                                                       'world_set', 'world_set_name')}
             metadata['deleted_at'] = _now()
             # Keep the original run byte-for-byte unchanged. Trash bookkeeping
             # lives next to it, and exclusive create protects preexisting data.
@@ -647,6 +763,8 @@ class RunManager:
                 result = snapshot.get('result') or {}
                 submission = result.get('submission') or next(iter(snapshot['records']['submissions']), {})
                 rows.append({k: snapshot[k] for k in ('id', 'status', 'created_at', 'mode', 'world_id', 'world_name',
+                                                    'world_set', 'world_set_name', 'model_settings', 'experiment_id', 'ruleset', 'energy_budget',
+                                                    'running', 'can_stop', 'managed_externally',
                                                     'evaluation_state', 'evaluation_score', 'evaluation_error')} | {
                     'energy_remaining': snapshot['budget'].get('energy_remaining'), 'law_id': submission.get('law_id')})
             rows.sort(key=lambda item: item['created_at'], reverse=True)
@@ -694,7 +812,9 @@ class RunManager:
             if isinstance(result, dict):
                 budget = result.get('budget') or budget
                 usage = result.get('model_usage') or usage
-            running = run_id in self._owned
+            owned = run_id in self._owned
+            external = metadata.get('runner_owned') is True
+            running = owned or _external_worker_running(directory, metadata)
             if running and not budget.get('session_ended') and metadata.get('session_started_at'):
                 try:
                     started = datetime.fromisoformat(metadata['session_started_at'])
@@ -756,11 +876,17 @@ class RunManager:
             for seq, event in enumerate(events, 1):
                 event['seq'] = seq
             evaluation = _read(directory / 'evaluation.json', directory)
+            environment_config = configuration.get('environment') or {}
+            rules = rules_for(environment_config)
             return _public({'id': run_id, 'status': status, 'running': running, 'events': events,
+                            'ruleset': rules['ruleset'], 'energy_budget': initial_energy(mission, environment_config),
+                            'wall_seconds': environment_config.get('wall_seconds', rules['wall_seconds']),
+                            'can_stop': owned, 'managed_externally': external,
+                            'model_progress': _model_progress_projection(directory, running),
                             **_world_fields(configuration, metadata),
                             'limits': {k: model_config.get(k) for k in ('max_calls', 'max_total_tokens', 'max_tokens_per_call')},
                             'model_settings': {k: model_config.get(k) for k in
-                                               ('model', 'thinking', 'reasoning_effort', 'reasoning_protocol')},
+                                               ('model', 'thinking', 'reasoning_effort', 'reasoning_protocol', 'deployment')},
                             'code_enabled': configuration.get('code_execution', {}).get('enabled', False),
                             'experiment_id': metadata.get('experiment_id'), 'experiment_arm': metadata.get('arm'),
                             'budget': budget, 'model_usage': usage, 'records': records, 'result': result,

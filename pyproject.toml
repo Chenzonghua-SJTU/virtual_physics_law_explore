@@ -15,13 +15,14 @@ test = ["pytest>=8"]
 shore-agent = "shore_agent.cli:main"
 
 [tool.setuptools]
-py-modules = ["shore_worlds"]
+py-modules = ["shore_worlds", "shore_scoring", "shore_rules"]
 
 [tool.setuptools.packages.find]
-include = ["shore_agent*", "shore_sim*"]
+include = ["shore_agent*", "shore_sim*", "shore_v15*"]
 
 [tool.setuptools.package-data]
 shore_agent = ["prompts/*.txt"]
+shore_v15 = ["vendor/SOURCE.json", "vendor/**/*.py"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

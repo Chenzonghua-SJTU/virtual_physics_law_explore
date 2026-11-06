@@ -54,6 +54,14 @@ CODE_SCHEMA = tool('run_code',
      'files': {'type':'array','items':{'type':'string','minLength':1,'maxLength':300},'uniqueItems':True,'maxItems':128}}, ['code'])
 
 
-def tool_schemas(code_enabled=False):
+def tool_schemas(code_enabled=False, *, ruleset='e3'):
     import copy
-    return copy.deepcopy(SCHEMAS + ([CODE_SCHEMA] if code_enabled else []))
+    schemas = copy.deepcopy(SCHEMAS + ([CODE_SCHEMA] if code_enabled else []))
+    if ruleset == 'e4':
+        draft = copy.deepcopy(next(s for s in schemas if s['function']['name'] == 'submit'))
+        draft['function']['name'] = 'save_draft'
+        draft['function']['description'] = ('保存你明确选择的已拟合law_id及你依据观测判断的claims。'
+            '格式与有限输出验证成功才替换上份草稿，不结束探索。预算截止时封存最后及时有效配对；'
+            '不会自动选择规律、补写claims或检查物理真值。')
+        schemas.append(draft)
+    return schemas

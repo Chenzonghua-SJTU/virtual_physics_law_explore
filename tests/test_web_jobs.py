@@ -7,6 +7,7 @@ import signal
 import subprocess
 import sys
 import time
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -141,6 +142,111 @@ def test_archived_call_limit_and_failure_remain_visible_without_rewriting(manage
     assert {path.name: path.read_bytes() for path in directory.iterdir()} == originals
 
 
+def test_e4_backend_bootstrap_and_payload_cannot_expand_rules(manager):
+    override = manager.project_root / 'e4.json'
+    _write(override, json.loads((PROJECT / 'config.e4.example.json').read_text()))
+    manager.config_path = override
+    settings = manager.client_configuration()
+    assert settings['defaults']['ruleset'] == 'e4'
+    assert settings['defaults']['energy_budget'] == 10
+    assert settings['defaults']['wall_seconds'] == 300
+    assert settings['max_output_tokens_cap'] == 4096
+    assert all(item['max_output_tokens'] == 4096 for item in settings['models'])
+    for payload, code in [({'max_tokens_per_call': 65536}, 'invalid_output_budget'),
+                          ({'thinking': True}, 'e4_requires_no_thinking'),
+                          ({'noise': False}, 'e4_requires_noise'),
+                          ({'world_set': 'legacy'}, 'e4_requires_v15')]:
+        with pytest.raises(ValidationError, match=code):
+            manager._config(payload)
+    config, key = manager._config({'max_tokens_per_call': 2048})
+    assert config['environment']['energy_budget'] == 10
+    assert config['model']['max_tokens_per_call'] == 2048
+    assert config['model']['thinking'] is False and not key
+
+
+def test_history_keeps_its_own_energy_limit_under_e4_server(manager):
+    override = manager.project_root / 'e4.json'
+    _write(override, json.loads((PROJECT / 'config.e4.example.json').read_text()))
+    manager.config_path = override
+    for name, ruleset, energy in [('old', 'e3', 100), ('new', 'e4', 10)]:
+        directory = manager.runs_dir / name
+        directory.mkdir()
+        environment = {'world_set': 'v15', 'physics_version': 'shore_v15'}
+        if ruleset == 'e4':
+            environment['ruleset'] = 'e4'
+        _write(directory / 'config.json', {'environment': environment})
+        _write(directory / 'mission.json', {'task': {'limits': {'initial_energy': energy}}})
+        _write(directory / 'result.json', {'status': 'incomplete', 'budget': {'energy_remaining': energy - 2}})
+        before = {p.name: p.read_bytes() for p in directory.iterdir()}
+        snapshot = manager.snapshot(name)
+        assert (snapshot['ruleset'], snapshot['energy_budget']) == (ruleset, energy)
+        assert {p.name: p.read_bytes() for p in directory.iterdir()} == before
+
+
+def test_stream_progress_projects_only_counters_and_advances_wait_time(manager, launch):
+    run_id = manager.start({'api_key': 'test-only'})
+    directory = manager.runs_dir / run_id
+    now = datetime.now(timezone.utc)
+    _write(directory / 'model_progress.json', {
+        'schema_version': 1, 'status': 'running', 'phase': 'thinking', 'call_number': 1,
+        'started_at': (now - timedelta(seconds=30)).isoformat(),
+        'updated_at': (now - timedelta(seconds=2)).isoformat(),
+        'last_received_at': (now - timedelta(seconds=3)).isoformat(),
+        'elapsed_seconds': 28, 'received_characters': 420, 'received_chunks': 12,
+        'reasoning_characters': 420, 'content_characters': -1, 'tool_call_characters': True,
+        'reasoning_content': 'private model text', 'unexpected_text': 'private arbitrary field',
+        'model': 'private model field', 'error': 'private error text'})
+    progress = manager.snapshot(run_id)['model_progress']
+    assert progress['active'] is True and progress['phase'] == 'thinking'
+    assert 30 <= progress['elapsed_seconds'] < 40
+    assert 3 <= progress['seconds_since_last_received'] < 10
+    assert progress['received_characters'] == 420
+    assert progress['received_chunks'] == 12
+    assert 'content_characters' not in progress and 'tool_call_characters' not in progress
+    assert 'private' not in json.dumps(progress)
+    assert 'model' not in progress and 'error' not in progress
+    manager.stop(run_id)
+    assert manager.snapshot(run_id)['model_progress']['active'] is False
+
+
+def test_progress_does_not_follow_symlink_or_publish_unrecognized_phase(manager, tmp_path):
+    directory = manager.runs_dir / 'progress-history'
+    directory.mkdir()
+    _write(directory / 'result.json', {'status': 'incomplete'})
+    _write(directory / 'model_progress.json', {'schema_version': 1, 'status': 'running', 'phase': 'private text'})
+    assert manager.snapshot(directory.name)['model_progress'] is None
+    (directory / 'model_progress.json').unlink()
+    target = tmp_path / 'outside-progress.json'
+    _write(target, {'schema_version': 1, 'status': 'running', 'phase': 'thinking'})
+    (directory / 'model_progress.json').symlink_to(target)
+    assert manager.snapshot(directory.name)['model_progress'] is None
+
+
+def test_external_runner_is_visible_but_cannot_be_stopped_or_deleted(manager, monkeypatch):
+    directory = manager.runs_dir / 'external-baseline'
+    directory.mkdir()
+    _write(directory / 'web.json', {'status': 'running', 'runner_owned': True, 'worker_pid': 12345})
+    signals = []
+    monkeypatch.setattr(web_jobs.os, 'kill', lambda pid, sig: signals.append((pid, sig)))
+    monkeypatch.setattr(web_jobs.subprocess, 'run', lambda *a, **kw: subprocess.CompletedProcess(
+        a[0], 0, stdout=f'python -m shore_agent.web_worker --run-dir {directory}', stderr=''))
+    snapshot = manager.snapshot(directory.name)
+    assert snapshot['status'] == 'running' and snapshot['running'] is True
+    assert snapshot['managed_externally'] is True and snapshot['can_stop'] is False
+    listing = manager.list_runs()
+    assert listing['active_run_id'] is None and listing['runs'][0]['running'] is True
+    with pytest.raises(ConflictError, match='run_managed_externally'):
+        manager.stop(directory.name)
+    with pytest.raises(ConflictError, match='run_is_active'):
+        manager.delete(directory.name)
+    assert all(pid == 12345 and sig == 0 for pid, sig in signals)
+    assert directory.is_dir()
+    monkeypatch.setattr(web_jobs.subprocess, 'run', lambda *a, **kw: subprocess.CompletedProcess(
+        a[0], 0, stdout='python -m another_process --run-dir /tmp/unrelated', stderr=''))
+    assert manager.snapshot(directory.name)['status'] == 'interrupted'
+    assert manager.snapshot(directory.name)['running'] is False
+
+
 @pytest.mark.parametrize('payload,code', [
     ({'base_url': 'https://example.com'}, 'invalid_run_configuration'),
     ({'run_dir': '/tmp'}, 'invalid_run_configuration'),
@@ -251,6 +357,44 @@ def test_legacy_archive_defaults_to_world_one_even_in_older_trash(manager):
     assert deleted['world_name'] == '世界 01'
     manager.restore(directory.name)
     assert manager.snapshot(directory.name)['world_id'] == DEFAULT_WORLD_ID
+
+
+@pytest.mark.parametrize('world_id', WORLD_IDS[:6])
+def test_v15_selection_preserves_agent_config_and_archive_identity(manager, launch, world_id):
+    baseline = json.loads((manager.project_root / 'config.example.json').read_text())
+    run_id = manager.start({'api_key': 'mock-only', 'world_set': 'v15', 'world_id': world_id})
+    directory = manager.runs_dir / run_id
+    config = json.loads((directory / 'config.json').read_text())
+    for section in ('model', 'agent', 'numerics', 'code_execution'):
+        assert config[section] == baseline[section]
+    assert config['environment']['world_set'] == 'v15'
+    assert config['environment']['physics_version'] == 'shore_v15'
+    assert config['environment']['wall_seconds'] == baseline['environment']['wall_seconds']
+    assert manager.snapshot(run_id)['world_set'] == 'v15'
+    assert manager.list_runs()['runs'][0]['world_set'] == 'v15'
+    manager.stop(run_id)
+    manager.delete(run_id)
+    assert manager.list_runs()['deleted_runs'][0]['world_set'] == 'v15'
+    manager.restore(run_id)
+    assert manager.snapshot(run_id)['world_set'] == 'v15'
+
+
+@pytest.mark.parametrize('payload,code', [
+    ({'world_set': 'v15', 'world_id': 'world_7'}, 'invalid_world_id'),
+    ({'world_set': 'unknown'}, 'invalid_world_set'),
+    ({'world_set': None}, 'invalid_world_set'),
+])
+def test_invalid_world_set_selection_is_rejected_before_launch(manager, launch, payload, code):
+    with pytest.raises(ValidationError, match=code):
+        manager.start(dict(payload, api_key='mock-only'))
+    assert launch[0] == []
+    assert list(manager.runs_dir.iterdir()) == []
+
+
+def test_legacy_archives_keep_legacy_identity_with_new_frontend_default(manager):
+    directory = historical_run(manager, 'old-identity')
+    assert manager.client_configuration()['defaults']['world_set'] == 'v15'
+    assert manager.snapshot(directory.name)['world_set'] == 'legacy'
 
 
 def test_stop_after_acceptance_preserves_real_submission(manager, launch):
@@ -906,6 +1050,37 @@ def test_custom_server_key_environment_stays_out_of_config_and_child_environment
     assert all(secret not in file.read_text() for file in (manager.runs_dir / run_id).iterdir())
 
 
+@pytest.mark.parametrize('model', web_jobs.QWEN_MODELS)
+def test_qwen_models_use_one_provider_without_changing_agent_settings(manager, tmp_path, monkeypatch, model):
+    path = tmp_path / 'qwen.json'
+    path.write_text((PROJECT / 'config.qwen.example.json').read_text())
+    manager.config_path = path
+    monkeypatch.setenv('DASHSCOPE_API_KEY', 'synthetic-qwen-key')
+    public = manager.client_configuration()
+    assert [item['id'] for item in public['models']] == list(web_jobs.QWEN_MODELS)
+    assert public['defaults']['model'] == 'qwen3.8-27b'
+    assert public['reasoning_effort_supported'] is False
+    assert public['api_key_configured'] is True
+    assert public['api_key_env'] == 'DASHSCOPE_API_KEY'
+    config, key = manager._config({'model': model, 'world_set': 'v15'})
+    assert config['model']['model'] == model
+    assert config['model']['reasoning_protocol'] == 'qwen'
+    assert config['model']['base_url'] == 'https://dashscope.aliyuncs.com/compatible-mode/v1'
+    assert key == 'synthetic-qwen-key'
+    baseline = json.loads((PROJECT / 'config.example.json').read_text())
+    for section in ('agent', 'numerics', 'code_execution'):
+        assert config[section] == baseline[section]
+    with pytest.raises(ValidationError, match='invalid_output_budget'):
+        manager._config({'model': model, 'max_tokens_per_call': web_jobs.QWEN_OUTPUT_LIMITS[model] + 1})
+    with pytest.raises(ValidationError, match='invalid_model'):
+        manager._config({'model': 'deepseek-flash'})
+
+
+def test_public_projection_redacts_entire_workspace_key():
+    synthetic = 'sk-ws-TEST.SYNTHETIC.payload_with-dots'
+    assert web_jobs._public({'message': 'Credential ' + synthetic}) == {'message': 'Credential [redacted]'}
+
+
 def test_legacy_missing_effort_is_unknown_not_current_default(manager):
     directory = manager.runs_dir / 'legacy-effort'
     directory.mkdir()
@@ -916,3 +1091,21 @@ def test_legacy_missing_effort_is_unknown_not_current_default(manager):
     assert snapshot['model_settings']['thinking'] is None
     assert snapshot['limits']['max_total_tokens'] == 2000000
     assert (directory / 'config.json').read_bytes() == original
+
+
+def test_local_qwen_routes_only_deployed_models(manager, tmp_path):
+    config = json.loads((PROJECT / 'config.qwen.example.json').read_text())
+    config['model'].update(deployment='local', base_url='http://127.0.0.1:8000/v1',
+        api_key_env='UNCONFIGURED_LOCAL_KEY', api_key_required=False, local_model_endpoints={
+            'qwen3.8-27b': 'http://127.0.0.1:8000/v1',
+            'qwen3.5-122b-a10b': 'http://127.0.0.1:8002/v1'})
+    path = tmp_path / 'local-qwen.json'
+    path.write_text(json.dumps(config))
+    manager.config_path = path
+    options = manager.client_configuration()['models']
+    assert next(x for x in options if x['id'] == 'qwen3.6-35b-a3b')['available'] is False
+    effective, key = manager._config({'model': 'qwen3.5-122b-a10b'})
+    assert effective['model']['base_url'] == 'http://127.0.0.1:8002/v1'
+    assert not key
+    with pytest.raises(ValidationError, match='invalid_model'):
+        manager._config({'model': 'qwen3.6-35b-a3b'})

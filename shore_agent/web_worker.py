@@ -7,8 +7,32 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import signal
+import time
+from contextlib import contextmanager
+from datetime import datetime, timedelta, timezone
 
 from .web_jobs import _now, _read, _write, accepted_submission
+
+
+class ExplorationDeadline(BaseException):
+    """Bypass model/tool Exception handlers, so an expired session cannot continue."""
+
+
+@contextmanager
+def exploration_watchdog(seconds, *, enabled):
+    if not enabled:
+        yield
+        return
+    def expired(_signum, _frame):
+        raise ExplorationDeadline()
+    previous = signal.signal(signal.SIGALRM, expired)
+    signal.setitimer(signal.ITIMER_REAL, max(0.001, seconds))
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous)
 
 
 def run(directory):
@@ -20,6 +44,9 @@ def run(directory):
         envelope = json.loads(sys.stdin.readline(8192))
         key = envelope.pop('api_key', None)
         config = _read(directory / 'config.json', directory, {})
+        from shore_rules import apply_rules
+        config = apply_rules(config)
+        e4 = config['environment'].get('ruleset') == 'e4'
         from .model import DeepSeekClient, model_auth_config
         key_env, key_required = model_auth_config(config.get('model', {}))
         if key_required and (not isinstance(key, str) or not key):
@@ -36,12 +63,31 @@ def run(directory):
         from .store import append_event
         environment = Environment(config['environment'], secret_env_names=(key_env,))
         runtime = ToolRuntime(environment, directory, config=config.get('numerics'), code_config=config.get('code_execution'))
+        started = time.monotonic()
+        started_at = datetime.now(timezone.utc)
         mission = runtime.mission()
-        _metadata(directory, session_started_at=_now(), initial_budget=mission.get('budget') or {})
+        remaining = (mission.get('budget') or {}).get('wall_seconds_remaining', 300)
+        deadline = started + min(300, remaining) if e4 else None
+        _metadata(directory, session_started_at=started_at.isoformat(), initial_budget=mission.get('budget') or {})
+        if e4:
+            runtime.exploration_started_monotonic = started
+            runtime.exploration_deadline_monotonic = deadline
+            _metadata(directory, exploration_deadline_at=(started_at + timedelta(seconds=deadline-started)).isoformat())
         append_event(directory / 'events.jsonl', {'event': 'session_started', 'budget': mission.get('budget')})
         client = DeepSeekClient(config['model'], directory,
-                                remaining_seconds=lambda: runtime.budget()['wall_seconds_remaining'])
-        result = Agent(client, runtime, directory, config.get('agent', {})).run()
+            remaining_seconds=lambda: max(0, runtime.budget()['wall_seconds_remaining'] - (5 if e4 else 0)))
+        agent = Agent(client, runtime, directory, config.get('agent', {}))
+        try:
+            with exploration_watchdog(deadline-time.monotonic() if e4 else 0, enabled=e4):
+                result = agent.run()
+        except ExplorationDeadline:
+            result = agent._finish('incomplete', 'wall_time_exhausted_without_saved_draft')
+        finished_exploration = time.monotonic()
+        submission = result.get('submission') or {}
+        _metadata(directory, exploration_finished_at=_now(),
+                  exploration_wall_seconds=finished_exploration-started,
+                  submission_deadline_met=submission.get('submission_deadline_met'),
+                  submission_elapsed_seconds=submission.get('pair_validated_elapsed_seconds'))
         client.close()
         client = None
         environment.close()
@@ -51,12 +97,17 @@ def run(directory):
         # The main Agent has returned and its simulator has closed. Only now may
         # a separate, key-free evaluator access hidden initial conditions.
         if result.get('status') == 'submitted' and accepted_submission(directory):
-            _metadata(directory, status='evaluating')
+            evaluation_started = time.monotonic()
+            _metadata(directory, status='evaluating', evaluation_started_at=_now())
             project = Path(__file__).resolve().parents[1]
-            evaluation = subprocess.run([sys.executable, str(project / 'evaluate.py'), '--run-dir', str(directory)],
-                                        cwd=project, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
-                                        stderr=subprocess.DEVNULL, timeout=180)
-            _metadata(directory, evaluation_status='complete' if evaluation.returncode == 0 else 'failed')
+            try:
+                evaluation = subprocess.run([sys.executable, str(project / 'evaluate.py'), '--run-dir', str(directory)],
+                                            cwd=project, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                                            stderr=subprocess.DEVNULL, timeout=180)
+                _metadata(directory, evaluation_status='complete' if evaluation.returncode == 0 else 'failed')
+            finally:
+                _metadata(directory, evaluation_finished_at=_now(),
+                          evaluation_wall_seconds=time.monotonic()-evaluation_started)
         _metadata(directory, status=result.get('status', 'incomplete'), finished_at=_now())
         return 0
     except Exception:

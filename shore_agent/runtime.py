@@ -4,6 +4,8 @@ import copy
 import json
 import time
 import uuid
+from datetime import datetime, timezone
+import shutil
 from pathlib import Path
 
 import numpy as np
@@ -46,7 +48,11 @@ class ToolRuntime:
         self.code_enabled = self.code_config.get('enabled', False)
         if type(self.code_enabled) is not bool:
             raise ValueError('code_execution.enabled must be boolean')
-        self.schemas = tool_schemas(self.code_enabled)
+        self.ruleset = getattr(environment, 'ruleset', 'e3')
+        self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset)
+        self.last_valid_draft = None
+        self.exploration_started_monotonic = None
+        self.exploration_deadline_monotonic = None
         self.task = None
         self.known_bodies = []
         self.body_position_estimate = None
@@ -320,15 +326,27 @@ class ToolRuntime:
         self.store.add('code_execution', record, rid)
         return execution_preview(record)
 
+    def _pair_timing(self):
+        now = time.monotonic()
+        if self.exploration_deadline_monotonic is not None and now >= self.exploration_deadline_monotonic:
+            raise ValueError('Candidate checks did not finish before the exploration deadline')
+        return {'pair_validated_at': datetime.now(timezone.utc).isoformat(),
+                'pair_validated_elapsed_seconds': (now - self.exploration_started_monotonic
+                    if self.exploration_started_monotonic is not None else None),
+                'submission_deadline_met': True}
+
     def submit(self, law_id, claims, physical_explanation):
         from .submission import export_submission
         law = self._law(law_id)
         rid = 'submission_' + uuid.uuid4().hex[:12]
+        timing = {}
         try:
             checks = export_submission(self.run_dir / 'submissions' / rid, law, claims,
                                        self._probes(law['train_probe_ids']), physical_explanation)
             if self.budget()['wall_seconds_remaining'] <= 0:
                 raise ValueError('Wall time exhausted during submission checks')
+            if self.ruleset == 'e4':
+                timing = self._pair_timing()
             ended = self._environment_call('end_session')
             self.session_ended = True
             status, reasons = 'accepted', []
@@ -338,5 +356,58 @@ class ToolRuntime:
                 'physical_explanation': physical_explanation, 'status': status,
                 'checks': checks, 'reasons': reasons, 'session_ended': self.session_ended,
                 'meaning': 'Local acceptance only; no truth or hidden-test check was performed.'}
+        if status == 'accepted':
+            data.update(timing)
+        self.store.add('submission', data, rid)
+        return data
+
+    def save_draft(self, law_id, claims, physical_explanation):
+        """Only a model's explicit, timely, validated pair can become a fallback."""
+        if self.ruleset != 'e4':
+            raise ValueError('Draft preservation is available only in E4')
+        from .submission import export_submission
+        from .agent import _save
+        law = self._law(law_id)
+        rid = 'draft_' + uuid.uuid4().hex[:12]
+        checks = export_submission(self.run_dir / 'drafts' / rid, law, claims,
+                                   self._probes(law['train_probe_ids']), physical_explanation)
+        budget = self.budget()
+        if budget['wall_seconds_remaining'] <= 0 or budget.get('session_ended'):
+            raise ValueError('Draft checks did not finish before the exploration deadline')
+        record = {'draft_id': rid, 'law_id': law_id, 'claims': copy.deepcopy(claims),
+                  'physical_explanation': physical_explanation, 'checks': checks,
+                  'saved_at': datetime.now(timezone.utc).isoformat(), 'status': 'saved',
+                  'session_ended': False,
+                  'meaning': 'Timely local format/execution checks only; no physical correctness verdict.'}
+        record.update(self._pair_timing())
+        _save(self.run_dir / 'latest_draft.json', record)
+        self.last_valid_draft = copy.deepcopy(record)
+        return record
+
+    def finalize_draft(self, reason):
+        """Seal previously checked bytes; do not infer claims or run new science after expiry."""
+        if self.ruleset != 'e4' or self.last_valid_draft is None:
+            return None
+        draft = copy.deepcopy(self.last_valid_draft)
+        rid = 'submission_' + uuid.uuid4().hex[:12]
+        target = self.run_dir / 'submissions' / rid
+        target.parent.mkdir(exist_ok=True)
+        shutil.copytree(self.run_dir / 'drafts' / draft['draft_id'], target)
+        try:
+            budget = self.budget()
+            if budget.get('wall_seconds_remaining', 0) > 0 and not budget.get('session_ended'):
+                self._environment_call('end_session')
+        except Exception:
+            pass  # A timely saved pair survives an expired/unavailable console.
+        self.session_ended = True
+        data = {'submission_id': rid, 'law_id': draft['law_id'], 'claims': draft['claims'],
+                'physical_explanation': draft['physical_explanation'], 'checks': draft['checks'],
+                'status': 'accepted', 'reasons': [], 'session_ended': True,
+                'acceptance_source': 'timely_saved_draft', 'draft_id': draft['draft_id'],
+                'draft_saved_at': draft['saved_at'], 'finalized_at': datetime.now(timezone.utc).isoformat(),
+                'finalization_reason': reason,
+                'meaning': 'Sealed last timely model-selected pair, without new inference or truth access.'}
+        data.update({key: draft[key] for key in ('pair_validated_at',
+                     'pair_validated_elapsed_seconds', 'submission_deadline_met')})
         self.store.add('submission', data, rid)
         return data

@@ -43,6 +43,17 @@ def test_three_declarations_are_independent_and_require_correct_types():
     assert result['total'] == 89
 
 
+def test_e4_energy_denominator_and_version_do_not_change_legacy_scores():
+    old = score(energy=4)
+    new = score(energy=4, energy_budget=10, formula_version='shore_e4_10energy')
+    assert old['conservation'] == pytest.approx(4.8)
+    assert old['formula_version'] == 'shore_pdf_1101'
+    assert new['conservation'] == 3
+    assert new['total'] == 98
+    assert new['formula_version'] == 'shore_e4_10energy'
+    assert score(energy=11, energy_budget=10)['reason'] == 'energy_usage_unavailable'
+
+
 @pytest.mark.parametrize('energy', [None, -1, 101, True, math.inf, math.nan])
 def test_missing_or_invalid_energy_never_invents_conservation_bonus(energy):
     result = score(energy=energy)

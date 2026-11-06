@@ -1,8 +1,43 @@
 # 物理规律发现 Agent · 本地原型
 
-一个普通 CPU 可运行、没有 Agent 框架依赖的 Python 项目。由一个主 Agent 自主决定实验和工具顺序，确定性程序完成拟合、推演、残差诊断、验证和归档。默认提供八个工具，可额外启用隔离的 `run_code`，让主 Agent 编写 Python 分析代码；已移除分析子 Agent 和 summarize_data 工具。
+一个普通 CPU 可运行、没有 Agent 框架依赖的 Python 项目。由一个主 Agent 自主决定实验和工具顺序，确定性程序完成拟合、推演、残差诊断、验证和归档。旧规则提供八个工具，E4 增加显式 `save_draft`；可额外启用隔离的 `run_code`，让主 Agent 编写 Python 分析代码；已移除分析子 Agent 和 summarize_data 工具。
 
-这是开发原型：DeepSeek 外部 API 不满足正式比赛的模型和外网限制，也没有连接官方环境。未来只需替换 `environment.py` 的观测适配和 `model.py` 的模型适配，并按正式协议调整提交状态编码。
+这是开发原型：现已在本地接入 `shore-contest-starter-v15` 的六个公开开发世界，同时保留原七个世界。外部模型 API 不满足正式比赛的模型和外网限制；本次接入不等同于正式隐藏环境或官方提交协议接入。
+
+## 旧版 / 新版物理世界
+
+工作目录继续使用 `physics_discovery`，启动命令不变：
+
+```bash
+.venv/bin/python -m shore_agent.web --port 8765
+```
+
+在 [本地研究台](http://127.0.0.1:8765) 顶部切换「新版 · v15」与「旧版」。新版提供六个公开开发世界，旧版保留七个原型世界；历史会话和回收站均显示版本，查看历史时自动切到对应版本。首次打开默认新版。没有版本标记的历史档案仍按旧版解释，原有配置文件和 CLI 默认不变。
+
+最初接入只改变环境和模型适配。E4 在此基础上加入新预算、截止保护与显式草稿工具，保留表达式、拟合和数据历史策略。当前服务器使用本地 Qwen，关闭思考；云端配置仍可用于历史设置复现。新版世界复用 v15 的真实力场、固定步长积分、可见背景、首光、合法投放范围和噪声尺度；源码快照存于 `shore_v15/vendor`，无需切换到 starter 目录运行。实际公式只在观测子进程和结束后的评测中使用，不进入 Agent 任务包。
+
+为适配原 Agent 的 `mass` / `charge` 工具字段，新版世界 1、2、4 中 `mass` 对应 v15 的 `p2`，`charge` 对应 `p1`，默认均为 1、范围均为 [0.5, 2]；世界 3、5、6 保留 `mass`，范围 [0.5, 4]。原工具批次中每枚探针对应一次独立 v15 实验，因此同批探针可使用不同源控制值；这与标准 Console 的单次 launch 共享 `p1` 不同。映射与合法范围会写入任务包，Agent 仍通过原有工具操作。
+
+规则由 `environment.ruleset` 单独标记：未标记及 `e3` 保留 100 能量、3600 秒；`e4` 固定 10 能量、300 秒、位置与速度噪声、关闭思考、每调用最多 4096 输出 tokens。E4 只支持新版六世界；旧版历史仍可查看。节约分按对应规则预算计算。候选仍用现有 Agent 数值工具推演，独立评测仍是本地协议，不代表官方成绩或正式 SDK 兼容。
+
+命令行可以明确指定新版；初始化只读取首光，不调用模型：
+
+```bash
+.venv/bin/python -m shore_agent.cli init --world-set v15 --world world_1 --run-dir runs/v15-first-light
+.venv/bin/python -m shore_agent.cli run --world-set v15 --world world_6 --run-dir runs/v15-world6
+# 原七个世界
+.venv/bin/python -m shore_agent.cli init --world-set legacy --world world_7 --run-dir runs/legacy-first-light
+```
+
+新版档案使用 `environment.world_set="v15"` 和 `physics_version="shore_v15"`；旧版使用 `legacy`（或无标记）及原来的 v1–v4。下文关于七世界和 v4 的实验说明保留为旧版背景。
+
+## E3 / E4 服务器实验
+
+[E3](experiments/E3/README.md) 归档了规则修改前的三个服务器批次（两个 27B 批次、一个 122B 批次，18 次探索），保留原 run ID、原始结果及源码快照。E4 按顺序只实施：统一规则；截止保护与模型显式草稿；推理服务 prefix cache、图执行与每卡单活跃世界。没有压缩历史，也没有迁移正式 SDK。
+
+E4 使用四个本地 Qwen3.8-27B 实例，六世界各一次全新探索，排队和模型预热不计入 mission 的 300 秒，提交后的独立评测单独计时。截止前有效的草稿可封存；没有有效提交的世界不会生成得分。没有三轮限制，也不自动重试整场实验。35B 权重不完整；122B 的两张卡已转为两个 27B 实例，前端明确显示这两个模型未部署。
+
+启动与复现见[服务器部署说明](deployment/README.md)。[前端实验总览](http://127.0.0.1:8765/baselines)分别显示 E3 和 E4，列出每次探索/评测/总耗时、每轮平均输出及单次最大输出。
 
 ## 实验与迭代
 
@@ -15,10 +50,30 @@
 | E2 R02 | 普通脚本入口、自动NumPy转换、精简结果返回及按字段读取 | 固定high，仅重测修改后的代码组，世界3/4/5各5次，共15次 | 高精度15/15；代码未成功调用比例20.6%→11.9%，返回消息中位大小减少约72% | [报告](experiments/E2/R02.md) · 实现`7fc4e94` / 结果`13a063e` |
 | E2 R03 | inputs可省略；实际字段/形状提示、按编号读取和显式时间对齐 | 工程回归、真实容器与HTTP接口检查；尚未运行新探索 | 731项测试通过，尚无新探索成功率 | [迭代记录](experiments/E2/R03.md) |
 | E2 R04 | 删除call_back，以当前会话文件路径统一浏览、读取和代码输入 | 完整回归及真实Docker文件读取；未新增真实探索 | 748项测试通过；历史独立会话不开放 | [迭代记录](experiments/E2/R04.md) |
+| v15 / Qwen baseline | 接入六个 v15 世界和 Qwen，科学探索核心不变 | Qwen3.8-27B，关闭思考，六世界各一次真实探索 | 已完成：4/6提交并评测，2/6未完成；仅世界2达到RMSE<1e-6 | [最终分析](experiments/v15-qwen38-nothink-baseline-20261107-r02/analysis.md) · [逐界报告](experiments/v15-qwen38-nothink-baseline-20261107-r02/report.md) |
 
-高精度指完整独立隐藏轨迹评测的位置RMSE<1e-6。R01的额度恢复补跑仍属于同一轮；R02误排的原工具组尝试单独保留，不计入15次主结果。R01与R02是跨批次比较，且简化后允许纯print脚本正常执行，不能把指标变化直接解释为推理能力提升。完整协议、耗时、用量和失败案例见各轮报告。
+上述 E1/E2 高精度指完整独立隐藏轨迹评测的位置RMSE<1e-6。E2 R01的额度恢复补跑仍属于同一轮；E2 R02误排的原工具组尝试单独保留，不计入15次主结果。E2 R01与R02是跨批次比较，且简化后允许纯print脚本正常执行，不能把指标变化直接解释为推理能力提升。完整协议、耗时、用量和失败案例见各轮报告。
 
 [E2轮次索引](experiments/E2/README.md)汇总general code迭代；更早的五世界扩展、观测来源、时间项及七世界工程改动可从[世界与版本说明](docs/worlds.md)、[初期五世界报告](docs/five-worlds-results.md)和[experiments目录](experiments/)追溯。历史会话ID与JSON中的旧路径保留为原始证据，目录迁移映射见[总记录](experiments/experiment.md)。
+
+### v15 / Qwen 六世界 baseline（已完成）
+
+早期云 API 批次为 `v15-qwen38-nothink-baseline-20261107-r02`：Qwen3.8-27B、`thinking=false`、无噪声、seed=42，六个世界各启动一次全新自主探索，最多三个并行。每世界仍为 100 能量、60 分钟、5M 总 token、65536 单次输出上限，代码工具关闭；失败不自动补跑。之前开启思考的 R01 已按用户要求中断并保留，不混入本次六界结果；此处 R01/R02 仅为 v15 baseline 批次，不改变 E2 编号。
+
+六界已全部结束：世界1、2、4、5提交并完成独立评测，世界3因下一次模型请求的 token 预算不足结束，世界6以HTTP 400结束。仅世界2的完整评测位置RMSE低于1e-6；世界1漏软化项，世界4衰减结构错误，世界5漏非线性与方向差异。共170次模型请求、12,031,490个API已返回tokens，三并行历时约12分30秒。每世界仅一次试验，不代表稳定成功率；分数、误差和证据见[最终分析](experiments/v15-qwen38-nothink-baseline-20261107-r02/analysis.md)。
+
+在 `physics_discovery` 下复现相同设置，输出目录和对应 `runs/` 目录必须尚不存在：
+
+```bash
+.venv/bin/python benchmark_v15.py \
+  --config config.qwen.example.json --model qwen3.8-27b \
+  --no-thinking --workers 3 --ask-key \
+  --output experiments/v15-qwen38-nothink-reproduction-01
+```
+
+`--ask-key` 隐藏输入密钥；也可提前设置 `DASHSCOPE_API_KEY` 后省略该参数。密钥只经 stdin 传入工作进程，不写入参数、档案或报告。`--no-thinking` 必须显式保留：驱动为兼容旧批次默认启用思考，即使 Qwen 示例或本机网页配置已关闭思考。
+
+每次探索保存在 `runs/<输出目录名>-world_N`，可在本地网页查看。编排器运行时更新输出目录的 `summary.json` 和 `report.md`，本轮最终数据已经归档；完整设置与源码哈希在 `manifest.json`。仅 accepted 提交进入独立评测，使用全部 v15 固定案例，仍按本地 100 能量口径计分。Tokens 只统计 API 已返回的 usage；超时或失败请求可能未返回用量，不代表没有消耗。未提交的两个世界没有评测分数，不能记作零RMSE。
 
 ## 快速开始
 
@@ -39,13 +94,23 @@ python -m pytest -q
 
 ### 在网页中运行探索
 
+本机网页已配置阿里云百炼，支持选择 **Qwen3.8-27B**、**Qwen3.6-35B-A3B**、**Qwen3.5-122B-A10B**，默认 Qwen3.8-27B，当前默认关闭思考（`thinking=false`）。网页启动时自动读取不含密钥的 `config.local.web.json`；`config.qwen.example.json` 同样关闭思考，可复制为本机配置。显式 `--config` 优先于本机配置；原 `config.example.json` 保留 DeepSeek 和 `thinking=true`，历史会话仍显示实际使用的模型及思考设置。
+
+密钥只保存在运行进程内。可在网页输入，或启动时隐藏输入并供本次服务使用：
+
+```bash
+.venv/bin/python -m shore_agent.web --port 8765 --prompt-api-key
+```
+
+Qwen 通过百炼 OpenAI 兼容接口调用，保留思考开关，使用 `enable_thinking` 和流式响应；完整接收思考、工具调用与用量后交给原 Agent。Qwen 不发送 DeepSeek 的 low/high/max 参数，因此页面隐藏该设置。三个模型的单次输出上限分别为 131072、65536、65536，默认仍为 65536。模型、接口或预算错误会明确失败，不自动改用其他模型。接口依据：[思考模式](https://help.aliyun.com/zh/model-studio/deep-thinking)、[API Key 与地域](https://help.aliyun.com/zh/model-studio/get-api-key)。
+
 在项目目录运行：
 
 ```bash
 .venv/bin/python -m shore_agent.web --port 8765
 ```
 
-打开 [彼岸研究台](http://127.0.0.1:8765)，选择世界 01–07、输入 DeepSeek API Key，点击「开始探索」。网页会启动真实的主 Agent，持续展示研究进展、探针轨迹、候选规律和验证结果；成功提交后自动做对应世界的独立评测。可中途停止、重看已有运行、删除或恢复历史会话并下载公开结果 JSON。密钥仅用于本次进程运行，不写入配置、日志或浏览器存储。使用服务启动时的 `DEEPSEEK_API_KEY` 环境变量时，网页可留空密钥。
+打开 [彼岸研究台](http://127.0.0.1:8765)，选择世界版本、世界编号和模型，输入对应服务的 API Key，点击「开始探索」。网页会启动真实的主 Agent，持续展示研究进展、探针轨迹、候选规律和验证结果；成功提交后自动做对应世界的独立评测。可中途停止、重看已有运行、删除或恢复历史会话并下载公开结果 JSON。密钥仅用于本次进程运行，不写入配置、日志或浏览器存储。服务启动时已配置 `DASHSCOPE_API_KEY`（Qwen）或 `DEEPSEEK_API_KEY`（原 DeepSeek 配置）时，网页可留空密钥。
 
 这是一套本机网页与 Python 服务：Python/SciPy 负责真实拟合和模拟，启动后保持终端运行即可。详细操作和运行边界见 [网页使用说明](docs/web.md)。
 
@@ -139,6 +204,8 @@ tests/                        数值、资源、隔离及模型协议测试
 日志不包含密钥和 Authorization header。`reasoning_content` 为遵循 API 协议保存和回传，终端只展示进展 `content` 与工具状态。消息历史不做有损压缩；总 token 预算触尽时如实停止。HTTP 失败且服务端未返回用量时，按请求的保守额度预留 token，不能将其当成实际计费量。
 
 ## 配置与资源
+
+下述默认数值说明旧版/E3 配置；E4 的强制覆盖以文首及 `config.e4.example.json` 为准。
 
 `config.example.json` 可以设置模型、base_url、思考模式/强度、超时、重试、单次输出及总 token 上限。主 Agent 不再限制模型调用总次数或对话轮次，旧配置中的 `max_calls`、`main_max_calls`、`max_turns`、`max_rounds` 不再约束新运行；有效调用限额记录为 `null`。每次输出默认最多 65,536 token（含思考），总预算 5,000,000 token，单次请求超时 600 秒。每次 HTTP 尝试包括重试仍计入调用统计，实际 token 用量由服务端 usage 记录，未知用量另外保守预留。总 token、现实时间、单次重试次数及连续三次无工具回复的限制继续生效；未成功提交时如实结束为未完成。
 

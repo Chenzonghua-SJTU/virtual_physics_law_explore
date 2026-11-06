@@ -27,6 +27,12 @@ config.local*.json
 /runs/
 *.log
 
+# Server process state and locally installed test dependencies
+/deployment/*.launch.json
+/deployment/*upload-manifest.json
+/deployment/history-upload-verified.json
+/deployment/test_deps/
+
 # Editor and operating-system metadata
 .DS_Store
 .idea/

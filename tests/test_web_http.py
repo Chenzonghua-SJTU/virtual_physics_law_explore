@@ -124,6 +124,58 @@ def assert_error(result, status, code):
     assert 'Access-Control-Allow-Origin' not in headers
 
 
+def test_local_baseline_summary_projects_only_result_fields(local_server, monkeypatch, tmp_path):
+    import shore_agent.web as web
+    monkeypatch.setattr(web, 'PROJECT', tmp_path)
+    directory = tmp_path / 'experiments' / 'v15-local-test'
+    directory.mkdir(parents=True)
+    (directory / 'summary.json').write_text(json.dumps({
+        'experiment_id': 'v15-local-test', 'status': 'running', 'updated_at': 'now',
+        'configuration': {'model': {'model': 'qwen3.8-27b', 'thinking': False,
+                                   'deployment': 'local', 'api_key': 'not-for-browser'}},
+        'worlds': [{'world_id': 'world_1', 'run_id': 'test-world_1', 'status': 'running',
+                    'evaluation_complete': False, 'evaluation_score': None,
+                    'physical_explanation': 'not-in-overview'}]}))
+    server, _ = local_server
+    status, _, body = request(server, path='/api/baselines')
+    assert status == 200
+    batch = json.loads(body)['batches'][0]
+    assert batch['thinking'] is False
+    assert batch['worlds'][0]['evaluation_score'] is None
+    assert b'not-for-browser' not in body
+    assert b'not-in-overview' not in body
+
+
+def test_e3_derived_summary_preferred_and_e4_kept_separate(local_server, monkeypatch, tmp_path):
+    import shore_agent.web as web
+    monkeypatch.setattr(web, 'PROJECT', tmp_path)
+    base = {'experiment_id': 'v15-local-original', 'status': 'completed', 'updated_at': 'now',
+            'configuration': {'environment': {'wall_seconds': 3600},
+                              'model': {'model': 'qwen3.8-27b', 'thinking': False, 'deployment': 'local'}},
+            'worlds': [{'world_id': 'world_1', 'run_id': 'original-world_1', 'status': 'submitted'}]}
+    old = tmp_path / 'experiments/v15-local-original/summary.json'
+    old.parent.mkdir(parents=True); old.write_text(json.dumps(base))
+    derived = copy.deepcopy(base)
+    derived['worlds'][0]['exploration_seconds'] = 297
+    archived = tmp_path / 'experiments/E3/R01/summary.json'
+    archived.parent.mkdir(parents=True); archived.write_text(json.dumps(derived))
+    new = copy.deepcopy(base)
+    new['experiment_id'] = 'new-e4'
+    new['configuration']['environment'].update(ruleset='e4', noise=True, wall_seconds=300)
+    new['worlds'][0]['run_id'] = 'e4-world_1'
+    e4 = tmp_path / 'experiments/E4/R01/summary.json'
+    e4.parent.mkdir(parents=True); e4.write_text(json.dumps(new))
+    server, _ = local_server
+    status, _, body = request(server, path='/api/baselines')
+    assert status == 200
+    batches = {b['experiment_group']: b for b in json.loads(body)['batches']}
+    assert set(batches) == {'E3', 'E4'}
+    assert batches['E3']['worlds'][0]['exploration_seconds'] == 297
+    assert batches['E3']['worlds'][0]['run_id'] == 'original-world_1'
+    assert batches['E4']['energy_budget'] == 10 and batches['E4']['wall_seconds'] == 300
+    assert old.read_text() == json.dumps(base)
+
+
 def test_bootstrap_listing_and_start(local_server, monkeypatch):
     server, manager = local_server
     secret = 'synthetic-test-secret-never-a-real-key'
@@ -273,11 +325,21 @@ def test_fetch_metadata_rejects_cross_site(local_server, method):
 
 @pytest.mark.parametrize('payload,code', [(b'{broken', 'invalid_json'), (b'\xff', 'invalid_json'),
                                          (b'[]', 'json_object_required'), (b'null', 'json_object_required'),
-                                         (b'{"seed":NaN}', 'invalid_json'),
-                                         (b'[' * 2000 + b']' * 2000, 'invalid_json')])
+                                         (b'{"seed":NaN}', 'invalid_json')])
 def test_bad_json_has_structured_errors(local_server, payload, code):
     server, manager = local_server
     assert_error(request(server, 'POST', '/api/runs', body=payload), 400, code)
+    assert manager.started == []
+
+
+def test_deep_json_array_is_rejected_across_python_versions(local_server):
+    server, manager = local_server
+    status, headers, body = request(server, 'POST', '/api/runs', body=b'[' * 2000 + b']' * 2000)
+    assert status == 400
+    # Parser recursion limits differ between CPython builds. If parsing succeeds,
+    # the object-only boundary still rejects this array without starting a job.
+    assert json.loads(body)['error'] in {'invalid_json', 'json_object_required'}
+    assert headers['Content-Type'].startswith('application/json')
     assert manager.started == []
 
 
