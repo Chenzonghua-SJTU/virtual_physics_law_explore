@@ -1,6 +1,7 @@
 """Synthetic transport checks; no model experiments or scientific answers."""
 import copy
 import json
+from pathlib import Path
 
 import httpx
 import pytest
@@ -63,6 +64,20 @@ def client_for(directory, runtime, responses):
         'reasoning_protocol': 'qwen', 'thinking': False, 'max_tokens_per_call': 4096}, directory,
         remaining_seconds=lambda: max(0, runtime.remaining - 5), transport=httpx.MockTransport(handler))
     return client, requests
+
+
+def test_e3_guidance_in_e5_preserves_original_system_prompt_and_hard_limits(tmp_path):
+    runtime = Runtime()
+    client, requests = client_for(tmp_path, runtime, [(tool_message(), 'tool_calls', 5, 40)])
+    try:
+        result = Agent(client, runtime, tmp_path, {'guidance_profile': 'e3'}).run()
+    finally:
+        client.close()
+    original = (Path(__file__).parents[1] / 'shore_agent/prompts/main.txt').read_text()
+    assert requests[0]['messages'][0]['content'] == original
+    assert requests[0]['max_tokens'] == 4096
+    assert requests[0]['chat_template_kwargs']['enable_thinking'] is False
+    assert result['status'] == 'submitted'
 
 
 @pytest.mark.parametrize('arguments', ['{}', '{"partial":'])

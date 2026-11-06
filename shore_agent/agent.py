@@ -22,6 +22,9 @@ class Agent:
         self.run_dir = Path(run_dir)
         self.run_dir.mkdir(parents=True, exist_ok=True)
         self.config = config
+        self.guidance_profile = config.get('guidance_profile', 'e5')
+        if self.guidance_profile not in ('e3', 'e5'):
+            raise ValueError('guidance_profile must be e3 or e5')
         self.messages = []
         self.last_budget = {}
         self.submission = None
@@ -96,7 +99,7 @@ class Agent:
                        '未明确给出claims的候选不会自动成为草稿。剩余时间少时优先save_draft或submit，'
                        '不要等待长篇说明。系统在最后30秒优先封存已保存配对；没有草稿时仍由你决定提交，'
                        '截止时没有有效配对会如实记为未完成。')
-        elif self.ruleset == 'e5':
+        elif self.ruleset == 'e5' and self.guidance_profile == 'e5':
             prompt += '\n\n' + (Path(__file__).parent / 'prompts' / 'e5.txt').read_text(encoding='utf-8')
         if getattr(self.runtime, 'code_enabled', False):
             prompt = prompt.replace('不可访问任意文件、Shell、网络、源码或任意 Python。',

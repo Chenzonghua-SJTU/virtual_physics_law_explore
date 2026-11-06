@@ -260,6 +260,66 @@ class ToolRuntime:
             coverage['validation'] = summarize(validation)
         return coverage
 
+    def _residual_scale_check(self, probes, errors):
+        """Soft scale diagnostic from acquired readouts and their existing residuals."""
+        threshold, floor_fraction = 1e-3, .01
+        check = {'status': 'unavailable', 'relative_warning_threshold': threshold,
+                 'public_reference_floor_fraction': floor_fraction,
+                 'warning': None, 'metrics': {},
+                 'interpretation': (
+                     'Engineering diagnostic only, not an official threshold or a submission condition. '
+                     'A relative residual above 0.1% of the reported scale in explicitly noise-free readouts '
+                     'merits checking fit convergence, model structure and observed-input interpolation. '
+                     'A smaller residual does not prove the law correct or cover untested conditions. '
+                     'Observed RMS uses equal trajectory weights and squared Euclidean vector norms; '
+                     'scale=max(observed_RMS, 0.01*published_reference).')}
+
+        def finite(value, *, positive=False):
+            return (type(value) in (int, float) and math.isfinite(value)
+                    and (value > 0 if positive else value >= 0))
+
+        noise = [self.task.get(name) for name in ('position_noise_sigma', 'velocity_noise_sigma')]
+        if any(not finite(value) for value in noise):
+            check['reason'] = 'noise_metadata_missing_or_invalid'
+            return check
+        if any(value != 0 for value in noise):
+            check.update(status='not_applicable', reason='requires_explicitly_noise_free_readouts')
+            return check
+        overall = errors.get('overall', {}) if isinstance(errors, dict) else {}
+        if not isinstance(overall, dict):
+            overall = {}
+        for name, observed_key, reference_key in (
+                ('position', 'r_obs', 'reference_length'), ('velocity', 'v_obs', 'velocity_limit')):
+            metric = {'status': 'unavailable', 'public_reference_field': reference_key, 'warning': None}
+            check['metrics'][name] = metric
+            reference, rmse = self.task.get(reference_key), overall.get(name + '_rmse')
+            if not finite(reference, positive=True) or not finite(rmse):
+                metric['reason'] = 'reference_or_residual_missing_or_invalid'
+                continue
+            try:
+                energies = []
+                for probe in probes:
+                    array = np.asarray(probe[observed_key], dtype=float)
+                    if array.ndim != 2 or array.shape[1] != 2 or not len(array) or not np.isfinite(array).all():
+                        raise ValueError('invalid_readouts')
+                    with np.errstate(over='ignore', invalid='ignore'):
+                        energies.append(float(np.mean(np.sum(array ** 2, axis=1))))
+                observed_rms = math.sqrt(sum(energies) / len(energies))
+                scale = max(observed_rms, floor_fraction * reference)
+                relative = rmse / scale
+                if not all(math.isfinite(value) for value in (observed_rms, scale, relative)):
+                    raise ValueError('nonfinite_scale')
+            except (KeyError, TypeError, ValueError, OverflowError, ZeroDivisionError):
+                metric['reason'] = 'readouts_or_scale_missing_or_invalid'
+                continue
+            metric.update(status='available', observed_vector_rms=observed_rms, public_reference=reference,
+                          normalization_scale=scale, rmse=rmse, relative_rmse=relative,
+                          warning=relative > threshold)
+        flags = [metric['warning'] for metric in check['metrics'].values() if metric['status'] == 'available']
+        check['status'] = 'available' if len(flags) == 2 else 'partial' if flags else 'unavailable'
+        check['warning'] = any(flags) if len(flags) == 2 else True if any(flags) else None
+        return check
+
     def fit_law_and_rollout(self, law_spec, parameter_spec, train_probe_ids):
         probes = self._probes(train_probe_ids)
         if not self.known_bodies:
@@ -285,6 +345,7 @@ class ToolRuntime:
             record.update(body_context=body_inputs, body_input_protocol='instantaneous_visible_state')
         if self.ruleset == 'e5':
             record['property_coverage'] = self._property_coverage(probes)
+            record['residual_scale_check'] = self._residual_scale_check(probes, record.get('errors'))
         self.store.add('law', record, rid)
         return preview(record)
 
@@ -314,6 +375,7 @@ class ToolRuntime:
             data['warnings'].append('Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty.')
         if self.ruleset == 'e5':
             data['property_coverage'] = self._property_coverage(self._probes(law['train_probe_ids']), probes)
+            data['residual_scale_check'] = self._residual_scale_check(probes, data['errors'])
         self.store.add('validation', data, rid)
         return preview(data)
 
