@@ -1,5 +1,5 @@
 'use strict';
-const states = {queued:'排队等待',running:'正在探索',submitted:'已提交',error:'错误',stopped:'已停止',incomplete:'未完成',completed:'已结束'};
+const states = {queued:'排队等待',running:'正在探索',evaluating:'交卷后评测',submitted:'已提交',error:'错误',stopped:'已停止',incomplete:'未完成',completed:'已结束'};
 function element(tag, text, cls) {
   const el=document.createElement(tag);
   if(text!==undefined) el.textContent=text;
@@ -8,7 +8,7 @@ function element(tag, text, cls) {
 }
 const number=(value,digits=2)=>typeof value==='number'&&Number.isFinite(value)?value.toFixed(digits):'—';
 const duration=(seconds)=>typeof seconds==='number'&&Number.isFinite(seconds)?`${Math.floor(Math.round(seconds)/60)}分${Math.round(seconds)%60}秒`:'—';
-let latestBatches=[];
+let latestBatches=[], lastRefreshed=null;
 function render(batch) {
   const section=element('section');
   const repeat=batch.id.endsWith('r02')?'R02':'R01';
@@ -23,7 +23,7 @@ function render(batch) {
   for(const row of batch.worlds){
     const tr=element('tr'), name=element('td'), link=element('a',row.world_id.replace('world_','世界 0'));
     link.href='/?run='+encodeURIComponent(row.run_id);name.append(link);tr.append(name);
-    const status=element('td',states[row.status]||row.status,row.status==='submitted'?'submitted':(['running','queued'].includes(row.status)?'running':'failed'));
+    const status=element('td',states[row.status]||row.status,row.status==='submitted'?'submitted':(['running','queued','evaluating'].includes(row.status)?'running':'failed'));
     if(row.reason&&row.status!=='submitted') status.append(element('span',row.reason,'reason'));
     tr.append(status);
     const rmse=row.evaluation_complete?row.independent_rmse?.position_rmse:null;
@@ -42,15 +42,15 @@ function renderAll(){
   const selected=document.getElementById('experiment-group').value;
   const sorted=latestBatches.filter(b=>selected==='all'||b.experiment_group===selected).sort((a,b)=>a.experiment_group!==b.experiment_group?(a.experiment_group==='E4'?-1:1):a.id.localeCompare(b.id));
   document.getElementById('batches').replaceChildren(...sorted.map(render));
+  const rows=sorted.flatMap(b=>b.worlds), completed=rows.filter(r=>r.evaluation_complete).length;
+  document.getElementById('connection').textContent=`当前筛选已完成独立评测 ${completed} / ${rows.length} · 更新于 ${lastRefreshed??'—'} · 每 5 秒刷新`;
 }
 document.getElementById('experiment-group').addEventListener('change',renderAll);
 async function refresh(){
   try{
     const response=await fetch('/api/baselines');if(!response.ok)throw Error('HTTP '+response.status);
     const data=await response.json();
-    latestBatches=data.batches;renderAll();
-    const rows=data.batches.flatMap(b=>b.worlds), completed=rows.filter(r=>r.evaluation_complete).length;
-    document.getElementById('connection').textContent=`已完成独立评测 ${completed} / ${rows.length} · 更新于 ${new Date().toLocaleTimeString()} · 每 5 秒刷新`;
+    latestBatches=data.batches;lastRefreshed=new Date().toLocaleTimeString();renderAll();
   }catch(e){document.getElementById('connection').textContent='连接暂时中断，保留上次结果，正在重试…';}
   setTimeout(refresh,5000);
 }
