@@ -158,7 +158,7 @@ def test_backend_stage_failure_retains_previously_checked_candidates_without_ret
             raise RuntimeError('backend temporarily unavailable')
     result = run_search([probe()], time_budget_seconds=30, model_factory=BrokenSearch)
     assert len(attempts) == 1
-    assert result['status'] == 'partial_error'
+    assert result['status'] == 'partial'
     assert result['search_stages'][-1]['status'] == 'error'
     assert result['candidates']
     assert all(c['short_rollout_check']['status'] == 'passed' for c in result['candidates'])

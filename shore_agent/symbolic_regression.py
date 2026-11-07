@@ -877,5 +877,5 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             if name not in report['search_axes_completed']: report['search_axes_completed'].append(name)
         snapshot('running')
     snapshot("timeout" if time.monotonic() >= deadline-final_reserve else
-             "partial_error" if report.get('backend_error') else "completed")
+             "partial" if report.get('backend_error') else "completed")
     return report
