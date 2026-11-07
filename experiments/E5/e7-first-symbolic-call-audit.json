@@ -1,0 +1,495 @@
+{
+  "kind": "first_live_symbolic_tool_call_read_only_audit",
+  "created_at": "2026-11-07T04:21:53.645728+00:00",
+  "run_id": "e7-qwen38-pysr-on-20261107-r02-world_3",
+  "search_id": "sr_d5c61f47a008",
+  "checks": {
+    "all_search_probes_current_session": true,
+    "both_axes_marked_actual_search_completed": true,
+    "both_axes_nonzero_search_time": true,
+    "tool_wall_within_requested_budget": true,
+    "fit_saved_all_search_provenance": true,
+    "validation_excludes_search_and_fit": true,
+    "fresh_probe_ids_created_after_search": [
+      "probe_0009",
+      "probe_0010"
+    ],
+    "fresh_probes_in_validation": true,
+    "candidates": [
+      {
+        "index": 0,
+        "dsl_valid": true,
+        "parameter_count": 5,
+        "component_sources": [
+          "pysr",
+          "constant_initialization"
+        ]
+      },
+      {
+        "index": 1,
+        "dsl_valid": true,
+        "parameter_count": 2,
+        "component_sources": [
+          "constant_initialization",
+          "constant_initialization"
+        ]
+      },
+      {
+        "index": 2,
+        "dsl_valid": true,
+        "parameter_count": 4,
+        "component_sources": [
+          "pysr",
+          "constant_initialization"
+        ]
+      }
+    ]
+  },
+  "search_result": {
+    "status": "timeout",
+    "backend": "pysr",
+    "target": "velocity_difference_acceleration",
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy"
+    ],
+    "samples_per_probe": {
+      "probe_0003": 19,
+      "probe_0004": 19,
+      "probe_0006": 19,
+      "probe_0007": 38,
+      "probe_0008": 38
+    },
+    "dropped_constant_features": [
+      "mass"
+    ],
+    "omitted_incomplete_properties": [],
+    "search_configuration": {
+      "maxsize": 20,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "random_state": 42,
+      "warm_start": false,
+      "parallelism": "multithreading"
+    },
+    "warnings": [
+      "Search loss is against velocity-difference acceleration, not independent trajectory prediction.",
+      "All selected probes were used for structure discovery and cannot serve as independent validation.",
+      "Constant or absent properties do not establish absence of physical dependence.",
+      "This version searches state and public probe properties only; body-set expressions are not supported.",
+      "State-only dependence on t does not establish explicit physical time dependence; it may substitute for unmodeled body motion.",
+      "A fixed seed with multithreaded search does not guarantee bitwise reproducibility."
+    ],
+    "axis_search_seconds": [
+      13.046477360650897,
+      12.990827048197389
+    ],
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "rejected_candidate_pairs": 38,
+    "elapsed_seconds": 26.236553011462092,
+    "search_elapsed_seconds": 26.227647369727492,
+    "service_elapsed_seconds": 26.236553011462092,
+    "requested_time_budget_seconds": 30,
+    "worker_search_budget_seconds": 27.99906099960208,
+    "cleanup_reserve_seconds": 2.0,
+    "service_budget_exceeded": false,
+    "worker_reap_pending": false,
+    "cleanup_pending": false,
+    "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing",
+    "used_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "(x - c1 * (-y + cos((x + y * cos(x)) * c2) * c3)) * c4",
+          "ay": "c5"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.5762429830089749
+          },
+          {
+            "name": "c2",
+            "initial": 0.889085564267521
+          },
+          {
+            "name": "c3",
+            "initial": 0.010255946350889772
+          },
+          {
+            "name": "c4",
+            "initial": -0.05988972555382605
+          },
+          {
+            "name": "c5",
+            "initial": -0.0663041592336303
+          }
+        ],
+        "complexity": 20,
+        "acceleration_search_mse_by_axis": [
+          6.852574469010601e-09,
+          0.025043542664778092
+        ],
+        "acceleration_search_mse": 0.025043549517352562,
+        "normalized_acceleration_search_loss": 0.4253352642726886,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "constant_initialization"
+        ],
+        "selection_role": "lowest_search_loss",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "c1",
+          "ay": "c2"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.036972085707608154
+          },
+          {
+            "name": "c2",
+            "initial": -0.0663041592336303
+          }
+        ],
+        "complexity": 2,
+        "acceleration_search_mse_by_axis": [
+          0.012922622693291568,
+          0.025043542664778092
+        ],
+        "acceleration_search_mse": 0.03796616535806966,
+        "normalized_acceleration_search_loss": 0.8775051637245992,
+        "dsl_valid": true,
+        "component_sources": [
+          "constant_initialization",
+          "constant_initialization"
+        ],
+        "selection_role": "lowest_complexity",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "(x - (-c1 * y + c2 * abs(cos(x)))) * c3",
+          "ay": "c4"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.5759178619331823
+          },
+          {
+            "name": "c2",
+            "initial": 0.0040871501221811275
+          },
+          {
+            "name": "c3",
+            "initial": -0.0598992354178202
+          },
+          {
+            "name": "c4",
+            "initial": -0.0663041592336303
+          }
+        ],
+        "complexity": 14,
+        "acceleration_search_mse_by_axis": [
+          3.2062229882288467e-08,
+          0.025043542664778092
+        ],
+        "acceleration_search_mse": 0.025043574727007974,
+        "normalized_acceleration_search_loss": 0.4253361463733015,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "constant_initialization"
+        ],
+        "selection_role": "middle_complexity",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      }
+    ],
+    "tool_client_wall_seconds": 26.239976400509477,
+    "search_id": "sr_d5c61f47a008",
+    "discovery_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "effective_time_budget_seconds": 30.0,
+    "wall_seconds": 26.243194775655866,
+    "body_positions_included": false
+  },
+  "tool_call": {
+    "arguments": {
+      "train_probe_ids": [
+        "probe_0003",
+        "probe_0004",
+        "probe_0006",
+        "probe_0007",
+        "probe_0008"
+      ],
+      "time_budget_seconds": 30
+    },
+    "ok": true,
+    "error": null,
+    "budget_after": {
+      "energy_remaining": 4,
+      "observations_remaining": 19,
+      "wall_seconds_remaining": 186.1766671668738,
+      "session_ended": false
+    },
+    "elapsed_seconds": 26.247097538784146
+  },
+  "post_search_tool_sequence": [
+    {
+      "tool": "fit_law_and_rollout",
+      "arguments": {
+        "law_spec": {
+          "ax": "k1*x + k2*y",
+          "ay": "k2*x + k3*y"
+        },
+        "parameter_spec": [
+          {
+            "initial": -0.06,
+            "name": "k1"
+          },
+          {
+            "initial": 0.03,
+            "name": "k2"
+          },
+          {
+            "initial": -0.1,
+            "name": "k3"
+          }
+        ],
+        "train_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      "ok": true,
+      "error": null,
+      "elapsed_seconds": 0.7185079101473093
+    },
+    {
+      "tool": "insert_probe",
+      "arguments": {
+        "probes": [
+          {
+            "r0": [
+              1.0,
+              2.0
+            ],
+            "v0": [
+              0.3,
+              -0.2
+            ],
+            "properties": {
+              "mass": 2.0
+            }
+          },
+          {
+            "r0": [
+              -2.0,
+              1.5
+            ],
+            "v0": [
+              0.1,
+              0.2
+            ],
+            "properties": {
+              "mass": 0.5
+            }
+          }
+        ],
+        "dt": 0.1,
+        "n_samples": 21,
+        "t0": 0
+      },
+      "ok": true,
+      "error": null,
+      "elapsed_seconds": 0.061411766335368156
+    },
+    {
+      "tool": "validate_law",
+      "arguments": {
+        "law_id": "law_4",
+        "test_probe_ids": [
+          "probe_0009",
+          "probe_0010",
+          "probe_0001",
+          "probe_0002"
+        ]
+      },
+      "ok": true,
+      "error": null,
+      "elapsed_seconds": 0.021453605964779854
+    },
+    {
+      "tool": "save_draft",
+      "arguments": {
+        "claims": {
+          "dynamics_order": 2,
+          "hidden_matter": false,
+          "time_dependence": false
+        },
+        "law_id": "law_4",
+        "physical_explanation": "提交公式: ax = k1*x + k2*y, ay = k2*x + k3*y, 拟合参数 k1=-0.0600, k2=0.03464, k3=-0.1000 (对称矩阵 A=[[k1,k2],[k2,k3]])。\n\n物理含义: 探针所受加速度是其位置矢量的线性函数 a=A·r, 其中 A 为实对称常数矩阵(单位 local_length/local_time² 除以 local_length, 即 1/local_time²)。对角项 k1、k3 为负, 表示在 x、y 两方向都存在指向原点的回复(束缚)分量; 非对角项 k2 为正且对称, 表示坐标轴间存在耦合剪切。矩阵有正交特征方向: 特征值为负, 说明该场在各方向均为回复场, 原点是稳定平衡点, 探针做线性谐振(频率由 sqrt(-特征值) 给出)。这是由候选公式直接推导的性质, 前提是位置保持在场线性有效范围内。\n\n状态依赖: a 只依赖位置 (x,y), 与速度 (vx,vy) 无关(无耗散、无速度相关力), 在固定位置时不显式依赖时间 t, 也不依赖探针公开质量(见下)。因此动力学是二阶: 加速度由瞬时位置决定, 即 a=∂/∂r 的线性势。\n\n观测证据与实验:\n(1) 质量无关: 第一束光 probe_0001(质量1)与 probe_0005(质量3)同初态(1.5,0),(0,0.3), 差分加速度一致(约(-0.089,0.049)); 验证集 probe_0009(质量2)、probe_0010(质量0.5)在带初速度情况下仍被线性场预测到机器精度。说明加速度与探针质量无关, 即探针是试探质点, 受力不反作用于源。\n(2) 各向异性线性: 轴上控制探针给出 a(3,0)=(-0.18,0.10)、a(-3,0)=(0.18,-0.11)、a(0,3)=(0.10,-0.30)、a(0,-3)=(-0.10,0.29)、a(1.5,0)=(-0.09,0.05), 比值与线性外推一致, 且非对角耦合使 a_y 在 x 轴上非零, 由 probe_0007/probe_0008(20秒长轨迹)确定。\n(3) 拟合与独立验证: law_4 在 5 条训练轨迹(3/4/6/7/8)位置 RMSE~1e-8; 用未参与拟合的 probe_0009、probe_0010 及第一束光 probe_0001、probe_0002 做 validate_law(validation_5ba1117872f0), 位置 RMSE 1.1e-9、速度 RMSE 2.5e-10, 达到数值机器精度级, 覆盖非轴点、不同质量与初速度。\n(4) 排除的替代解释: 引力平方反比候选(law_1)与非距离相关单位向量求和候选(law_2)残差达 1e-1~1e-2, 远劣于线性场; PySR 纯状态符号回归在含质量/位置搜索下亦未找到优于常数矩阵的形式, 支持\"对称常数线性场\"结构而非逐天体 r^-2 叠加。\n\n关于可见天体与时间依赖: 9 个可见天体(N0–N8)在 t=0 近似均匀分布在半径约 2 的圆周上并持续运动。拟合的 a 不依赖天体瞬时位置——若为逐天体直接引力, a 应随天体移动而显著变化, 但 20 秒长轨迹探针仍满足常数线性场, 故观测支持\"作用等效为一个位置固定的线性潮汐/质量矩场\", 而该场的系数 k1,k2,k3 由天体群的质量二阶矩(潮汐张量)固定给出。这是物理假说: 由多极展开, 远场/对称分布的引力最低非平凡阶为线性潮汐场 a_ij∝∂²Φ/∂x_i∂x_j, 与 r 成比例且与探针质量无关, 与 A 对称、对角为负的束缚性质相符。此归因(天体质量矩 vs 其他位置固定源)在本实验的线性精度内不可唯一辨识。\n\ntime_dependence 判 false: 固定位置后, 加速度在 0–20 秒内不随 t 变化(线性场系数常数), 探针轨迹差异仅源于位置/初速度而非显式时间项。hidden_matter 判 false: 无需引入位置不可见的源即可解释全部观测; 可见天体群的质量分布足以作为该等效线性场的候选来源。\n\n适用范围与未检验区域: 公式在观测覆盖的位置(半径约 0.5–3)、速度(|v|≤0.3)与时间(0–20s)内成立到机器精度。未检验: 更大半径(近位置上限6)、更高速度(上限3)下线性是否仍严格成立、是否存在更高阶非线性项; 以及天体群配置若显著改变时 A 是否随之变化(需重新观测天体后检验)。低误差是拟合优度, 不证明机制唯一; 上节归因为质量矩潮汐场属可检验假说而非已被唯一证实的结论。"
+      },
+      "ok": true,
+      "error": null,
+      "elapsed_seconds": 0.02604040689766407
+    },
+    {
+      "tool": "submit",
+      "arguments": {
+        "claims": {
+          "dynamics_order": 2,
+          "hidden_matter": false,
+          "time_dependence": false
+        },
+        "law_id": "law_4",
+        "physical_explanation": "提交公式: ax = k1*x + k2*y, ay = k2*x + k3*y, 拟合参数 k1=-0.0600, k2=0.03464, k3=-0.1000 (对称矩阵 A=[[k1,k2],[k2,k3]])。\n\n物理含义: 探针所受加速度是其位置矢量的线性函数 a=A·r, 其中 A 为实对称常数矩阵(单位 local_length/local_time² 除以 local_length, 即 1/local_time²)。对角项 k1、k3 为负, 表示在 x、y 两方向都存在指向原点的回复(束缚)分量; 非对角项 k2 为正且对称, 表示坐标轴间存在耦合剪切。特征值为负, 说明该场在各方向均为回复场, 原点是稳定平衡点, 探针做线性谐振(频率由 sqrt(-特征值) 给出)。这是由候选公式直接推导的性质, 前提是位置保持在场线性有效范围内。\n\n状态依赖: a 只依赖位置 (x,y), 与速度 (vx,vy) 无关(无耗散、无速度相关力), 在固定位置时不显式依赖时间 t, 也不依赖探针公开质量(见下)。因此动力学是二阶: 加速度由瞬时位置决定, 等价于线性势的梯度。\n\n观测证据与实验:\n(1) 质量无关: 第一束光 probe_0001(质量1)与 probe_0005(质量3)同初态(1.5,0),(0,0.3), 差分加速度一致(约(-0.089,0.049)); 验证集 probe_0009(质量2)、probe_0010(质量0.5)在带初速度情况下仍被线性场预测到机器精度。说明加速度与探针质量无关, 探针是试探质点。\n(2) 各向异性线性: 轴上控制探针给出 a(3,0)=(-0.18,0.10)、a(-3,0)=(0.18,-0.11)、a(0,3)=(0.10,-0.30)、a(0,-3)=(-0.10,0.29)、a(1.5,0)=(-0.09,0.05), 比值与线性外推一致, 且非对角耦合使 a_y 在 x 轴上非零, 由 probe_0007/probe_0008(20秒长轨迹)确定。\n(3) 拟合与独立验证: law_4 在 5 条训练轨迹(3/4/6/7/8)位置 RMSE~1e-8; 用未参与拟合的 probe_0009、probe_0010 及第一束光 probe_0001、probe_0002 做 validate_law(validation_5ba1117872f0), 位置 RMSE 1.1e-9、速度 RMSE 2.5e-10, 达机器精度级, 覆盖非轴点、不同质量与初速度。\n(4) 排除的替代解释: 引力平方反比候选(law_1)与非距离相关单位向量求和候选(law_2)残差达 1e-1~1e-2, 远劣于线性场; PySR 纯状态符号回归未找到优于常数矩阵的形式, 支持对称常数线性场而非逐天体 r^-2 叠加。\n\n关于可见天体与时间依赖: 9 个可见天体(N0–N8)在 t=0 近似均匀分布在半径约 2 的圆周上并持续运动。拟合的 a 不依赖天体瞬时位置——若为逐天体直接引力, a 应随天体移动而显著变化, 但 20 秒长轨迹探针仍满足常数线性场, 故观测支持\"作用等效为一个位置固定的线性潮汐/质量矩场\", 系数 k1,k2,k3 由天体群的质量二阶矩(潮汐张量)给出。这是物理假说: 由多极展开, 对称分布引力的最低非平凡阶为线性潮汐场 a_ij∝∂²Φ/∂x_i∂x_j, 与 r 成比例、与探针质量无关, 与 A 对称、对角为负的束缚性质相符。此归因(天体质量矩 vs 其他位置固定源)在本实验的线性精度内不可唯一辨识。\n\ntime_dependence 判 false: 固定位置后, 加速度在 0–20 秒内不随 t 变化(系数常数), 轨迹差异仅源于位置/初速度而非显式时间项。hidden_matter 判 false: 无需引入位置不可见的源即可解释全部观测; 可见天体群的质量分布足以作为该等效线性场的候选来源。\n\n适用范围与未检验区域: 公式在观测覆盖的位置(半径约 0.5–3)、速度(|v|≤0.3)、时间(0–20s)内成立到机器精度。未检验: 更大半径(上限6)、更高速度(上限3)下线性是否严格成立及更高阶非线性项; 天体群配置显著改变时 A 是否随之变化(需重新观测天体后检验)。低误差是拟合优度, 不证明机制唯一; 上节潮汐场归因属可检验假说而非唯一证实的结论。"
+      },
+      "ok": true,
+      "error": null,
+      "elapsed_seconds": 0.026498110964894295
+    }
+  ],
+  "post_search_research_note": "PySR只找到过拟合/常数项,说明纯状态依赖不含全部信息——必须依赖天体位置。重新精确核算:在(1.5,0)处,a_x≈-0.09,a_y≈0.05。逐天体看单位向量:\n\nN0 (0,0): u=(-1,0)\nN1 (2,0): u=(1/3? no wait 探针在(1.5,0)所以向N1方向=(0.5,0)/0.5=(1,0)\n\nHmm 实际天体在t变化。让我用更聪明的实验:固定探针在(1.5,0)但不同t0?不行,t0=0是共享。用v0小、长时间,观察加速度随时间(=天体运动)的变化与天体位置关系。\n\n更直接:probe_0003从(1.5,0)出发a≈(-0.09,0.05)。probe_0005同位置mass=3, a≈(-0.09,0.05)基本相同→质量无关(测试过)。\n\nprobe_0007在(3,0): a≈(-0.18,0.10)约2倍。probe_0006在(-3,0): a≈(0.18,-0.11)。probe_0004在(0,3): a≈(0.10,-0.30)。\n\n(3,0): a∝(-1, 0.56)... 不对 (-0.18,0.10)。(-3,0): (0.18,-0.11)。所以a_x反号,x反号→a_x∝x(奇)。\n(0,3): a_y=-0.30. (0,-3)? probe_0008: a≈(-0.10,0.29)即a_y≈0.29>0. 所以a_y在y=3为-0.30,y=-3为+0.29→a_y∝-y(奇,负)。\n(3,0): a_y=0.10. (-3,0): a_y=-0.11 → a_y∝y? 但(0,3)时a_y=-0.30... 不一致。\n\n检查(1.5,0): a=(-0.09,0.05). x=1.5,y=0. a_x∝x? -0.09 vs (3,0):-0.18 → a_x≈-0.06x. a_y=0.05 at (1.5,0); 0.10 at (3,0) → a_y≈0.033y? no y=0! \n\nHmm a_y at (1.5,0)=0.05 but y=0. So not linear in y. Let me reconsider: maybe a_y depends on x too.\n\nActually the pattern: a = k1 * (something). At (1.5,0): (-0.09, 0.05). At (3,0): (-0.18,0.10). Ratio 2.0. At (-3,0): (0.18,-0.11). At (0,3): (0.10,-0.30). At (0,-3): (-0.10,0.29).\n\nSo a is roughly linear in position: a ≈ A·r. \n(1.5,0)→(-0.09,0.05): A_x1*1.5=-0.09→A_x1=-0.06; A_y1*1.5=0.05→A_y1=0.0333\n(3,0)→(-0.18,0.10): A_x1*3=-0.18→A_x1=-0.06 ✓; A_y1*3=0.10→A_y1=0.0333 ✓\n(-3,0)→(0.18,-0.11): ✓\n(0,3)→(0.10,-0.30): A_x2*3=0.10→A_x2=0.0333; A_y2*3=-0.30→A_y2=-0.10\n(0,-3)→(-0.10,0.29): A_x2*(-3)=-0.10→A_x2=0.0333 ✓; A_y2*(-3)=0.29→A_y2=-0.0967 ✓\n\nSo A = [[-0.06, 0.0333],[0.0333, -0.10]]? But that's not symmetric. Check: A = [[a,b],[c,d]]. a=-0.06, b=0.0333, c=0.0333, d=-0.10. Not symmetric (b=c=0.0333 actually yes! wait b=0.0333 from row1 col2, c=0.0333 from row2 col1 → symmetric! d=-0.10 vs a=-0.06, different diagonal).\n\nHmm so a ≈ A·r with A ≈ [[-0.06, 0.033],[0.033,-0.10]]. This is like a linear spring/force matrix. But why different diagonal? Maybe depends on the actual body configuration (bodies aren't symmetric). The sum of contributions from each body could give a linear map.\n\nLet me test: is a = Σ_b M_b · (probe - body_b) type? Or maybe it's just a constant matrix (uniform field gradient). With 9 bodies moving, hard to say. But the simplest: fit a linear matrix law a = A·r (4 params, but constrained to 5 max → use symmetric 3 params: a,b,c with A=[[a,b],[b,c]]).\n\nLet me test with probes at the 4 axis points.\n\n",
+  "later_fit": {
+    "law_id": "law_4",
+    "law_spec": {
+      "ax": "k1*x + k2*y",
+      "ay": "k2*x + k3*y"
+    },
+    "fitted_parameters": {
+      "k1": -0.06000000003823096,
+      "k2": 0.03464101621720519,
+      "k3": -0.10000000011523473
+    },
+    "train_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "discovery_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "position_rmse": 1.1156738945709537e-08
+  },
+  "later_validation": {
+    "validation_id": "validation_5ba1117872f0",
+    "law_id": "law_4",
+    "test_probe_ids": [
+      "probe_0009",
+      "probe_0010",
+      "probe_0001",
+      "probe_0002"
+    ],
+    "position_rmse": 1.1425732889075278e-09
+  },
+  "request_logging_evidence": {
+    "first_model_messages_fields": [
+      "role",
+      "call_number",
+      "messages",
+      "assistant",
+      "finish_reason"
+    ],
+    "tools_payload_is_logged": false,
+    "wire_capture_performed": false,
+    "note": "Existing model_messages.jsonl records messages and assistant replies, not the HTTP tools payload; schema delivery is code/config evidence, not a captured wire-level assertion."
+  },
+  "schema_code_evidence": {
+    "tool_names_derived_from_frozen_runtime_schema": [
+      "observe_body",
+      "insert_probe",
+      "fit_law_and_rollout",
+      "validate_law",
+      "list_files",
+      "read_file",
+      "analyze_residual",
+      "submit",
+      "save_draft",
+      "symbolic_regression"
+    ],
+    "symbolic_description_sha256": "56e127b3e3b18f897d7642704226b491550243e90d1d5845b4e407d3ec24a870",
+    "symbolic_schema_sha256": "2eb2db46003337f686ee4ece87514a6e6ac1d40fa86a91db6f9877f75499bf93"
+  },
+  "source_sha256": {
+    "shore_agent/model.py": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+    "shore_agent/agent.py": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+    "shore_agent/runtime.py": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+    "shore_agent/schemas.py": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+    "shore_agent/symbolic_regression.py": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+    "shore_agent/symbolic_service.py": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3"
+  },
+  "immutable_record_sha256": {
+    "records/symbolic_search/sr_d5c61f47a008.json": "fece0022e03b227e9206a4513b9c368e27a5f5968f5f737ae0d67f024e4d918b",
+    "records/law/law_4.json": "0274b2df7c91d554301f62981637bd54580bf8d238cbcb1b7f15b09e1c3f87a0",
+    "records/validation/validation_5ba1117872f0.json": "aa29c67d3c661ea1d64f197205a58446a04a66cc692430a47989e754b3507b23"
+  },
+  "live_run_status": "submitted",
+  "limitations": [
+    "First operational example only, not a generalization or causal effectiveness claim.",
+    "Both axes ran PySR, but all returned ay components are explicitly constant_initialization; search completion is not full-force recovery.",
+    "Later linear candidate was synthesized by the Agent after seeing SR output, not directly returned as a complete two-axis PySR solution.",
+    "Validation includes two newly acquired probes plus two previously acquired unsearched probes; it is not four fresh experiments.",
+    "Search loss is acceleration fit error on discovery data, not an independent trajectory score."
+  ]
+}

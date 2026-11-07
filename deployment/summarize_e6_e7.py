@@ -256,7 +256,9 @@ def analyze(root):
     root = Path(root).resolve()
     folder = root / "experiments" / "E5"
     warnings, batches = [], []
-    selection_path = folder / "e6-selection.json"
+    selection_path = folder / "e6-final-selection.json"
+    if not selection_path.is_file():
+        selection_path = folder / "e6-selection.json"
     selection = read_json(selection_path, warnings)
     for path in sorted([*folder.glob("e6-*/summary.json"), *folder.glob("e7-*/summary.json")]):
         summary = read_json(path, warnings)
@@ -270,7 +272,10 @@ def analyze(root):
             "summary_status": summary.get("status"), "summary_path": str(path.relative_to(root)),
             "profile": (configuration.get("agent") or {}).get("guidance_profile", "baseline"),
             "model": model.get("model"), "sampling_seed": model.get("sampling_seed"),
+            "model_sampling_seed": model.get("sampling_seed"),
             "sampling_seed_mode": "per_request_fixed_seed" if model.get("sampling_seed") is not None else "provider_default_unfixed_seed",
+            "loop_recovery": (configuration.get("agent") or {}).get("loop_recovery", False),
+            "max_total_tokens": model.get("max_total_tokens"),
             "symbolic_regression_enabled": (configuration.get("numerics") or {}).get("symbolic_regression_enabled", False),
             "world_count": 6, "complete_worlds": sum(w["evaluation_complete"] for w in worlds),
             "complete_worlds_raw_score_at_least_90": sum(w["complete_and_raw_score_at_least_90"] for w in worlds),
@@ -279,10 +284,12 @@ def analyze(root):
             "mean_total_seconds": mean_known(worlds, "total_seconds"), "worlds": worlds})
     repeats = defaultdict(list)
     for batch in batches:
-        repeats[(batch["stage"], batch["profile"], batch["model"], batch["symbolic_regression_enabled"])].append(batch)
+        repeats[(batch["stage"], batch["profile"], batch["model"], batch["symbolic_regression_enabled"],
+                 batch["sampling_seed_mode"], batch["loop_recovery"], batch["max_total_tokens"])].append(batch)
     groups = []
-    for (stage, profile, model, symbolic), rows in repeats.items():
+    for (stage, profile, model, symbolic, seed_mode, recovery, total_cap), rows in repeats.items():
         groups.append({"stage": stage, "profile": profile, "model": model, "symbolic_regression_enabled": symbolic,
+            "sampling_seed_mode": seed_mode, "loop_recovery": recovery, "max_total_tokens": total_cap,
             "batch_ids": [r["id"] for r in rows], "repeats": len(rows),
             "high_world_counts_by_batch": [r["complete_worlds_raw_score_at_least_90"] for r in rows],
             "complete_world_counts_by_batch": [r["complete_worlds"] for r in rows],
@@ -294,9 +301,9 @@ def analyze(root):
             "repeats": "Each six-world batch remains separate; repeated batches are averaged without selecting the best score for each world.",
             "symbolic_scope": "First PySR version searches observed state/probe properties without body-position inputs; this does not establish the value of body-aware symbolic regression.",
             "reproducibility": "A fixed sampling/search seed does not guarantee GPU/CPU multithreaded bitwise reproducibility.",
-            "sampling_seed_mode": "E6 explicitly fixes the same model sampling seed on every request. Repeated actions may be associated with this setting, but these batches alone do not establish causality. Seeded E6 baseline is not an equivalent replication of the historical unseeded 3ba6d63/R01 run. Any unseeded or per-turn-seed amendment must remain a separate batch/protocol.",
+            "sampling_seed_mode": "Read each batch's model_sampling_seed and sampling_seed_mode. A non-null seed is fixed on every request; null means the model seed is not fixed. Original seeded E6 batches, including interrupted records identified by summary_status, remain separate from unseeded E6 recovery and E7. Repeat groups also separate loop-recovery and cumulative-quota settings. These batches do not establish seed causality and seeded E6 is not an equivalent replication of historical unseeded 3ba6d63/R01.",
             "tool_repeats": "Repeated identical calls are descriptive; a repeated observation or changed external state may be intentional."},
-        "phase1_selection": {"source": "experiments/E5/e6-selection.json", "available": selection_path.is_file(),
+        "phase1_selection": {"source": str(selection_path.relative_to(root)), "available": selection_path.is_file(),
                              "selected_profile": selection.get("selected_profile"), "record": selection or None},
         "batches": batches, "repeat_groups": groups, "warnings": warnings}
 

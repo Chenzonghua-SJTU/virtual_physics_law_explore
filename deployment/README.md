@@ -1,6 +1,6 @@
 # qz-infer 本地 Qwen 部署
 
-当前在 `3ba6d63`（E5 R01）的科学工具上进行 E6 无新增工具比较；后面保留回退及 E4/E3 的历史部署说明。
+E6 无新增工具比较与 E7 可选 PySR 对照均已结束。无新增工具基线冻结为 `eae6745`（`E5: 8 tool best performance`）；当前代码包含可选 PySR，但网页默认关闭。后面保留回退及 E4/E3 的历史部署说明。
 
 服务器项目：`/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery`。
 公共模型根目录：`/inspire/hdd/project/26-the-other-shore/public/models`。
@@ -8,11 +8,22 @@
 
 ## 已冻结：E5: 8 tool best performance
 
-无新增研究工具的候选版本按本轮两种提示词、各两批完整六世界比较，保留 baseline 提示词。科学源码提交 `9b9cdca`；复现配置为 `deployment/config.e6.final.json`，选择依据见 `experiments/E5/e6-final-selection.json`。保留 8 个研究工具和已有的 save_draft（实际接口总数 9），累计 token 不限，单次 4096、探索 300 秒、10 能量、关闭思考与噪声。
+无新增研究工具的候选版本按本轮两种提示词、各两批完整六世界比较，保留 baseline 提示词。冻结提交为 `eae6745`，科学源码提交 `9b9cdca`；复现配置为 `deployment/config.e6.final.json`，选择依据见 `experiments/E5/e6-final-selection.json`。保留 8 个研究工具和已有的 save_draft（实际接口总数 9），累计 token 不限，单次 4096、探索 300 秒、10 能量、关闭思考与噪声。
 
 baseline 两批分别 2/6 达到 90 分，12/12 完成独立评测；concise 两批为 3/6 与 0/6（严格按原始分数），10/12 完成。按预先约定的两批合计高分数、完成数、均分排序选出 baseline。这个提交名表示本轮候选选择，不表示已经达到至少五世界 ≥90 的目标或全局最优。
 
 用户指出的 world_1 53.41 分已核查：Agent 的规律漏掉公开属性依赖。仅用于离线诊断、保持原参数补属性因子后为 97.50；该诊断不是 Agent 成绩，原评价未修改。证据在 `experiments/E5/e6-world1-property-diagnostic.json`。完整逐世界分数、探索/评测/总时长、平均和最大输出 token、循环反馈审计均保留在 E6 批次及审计 JSON 中。
+
+| 开发世界 | baseline R01 | baseline R02 |
+|---|---:|---:|
+| 01 | 96.50 | 97.50 |
+| 02 | 98.00 | 20.65 |
+| 03 | 17.51 | 96.50 |
+| 04 | 88.83 | 43.91 |
+| 05 | 32.37 | 5.75 |
+| 06 | 17.00 | 21.10 |
+
+独立测评复查覆盖 24 次 E6 实验、608 条测试轨迹，原分数均复现；六世界完整公式的离线数值对照 152/152 通过，未发现评测器算错。截图中的 world_1、world_2 规律均缺少 `charge/mass`，会话内探针却全取质量、电荷为 1，所以会话内误差低不能推出跨属性测试得分高。world_2 保持参数补全该因子后的诊断分为 93（原提交的错误声明仍保留），不是 Agent 成绩。已修复网页用随机验证 ID 选“最近验证”以及列表隐藏有规则分但预测失败记录的问题；原始实验档案未改。证据见 [全部复查](../experiments/E5/e6-evaluation-audit-all.json)、[六世界积分对照](../experiments/E5/e6-six-world-integrator-audit.json)、[前端验收](../experiments/E5/e6-ui-fix-acceptance.json)。
 
 ## E6：无新增工具的循环修复比较
 
@@ -49,6 +60,25 @@ env PYTHON_JULIAPKG_EXE="$PWD/.venv-pysr/julia-1.13.3/bin/julia" \
 服务仅监听 127.0.0.1:8890。确认 `/health` 中 4 个 worker ready 后，再运行纯合成验证或正式比较。依赖首次安装、编译、重启记录见 `deployment/pysr-setup-evidence.json`；合成数据结果不是宇宙测评分数。
 
 `deployment/run_e7.py` 必须读取已冻结的 `e6-final-selection.json` 与 `config.e6.final.json`，交错运行 PySR 开/关各两批完整六世界；四卡各接一个活跃会话，排队不计入探索时间。保留所有尝试，不按世界选最好的结果。E6/E7 均记录每次实验探索耗时、交卷后评测、总耗时、平均/最大输出 token；E7 额外记录搜索次数和耗时。开发世界结果不代表九个隐藏世界泛化能力。
+
+### E7 已完成结果与默认选择
+
+PySR 功能提交 `8b5bb7d`；四批实验启动源码为 `97ae517`。全部 80 项源码哈希与该提交一致，开关两组配置仅 `numerics.symbolic_regression_enabled` 不同。模型采样 seed 未固定，符号搜索 seed 为 42。原始逐世界成绩与计时保留在各批次 summary/report；详细复查见 [E7 最终分析](../experiments/E5/e7-final-analysis.json) 和 [源码核对](../experiments/E5/e7-source-verification.json)。
+
+| 批次 | ≥90 的完整世界 | 完整评测 | 均分（不完整按 0） | 每世界平均总耗时 | 每次模型调用平均输出 token |
+|---|---:|---:|---:|---:|---:|
+| [关闭 R01](../experiments/E5/e7-qwen38-pysr-off-20261107-r01/report.md) | 3/6 | 6/6 | 67.11 | 153.36 s | 495.47 |
+| [关闭 R02](../experiments/E5/e7-qwen38-pysr-off-20261107-r02/report.md) | 0/6 | 6/6 | 23.21 | 180.45 s | 327.92 |
+| [开启 R01](../experiments/E5/e7-qwen38-pysr-on-20261107-r01/report.md) | 1/6 | 5/6 | 30.68 | 165.81 s | 396.44 |
+| [开启 R02](../experiments/E5/e7-qwen38-pysr-on-20261107-r02/report.md) | 1/6 | 5/6 | 31.45 | 179.42 s | 356.19 |
+
+输出 token 均值按各批全部模型调用加权。总耗时包括进程启动、探索与交卷后评测；300 秒限制用于探索，评测耗时单列。24 次 usage 均完整，探索最长 278.36 秒、单次输出最多 4096，能量均不超过 10。
+
+开启组仅 3/12 会话调用 PySR，共耗时 88.95 秒，返回 9 个候选；人工核对完整搜索结果和后续调用，没有候选进入拟合或提交。开启 R02/world_3 的 96 分来自 Agent 另行提出的线性公式，不能归因于 SR 找到了该公式。开启 R01/world_4 两次输出达到上限，用尽一次截断恢复后无提交，结束仍余约 35.76 秒；开启 R02/world_5 提交后候选积分失败，原规则分 10 保留，选型指标按 0 统计。
+
+本轮没有证明可选 PySR 带来收益，默认继续关闭。关闭组两批本身波动很大，不能从两次重复断言 SR 导致性能下降，也不能据此否定符号回归。此次只覆盖无天体坐标、Agent 自愿调用的首版工具，未证明九个隐藏世界的泛化能力。后续优先考察公开可控属性的实验覆盖，再单独评估跨轴参数共享、候选筛选与 Agent 实际采用率，不加入开发世界专用公式；本轮到此收束，不再追加试验。
+
+前端可在 `/baselines?group=E7` 查看四个完整批次及各世界会话，E6/E7 历史记录分别筛选，不用单世界最佳成绩拼成 baseline。
 
 ## 历史：恢复 3ba6d63 的 E5 R01
 

@@ -1,0 +1,195 @@
+{
+  "kind": "read_only_ui_fix_acceptance",
+  "observed_at": "2026-11-07T04:18:06.236991+00:00",
+  "endpoint": "http://127.0.0.1:8765",
+  "deployed_commit": "97ae517",
+  "no_model_calls_or_mutations": true,
+  "checks": {
+    "e6_filter_excludes_e7_target_batches": true,
+    "e7_filter_excludes_e6_target_batches": true,
+    "session_validation_copy_present": true,
+    "fixed_test_copy_present": true,
+    "property_coverage_element_and_logic_present": true,
+    "property_coverage_executes_on_real_data": true,
+    "latest_validation_matches_execution": true,
+    "chronology_is_complete_events_log": true,
+    "e6-qwen38-recovery-concise-20261107-r02-world_2:failure_score_consistent": true,
+    "e6-qwen38-recovery-concise-20261107-r02-world_4:failure_score_consistent": true,
+    "e6-qwen38-recovery-baseline-20261107-r01:metadata": true,
+    "e6-qwen38-recovery-baseline-20261107-r02:metadata": true,
+    "e6-qwen38-recovery-concise-20261107-r01:metadata": true,
+    "e6-qwen38-recovery-concise-20261107-r02:metadata": true,
+    "e7-qwen38-pysr-off-20261107-r01:metadata": true,
+    "e7-qwen38-pysr-off-20261107-r02:metadata": true,
+    "e7-qwen38-pysr-on-20261107-r01:metadata": true,
+    "e7-qwen38-pysr-on-20261107-r02:metadata": true,
+    "api_profile_sr_metadata_matches_remote_summary": true,
+    "served_assets_match_deployed_files": true
+  },
+  "all_passed": true,
+  "validation": {
+    "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_2",
+    "law_id": "law_5",
+    "validation_id": "validation_1f5926c7ef44",
+    "position_rmse": 0.10871072940483432,
+    "order": {
+      "source": "events.jsonl",
+      "chronology_complete": true,
+      "unmatched_validation_ids": [],
+      "unmatched_placement": "stable_record_order_before_logged_records"
+    }
+  },
+  "prediction_failure_scores": [
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_2",
+      "complete": false,
+      "score_status": "scored",
+      "score": 15.0,
+      "reason": "candidate_prediction_invalid",
+      "rendered_status": "预测失败 · 按规则计分",
+      "rendered_score": "15.00",
+      "detail_score_gate": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_4",
+      "complete": false,
+      "score_status": "scored",
+      "score": 15.0,
+      "reason": "candidate_prediction_invalid",
+      "rendered_status": "预测失败 · 按规则计分",
+      "rendered_score": "15.00",
+      "detail_score_gate": true
+    }
+  ],
+  "property_coverage": {
+    "run_id": "e6-qwen38-recovery-concise-20261107-r01-world_1",
+    "acquired": "charge=1，mass=1",
+    "fixed": "charge=0.7–1.7，mass=0.7–1.6"
+  },
+  "batch_metadata": [
+    {
+      "id": "e6-qwen38-recovery-baseline-20261107-r01",
+      "status": "completed",
+      "experiment_group": "E5",
+      "guidance_profile": "baseline",
+      "symbolic_regression_enabled": false,
+      "loop_recovery": true,
+      "max_total_tokens": null,
+      "energy_budget": 10,
+      "wall_seconds": 300,
+      "output_limit": 4096
+    },
+    {
+      "id": "e6-qwen38-recovery-baseline-20261107-r02",
+      "status": "completed",
+      "experiment_group": "E5",
+      "guidance_profile": "baseline",
+      "symbolic_regression_enabled": false,
+      "loop_recovery": true,
+      "max_total_tokens": null,
+      "energy_budget": 10,
+      "wall_seconds": 300,
+      "output_limit": 4096
+    },
+    {
+      "id": "e6-qwen38-recovery-concise-20261107-r01",
+      "status": "completed",
+      "experiment_group": "E5",
+      "guidance_profile": "concise",
+      "symbolic_regression_enabled": false,
+      "loop_recovery": true,
+      "max_total_tokens": null,
+      "energy_budget": 10,
+      "wall_seconds": 300,
+      "output_limit": 4096
+    },
+    {
+      "id": "e6-qwen38-recovery-concise-20261107-r02",
+      "status": "completed",
+      "experiment_group": "E5",
+      "guidance_profile": "concise",
+      "symbolic_regression_enabled": false,
+      "loop_recovery": true,
+      "max_total_tokens": null,
+      "energy_budget": 10,
+      "wall_seconds": 300,
+      "output_limit": 4096
+    },
+    {
+      "id": "e7-qwen38-pysr-off-20261107-r01",
+      "status": "running",
+      "experiment_group": "E5",
+      "guidance_profile": "baseline",
+      "symbolic_regression_enabled": false,
+      "loop_recovery": true,
+      "max_total_tokens": null,
+      "energy_budget": 10,
+      "wall_seconds": 300,
+      "output_limit": 4096
+    },
+    {
+      "id": "e7-qwen38-pysr-off-20261107-r02",
+      "status": "running",
+      "experiment_group": "E5",
+      "guidance_profile": "baseline",
+      "symbolic_regression_enabled": false,
+      "loop_recovery": true,
+      "max_total_tokens": null,
+      "energy_budget": 10,
+      "wall_seconds": 300,
+      "output_limit": 4096
+    },
+    {
+      "id": "e7-qwen38-pysr-on-20261107-r01",
+      "status": "running",
+      "experiment_group": "E5",
+      "guidance_profile": "baseline",
+      "symbolic_regression_enabled": true,
+      "loop_recovery": true,
+      "max_total_tokens": null,
+      "energy_budget": 10,
+      "wall_seconds": 300,
+      "output_limit": 4096
+    },
+    {
+      "id": "e7-qwen38-pysr-on-20261107-r02",
+      "status": "running",
+      "experiment_group": "E5",
+      "guidance_profile": "baseline",
+      "symbolic_regression_enabled": true,
+      "loop_recovery": true,
+      "max_total_tokens": null,
+      "energy_budget": 10,
+      "wall_seconds": 300,
+      "output_limit": 4096
+    }
+  ],
+  "renderer_acceptance": {
+    "method": "Served JavaScript executed in isolated mock DOM; not a browser screenshot",
+    "scope": "Eight requested recovery/PySR target batches supplied unchanged from API; historical other batches excluded from this renderer fixture",
+    "filtered_batch_ids": {
+      "E6": [
+        "e6-qwen38-recovery-baseline-20261107-r01",
+        "e6-qwen38-recovery-baseline-20261107-r02",
+        "e6-qwen38-recovery-concise-20261107-r01",
+        "e6-qwen38-recovery-concise-20261107-r02"
+      ],
+      "E7": [
+        "e7-qwen38-pysr-off-20261107-r01",
+        "e7-qwen38-pysr-off-20261107-r02",
+        "e7-qwen38-pysr-on-20261107-r01",
+        "e7-qwen38-pysr-on-20261107-r02"
+      ]
+    }
+  },
+  "served_assets_sha256": {
+    "/app.js": "11e77bec0e6cc68b3c435107f9edb79545f99e29f28acfa657b06d02abb0fd04",
+    "/baselines.js": "c5bb4b086976b2186bc52de042b4234148565099b7cdb35ab63cb89aa80acd2a",
+    "/index.html": "cbd18f7281f83d2c3efa1a5b61173ecb88661d7020bce56d022bd7532199af26",
+    "/baselines": "32f206b09b19d6172dbe694446e207625c30150f12fbe0b1e7766c6517fc9886"
+  },
+  "screenshot": {
+    "captured": false,
+    "reason": "One CUA inventory request returned no browsers; no repeated attempts or native app navigation."
+  }
+}

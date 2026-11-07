@@ -1,0 +1,2930 @@
+{
+  "checked_at": "2026-11-07T04:33:44.030426+00:00",
+  "status": "complete",
+  "source_commit_reported_by_orchestrator": "97ae517",
+  "feature_commit": "8b5bb7d",
+  "baseline_commit": "eae6745",
+  "baseline_selection": {
+    "selected_profile": "baseline",
+    "sampling_seed": null,
+    "max_total_tokens": null,
+    "loop_recovery": true,
+    "configuration": "deployment/config.e6.final.json",
+    "last_repeat_batch": "e6-qwen38-recovery-baseline-20261107-r02",
+    "batches": {
+      "baseline": [
+        "e6-qwen38-recovery-baseline-20261107-r01",
+        "e6-qwen38-recovery-baseline-20261107-r02"
+      ],
+      "concise": [
+        "e6-qwen38-recovery-concise-20261107-r01",
+        "e6-qwen38-recovery-concise-20261107-r02"
+      ]
+    },
+    "quality": {
+      "baseline": [
+        4,
+        12,
+        52.969381314394035
+      ],
+      "concise": [
+        3,
+        10,
+        48.35203271170692
+      ]
+    },
+    "selection_basis": "Most complete worlds with raw score>=90 across both complete repeats; then completion; then mean with incomplete=0. No best-of-world aggregation.",
+    "limitations": "Best among these tested configurations; no claim of global or hidden-world optimality.",
+    "display_name": "E5: 8 tool best performance",
+    "scientific_source_commit": "9b9cdcaafcd962365f22d9c4cc89ec162c176a77",
+    "research_tool_count": 8,
+    "total_tool_count_including_save_draft": 9,
+    "target_five_worlds_at_least_90_met": false,
+    "selection_scope": "Best among the two prompt configurations tested in this bounded study; not a global optimum."
+  },
+  "protocol": {
+    "registered_at": "2026-11-07T03:54:46.829345+00:00",
+    "study": "E7: optional PySR after frozen no-extra-tool E6 selection",
+    "baseline_selection": "experiments/E5/e6-final-selection.json",
+    "baseline_configuration": "deployment/config.e6.final.json",
+    "sequence": "Publish the complete E6 baseline results before starting any E7 world. Synthetic setup tests are separate.",
+    "design": {
+      "arms": [
+        "symbolic_regression_disabled",
+        "symbolic_regression_enabled"
+      ],
+      "complete_repeats_per_arm": 2,
+      "worlds_per_repeat": 6,
+      "total_attempts": 24,
+      "queue": "interleave four arms/repeats by world across four identical 27B replicas; one active world per endpoint",
+      "automatic_session_retries": false,
+      "per_world_best_of_selection": false
+    },
+    "limits": {
+      "energy": 10,
+      "exploration_seconds": 300,
+      "output_tokens_per_request": 4096,
+      "cumulative_token_quota": null,
+      "thinking": false,
+      "exploration_noise": false,
+      "evaluation_noise": false,
+      "sampling_seed": null
+    },
+    "symbolic_search": {
+      "inputs": [
+        "current_session_train_probe_ids",
+        "time_budget_seconds"
+      ],
+      "target": "velocity_difference_acceleration",
+      "features": [
+        "t",
+        "x",
+        "y",
+        "vx",
+        "vy",
+        "mass_if_observed",
+        "charge_if_observed"
+      ],
+      "body_positions_included": false,
+      "search_cap_seconds": 60,
+      "finish_reserve_seconds": 35,
+      "pysr_version": "2.7.2",
+      "julia_version": "1.13.3",
+      "workers": 4,
+      "julia_threads_per_worker": 4,
+      "search_seed": 42,
+      "bitwise_determinism_claimed": false,
+      "warm_start": false,
+      "default_enabled": false
+    },
+    "report": [
+      "each full batch scores, completion and raw>=90 count",
+      "per-world exploration, evaluation, total elapsed seconds",
+      "per-request mean and maximum output tokens with usage completeness",
+      "search calls, actual elapsed, completed axes, candidate adoption evidence",
+      "keep every failure and do not claim hidden-world generalization"
+    ],
+    "baseline_commit": "eae6745",
+    "selected_guidance_profile": "baseline"
+  },
+  "definitions": {
+    "score": "Original valid score retained even when evaluation_complete=false. Selection metric separately treats incomplete evaluations as zero. These are public development worlds, not official hidden-world scores.",
+    "timing": "300 seconds covers exploration including model and scientific tools; post-session evaluation and total elapsed are reported separately.",
+    "usage": "A full-session average is reported only with complete finalized request usage. Max reported output is not a full-session guarantee when usage is missing.",
+    "adoption": "Exact law AST and named parameter_spec match with a later fit; adopted_submitted additionally matches accepted law_id. Unmatched/rewritten candidates remain unknown, not proof of non-use.",
+    "scope": "First symbolic tool is state/probe-property only with no body-position features. Model seed unfixed; fixed symbolic seed does not ensure GPU/CPU bitwise reproducibility. No best-of-world combination across repeats."
+  },
+  "batches": [
+    {
+      "id": "e7-qwen38-pysr-off-20261107-r01",
+      "status": "completed",
+      "arm": "off",
+      "repeat": 1,
+      "worlds": [
+        {
+          "world_id": "world_1",
+          "run_id": "e7-qwen38-pysr-off-20261107-r01-world_1",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 97.49995555366436,
+          "complete_and_raw_score_at_least_90": true,
+          "score_for_batch_mean_incomplete_as_zero": 97.49995555366436,
+          "exploration_seconds": 116.80130244977772,
+          "evaluation_seconds": 3.620689930394292,
+          "total_seconds": 121.94345730729401,
+          "exploration_deadline_met": true,
+          "energy_used": 5,
+          "energy_budget": 10,
+          "model": {
+            "calls": 18,
+            "finalized_request_records": 18,
+            "started_request_records": 18,
+            "reported_usage_requests": 18,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 6926,
+            "average_output_tokens_per_call": 384.77777777777777,
+            "max_call_output_tokens": 1408,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 114.9532896913588,
+            "model_seconds_from_logged_requests": 114.9532896913588,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_1",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8000/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_7",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.10493997484445572,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.00388186052441597,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 10,
+              "ok_calls": 7,
+              "reported_seconds": 1.0209019854664803,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.023056134581565857,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.02516251988708973,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_2",
+          "run_id": "e7-qwen38-pysr-off-20261107-r01-world_2",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 97.99999999999885,
+          "complete_and_raw_score_at_least_90": true,
+          "score_for_batch_mean_incomplete_as_zero": 97.99999999999885,
+          "exploration_seconds": 66.10894116945565,
+          "evaluation_seconds": 1.769556911662221,
+          "total_seconds": 70.25987180881202,
+          "exploration_deadline_met": true,
+          "energy_used": 4,
+          "energy_budget": 10,
+          "model": {
+            "calls": 7,
+            "finalized_request_records": 7,
+            "started_request_records": 7,
+            "reported_usage_requests": 7,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 4100,
+            "average_output_tokens_per_call": 585.7142857142857,
+            "max_call_output_tokens": 1107,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 65.3662201743573,
+            "model_seconds_from_logged_requests": 65.3662201743573,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_2",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8001/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_1",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.18713041208684444,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.003918381407856941,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.09055526927113533,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.010871263220906258,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.0409866776317358,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_3",
+          "run_id": "e7-qwen38-pysr-off-20261107-r01-world_3",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 97.4999999999976,
+          "complete_and_raw_score_at_least_90": true,
+          "score_for_batch_mean_incomplete_as_zero": 97.4999999999976,
+          "exploration_seconds": 108.05748102813959,
+          "evaluation_seconds": 2.5882430858910084,
+          "total_seconds": 112.4365305211395,
+          "exploration_deadline_met": true,
+          "energy_used": 5,
+          "energy_budget": 10,
+          "model": {
+            "calls": 11,
+            "finalized_request_records": 11,
+            "started_request_records": 11,
+            "reported_usage_requests": 11,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 6346,
+            "average_output_tokens_per_call": 576.9090909090909,
+            "max_call_output_tokens": 1382,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 106.61082197725773,
+            "model_seconds_from_logged_requests": 106.61082197725773,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_3",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8003/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_2",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.3067623246461153,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 6,
+              "ok_calls": 6,
+              "reported_seconds": 0.011883268132805824,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.5568083766847849,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.020863259211182594,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.03199077025055885,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.039916956797242165,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_4",
+          "run_id": "e7-qwen38-pysr-off-20261107-r01-world_4",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 70.03155745936445,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 70.03155745936445,
+          "exploration_seconds": 77.14539908804,
+          "evaluation_seconds": 4.420279091224074,
+          "total_seconds": 83.46332102641463,
+          "exploration_deadline_met": true,
+          "energy_used": 7,
+          "energy_budget": 10,
+          "model": {
+            "calls": 16,
+            "finalized_request_records": 16,
+            "started_request_records": 16,
+            "reported_usage_requests": 16,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 4467,
+            "average_output_tokens_per_call": 279.1875,
+            "max_call_output_tokens": 914,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 75.08922503702343,
+            "model_seconds_from_logged_requests": 75.08922503702343,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_4",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8002/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_3",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "fitting": {
+              "calls": 7,
+              "ok_calls": 5,
+              "reported_seconds": 1.2767620850354433,
+              "missing_duration_calls": 0
+            },
+            "observations": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.22476098500192165,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 4,
+              "ok_calls": 4,
+              "reported_seconds": 0.05162152461707592,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.001958681270480156,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.03398388437926769,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_5",
+          "run_id": "e7-qwen38-pysr-off-20261107-r01-world_5",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 20.500667592979788,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 20.500667592979788,
+          "exploration_seconds": 233.46927200816572,
+          "evaluation_seconds": 2.622130686417222,
+          "total_seconds": 237.66697436757386,
+          "exploration_deadline_met": true,
+          "energy_used": 4,
+          "energy_budget": 10,
+          "model": {
+            "calls": 21,
+            "finalized_request_records": 21,
+            "started_request_records": 21,
+            "reported_usage_requests": 21,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 11828,
+            "average_output_tokens_per_call": 563.2380952380952,
+            "max_call_output_tokens": 1676,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 203.1985828615725,
+            "model_seconds_from_logged_requests": 203.1985828615725,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_5",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8000/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_6",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 3,
+              "ok_calls": 2,
+              "reported_seconds": 1.0554197542369366,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 5,
+              "ok_calls": 5,
+              "reported_seconds": 0.011494798585772514,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 9,
+              "ok_calls": 7,
+              "reported_seconds": 28.504244105890393,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.060514384880661964,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.0344283077865839,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.04407808929681778,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_6",
+          "run_id": "e7-qwen38-pysr-off-20261107-r01-world_6",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 19.126864820172518,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 19.126864820172518,
+          "exploration_seconds": 278.35506859607995,
+          "evaluation_seconds": 14.957936206832528,
+          "total_seconds": 294.39034185372293,
+          "exploration_deadline_met": true,
+          "energy_used": 4,
+          "energy_budget": 10,
+          "model": {
+            "calls": 17,
+            "finalized_request_records": 17,
+            "started_request_records": 17,
+            "reported_usage_requests": 17,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 10925,
+            "average_output_tokens_per_call": 642.6470588235294,
+            "max_call_output_tokens": 4096,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 184.80579602718353,
+            "model_seconds_from_logged_requests": 184.80579602718353,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_6",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8000/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_5",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 4,
+              "ok_calls": 3,
+              "reported_seconds": 0.34830472618341446,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 10,
+              "ok_calls": 8,
+              "reported_seconds": 91.47092754766345,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 2,
+              "ok_calls": 1,
+              "reported_seconds": 0.396015964448452,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.7734168078750372,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.03997794725000858,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        }
+      ],
+      "source_sha256": {
+        "shore_agent/agent.py": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+        "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+        "shore_agent/prompts/e5.txt": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+        "shore_agent/prompts/e5_concise.txt": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+        "shore_agent/schemas.py": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+        "shore_agent/runtime.py": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+        "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+        "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+        "shore_agent/model.py": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+        "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+        "shore_agent/store.py": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+        "shore_agent/workspace.py": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+        "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+        "shore_agent/symbolic_regression.py": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+        "shore_agent/symbolic_service.py": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+        "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+        "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+        "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+        "benchmark_v15.py": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+        "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2"
+      },
+      "model_sampling_seed": null,
+      "sampling_seed_mode": "provider_default_unfixed_seed",
+      "max_total_tokens": null,
+      "terminal_count": 6,
+      "complete_count": 6,
+      "raw_ge_90_complete_count": 3,
+      "selection_metric_mean_incomplete_as_zero_fixed_six": 67.10984090436293,
+      "available_raw_score_statistics": {
+        "n": 6,
+        "mean": 67.10984090436293,
+        "max": 97.99999999999885,
+        "total": 402.65904542617756
+      },
+      "all_six_raw_score_mean": 67.10984090436293,
+      "terminal_exploration_seconds": {
+        "n": 6,
+        "mean": 146.65624405660978,
+        "max": 278.35506859607995,
+        "total": 879.9374643396586
+      },
+      "terminal_total_seconds": {
+        "n": 6,
+        "mean": 153.36008281415948,
+        "max": 294.39034185372293,
+        "total": 920.160496884957
+      },
+      "symbolic_search_calls": 0,
+      "symbolic_search_seconds": 0,
+      "searches_identifiably_fit": 0,
+      "searches_identifiably_submitted": 0,
+      "average_output_tokens_per_request": 495.46666666666664,
+      "output_token_average_definition": "Sum of reported completion tokens divided by model requests; all request usage must be complete.",
+      "model_requests": 90,
+      "model_seconds": 750.0239357687533,
+      "reported_tool_seconds_by_class": {
+        "analysis": 0.83983588591218,
+        "file_reads": 0.033136989921331406,
+        "fitting": 122.92019937001169,
+        "observations": 2.227318176999688,
+        "submission": 0.22410607524216175,
+        "validation": 0.5629425309598446
+      }
+    },
+    {
+      "id": "e7-qwen38-pysr-off-20261107-r02",
+      "status": "completed",
+      "arm": "off",
+      "repeat": 2,
+      "worlds": [
+        {
+          "world_id": "world_1",
+          "run_id": "e7-qwen38-pysr-off-20261107-r02-world_1",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 53.405754346775794,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 53.405754346775794,
+          "exploration_seconds": 137.93441620469093,
+          "evaluation_seconds": 3.6208261009305716,
+          "total_seconds": 143.38769409060478,
+          "exploration_deadline_met": true,
+          "energy_used": 10,
+          "energy_budget": 10,
+          "model": {
+            "calls": 31,
+            "finalized_request_records": 31,
+            "started_request_records": 31,
+            "reported_usage_requests": 31,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 7189,
+            "average_output_tokens_per_call": 231.90322580645162,
+            "max_call_output_tokens": 1156,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 132.69926580041647,
+            "model_seconds_from_logged_requests": 132.69926580041647,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_1",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8003/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_15",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 6,
+              "ok_calls": 4,
+              "reported_seconds": 0.6855833977460861,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 17,
+              "ok_calls": 15,
+              "reported_seconds": 3.5778663754463196,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.07507289201021194,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.001903308555483818,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.0697573646903038,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.043036794289946556,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_2",
+          "run_id": "e7-qwen38-pysr-off-20261107-r02-world_2",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 11.337949597304718,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 11.337949597304718,
+          "exploration_seconds": 128.45307221077383,
+          "evaluation_seconds": 2.118582110852003,
+          "total_seconds": 132.30712025426328,
+          "exploration_deadline_met": true,
+          "energy_used": 9,
+          "energy_budget": 10,
+          "model": {
+            "calls": 28,
+            "finalized_request_records": 28,
+            "started_request_records": 28,
+            "reported_usage_requests": 28,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 5607,
+            "average_output_tokens_per_call": 200.25,
+            "max_call_output_tokens": 717,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 103.96514249965549,
+            "model_seconds_from_logged_requests": 103.96514249965549,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_2",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8001/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_9",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 5,
+              "ok_calls": 5,
+              "reported_seconds": 0.497566781938076,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 11,
+              "ok_calls": 9,
+              "reported_seconds": 23.2061916179955,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 14,
+              "ok_calls": 14,
+              "reported_seconds": 0.02961297519505024,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.061137765645980835,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.05380459129810333,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.07677243836224079,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_3",
+          "run_id": "e7-qwen38-pysr-off-20261107-r02-world_3",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 12.030762594028648,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 12.030762594028648,
+          "exploration_seconds": 101.05159684456885,
+          "evaluation_seconds": 2.8698332384228706,
+          "total_seconds": 105.44180341251194,
+          "exploration_deadline_met": true,
+          "energy_used": 7,
+          "energy_budget": 10,
+          "model": {
+            "calls": 9,
+            "finalized_request_records": 9,
+            "started_request_records": 9,
+            "reported_usage_requests": 9,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 3768,
+            "average_output_tokens_per_call": 418.6666666666667,
+            "max_call_output_tokens": 987,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 64.98462057486176,
+            "model_seconds_from_logged_requests": 64.98462057486176,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_3",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8001/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_3",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.6650264021009207,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 5,
+              "ok_calls": 4,
+              "reported_seconds": 34.8465286064893,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.02463712729513645,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.05876129865646362,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_4",
+          "run_id": "e7-qwen38-pysr-off-20261107-r02-world_4",
+          "status": "submitted",
+          "reason": "deadline_saved_draft",
+          "evaluation_complete": true,
+          "raw_score": 26.299828071748113,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 26.299828071748113,
+          "exploration_seconds": 274.4275057334453,
+          "evaluation_seconds": 3.9198811054229736,
+          "total_seconds": 279.2377327308059,
+          "exploration_deadline_met": true,
+          "energy_used": 6,
+          "energy_budget": 10,
+          "model": {
+            "calls": 61,
+            "finalized_request_records": 61,
+            "started_request_records": 61,
+            "reported_usage_requests": 61,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 15330,
+            "average_output_tokens_per_call": 251.31147540983608,
+            "max_call_output_tokens": 814,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 265.25054689869285,
+            "model_seconds_from_logged_requests": 265.25054689869285,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_4",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8003/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_13",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 4,
+              "ok_calls": 3,
+              "reported_seconds": 0.3441443257033825,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 54,
+              "ok_calls": 46,
+              "reported_seconds": 7.915403705090284,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.002196038141846657,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.015262756496667862,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.029631871730089188,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_5",
+          "run_id": "e7-qwen38-pysr-off-20261107-r02-world_5",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 24.142063483627137,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 24.142063483627137,
+          "exploration_seconds": 197.2186689544469,
+          "evaluation_seconds": 2.639220990240574,
+          "total_seconds": 200.50208592414856,
+          "exploration_deadline_met": true,
+          "energy_used": 5,
+          "energy_budget": 10,
+          "model": {
+            "calls": 14,
+            "finalized_request_records": 14,
+            "started_request_records": 14,
+            "reported_usage_requests": 14,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 9210,
+            "average_output_tokens_per_call": 657.8571428571429,
+            "max_call_output_tokens": 1503,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 156.51107133366168,
+            "model_seconds_from_logged_requests": 156.51107133366168,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_5",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8002/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_5",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.3912980556488037,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 9,
+              "ok_calls": 5,
+              "reported_seconds": 39.68764293566346,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.030197449028491974,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.0461787898093462,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.002944512292742729,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.044446904212236404,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_6",
+          "run_id": "e7-qwen38-pysr-off-20261107-r02-world_6",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 12.051464066209968,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 12.051464066209968,
+          "exploration_seconds": 217.80979422852397,
+          "evaluation_seconds": 3.269206600263715,
+          "total_seconds": 221.80117539316416,
+          "exploration_deadline_met": true,
+          "energy_used": 6,
+          "energy_budget": 10,
+          "model": {
+            "calls": 17,
+            "finalized_request_records": 17,
+            "started_request_records": 17,
+            "reported_usage_requests": 17,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 11363,
+            "average_output_tokens_per_call": 668.4117647058823,
+            "max_call_output_tokens": 4096,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 189.55480250529945,
+            "model_seconds_from_logged_requests": 189.55480250529945,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_6",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": false,
+            "model_endpoint": "http://127.0.0.1:8003/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_4",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "file_reads": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.002375941723585129,
+              "missing_duration_calls": 0
+            },
+            "observations": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.31626421585679054,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 9,
+              "ok_calls": 4,
+              "reported_seconds": 24.570675177499652,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.0570071917027235,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 2.7707329280674458,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.026772236451506615,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        }
+      ],
+      "source_sha256": {
+        "shore_agent/agent.py": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+        "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+        "shore_agent/prompts/e5.txt": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+        "shore_agent/prompts/e5_concise.txt": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+        "shore_agent/schemas.py": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+        "shore_agent/runtime.py": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+        "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+        "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+        "shore_agent/model.py": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+        "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+        "shore_agent/store.py": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+        "shore_agent/workspace.py": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+        "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+        "shore_agent/symbolic_regression.py": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+        "shore_agent/symbolic_service.py": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+        "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+        "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+        "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+        "benchmark_v15.py": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+        "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2"
+      },
+      "model_sampling_seed": null,
+      "sampling_seed_mode": "provider_default_unfixed_seed",
+      "max_total_tokens": null,
+      "terminal_count": 6,
+      "complete_count": 6,
+      "raw_ge_90_complete_count": 0,
+      "selection_metric_mean_incomplete_as_zero_fixed_six": 23.2113036932824,
+      "available_raw_score_statistics": {
+        "n": 6,
+        "mean": 23.2113036932824,
+        "max": 53.405754346775794,
+        "total": 139.2678221596944
+      },
+      "all_six_raw_score_mean": 23.2113036932824,
+      "terminal_exploration_seconds": {
+        "n": 6,
+        "mean": 176.14917569607496,
+        "max": 274.4275057334453,
+        "total": 1056.8950541764498
+      },
+      "terminal_total_seconds": {
+        "n": 6,
+        "mean": 180.44626863424978,
+        "max": 279.2377327308059,
+        "total": 1082.6776118054986
+      },
+      "symbolic_search_calls": 0,
+      "symbolic_search_seconds": 0,
+      "searches_identifiably_fit": 0,
+      "searches_identifiably_submitted": 0,
+      "average_output_tokens_per_request": 327.91875,
+      "output_token_average_definition": "Sum of reported completion tokens divided by model requests; all request usage must be complete.",
+      "model_requests": 160,
+      "model_seconds": 912.9654496125877,
+      "reported_tool_seconds_by_class": {
+        "analysis": 0.23939663916826248,
+        "file_reads": 0.03903277590870857,
+        "fitting": 133.80430841818452,
+        "observations": 2.8998831789940596,
+        "submission": 0.2794215437024832,
+        "validation": 2.964392216876149
+      }
+    },
+    {
+      "id": "e7-qwen38-pysr-on-20261107-r01",
+      "status": "completed",
+      "arm": "on",
+      "repeat": 1,
+      "worlds": [
+        {
+          "world_id": "world_1",
+          "run_id": "e7-qwen38-pysr-on-20261107-r01-world_1",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 96.99985734897146,
+          "complete_and_raw_score_at_least_90": true,
+          "score_for_batch_mean_incomplete_as_zero": 96.99985734897146,
+          "exploration_seconds": 57.56436375156045,
+          "evaluation_seconds": 3.5702951475977898,
+          "total_seconds": 62.42358554713428,
+          "exploration_deadline_met": true,
+          "energy_used": 6,
+          "energy_budget": 10,
+          "model": {
+            "calls": 7,
+            "finalized_request_records": 7,
+            "started_request_records": 7,
+            "reported_usage_requests": 7,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 3461,
+            "average_output_tokens_per_call": 494.42857142857144,
+            "max_call_output_tokens": 1259,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 56.22334154136479,
+            "model_seconds_from_logged_requests": 56.22334154136479,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_1",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8001/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_2",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.37687133997678757,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 3,
+              "ok_calls": 2,
+              "reported_seconds": 0.327470013871789,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.014096971601247787,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.022682659327983856,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_2",
+          "run_id": "e7-qwen38-pysr-on-20261107-r01-world_2",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 21.628534917858623,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 21.628534917858623,
+          "exploration_seconds": 214.53514713048935,
+          "evaluation_seconds": 2.2681067436933517,
+          "total_seconds": 219.02925647608936,
+          "exploration_deadline_met": true,
+          "energy_used": 8,
+          "energy_budget": 10,
+          "model": {
+            "calls": 32,
+            "finalized_request_records": 32,
+            "started_request_records": 32,
+            "reported_usage_requests": 32,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 6907,
+            "average_output_tokens_per_call": 215.84375,
+            "max_call_output_tokens": 795,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 132.7757020033896,
+            "model_seconds_from_logged_requests": 132.7757020033896,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_2",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8002/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_15",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "fitting": {
+              "calls": 19,
+              "ok_calls": 15,
+              "reported_seconds": 80.05246697738767,
+              "missing_duration_calls": 0
+            },
+            "observations": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.7287217676639557,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 6,
+              "ok_calls": 6,
+              "reported_seconds": 0.014532044529914856,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.2690363861620426,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.0904969871044159,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 1,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_3",
+          "run_id": "e7-qwen38-pysr-on-20261107-r01-world_3",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 15.936646542986972,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 15.936646542986972,
+          "exploration_seconds": 175.25124384649098,
+          "evaluation_seconds": 19.03905270434916,
+          "total_seconds": 196.32705148868263,
+          "exploration_deadline_met": true,
+          "energy_used": 10,
+          "energy_budget": 10,
+          "model": {
+            "calls": 13,
+            "finalized_request_records": 13,
+            "started_request_records": 13,
+            "reported_usage_requests": 13,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 3604,
+            "average_output_tokens_per_call": 277.2307692307692,
+            "max_call_output_tokens": 598,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 67.42304992116988,
+            "model_seconds_from_logged_requests": 67.42304992116988,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_3",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8003/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_3",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 4,
+              "ok_calls": 4,
+              "reported_seconds": 0.5907111931592226,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 5,
+              "ok_calls": 4,
+              "reported_seconds": 100.08451236598194,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.010481899604201317,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 6.465864133089781,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.1528058834373951,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_4",
+          "run_id": "e7-qwen38-pysr-on-20261107-r01-world_4",
+          "status": "incomplete",
+          "reason": "model_finish_length_recovery_exhausted",
+          "evaluation_complete": false,
+          "raw_score": null,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 0,
+          "exploration_seconds": 264.6203815191984,
+          "evaluation_seconds": null,
+          "total_seconds": 266.97150209359825,
+          "exploration_deadline_met": null,
+          "energy_used": 6,
+          "energy_budget": 10,
+          "model": {
+            "calls": 12,
+            "finalized_request_records": 12,
+            "started_request_records": 12,
+            "reported_usage_requests": 12,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 14268,
+            "average_output_tokens_per_call": 1189.0,
+            "max_call_output_tokens": 4096,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 228.20040849409997,
+            "model_seconds_from_logged_requests": 228.20040849409997,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_4",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8001/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": null,
+          "evaluation_failures": null,
+          "evaluation_error": null,
+          "termination_audit": {
+            "reason": "model_finish_length_recovery_exhausted",
+            "truncated_calls": [
+              4,
+              12
+            ],
+            "truncated_completion_tokens": [
+              4096,
+              4096
+            ],
+            "truncated_model_seconds": [
+              63.28807210735977,
+              65.7238415889442
+            ],
+            "remaining_exploration_seconds_at_end": 35.757150299847126,
+            "remaining_energy": 4,
+            "interpretation": "The first truncated response was recovered; the second exhausted the one-recovery allowance. This is not a 300-second timeout or a failed SR request. No accepted submission existed."
+          },
+          "symbolic_regression": {
+            "calls": 1,
+            "statuses": {
+              "timeout": 1
+            },
+            "reported_tool_seconds": 26.42035874724388,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": [
+              {
+                "search_id": "sr_a24a5b07d712",
+                "tool_call_index": 11,
+                "ok": true,
+                "status": "timeout",
+                "error_code": null,
+                "axes_completed": [
+                  "ax",
+                  "ay"
+                ],
+                "candidates_returned": 3,
+                "tool_elapsed_seconds": 26.42035874724388,
+                "runtime_wall_seconds": 26.416633808985353,
+                "service_elapsed_seconds": 26.41037656366825,
+                "search_elapsed_seconds": 26.398260436952114,
+                "requested_time_budget_seconds": 30,
+                "effective_time_budget_seconds": 30.0,
+                "body_positions_included": false,
+                "identifiable_fit_calls": [],
+                "candidate_fit_adoption": "unknown",
+                "matched_successful_fit_count": 0,
+                "adopted_submitted_law": null
+              }
+            ],
+            "manual_adoption_audit": {
+              "classification": "no_candidate_fitted_after_search",
+              "evidence": "Search sr_a24a5b07d712 returned three candidate pairs at tool index 11. The completed tool log contains no subsequent tool call and no draft or submission. The model rejected the candidates in public commentary, then produced a truncated 4096-token response."
+            }
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 3,
+              "ok_calls": 2,
+              "reported_seconds": 0.23352830857038498,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 4,
+              "ok_calls": 3,
+              "reported_seconds": 9.24894853681326,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.039253897964954376,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.009001286700367928,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.0019700471311807632,
+              "missing_duration_calls": 0
+            },
+            "symbolic_regression": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 26.42035874724388,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_5",
+          "run_id": "e7-qwen38-pysr-on-20261107-r01-world_5",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 33.77441118908246,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 33.77441118908246,
+          "exploration_seconds": 76.95493127405643,
+          "evaluation_seconds": 2.582108709961176,
+          "total_seconds": 80.71414184756577,
+          "exploration_deadline_met": true,
+          "energy_used": 8,
+          "energy_budget": 10,
+          "model": {
+            "calls": 12,
+            "finalized_request_records": 12,
+            "started_request_records": 12,
+            "reported_usage_requests": 12,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 4000,
+            "average_output_tokens_per_call": 333.3333333333333,
+            "max_call_output_tokens": 1161,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 74.3502771705389,
+            "model_seconds_from_logged_requests": 74.3502771705389,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_5",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8002/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_2",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 5,
+              "ok_calls": 5,
+              "reported_seconds": 1.326823003590107,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 6,
+              "ok_calls": 6,
+              "reported_seconds": 0.0129515640437603,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.6478497851639986,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.023350242525339127,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.05300978757441044,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.05043768137693405,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_6",
+          "run_id": "e7-qwen38-pysr-on-20261107-r01-world_6",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 15.760648069441627,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 15.760648069441627,
+          "exploration_seconds": 136.241243859753,
+          "evaluation_seconds": 31.075505256652832,
+          "total_seconds": 169.42174434289336,
+          "exploration_deadline_met": true,
+          "energy_used": 3,
+          "energy_budget": 10,
+          "model": {
+            "calls": 13,
+            "finalized_request_records": 13,
+            "started_request_records": 13,
+            "reported_usage_requests": 13,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 3043,
+            "average_output_tokens_per_call": 234.07692307692307,
+            "max_call_output_tokens": 696,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 56.07813931629062,
+            "model_seconds_from_logged_requests": 56.07813931629062,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_6",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8003/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_2",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 4,
+              "ok_calls": 3,
+              "reported_seconds": 0.21333873458206654,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 6,
+              "ok_calls": 5,
+              "reported_seconds": 79.29680904187262,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.010594073683023453,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.12379740551114082,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        }
+      ],
+      "source_sha256": {
+        "shore_agent/agent.py": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+        "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+        "shore_agent/prompts/e5.txt": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+        "shore_agent/prompts/e5_concise.txt": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+        "shore_agent/schemas.py": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+        "shore_agent/runtime.py": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+        "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+        "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+        "shore_agent/model.py": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+        "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+        "shore_agent/store.py": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+        "shore_agent/workspace.py": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+        "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+        "shore_agent/symbolic_regression.py": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+        "shore_agent/symbolic_service.py": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+        "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+        "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+        "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+        "benchmark_v15.py": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+        "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2"
+      },
+      "model_sampling_seed": null,
+      "sampling_seed_mode": "provider_default_unfixed_seed",
+      "max_total_tokens": null,
+      "terminal_count": 6,
+      "complete_count": 5,
+      "raw_ge_90_complete_count": 1,
+      "selection_metric_mean_incomplete_as_zero_fixed_six": 30.683349678056857,
+      "available_raw_score_statistics": {
+        "n": 5,
+        "mean": 36.82001961366823,
+        "max": 96.99985734897146,
+        "total": 184.10009806834114
+      },
+      "all_six_raw_score_mean": null,
+      "terminal_exploration_seconds": {
+        "n": 6,
+        "mean": 154.19455189692476,
+        "max": 264.6203815191984,
+        "total": 925.1673113815486
+      },
+      "terminal_total_seconds": {
+        "n": 6,
+        "mean": 165.81454696599394,
+        "max": 266.97150209359825,
+        "total": 994.8872817959636
+      },
+      "symbolic_search_calls": 1,
+      "symbolic_search_seconds": 26.42035874724388,
+      "searches_identifiably_fit": 0,
+      "searches_identifiably_submitted": 0,
+      "average_output_tokens_per_request": 396.438202247191,
+      "output_token_average_definition": "Sum of reported completion tokens divided by model requests; all request usage must be complete.",
+      "model_requests": 89,
+      "model_seconds": 615.0509184468538,
+      "reported_tool_seconds_by_class": {
+        "analysis": 6.827164204791188,
+        "file_reads": 0.05052962899208069,
+        "fitting": 269.65805672109127,
+        "observations": 3.4699943475425243,
+        "submission": 0.4402206167578697,
+        "symbolic_regression": 26.42035874724388,
+        "validation": 0.04644850082695484
+      }
+    },
+    {
+      "id": "e7-qwen38-pysr-on-20261107-r02",
+      "status": "completed",
+      "arm": "on",
+      "repeat": 2,
+      "worlds": [
+        {
+          "world_id": "world_1",
+          "run_id": "e7-qwen38-pysr-on-20261107-r02-world_1",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 30.38875629860611,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 30.38875629860611,
+          "exploration_seconds": 96.17230033501983,
+          "evaluation_seconds": 3.6768347714096308,
+          "total_seconds": 102.66284355893731,
+          "exploration_deadline_met": true,
+          "energy_used": 7,
+          "energy_budget": 10,
+          "model": {
+            "calls": 14,
+            "finalized_request_records": 14,
+            "started_request_records": 14,
+            "reported_usage_requests": 14,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 4560,
+            "average_output_tokens_per_call": 325.7142857142857,
+            "max_call_output_tokens": 918,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 78.68004304915667,
+            "model_seconds_from_logged_requests": 78.68004304915667,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_1",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8002/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_2",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 5,
+              "ok_calls": 4,
+              "reported_seconds": 0.8216450586915016,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 7,
+              "ok_calls": 4,
+              "reported_seconds": 15.768084831535816,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.027344925329089165,
+              "missing_duration_calls": 0
+            },
+            "analysis": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.1564671266824007,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.049445539712905884,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 3,
+              "ok_calls": 3,
+              "reported_seconds": 0.009344495832920074,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_2",
+          "run_id": "e7-qwen38-pysr-on-20261107-r02-world_2",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 15.911741173910828,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 15.911741173910828,
+          "exploration_seconds": 131.89897125400603,
+          "evaluation_seconds": 2.7703651934862137,
+          "total_seconds": 136.15118319913745,
+          "exploration_deadline_met": true,
+          "energy_used": 7,
+          "energy_budget": 10,
+          "model": {
+            "calls": 19,
+            "finalized_request_records": 19,
+            "started_request_records": 19,
+            "reported_usage_requests": 19,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 5578,
+            "average_output_tokens_per_call": 293.57894736842104,
+            "max_call_output_tokens": 1144,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 93.13411595858634,
+            "model_seconds_from_logged_requests": 93.13411595858634,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_2",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8000/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_4",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 6,
+              "ok_calls": 5,
+              "reported_seconds": 0.5095736216753721,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 10,
+              "ok_calls": 7,
+              "reported_seconds": 37.54909384250641,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.14819899573922157,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.07270314916968346,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 1,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_3",
+          "run_id": "e7-qwen38-pysr-on-20261107-r02-world_3",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 95.99999999999994,
+          "complete_and_raw_score_at_least_90": true,
+          "score_for_batch_mean_incomplete_as_zero": 95.99999999999994,
+          "exploration_seconds": 207.11060969904065,
+          "evaluation_seconds": 2.568693585693836,
+          "total_seconds": 210.58413523063064,
+          "exploration_deadline_met": true,
+          "energy_used": 8,
+          "energy_budget": 10,
+          "model": {
+            "calls": 14,
+            "finalized_request_records": 14,
+            "started_request_records": 14,
+            "reported_usage_requests": 14,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 7182,
+            "average_output_tokens_per_call": 513.0,
+            "max_call_output_tokens": 2051,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 123.38307757303119,
+            "model_seconds_from_logged_requests": 123.38307757303119,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_3",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8000/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_4",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 1,
+            "statuses": {
+              "timeout": 1
+            },
+            "reported_tool_seconds": 26.247097538784146,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": [
+              {
+                "search_id": "sr_d5c61f47a008",
+                "tool_call_index": 11,
+                "ok": true,
+                "status": "timeout",
+                "error_code": null,
+                "axes_completed": [
+                  "ax",
+                  "ay"
+                ],
+                "candidates_returned": 3,
+                "tool_elapsed_seconds": 26.247097538784146,
+                "runtime_wall_seconds": 26.243194775655866,
+                "service_elapsed_seconds": 26.236553011462092,
+                "search_elapsed_seconds": 26.227647369727492,
+                "requested_time_budget_seconds": 30,
+                "effective_time_budget_seconds": 30.0,
+                "body_positions_included": false,
+                "identifiable_fit_calls": [],
+                "candidate_fit_adoption": "unknown",
+                "matched_successful_fit_count": 0,
+                "adopted_submitted_law": null
+              }
+            ],
+            "manual_adoption_audit": {
+              "classification": "no_direct_candidate_reuse_identified",
+              "evidence": "Search sr_d5c61f47a008 returned three candidates with a nonlinear ax and constant ay, or both constants. The next fit (tool index 12) proposed k1*x+k2*y / k2*x+k3*y, not any returned law. The model commentary rejected search candidates as overfitted/constant before rechecking its acquired observations. Final accepted law_4 came from that separate linear proposal.",
+              "causal_limit": "Possible indirect inspiration cannot be established from this single run; do not credit its score as successful direct SR-candidate adoption."
+            }
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 4,
+              "ok_calls": 4,
+              "reported_seconds": 1.1520007010549307,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 6,
+              "ok_calls": 4,
+              "reported_seconds": 55.744802037253976,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.004150819033384323,
+              "missing_duration_calls": 0
+            },
+            "symbolic_regression": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 26.247097538784146,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 0.021453605964779854,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.052538517862558365,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_4",
+          "run_id": "e7-qwen38-pysr-on-20261107-r02-world_4",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 25.294478721557816,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 25.294478721557816,
+          "exploration_seconds": 174.85177664645016,
+          "evaluation_seconds": 4.726449171081185,
+          "total_seconds": 180.73082133196294,
+          "exploration_deadline_met": true,
+          "energy_used": 10,
+          "energy_budget": 10,
+          "model": {
+            "calls": 18,
+            "finalized_request_records": 18,
+            "started_request_records": 18,
+            "reported_usage_requests": 18,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 8086,
+            "average_output_tokens_per_call": 449.22222222222223,
+            "max_call_output_tokens": 1396,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 135.30554823204875,
+            "model_seconds_from_logged_requests": 135.30554823204875,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_4",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8002/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_5",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 1,
+            "statuses": {
+              "timeout": 1
+            },
+            "reported_tool_seconds": 36.2827715408057,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": [
+              {
+                "search_id": "sr_f26d116dcfb6",
+                "tool_call_index": 10,
+                "ok": true,
+                "status": "timeout",
+                "error_code": null,
+                "axes_completed": [
+                  "ax",
+                  "ay"
+                ],
+                "candidates_returned": 3,
+                "tool_elapsed_seconds": 36.2827715408057,
+                "runtime_wall_seconds": 36.27944787591696,
+                "service_elapsed_seconds": 36.2738127168268,
+                "search_elapsed_seconds": 36.25787881575525,
+                "requested_time_budget_seconds": 40,
+                "effective_time_budget_seconds": 40.0,
+                "body_positions_included": false,
+                "identifiable_fit_calls": [],
+                "candidate_fit_adoption": "unknown",
+                "matched_successful_fit_count": 0,
+                "adopted_submitted_law": null
+              }
+            ],
+            "manual_adoption_audit": {
+              "classification": "no_direct_candidate_reuse_identified",
+              "evidence": "Search sr_f26d116dcfb6 returned nonlinear state expressions or two constants. Later fits 15 and 16 proposed body-sum distance formulas with G/H and charge^2/mass, not candidate transformations. The public commentary rejected the symbolic candidates before fresh observations and fitting; accepted law_5 was the independent body-sum proposal.",
+              "causal_limit": "An indirect effect cannot be causally separated in this single run. No returned candidate was fitted or submitted."
+            }
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 4,
+              "ok_calls": 3,
+              "reported_seconds": 0.16360594891011715,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 6,
+              "ok_calls": 5,
+              "reported_seconds": 2.542254751548171,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 6,
+              "ok_calls": 6,
+              "reported_seconds": 0.011033657938241959,
+              "missing_duration_calls": 0
+            },
+            "symbolic_regression": {
+              "calls": 1,
+              "ok_calls": 1,
+              "reported_seconds": 36.2827715408057,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 2,
+              "ok_calls": 1,
+              "reported_seconds": 0.018488489091396332,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.03680110163986683,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_5",
+          "run_id": "e7-qwen38-pysr-on-20261107-r02-world_5",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": false,
+          "raw_score": 10.0,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 0,
+          "exploration_seconds": 262.66259741969407,
+          "evaluation_seconds": 29.050695948302746,
+          "total_seconds": 293.9741091374308,
+          "exploration_deadline_met": true,
+          "energy_used": 8,
+          "energy_budget": 10,
+          "model": {
+            "calls": 23,
+            "finalized_request_records": 23,
+            "started_request_records": 23,
+            "reported_usage_requests": 23,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 5396,
+            "average_output_tokens_per_call": 234.6086956521739,
+            "max_call_output_tokens": 948,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 101.23808974958956,
+            "model_seconds_from_logged_requests": 101.23808974958956,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_5",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8001/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_10",
+          "evaluation_failures": [
+            {
+              "probe_id": "v15_b0-s1_3",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            }
+          ],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 5,
+              "ok_calls": 4,
+              "reported_seconds": 1.4032165706157684,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 11,
+              "ok_calls": 10,
+              "reported_seconds": 157.65899956598878,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 1.6603080406785011,
+              "missing_duration_calls": 0
+            },
+            "file_reads": {
+              "calls": 4,
+              "ok_calls": 4,
+              "reported_seconds": 0.011382091790437698,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.09606149233877659,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        },
+        {
+          "world_id": "world_6",
+          "run_id": "e7-qwen38-pysr-on-20261107-r02-world_6",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "evaluation_complete": true,
+          "raw_score": 21.09264632438759,
+          "complete_and_raw_score_at_least_90": false,
+          "score_for_batch_mean_incomplete_as_zero": 21.09264632438759,
+          "exploration_seconds": 146.21140741184354,
+          "evaluation_seconds": 3.4191948622465134,
+          "total_seconds": 152.38982457108796,
+          "exploration_deadline_met": true,
+          "energy_used": 10,
+          "energy_budget": 10,
+          "model": {
+            "calls": 16,
+            "finalized_request_records": 16,
+            "started_request_records": 16,
+            "reported_usage_requests": 16,
+            "requests_without_reported_usage": 0,
+            "usage_complete": true,
+            "usage_log_verified": true,
+            "usage_source": "model_events.jsonl",
+            "reported_completion_tokens": 6242,
+            "average_output_tokens_per_call": 390.125,
+            "max_call_output_tokens": 1226,
+            "max_output_is_complete": true,
+            "observed_calls_above_4096": 0,
+            "observed_requests_above_4096": 0,
+            "model_elapsed_seconds": 109.38310275785625,
+            "model_seconds_from_logged_requests": 109.38310275785625,
+            "model_time_log_complete": true
+          },
+          "warnings": [],
+          "configuration_audit": {
+            "world_id": "world_6",
+            "energy_budget": 10,
+            "wall_seconds": 300,
+            "noise": false,
+            "max_tokens_per_call": 4096,
+            "max_total_tokens": null,
+            "thinking": false,
+            "sampling_seed": null,
+            "symbolic_enabled": true,
+            "model_endpoint": "http://127.0.0.1:8002/v1"
+          },
+          "terminal": true,
+          "accepted_law_id": "law_3",
+          "evaluation_failures": [],
+          "evaluation_error": null,
+          "symbolic_regression": {
+            "calls": 0,
+            "statuses": {},
+            "reported_tool_seconds": 0,
+            "searches_with_identifiable_fit": 0,
+            "adoption_note": "Only later exact formula-AST and named parameter-spec matches are identifiable. Algebraic rewrites, renamed parameters, or changed initial values remain unknown; fit success is reported separately.",
+            "searches": []
+          },
+          "tool_time_by_class": {
+            "observations": {
+              "calls": 7,
+              "ok_calls": 7,
+              "reported_seconds": 0.6736050080507994,
+              "missing_duration_calls": 0
+            },
+            "fitting": {
+              "calls": 8,
+              "ok_calls": 5,
+              "reported_seconds": 35.29913331195712,
+              "missing_duration_calls": 0
+            },
+            "validation": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.2965744361281395,
+              "missing_duration_calls": 0
+            },
+            "submission": {
+              "calls": 2,
+              "ok_calls": 2,
+              "reported_seconds": 0.04845379292964935,
+              "missing_duration_calls": 0
+            }
+          },
+          "repeated_call_occurrences": 0,
+          "longest_identical_call_streak": 1
+        }
+      ],
+      "source_sha256": {
+        "shore_agent/agent.py": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+        "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+        "shore_agent/prompts/e5.txt": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+        "shore_agent/prompts/e5_concise.txt": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+        "shore_agent/schemas.py": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+        "shore_agent/runtime.py": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+        "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+        "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+        "shore_agent/model.py": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+        "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+        "shore_agent/store.py": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+        "shore_agent/workspace.py": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+        "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+        "shore_agent/symbolic_regression.py": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+        "shore_agent/symbolic_service.py": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+        "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+        "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+        "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+        "benchmark_v15.py": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+        "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2"
+      },
+      "model_sampling_seed": null,
+      "sampling_seed_mode": "provider_default_unfixed_seed",
+      "max_total_tokens": null,
+      "terminal_count": 6,
+      "complete_count": 5,
+      "raw_ge_90_complete_count": 1,
+      "selection_metric_mean_incomplete_as_zero_fixed_six": 31.44793708641038,
+      "available_raw_score_statistics": {
+        "n": 6,
+        "mean": 33.11460375307705,
+        "max": 95.99999999999994,
+        "total": 198.6876225184623
+      },
+      "all_six_raw_score_mean": 33.11460375307705,
+      "terminal_exploration_seconds": {
+        "n": 6,
+        "mean": 169.81794379434237,
+        "max": 262.66259741969407,
+        "total": 1018.9076627660543
+      },
+      "terminal_total_seconds": {
+        "n": 6,
+        "mean": 179.41548617153117,
+        "max": 293.9741091374308,
+        "total": 1076.492917029187
+      },
+      "symbolic_search_calls": 2,
+      "symbolic_search_seconds": 62.529869079589844,
+      "searches_identifiably_fit": 0,
+      "searches_identifiably_submitted": 0,
+      "average_output_tokens_per_request": 356.1923076923077,
+      "output_token_average_definition": "Sum of reported completion tokens divided by model requests; all request usage must be complete.",
+      "model_requests": 104,
+      "model_seconds": 641.1239773202688,
+      "reported_tool_seconds_by_class": {
+        "analysis": 0.1564671266824007,
+        "file_reads": 0.035911064594984055,
+        "fitting": 304.5623683407903,
+        "observations": 4.723646908998489,
+        "submission": 0.3560035936534405,
+        "symbolic_regression": 62.529869079589844,
+        "validation": 2.1723684929311275
+      }
+    }
+  ],
+  "arms": {
+    "off": {
+      "batch_ids": [
+        "e7-qwen38-pysr-off-20261107-r01",
+        "e7-qwen38-pysr-off-20261107-r02"
+      ],
+      "terminal_worlds": 12,
+      "complete_worlds": 12,
+      "high_counts_by_complete_batch": [
+        3,
+        0
+      ],
+      "complete_counts_by_batch": [
+        6,
+        6
+      ],
+      "selection_metric_mean_incomplete_as_zero_fixed_twelve": 45.160572298822665,
+      "available_raw_score_statistics": {
+        "n": 12,
+        "mean": 45.160572298822665,
+        "max": 97.99999999999885,
+        "total": 541.926867585872
+      },
+      "terminal_exploration_seconds": {
+        "n": 12,
+        "mean": 161.40270987634236,
+        "max": 278.35506859607995,
+        "total": 1936.8325185161084
+      },
+      "terminal_total_seconds": {
+        "n": 12,
+        "mean": 166.90317572420463,
+        "max": 294.39034185372293,
+        "total": 2002.8381086904556
+      },
+      "terminal_average_output_per_request": 388.236,
+      "terminal_usage_complete": true,
+      "max_reported_output_tokens": 4096,
+      "symbolic_search_calls": 0,
+      "symbolic_search_seconds": 0,
+      "searches_identifiably_fit": 0,
+      "searches_identifiably_submitted": 0
+    },
+    "on": {
+      "batch_ids": [
+        "e7-qwen38-pysr-on-20261107-r01",
+        "e7-qwen38-pysr-on-20261107-r02"
+      ],
+      "terminal_worlds": 12,
+      "complete_worlds": 10,
+      "high_counts_by_complete_batch": [
+        1,
+        1
+      ],
+      "complete_counts_by_batch": [
+        5,
+        5
+      ],
+      "selection_metric_mean_incomplete_as_zero_fixed_twelve": 31.065643382233617,
+      "available_raw_score_statistics": {
+        "n": 11,
+        "mean": 34.7988836897094,
+        "max": 96.99985734897146,
+        "total": 382.7877205868034
+      },
+      "terminal_exploration_seconds": {
+        "n": 12,
+        "mean": 162.00624784563357,
+        "max": 264.6203815191984,
+        "total": 1944.074974147603
+      },
+      "terminal_total_seconds": {
+        "n": 12,
+        "mean": 172.61501656876257,
+        "max": 293.9741091374308,
+        "total": 2071.3801988251507
+      },
+      "terminal_average_output_per_request": 374.75129533678756,
+      "terminal_usage_complete": true,
+      "max_reported_output_tokens": 4096,
+      "symbolic_search_calls": 3,
+      "symbolic_search_seconds": 88.95022782683372,
+      "searches_identifiably_fit": 0,
+      "searches_identifiably_submitted": 0
+    }
+  },
+  "compliance": {
+    "terminal_worlds": 24,
+    "complete_evaluations": 22,
+    "usage_complete_worlds": 24,
+    "exploration_over_300": [],
+    "reported_output_over_4096": [],
+    "configured_output_request_over_4096": [],
+    "off_arm_symbolic_calls": 0,
+    "energy_over_10": [],
+    "configuration_mismatches": []
+  },
+  "manual_symbolic_adoption_summary": {
+    "searches": 3,
+    "returned_candidate_pairs": 9,
+    "searches_with_candidate_fit": 0,
+    "candidate_pairs_fitted": 0,
+    "candidate_pairs_submitted": 0,
+    "basis": "All three complete search result records, subsequent fit arguments, accepted law IDs, and public progress messages inspected. Each run rejected the returned candidates; this manual finding is stronger than the generic exact-match-only unknown field.",
+    "indirect_effect": "Possible indirect influence cannot be causally separated. The on R02 world3 96-point submission was a separately proposed linear law, not a returned SR candidate.",
+    "search_deadline_semantics": "All three searches returned ok=true/status=timeout, both axes and three checkpoint candidates; this is a bounded search result, not an HTTP failure or exploration timeout."
+  },
+  "conclusion": {
+    "point_estimate": "No improvement demonstrated in this registered 2-off/2-on experiment. Off has 3/12 complete raw scores >=90 and selection mean 45.1606; on has 2/12 and selection mean 31.0656.",
+    "repeat_variability": "Off batch means 67.1098 and 23.2113 differ substantially; two repeats do not establish a reliable causal performance difference.",
+    "causal_scope": "The intervention enables an optional state/probe-property SR tool and its description. Only 3 of 12 on sessions invoked it. This is not a forced-use benchmark of the symbolic backend, a body-aware SR benchmark, or evidence about nine hidden test worlds.",
+    "no_posthoc_selection": "Both complete six-world repeats retained; no best-world stitching or re-run replacement."
+  }
+}

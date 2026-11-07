@@ -1,0 +1,526 @@
+{
+  "checked_at": "2026-11-07T04:36:47.221188+00:00",
+  "study_commit": "97ae517d191e27d28e585f36006ad5b23ef36851",
+  "baseline_commit": "eae6745a4df5707f4165333d75bcf44a9ed441b7",
+  "feature_commit": "8b5bb7d3a8368a8b3b45a11a4b751097d1588bc9",
+  "all_sources_match": true,
+  "batch_count": 4,
+  "source_checks": 80,
+  "arm_configuration_differences": [
+    {
+      "path": "numerics.symbolic_regression_enabled",
+      "off": false,
+      "on": true
+    }
+  ],
+  "batches": [
+    {
+      "batch": "e7-qwen38-pysr-off-20261107-r01",
+      "status": "completed",
+      "source_files": [
+        {
+          "path": "shore_agent/agent.py",
+          "recorded_sha256": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+          "commit_sha256": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/main.txt",
+          "recorded_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+          "commit_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/e5.txt",
+          "recorded_sha256": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+          "commit_sha256": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/e5_concise.txt",
+          "recorded_sha256": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+          "commit_sha256": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+          "match": true
+        },
+        {
+          "path": "shore_agent/schemas.py",
+          "recorded_sha256": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+          "commit_sha256": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+          "match": true
+        },
+        {
+          "path": "shore_agent/runtime.py",
+          "recorded_sha256": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+          "commit_sha256": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+          "match": true
+        },
+        {
+          "path": "shore_agent/numerics.py",
+          "recorded_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+          "commit_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+          "match": true
+        },
+        {
+          "path": "shore_agent/expressions.py",
+          "recorded_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+          "commit_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+          "match": true
+        },
+        {
+          "path": "shore_agent/model.py",
+          "recorded_sha256": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+          "commit_sha256": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+          "match": true
+        },
+        {
+          "path": "shore_agent/web_worker.py",
+          "recorded_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+          "commit_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+          "match": true
+        },
+        {
+          "path": "shore_agent/store.py",
+          "recorded_sha256": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+          "commit_sha256": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+          "match": true
+        },
+        {
+          "path": "shore_agent/workspace.py",
+          "recorded_sha256": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+          "commit_sha256": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+          "match": true
+        },
+        {
+          "path": "shore_agent/submission.py",
+          "recorded_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+          "commit_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+          "match": true
+        },
+        {
+          "path": "shore_agent/symbolic_regression.py",
+          "recorded_sha256": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+          "commit_sha256": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+          "match": true
+        },
+        {
+          "path": "shore_agent/symbolic_service.py",
+          "recorded_sha256": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+          "commit_sha256": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+          "match": true
+        },
+        {
+          "path": "shore_rules.py",
+          "recorded_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+          "commit_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+          "match": true
+        },
+        {
+          "path": "shore_v15/simulator.py",
+          "recorded_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+          "commit_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+          "match": true
+        },
+        {
+          "path": "shore_v15/evaluation.py",
+          "recorded_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+          "commit_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+          "match": true
+        },
+        {
+          "path": "benchmark_v15.py",
+          "recorded_sha256": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+          "commit_sha256": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+          "match": true
+        },
+        {
+          "path": "shore_v15/vendor/SOURCE.json",
+          "recorded_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+          "commit_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+          "match": true
+        }
+      ],
+      "all_match": true
+    },
+    {
+      "batch": "e7-qwen38-pysr-off-20261107-r02",
+      "status": "completed",
+      "source_files": [
+        {
+          "path": "shore_agent/agent.py",
+          "recorded_sha256": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+          "commit_sha256": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/main.txt",
+          "recorded_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+          "commit_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/e5.txt",
+          "recorded_sha256": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+          "commit_sha256": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/e5_concise.txt",
+          "recorded_sha256": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+          "commit_sha256": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+          "match": true
+        },
+        {
+          "path": "shore_agent/schemas.py",
+          "recorded_sha256": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+          "commit_sha256": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+          "match": true
+        },
+        {
+          "path": "shore_agent/runtime.py",
+          "recorded_sha256": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+          "commit_sha256": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+          "match": true
+        },
+        {
+          "path": "shore_agent/numerics.py",
+          "recorded_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+          "commit_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+          "match": true
+        },
+        {
+          "path": "shore_agent/expressions.py",
+          "recorded_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+          "commit_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+          "match": true
+        },
+        {
+          "path": "shore_agent/model.py",
+          "recorded_sha256": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+          "commit_sha256": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+          "match": true
+        },
+        {
+          "path": "shore_agent/web_worker.py",
+          "recorded_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+          "commit_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+          "match": true
+        },
+        {
+          "path": "shore_agent/store.py",
+          "recorded_sha256": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+          "commit_sha256": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+          "match": true
+        },
+        {
+          "path": "shore_agent/workspace.py",
+          "recorded_sha256": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+          "commit_sha256": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+          "match": true
+        },
+        {
+          "path": "shore_agent/submission.py",
+          "recorded_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+          "commit_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+          "match": true
+        },
+        {
+          "path": "shore_agent/symbolic_regression.py",
+          "recorded_sha256": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+          "commit_sha256": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+          "match": true
+        },
+        {
+          "path": "shore_agent/symbolic_service.py",
+          "recorded_sha256": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+          "commit_sha256": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+          "match": true
+        },
+        {
+          "path": "shore_rules.py",
+          "recorded_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+          "commit_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+          "match": true
+        },
+        {
+          "path": "shore_v15/simulator.py",
+          "recorded_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+          "commit_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+          "match": true
+        },
+        {
+          "path": "shore_v15/evaluation.py",
+          "recorded_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+          "commit_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+          "match": true
+        },
+        {
+          "path": "benchmark_v15.py",
+          "recorded_sha256": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+          "commit_sha256": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+          "match": true
+        },
+        {
+          "path": "shore_v15/vendor/SOURCE.json",
+          "recorded_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+          "commit_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+          "match": true
+        }
+      ],
+      "all_match": true
+    },
+    {
+      "batch": "e7-qwen38-pysr-on-20261107-r01",
+      "status": "completed",
+      "source_files": [
+        {
+          "path": "shore_agent/agent.py",
+          "recorded_sha256": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+          "commit_sha256": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/main.txt",
+          "recorded_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+          "commit_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/e5.txt",
+          "recorded_sha256": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+          "commit_sha256": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/e5_concise.txt",
+          "recorded_sha256": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+          "commit_sha256": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+          "match": true
+        },
+        {
+          "path": "shore_agent/schemas.py",
+          "recorded_sha256": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+          "commit_sha256": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+          "match": true
+        },
+        {
+          "path": "shore_agent/runtime.py",
+          "recorded_sha256": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+          "commit_sha256": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+          "match": true
+        },
+        {
+          "path": "shore_agent/numerics.py",
+          "recorded_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+          "commit_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+          "match": true
+        },
+        {
+          "path": "shore_agent/expressions.py",
+          "recorded_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+          "commit_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+          "match": true
+        },
+        {
+          "path": "shore_agent/model.py",
+          "recorded_sha256": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+          "commit_sha256": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+          "match": true
+        },
+        {
+          "path": "shore_agent/web_worker.py",
+          "recorded_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+          "commit_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+          "match": true
+        },
+        {
+          "path": "shore_agent/store.py",
+          "recorded_sha256": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+          "commit_sha256": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+          "match": true
+        },
+        {
+          "path": "shore_agent/workspace.py",
+          "recorded_sha256": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+          "commit_sha256": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+          "match": true
+        },
+        {
+          "path": "shore_agent/submission.py",
+          "recorded_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+          "commit_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+          "match": true
+        },
+        {
+          "path": "shore_agent/symbolic_regression.py",
+          "recorded_sha256": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+          "commit_sha256": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+          "match": true
+        },
+        {
+          "path": "shore_agent/symbolic_service.py",
+          "recorded_sha256": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+          "commit_sha256": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+          "match": true
+        },
+        {
+          "path": "shore_rules.py",
+          "recorded_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+          "commit_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+          "match": true
+        },
+        {
+          "path": "shore_v15/simulator.py",
+          "recorded_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+          "commit_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+          "match": true
+        },
+        {
+          "path": "shore_v15/evaluation.py",
+          "recorded_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+          "commit_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+          "match": true
+        },
+        {
+          "path": "benchmark_v15.py",
+          "recorded_sha256": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+          "commit_sha256": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+          "match": true
+        },
+        {
+          "path": "shore_v15/vendor/SOURCE.json",
+          "recorded_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+          "commit_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+          "match": true
+        }
+      ],
+      "all_match": true
+    },
+    {
+      "batch": "e7-qwen38-pysr-on-20261107-r02",
+      "status": "completed",
+      "source_files": [
+        {
+          "path": "shore_agent/agent.py",
+          "recorded_sha256": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+          "commit_sha256": "13099ff3f97910ff88c0c02a278f5d4452ebc3eebb13a53e03295b5091887067",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/main.txt",
+          "recorded_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+          "commit_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/e5.txt",
+          "recorded_sha256": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+          "commit_sha256": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+          "match": true
+        },
+        {
+          "path": "shore_agent/prompts/e5_concise.txt",
+          "recorded_sha256": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+          "commit_sha256": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+          "match": true
+        },
+        {
+          "path": "shore_agent/schemas.py",
+          "recorded_sha256": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+          "commit_sha256": "1088372d8521c0c4ccc69e3f0ae4cfed3257fec01011b698b56c002a6f59dfe6",
+          "match": true
+        },
+        {
+          "path": "shore_agent/runtime.py",
+          "recorded_sha256": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+          "commit_sha256": "88e1e2bbbb385e96584900f78f134cd713b606062822703bf206a78db38d4e96",
+          "match": true
+        },
+        {
+          "path": "shore_agent/numerics.py",
+          "recorded_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+          "commit_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+          "match": true
+        },
+        {
+          "path": "shore_agent/expressions.py",
+          "recorded_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+          "commit_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+          "match": true
+        },
+        {
+          "path": "shore_agent/model.py",
+          "recorded_sha256": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+          "commit_sha256": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+          "match": true
+        },
+        {
+          "path": "shore_agent/web_worker.py",
+          "recorded_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+          "commit_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+          "match": true
+        },
+        {
+          "path": "shore_agent/store.py",
+          "recorded_sha256": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+          "commit_sha256": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+          "match": true
+        },
+        {
+          "path": "shore_agent/workspace.py",
+          "recorded_sha256": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+          "commit_sha256": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+          "match": true
+        },
+        {
+          "path": "shore_agent/submission.py",
+          "recorded_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+          "commit_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+          "match": true
+        },
+        {
+          "path": "shore_agent/symbolic_regression.py",
+          "recorded_sha256": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+          "commit_sha256": "5fe1d9d306559af27a59b23bb79c858e06f06b969803f5adadfd5261a0b02ca0",
+          "match": true
+        },
+        {
+          "path": "shore_agent/symbolic_service.py",
+          "recorded_sha256": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+          "commit_sha256": "6627ffd9324f116c8aa21b669b5c4c164c1070ffeeabaf83bc181578497afec3",
+          "match": true
+        },
+        {
+          "path": "shore_rules.py",
+          "recorded_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+          "commit_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+          "match": true
+        },
+        {
+          "path": "shore_v15/simulator.py",
+          "recorded_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+          "commit_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+          "match": true
+        },
+        {
+          "path": "shore_v15/evaluation.py",
+          "recorded_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+          "commit_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+          "match": true
+        },
+        {
+          "path": "benchmark_v15.py",
+          "recorded_sha256": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+          "commit_sha256": "16cafbc138bae1c011033b57a709dd15e9efec313944779ae0badc4fd8e8b05d",
+          "match": true
+        },
+        {
+          "path": "shore_v15/vendor/SOURCE.json",
+          "recorded_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+          "commit_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+          "match": true
+        }
+      ],
+      "all_match": true
+    }
+  ]
+}
