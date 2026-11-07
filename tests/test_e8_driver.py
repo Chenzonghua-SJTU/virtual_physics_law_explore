@@ -165,8 +165,9 @@ def test_r06_uses_only_user_allocated_three_model_replicas(project,monkeypatch):
     assert calls[0]['model_endpoints']==tuple(f'http://127.0.0.1:{p}/v1' for p in (8001,8002,8003))
 
 
-def test_r08_reuses_noisy_policy_on_current_three_replicas(project):
-    noisy=driver.plans(project,repeat='r08')[0]
+@pytest.mark.parametrize('repeat',['r08','r09'])
+def test_noisy_repeats_reuse_policy_on_current_three_replicas(project,repeat):
+    noisy=driver.plans(project,repeat=repeat)[0]
     old=driver.plans(project,repeat='r04')[0]
     assert noisy['config']==old['config']
     assert noisy['config']['environment']['noise'] is True

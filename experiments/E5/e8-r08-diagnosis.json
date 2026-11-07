@@ -1,0 +1,438 @@
+{
+  "batch": "e8-qwen38-pysr-stage-20261107-r08",
+  "scientific_commit": "52dbdd6",
+  "registration_commit": "c09a0f6",
+  "observation_noise": true,
+  "evaluation_noise": false,
+  "attempts_per_world": 1,
+  "strict_scores_at_least_90": 1,
+  "all_limits_met": true,
+  "source_unchanged_after_completion": true,
+  "audit_inputs_unchanged": true,
+  "audit_warnings": [],
+  "all_six_tool_traces_reviewed": true,
+  "worlds": {
+    "world_1": {
+      "score": 26.96973887405899,
+      "timing": {
+        "exploration_seconds": 249.9280766993761,
+        "evaluation_seconds": 3.369685871526599,
+        "wall_seconds_including_evaluation": 254.19468192011118,
+        "model_elapsed_seconds": 198.59167416393757,
+        "symbolic_search_seconds": 43.58527348935604,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 55,
+        "completion_tokens": 10918,
+        "average_output_tokens_per_call": 198.5090909090909,
+        "max_call_output_tokens": 710,
+        "requests_with_reported_usage": 55,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 10,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-1 * exp(c1 + c2 * log(sqrt(x * x + y * y)) + c4 * q('mass') + c5 * q('charge')) * x",
+          "ay": "-1 * exp(c1 + c2 * log(sqrt(x * x + y * y)) + c4 * q('mass') + c5 * q('charge')) * y"
+        },
+        "fitted_parameters": {
+          "c1": -7.881489834819075,
+          "c2": -9.008870257704167,
+          "c4": -4.8767065630484545,
+          "c5": -4.013169390395141
+        },
+        "train_probe_ids": [
+          "probe_0001"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Initial SR represented property dependence with exponentials at two property levels. Agent added third levels but kept the exponential family.",
+        "Automatic acquired-observation consistency marked all acquired probes as discovery data. Old validation policy then rejected 22 validation attempts; model feedback did not stop the loop.",
+        "Agent finally refitted four parameters on one short free trajectory and submitted that underdetermined law because its training RMSE was smaller. This is not evidence of generalization."
+      ],
+      "context_delivery": [
+        {
+          "source": "model_messages.jsonl:8",
+          "message_index": 20,
+          "call_number": 8,
+          "tool_call_id": "chatcmpl-tool-b47dd14b392e69aa",
+          "visible_candidate_count": 3,
+          "joint_formula_parameter_specs_preserved": true,
+          "omitted_single_axis_counts": {
+            "ax": 3,
+            "ay": 3
+          },
+          "single_axis_omission_declared_correctly": true,
+          "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
+          "all_formula_parameter_specs_preserved": false
+        }
+      ]
+    },
+    "world_2": {
+      "score": 94.95997689165583,
+      "timing": {
+        "exploration_seconds": 110.02801659703255,
+        "evaluation_seconds": 1.7174589559435844,
+        "wall_seconds_including_evaluation": 112.96560723334551,
+        "model_elapsed_seconds": 63.50748527981341,
+        "symbolic_search_seconds": 45.13028648681939,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 11,
+        "completion_tokens": 3837,
+        "average_output_tokens_per_call": 348.8181818181818,
+        "max_call_output_tokens": 1107,
+        "requests_with_reported_usage": 11,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 10,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "q('charge') / q('mass') * x * c1",
+          "ay": "q('charge') / q('mass') * y * c1"
+        },
+        "fitted_parameters": {
+          "c1": -0.0602418668660885
+        },
+        "train_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "SR returned overcomplicated variants, but Agent simplified to a common linear spatial coefficient times the charge/mass ratio.",
+        "Newly acquired validation passed with position RMSE 0.06185; clean post-session score 94.96."
+      ],
+      "context_delivery": [
+        {
+          "source": "model_messages.jsonl:6",
+          "message_index": 13,
+          "call_number": 6,
+          "tool_call_id": "chatcmpl-tool-a6a7dd53f494bc69",
+          "visible_candidate_count": 3,
+          "joint_formula_parameter_specs_preserved": true,
+          "omitted_single_axis_counts": {
+            "ax": 3,
+            "ay": 3
+          },
+          "single_axis_omission_declared_correctly": true,
+          "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
+          "all_formula_parameter_specs_preserved": false
+        }
+      ]
+    },
+    "world_3": {
+      "score": 89.98068606891047,
+      "timing": {
+        "exploration_seconds": 202.55355176702142,
+        "evaluation_seconds": 2.4682615492492914,
+        "wall_seconds_including_evaluation": 207.3737058825791,
+        "model_elapsed_seconds": 133.9334162287414,
+        "symbolic_search_seconds": 41.74740835651755,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 15,
+        "completion_tokens": 7977,
+        "average_output_tokens_per_call": 531.8,
+        "max_call_output_tokens": 1769,
+        "requests_with_reported_usage": 15,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 10,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1*x + c2*y",
+          "ay": "c3*x + c4*y"
+        },
+        "fitted_parameters": {
+          "c1": -0.059786525174163836,
+          "c2": 0.0343164219082388,
+          "c3": 0.0346856411918028,
+          "c4": -0.09993151502980077
+        },
+        "train_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Agent simplified SR output to a linear tensor with coefficients near the reference; new validation RMSE 0.06076.",
+        "A wrong body-dependent fit consumed 25 seconds; four validation-overlap retries were avoidable.",
+        "Prediction score is nearly 80; unsupported hidden_matter=true loses 5 points and total is 89.98."
+      ],
+      "context_delivery": [
+        {
+          "source": "model_messages.jsonl:6",
+          "message_index": 14,
+          "call_number": 6,
+          "tool_call_id": "chatcmpl-tool-930089a47b09da19",
+          "visible_candidate_count": 3,
+          "joint_formula_parameter_specs_preserved": true,
+          "omitted_single_axis_counts": {
+            "ax": 3,
+            "ay": 3
+          },
+          "single_axis_omission_declared_correctly": true,
+          "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
+          "all_formula_parameter_specs_preserved": false
+        }
+      ]
+    },
+    "world_4": {
+      "score": 27.330054890406547,
+      "timing": {
+        "exploration_seconds": 262.6668123509735,
+        "evaluation_seconds": 3.92007346637547,
+        "wall_seconds_including_evaluation": 267.2829184010625,
+        "model_elapsed_seconds": 148.19080117717385,
+        "symbolic_search_seconds": 88.25097433291376,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 25,
+        "completion_tokens": 8229,
+        "average_output_tokens_per_call": 329.16,
+        "max_call_output_tokens": 1161,
+        "requests_with_reported_usage": 25,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 10,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-k * q('charge') * x / (x * x + y * y)",
+          "ay": "-k * q('charge') * y / (x * x + y * y)"
+        },
+        "fitted_parameters": {
+          "k": 0.1572649872303073
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0007"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "First SR omitted the acquired mass control; the tool explicitly reported that coverage omission. Second search included it and returned a complete radial exponential/log-radius/log-properties candidate ranked first with training RMSE 0.09101.",
+        "Agent never fitted that second-search first candidate; it continued inverse-radius variants and eventually revisited the first search complex candidate.",
+        "Final law omits distance screening and mass dependence; selecting a lower error on a reduced data subset hid counterexamples. All validation attempts rejected by old discovery-overlap policy."
+      ],
+      "context_delivery": [
+        {
+          "source": "model_messages.jsonl:6",
+          "message_index": 14,
+          "call_number": 6,
+          "tool_call_id": "chatcmpl-tool-845bcccd12b8e8e3",
+          "visible_candidate_count": 3,
+          "joint_formula_parameter_specs_preserved": true,
+          "omitted_single_axis_counts": {
+            "ax": 3,
+            "ay": 3
+          },
+          "single_axis_omission_declared_correctly": true,
+          "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
+          "all_formula_parameter_specs_preserved": false
+        },
+        {
+          "source": "model_messages.jsonl:11",
+          "message_index": 24,
+          "call_number": 11,
+          "tool_call_id": "chatcmpl-tool-91b46a1b65842a22",
+          "visible_candidate_count": 3,
+          "joint_formula_parameter_specs_preserved": true,
+          "omitted_single_axis_counts": {
+            "ax": 3,
+            "ay": 3
+          },
+          "single_axis_omission_declared_correctly": true,
+          "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
+          "all_formula_parameter_specs_preserved": false
+        }
+      ]
+    },
+    "world_5": {
+      "score": 25.795475232588963,
+      "timing": {
+        "exploration_seconds": 272.67273287288845,
+        "evaluation_seconds": 2.8694406654685736,
+        "wall_seconds_including_evaluation": 276.5075388997793,
+        "model_elapsed_seconds": 122.44766152836382,
+        "symbolic_search_seconds": 119.52623040229082,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 21,
+        "completion_tokens": 6869,
+        "average_output_tokens_per_call": 327.0952380952381,
+        "max_call_output_tokens": 922,
+        "requests_with_reported_usage": 21,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 8,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "x * (-c1 * cos(y) - c2) + exp(y) * c3",
+          "ay": "y * c4 / exp(vy * (x * vx + y * vy) * c5)"
+        },
+        "fitted_parameters": {
+          "c1": 0.008993215378518155,
+          "c2": 0.07092737536044802,
+          "c3": -0.003988149706389451,
+          "c4": -0.1152901123908342,
+          "c5": -0.15699426383245596
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "First search used mostly a sub-unit time window. Returned complicated trigonometric/velocity approximations, with training RMSE around 0.048.",
+        "Fresh longer trajectories refuted adopted candidate: validation position RMSE 4.644. Agent then spent time on unrelated central-force candidates.",
+        "Second search recovered cubic terms in one axis only. Third search ended with 43 seconds remaining; no subsequent fitting before mandatory submit. Agent submitted the already-refuted first law from its draft."
+      ],
+      "context_delivery": [
+        {
+          "source": "model_messages.jsonl:5",
+          "message_index": 11,
+          "call_number": 5,
+          "tool_call_id": "chatcmpl-tool-a6970dcbb177c18a",
+          "visible_candidate_count": 3,
+          "joint_formula_parameter_specs_preserved": true,
+          "omitted_single_axis_counts": {
+            "ax": 3,
+            "ay": 3
+          },
+          "single_axis_omission_declared_correctly": true,
+          "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
+          "all_formula_parameter_specs_preserved": false
+        },
+        {
+          "source": "model_messages.jsonl:17",
+          "message_index": 39,
+          "call_number": 17,
+          "tool_call_id": "chatcmpl-tool-972d487c825f8a25",
+          "visible_candidate_count": 3,
+          "joint_formula_parameter_specs_preserved": true,
+          "omitted_single_axis_counts": {
+            "ax": 3,
+            "ay": 3
+          },
+          "single_axis_omission_declared_correctly": true,
+          "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
+          "all_formula_parameter_specs_preserved": false
+        },
+        {
+          "source": "model_messages.jsonl:21",
+          "message_index": 48,
+          "call_number": 21,
+          "tool_call_id": "chatcmpl-tool-b04389ca07121971",
+          "visible_candidate_count": 3,
+          "joint_formula_parameter_specs_preserved": true,
+          "omitted_single_axis_counts": {
+            "ax": 3,
+            "ay": 3
+          },
+          "single_axis_omission_declared_correctly": true,
+          "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
+          "all_formula_parameter_specs_preserved": false
+        }
+      ]
+    },
+    "world_6": {
+      "score": 24.67416105115094,
+      "timing": {
+        "exploration_seconds": 243.18311060592532,
+        "evaluation_seconds": 13.28250333853066,
+        "wall_seconds_including_evaluation": 258.4521041922271,
+        "model_elapsed_seconds": 108.93008006550372,
+        "symbolic_search_seconds": 45.11511865630746,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 19,
+        "completion_tokens": 6142,
+        "average_output_tokens_per_call": 323.2631578947368,
+        "max_call_output_tokens": 735,
+        "requests_with_reported_usage": 19,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 9,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "sum_b(-(x-bx)*c1/sqrt((x-bx)*(x-bx)+(y-by)*(y-by)))",
+          "ay": "sum_b(-(y-by)*c1/sqrt((x-bx)*(x-bx)+(y-by)*(y-by)))"
+        },
+        "fitted_parameters": {
+          "c1": 0.055267039733366975
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Search omitted the delayed trajectory and returned inaccurate state/velocity approximations rather than the time-dependent field.",
+        "Agent abandoned returned candidates for body-centered central-force guesses; three fits hit 25-second limits, with syntax/parameter errors in between.",
+        "Final refit used only two free short trajectories. Validation RMSE 1.527 contradicted it, but time branch allowed submission. Explicit time dependence was incorrectly declared false."
+      ],
+      "context_delivery": [
+        {
+          "source": "model_messages.jsonl:4",
+          "message_index": 11,
+          "call_number": 4,
+          "tool_call_id": "chatcmpl-tool-929abb9fb392a517",
+          "visible_candidate_count": 3,
+          "joint_formula_parameter_specs_preserved": true,
+          "omitted_single_axis_counts": {
+            "ax": 3,
+            "ay": 3
+          },
+          "single_axis_omission_declared_correctly": true,
+          "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
+          "all_formula_parameter_specs_preserved": false
+        }
+      ]
+    }
+  },
+  "interpretation": [
+    "One stochastic run per world, with changed sampled trajectories; comparison with clean R07 does not isolate noise causally.",
+    "Poor results are a combination of noisy symbolic proposals, candidate adoption/selection errors and discovery-wide validation rejection.",
+    "User changed validation policy during this batch. R08 is retained unchanged; R09 will test only that generic policy/instruction change, leaving PySR search unchanged."
+  ],
+  "next_priorities": [
+    "Follow user-authorized per-law validation and all-data waiver; do not relax training threshold, time or token budgets.",
+    "Improve use of returned candidate alternatives and observed counterexamples; avoid comparing training errors across different data subsets as if comparable.",
+    "Noise-aware candidate simplification and full-trajectory stability need separate evaluation; no development-world formulas in prompts or tools."
+  ]
+}

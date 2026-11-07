@@ -23,7 +23,7 @@ from deployment import run_e7
 from shore_worlds import V15_WORLD_IDS
 
 BATCH_ID = 'e8-qwen38-pysr-stage-20261107-r01'
-REGISTERED_REPEATS = ('r01', 'r02', 'r03', 'r04', 'r05', 'r06', 'r07', 'r08', 'paired')
+REGISTERED_REPEATS = ('r01', 'r02', 'r03', 'r04', 'r05', 'r06', 'r07', 'r08', 'r09', 'paired')
 CONFIG = 'deployment/config.e8.symbolic.json'
 PROTOCOL = 'experiments/E5/e8-protocol.json'
 
@@ -35,18 +35,18 @@ def plans(project=ROOT, *, repeat='r01'):
         raise ValueError('E8 repeat must be explicitly registered')
     project = Path(project).resolve()
     batch_id = BATCH_ID.removesuffix('r01') + repeat
-    config = configuration(project, config_path=project/CONFIG, thinking=False, ruleset='e4' if repeat in ('r04','r08') else 'e5')
+    config = configuration(project, config_path=project/CONFIG, thinking=False, ruleset='e4' if repeat in ('r04','r08','r09') else 'e5')
     config['model'].pop('sampling_seed',None)
-    if repeat in ('r04','r08'):
+    if repeat in ('r04','r08','r09'):
         config['agent'].update(submission_fit_rmse_threshold=.1,submission_time_remaining_seconds=60)
     required = {
         ('environment','wall_seconds'):300, ('environment','energy_budget'):10,
-        ('environment','noise'):repeat in ('r04','r08'), ('environment','world_set'):'v15',
+        ('environment','noise'):repeat in ('r04','r08','r09'), ('environment','world_set'):'v15',
         ('model','model'):run_e7.MODEL, ('model','max_tokens_per_call'):4096,
         ('model','max_total_tokens'):None, ('model','thinking'):False,
         ('agent','guidance_profile'):'baseline', ('agent','loop_recovery'):True,
-        ('agent','submission_fit_rmse_threshold'):.1 if repeat in ('r04','r08') else 1e-5,
-        ('agent','submission_time_remaining_seconds'):60 if repeat in ('r04','r08') else 40,
+        ('agent','submission_fit_rmse_threshold'):.1 if repeat in ('r04','r08','r09') else 1e-5,
+        ('agent','submission_time_remaining_seconds'):60 if repeat in ('r04','r08','r09') else 40,
         ('numerics','symbolic_regression_enabled'):True,
         ('numerics','symbolic_regression_endpoint'):run_e7.SYMBOLIC_ENDPOINT,
     }
