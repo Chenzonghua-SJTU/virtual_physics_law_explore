@@ -487,33 +487,10 @@ class ToolRuntime:
         if failure_code is not None:
             # Archive provenance before the generic Agent failure/retry path sees it.
             raise SymbolicSearchToolError(failure_code, rid)
-        # Keep the searchable audit in the current-session file rather than
-        # feeding the complete equation population back into every LLM turn.
-        # Formula strings, parameter lists and probe IDs are executable inputs:
-        # never turn them into the generic {preview, truncated} representation.
-        public_keys = {
-            'search_id', 'status', 'backend', 'target', 'feature_names',
-            'dropped_constant_features', 'omitted_incomplete_properties',
-            'used_probe_ids', 'discovery_probe_ids', 'candidates', 'warnings',
-            'search_configuration', 'search_axes_completed', 'axis_search_seconds',
-            'requested_time_budget_seconds', 'effective_time_budget_seconds',
-            'wall_seconds', 'body_positions_included', 'rejected_candidate_pairs',
-            'rejection_counts', 'candidate_selection', 'stop_reason',
-            'transport_audit_omitted_rows',
-            'axis_candidates', 'data_quality', 'coverage', 'input_coverage', 'outcome', 'status_meaning',
-            'search_stages', 'basis_diagnostics', 'geometric_features', 'projection_diagnostics',
-        }
-        public = {key: copy.deepcopy(value) for key, value in result.items() if key in public_keys}
-        public['audit_path'] = f'analyses/{rid}.json'
-        public['next_step'] = (
-            'Candidates are ranked complete, algebraically deduplicated formulas with fitted_parameters and residuals. Test rank 1 first, then alternatives if residuals remain large. Pass its complete law_spec and parameter_spec '
-            'plus used_probe_ids as train_probe_ids to fit_law_and_rollout. '
-            'Single-axis entries have joint_fit_ready=false: their zero placeholder is not a prediction for the other axis. '
-            'Keep useful component structure, combine with evidence for the other axis, and respect the five-parameter fit limit. '
-            'Shared-parameter proposals are checked on discovery data only; do not impose extra symmetry by hand. '
-            'Initial-domain and short-rollout checks are training diagnostics, '
-            'not independent validation. Validate the fitted law on fresh probes.')
-        return public
+        # Full diagnostics are archived above. Preserve executable fields in a
+        # compact decision response instead of replaying per-probe audit tables.
+        from .symbolic_feedback import search_feedback
+        return search_feedback(result)
 
     def _symbolic_input_coverage(self, probes):
         """Describe acquired controls only; never silently add held-out data to search."""

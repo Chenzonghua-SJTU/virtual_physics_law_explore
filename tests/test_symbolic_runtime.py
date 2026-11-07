@@ -253,6 +253,41 @@ def test_search_delivery_keeps_executable_fields_complete_and_audit_in_file(runt
     assert data['rejection_counts']['initial_domain_failure'] == 2
 
 
+def test_model_feedback_omits_bulk_diagnostics_but_keeps_formulas_risks_and_full_archive(runtime, monkeypatch):
+    candidate = {'law_spec': {'ax': '-c*x', 'ay': '-c*y'},
+                 'parameter_spec': [{'name': 'c', 'initial': .2}],
+                 'fitted_parameters': {'c': .2}, 'rank': 1,
+                 'fit_stage': 'position_trajectory_discovery_refit',
+                 'residuals': {
+                     'trajectory_training': {'overall': {'position_rmse': .01, 'velocity_rmse': .02},
+                         'per_probe': [{'probe_id': 'p1', 'position_rmse': .01}] * 100},
+                     'observed_velocity_integral': {'complete': False, 'relative_increment_rmse': .3,
+                         'domain_error_probe_ids': ['p2'], 'denominator_sign_change_probe_ids': ['p3'],
+                         'per_probe': [{'probe_id': 'p1', 'relative_increment_rmse': .3}] * 100}},
+                 'parameter_sharing': {'audit': ['full retained evidence'] * 1000}}
+    raw = {'status': 'timeout', 'candidates': [candidate],
+           'data_quality': {'per_sample': list(range(5000))},
+           'search_stages': [{'debug': 'retain me'}], 'basis_diagnostics': {'audit': list(range(1000))}}
+    stub_service(monkeypatch, lambda *args, **kwargs: copy.deepcopy(raw))
+    reply = runtime.execute('symbolic_regression', {'train_probe_ids': ['p1'], 'time_budget_seconds': 20})
+    assert reply['ok']
+    data = reply['data']; delivered = data['candidates'][0]
+    assert delivered['law_spec'] == candidate['law_spec']
+    assert delivered['parameter_spec'] == candidate['parameter_spec']
+    assert delivered['fitted_parameters'] == candidate['fitted_parameters']
+    assert delivered['residuals']['observed_velocity_integral']['domain_error_probe_ids'] == ['p2']
+    assert delivered['residuals']['observed_velocity_integral']['denominator_sign_change_probe_ids'] == ['p3']
+    assert delivered['residuals']['observed_velocity_integral']['complete'] is False
+    assert delivered['independent_validation'] is False
+    assert not {'data_quality', 'search_stages', 'basis_diagnostics'} & data.keys()
+    assert 'per_probe' not in delivered['residuals']['trajectory_training']
+    assert len(json.dumps(reply)) < 7000
+    stored = runtime.store.get('symbolic_search', data['search_id'])
+    assert stored['data_quality'] == raw['data_quality']
+    assert stored['candidates'][0]['residuals'] == candidate['residuals']
+    assert stored['candidates'][0]['parameter_sharing'] == candidate['parameter_sharing']
+
+
 def test_single_axis_over_joint_limit_is_delivered_without_becoming_a_force_law(runtime, monkeypatch):
     from shore_agent.symbolic_regression import export_candidate, FEATURES, PROPERTIES
     source = '0.11*x + 0.23*y + 0.37*vx + 0.41*vy + 0.53*t + 0.67*mass'

@@ -779,12 +779,9 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
         candidate["selection_role"] = "simplest_within_resolution_tolerance" if not candidates else "alternative_accuracy_candidate"
         candidates.append(candidate)
         if len(candidates) == max(limit,8): break
-    def integral_rank(c):
-        check=c['residuals']['observed_velocity_integral']
-        bad=bool(check['domain_error_probe_ids'] or check['denominator_sign_change_probe_ids'] or not check['complete'])
-        residual=check.get('relative_increment_rmse')
-        return (bad,residual if residual is not None else float('inf'),c['complexity'])
-    candidates.sort(key=integral_rank)
+    from .symbolic_selection import rank_candidates
+    candidates = rank_candidates(candidates, dataset['probes'], stage='integral',
+                                 acceleration_tolerance=tolerance)
     cache['refinement_candidates']=candidates[:6]
     unique=[];structures=set()
     for candidate in candidates:
@@ -1021,9 +1018,14 @@ def _refine_final_candidates(report,dataset,deadline,limit=3):
         key=candidate_structure_key(candidate)
         if key in seen: continue
         seen.add(key);unique.append(candidate)
-    results=unique[:limit]
+    from .symbolic_selection import rank_candidates
+    tolerance = 0.0
+    if 'weights' in dataset and 'y' in dataset:
+        scale = np.maximum(np.sum(dataset['weights'][:, None]*dataset['y']**2, axis=0), 1e-20)
+        tolerance = max(1e-10, float(np.mean(_differencing_tolerance(dataset)/scale)))
+    results = rank_candidates(unique, probes, acceleration_tolerance=tolerance)[:limit]
     for index,candidate in enumerate(results,1):
         candidate['rank']=index
-        candidate['selection_role']='ranked_observed_residual_after_algebraic_dedup'
+        candidate['selection_role']='simplest_within_comparable_error_band'
     report['candidates']=results
-    report['candidate_selection']['final_ranking']='trajectory position RMSE when refitted, otherwise weighted acceleration loss; at most three algebraically distinct complete laws'
+    report['candidate_selection']['final_ranking']='observed domain risk, comparable error metric, then exported complexity within 5% MSE / public noise-and-numerical tolerance bands; discovery diagnostics, not independent validation'

@@ -157,7 +157,8 @@ def _public_result(raw, ids):
                       "component_sources", "dsl_valid", "selection_role", "parameter_count",
                       "initial_domain_check", "short_rollout_check", "parameter_sharing",
                       "prediction_accuracy_status", "joint_fit_ready", "rank", "fitted_parameters",
-                      "residuals", "fit_stage", "trajectory_refit_status"}
+                      "residuals", "fit_stage", "trajectory_refit_status",
+                      "structural_complexity", "selection_diagnostics"}
     for candidate in candidates:
         try:
             Expression(candidate["law_spec"], candidate["parameter_spec"])

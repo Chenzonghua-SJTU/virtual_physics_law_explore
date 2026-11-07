@@ -1,0 +1,883 @@
+{
+  "kind": "posthoc_saved_candidate_ranking_and_context_audit",
+  "baseline_commit": "9cdc700",
+  "new_model_generations": 0,
+  "new_pysr_searches": 0,
+  "new_parameter_fits": 0,
+  "new_evaluations": 0,
+  "original_scores_unchanged": true,
+  "scope": "Only the previously returned candidate sets are reranked; this does not measure a fresh search, Agent choice, or score improvement. Missing candidates cannot be recovered by replay.",
+  "rows": [
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_1",
+      "search_id": "sr_4516fb8284f9",
+      "original_response_chars": 30825,
+      "compact_response_chars": 7130,
+      "old_ranks_in_new_order": [
+        2,
+        3,
+        1
+      ],
+      "candidates": [
+        {
+          "old_rank": 2,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * x * c1 / (sqrt(x * x + y * y) * (-sqrt(x * x + y * y) - c2))",
+            "ay": "q('charge') / q('mass') * c3 / (x * x + y * y) * y"
+          },
+          "structural_complexity": {
+            "nodes": 43,
+            "parameters": 3,
+            "depth": 8
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 4.244684746175744e-08,
+            "band_best_error": 4.233279650727723e-08,
+            "absolute_tolerance": 5.857971256901592e-08,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 3,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * x * sin(c1 / (sqrt(x * x + y * y) * (-sqrt(x * x + y * y) - c2)))",
+            "ay": "q('charge') / q('mass') * c3 / (x * x + y * y) * y"
+          },
+          "structural_complexity": {
+            "nodes": 44,
+            "parameters": 3,
+            "depth": 10
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 4.233279650727723e-08,
+            "band_best_error": 4.233279650727723e-08,
+            "absolute_tolerance": 5.857971256901592e-08,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 1,
+          "new_rank": 3,
+          "law_spec": {
+            "ax": "x * sin(q('charge') / q('mass') * c1 / (x * x + y * y))",
+            "ay": "-1 * exp(c2 + c3 * log(sqrt(x * x + y * y)) + c4 * log(q('mass')) + c5 * q('charge')) * y"
+          },
+          "structural_complexity": {
+            "nodes": 44,
+            "parameters": 5,
+            "depth": 12
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 4.5492515988741556e-08,
+            "band_best_error": 4.233279650727723e-08,
+            "absolute_tolerance": 5.857971256901592e-08,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "7fab7104d063d16be7b01bf0f61aa3a9ccbd9acbb51d28feaa8a9e5f9b9df329"
+    },
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_2",
+      "search_id": "sr_442df47c289f",
+      "original_response_chars": 29551,
+      "compact_response_chars": 5522,
+      "old_ranks_in_new_order": [
+        2,
+        3
+      ],
+      "candidates": [
+        {
+          "old_rank": 2,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * x * c1",
+            "ay": "q('charge') / q('mass') * y * c2"
+          },
+          "structural_complexity": {
+            "nodes": 14,
+            "parameters": 2,
+            "depth": 4
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 1.3582106441476252e-08,
+            "band_best_error": 5.154264864669165e-09,
+            "absolute_tolerance": 3.4233072438157606e-08,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 3,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * x * c1",
+            "ay": "c2 * y * (c3 * (x * vx + y * vy) * y * cos((q('charge') / q('mass')) ** 2) - log(q('charge') * (q('charge') / q('mass')))) - c4 * y"
+          },
+          "structural_complexity": {
+            "nodes": 40,
+            "parameters": 4,
+            "depth": 9
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 5.154264864669165e-09,
+            "band_best_error": 5.154264864669165e-09,
+            "absolute_tolerance": 3.4233072438157606e-08,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "3e9a05ecbee653a0b4c6a7c6707870c7f52ccb8c7ba8a7638287058267871de3"
+    },
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_4",
+      "search_id": "sr_c275f938d661",
+      "original_response_chars": 46446,
+      "compact_response_chars": 7990,
+      "old_ranks_in_new_order": [
+        1,
+        2,
+        3
+      ],
+      "candidates": [
+        {
+          "old_rank": 1,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "q('charge') * (c1 + c2 / ((x * x + y * y + c3) / c4)) * (c5 ** sqrt(x * x + y * y) + c1) * x",
+            "ay": "q('charge') * (c1 + c2 / ((x * x + y * y + c3) / c4)) * (c5 ** sqrt(x * x + y * y) + c1) * y"
+          },
+          "structural_complexity": {
+            "nodes": 64,
+            "parameters": 5,
+            "depth": 10
+          },
+          "selection_diagnostics": {
+            "metric": "trajectory_position_mse",
+            "error": 1.2596685910085464e-11,
+            "band_best_error": 1.2596685910085464e-11,
+            "absolute_tolerance": 3.2080049999999994e-13,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 2,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "c1 ** sqrt(x * x + y * y) * q('charge') * c2 / ((x * x + y * y + c3) / c4) * x",
+            "ay": "c1 ** sqrt(x * x + y * y) * q('charge') * c2 / ((x * x + y * y + c3) / c5) * y"
+          },
+          "structural_complexity": {
+            "nodes": 56,
+            "parameters": 5,
+            "depth": 9
+          },
+          "selection_diagnostics": {
+            "metric": "trajectory_position_mse",
+            "error": 3.793245182742033e-11,
+            "band_best_error": 3.793245182742033e-11,
+            "absolute_tolerance": 3.2080049999999994e-13,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 3,
+          "new_rank": 3,
+          "law_spec": {
+            "ax": "c1 * c2 ** sqrt(x * x + y * y) * q('charge') / ((x * x + y * y) / c3) * x",
+            "ay": "c1 * c4 ** sqrt(x * x + y * y) * q('charge') / ((x * x + y * y) / c5) * y"
+          },
+          "structural_complexity": {
+            "nodes": 52,
+            "parameters": 5,
+            "depth": 9
+          },
+          "selection_diagnostics": {
+            "metric": "trajectory_position_mse",
+            "error": 2.2752016097549935e-08,
+            "band_best_error": 2.2752016097549935e-08,
+            "absolute_tolerance": 3.2080049999999994e-13,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "1f3a9678365c9f74ea311fe99d1ce460bfc2c5032adfd376ebf20ab1cf5b57f8"
+    },
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_5",
+      "search_id": "sr_c65d13b6c285",
+      "original_response_chars": 37643,
+      "compact_response_chars": 6048,
+      "old_ranks_in_new_order": [
+        1,
+        3
+      ],
+      "candidates": [
+        {
+          "old_rank": 1,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "exp(sin(y * c1 * (exp(sin(x * sin(y) * sin(sqrt(x * x + y * y) * sin(sin(sin(t)))))) * y * c2 - y))) * x * c3",
+            "ay": "c2 * y + c4 * (x ** 2 * y) + c5 * y ** 3"
+          },
+          "structural_complexity": {
+            "nodes": 54,
+            "parameters": 5,
+            "depth": 17
+          },
+          "selection_diagnostics": {
+            "metric": "trajectory_position_mse",
+            "error": 2.1694995111660587e-08,
+            "band_best_error": 2.1694995111660587e-08,
+            "absolute_tolerance": 1.8060050000000002e-13,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 3,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "x * sin(exp(sin(y * c1 * y)) * c2)",
+            "ay": "c3 * y + c4 * (x ** 2 * y) + c5 * y ** 3"
+          },
+          "structural_complexity": {
+            "nodes": 29,
+            "parameters": 5,
+            "depth": 8
+          },
+          "selection_diagnostics": {
+            "metric": "trajectory_position_mse",
+            "error": 1.7147960929265982e-07,
+            "band_best_error": 1.7147960929265982e-07,
+            "absolute_tolerance": 1.8060050000000002e-13,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "182cd6d8e003759195ad70182974bf65c2ed054ddb0745eaa69a33d369f4546d"
+    },
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_6",
+      "search_id": "sr_f7d7578bcc02",
+      "original_response_chars": 39019,
+      "compact_response_chars": 7452,
+      "old_ranks_in_new_order": [
+        1,
+        2,
+        3
+      ],
+      "candidates": [
+        {
+          "old_rank": 1,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "-(c1 * x) + c2 * (x * sin(c3 * t + c4)) + -(c5 * (y * cos(c3 * t + c4)))",
+            "ay": "-(c1 * y) + -(c5 * (y * sin(c3 * t + c4))) + -(c2 * (x * cos(c3 * t + c4)))"
+          },
+          "structural_complexity": {
+            "nodes": 55,
+            "parameters": 5,
+            "depth": 9
+          },
+          "selection_diagnostics": {
+            "metric": "trajectory_position_mse",
+            "error": 3.0018426524364114e-17,
+            "band_best_error": 3.0018426524364114e-17,
+            "absolute_tolerance": 1.8060050000000002e-13,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 2,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "c1 * vx + c2 * x",
+            "ay": "c3 + c4 * y"
+          },
+          "structural_complexity": {
+            "nodes": 12,
+            "parameters": 4,
+            "depth": 3
+          },
+          "selection_diagnostics": {
+            "metric": "trajectory_position_mse",
+            "error": 0.0023006228729447317,
+            "band_best_error": 0.0023006228729447317,
+            "absolute_tolerance": 1.8060050000000002e-13,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 3,
+          "new_rank": 3,
+          "law_spec": {
+            "ax": "sin(x - 1 * c1) * c2",
+            "ay": "sin(sin(y * c3 - 1 * c4))"
+          },
+          "structural_complexity": {
+            "nodes": 17,
+            "parameters": 4,
+            "depth": 5
+          },
+          "selection_diagnostics": {
+            "metric": "trajectory_position_mse",
+            "error": 0.0023742353464729677,
+            "band_best_error": 0.0023006228729447317,
+            "absolute_tolerance": 1.8060050000000002e-13,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "8b8d9e016ab82a00ddd1d12c7d34fe0067ec317c3d475e8640491c79b48c4644"
+    },
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_1",
+      "search_id": "sr_f81f35edc6e0",
+      "original_response_chars": 28373,
+      "compact_response_chars": 7323,
+      "old_ranks_in_new_order": [
+        3,
+        2,
+        1
+      ],
+      "candidates": [
+        {
+          "old_rank": 3,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "x * sin(c1 / sqrt(x * x + y * y)) * c2 * (q('charge') / q('mass')) / sqrt(x * x + y * y)",
+            "ay": "vx * ((vx * vx + vy * vy) * sin((vx * vx + vy * vy) * c3 - c4) + vy * vy)"
+          },
+          "structural_complexity": {
+            "nodes": 54,
+            "parameters": 4,
+            "depth": 10
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.039171789503944426,
+            "band_best_error": 0.03903782386478024,
+            "absolute_tolerance": 0.0018181717370929571,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 2,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "x * sin(c1 / sqrt(x * x + y * y)) * c2 * (q('charge') / q('mass')) / sqrt(x * x + y * y)",
+            "ay": "vx * abs((vx * vx + vy * vy) * sin((vx * vx + vy * vy) * c3 - c4) + vy * vy)"
+          },
+          "structural_complexity": {
+            "nodes": 55,
+            "parameters": 4,
+            "depth": 10
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.039039046748781135,
+            "band_best_error": 0.03903782386478024,
+            "absolute_tolerance": 0.0018181717370929571,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 1,
+          "new_rank": 3,
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * x * c1 / (x * x + y * y)",
+            "ay": "(vx * vx + vy * vy) * c2 * (q('charge') / q('mass') * y * c3 + vx * sqrt(x * x + y * y) * sin(sqrt(x * x + y * y) * cos(y * cos(cos(q('mass') + x * y))) * cos(y + c4)) * c5)"
+          },
+          "structural_complexity": {
+            "nodes": 71,
+            "parameters": 5,
+            "depth": 14
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.03903782386478024,
+            "band_best_error": 0.03903782386478024,
+            "absolute_tolerance": 0.0018181717370929571,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "ac3d71b0b1bbe2414e60551288f32cb1bf741477958dd58a4d78b4d829cfaae7"
+    },
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_3",
+      "search_id": "sr_44c5277f077b",
+      "original_response_chars": 33067,
+      "compact_response_chars": 7360,
+      "old_ranks_in_new_order": [
+        3,
+        2,
+        1
+      ],
+      "candidates": [
+        {
+          "old_rank": 3,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "c1 * x + c2 * y",
+            "ay": "(x * c3 - (c4 * vy * cos(x - y - sin(t - y)) + y)) * c5"
+          },
+          "structural_complexity": {
+            "nodes": 28,
+            "parameters": 5,
+            "depth": 9
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.00022698543858937827,
+            "band_best_error": 0.00022399854310096464,
+            "absolute_tolerance": 3.4539296157675783e-06,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 2,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "c1 * x + c2 * y",
+            "ay": "(x * c3 - (c4 * vy * cos(x - y - sin(t - abs(y))) + y)) * c5"
+          },
+          "structural_complexity": {
+            "nodes": 29,
+            "parameters": 5,
+            "depth": 10
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.0002262606078205351,
+            "band_best_error": 0.00022399854310096464,
+            "absolute_tolerance": 3.4539296157675783e-06,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 1,
+          "new_rank": 3,
+          "law_spec": {
+            "ax": "c1 * x + c2 * y",
+            "ay": "(x * c3 - (c4 * vy * cos(x - y - sin(t - (y - sin(t)))) + y)) * c5"
+          },
+          "structural_complexity": {
+            "nodes": 31,
+            "parameters": 5,
+            "depth": 11
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.00022399854310096464,
+            "band_best_error": 0.00022399854310096464,
+            "absolute_tolerance": 3.4539296157675783e-06,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "12c1dfa6792f61f3a1085f8a57cbf0e5dd71ccd694f8234920cc78d0bd077183"
+    },
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_4",
+      "search_id": "sr_67b034d18f78",
+      "original_response_chars": 32041,
+      "compact_response_chars": 7797,
+      "old_ranks_in_new_order": [
+        2,
+        3,
+        1
+      ],
+      "candidates": [
+        {
+          "old_rank": 2,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "(q('charge') / q('mass') * x * c1 - 1 * c2) * sin(sqrt(x * x + y * y) * sin(c3 / (x * x + y * y))) / (x * x + y * y)",
+            "ay": "c4 * (q('charge') / q('mass')) * y * sin(sqrt(sqrt(t + c5) / (q('mass') + (x * x + y * y))) / (x * x + y * y))"
+          },
+          "structural_complexity": {
+            "nodes": 72,
+            "parameters": 5,
+            "depth": 9
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.0015377742642369778,
+            "band_best_error": 0.001354122513579591,
+            "absolute_tolerance": 0.00018736506449276765,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 3,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "(q('charge') / q('mass') * x * c1 - 1 * c2) * sin(sqrt(x * x + y * y) * sin(c3 / (x * x + y * y))) / (x * x + y * y)",
+            "ay": "c4 * (q('charge') / q('mass')) * y * sin(sqrt(sqrt(t + vy + c5) / (q('mass') + (x * x + y * y))) / (x * x + y * y))"
+          },
+          "structural_complexity": {
+            "nodes": 74,
+            "parameters": 5,
+            "depth": 9
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.0015068192376778444,
+            "band_best_error": 0.001354122513579591,
+            "absolute_tolerance": 0.00018736506449276765,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 1,
+          "new_rank": 3,
+          "law_spec": {
+            "ax": "sin(sin(sin(sqrt(x * x + y * y) * c1 / (x * x + y * y))) / (x * x + y * y)) * (q('charge') / q('mass')) * c2 * (c3 * t * (t - y) + x)",
+            "ay": "c4 * (q('charge') / q('mass')) * y * sin(sqrt(sqrt(q('charge') / q('mass') * cos(t) + t + c5) / (q('mass') + (x * x + y * y))) / (x * x + y * y))"
+          },
+          "structural_complexity": {
+            "nodes": 84,
+            "parameters": 5,
+            "depth": 13
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.001354122513579591,
+            "band_best_error": 0.001354122513579591,
+            "absolute_tolerance": 0.00018736506449276765,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "115e4e14a8822447f3766643908ea2278854dda2d0cb47c196af541c2d629467"
+    },
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_5",
+      "search_id": "sr_424a76675b94",
+      "original_response_chars": 29822,
+      "compact_response_chars": 7351,
+      "old_ranks_in_new_order": [
+        1,
+        2,
+        3
+      ],
+      "candidates": [
+        {
+          "old_rank": 1,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "c1 * sqrt(sqrt(x * x + y * y)) * sin(x)",
+            "ay": "y * ((sqrt(x * x + y * y) + (x * x + y * y + x) ** y * c2) * (abs(y * sin(sin(c3 / (x * x + y * y)))) - c4) - c5)"
+          },
+          "structural_complexity": {
+            "nodes": 57,
+            "parameters": 5,
+            "depth": 12
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.0012552688611778312,
+            "band_best_error": 0.0012485426030897824,
+            "absolute_tolerance": 4.980793487861743e-06,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 2,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "c1 * sqrt(sqrt(x * x + y * y)) * sin(x)",
+            "ay": "y * c2 + sin(cos(cos(x * x + y * y) * c3) * cos(x * sin((x * x + y * y) * cos((x * x + y * y) * y))) * c4 * y) * cos(x) * c5"
+          },
+          "structural_complexity": {
+            "nodes": 62,
+            "parameters": 5,
+            "depth": 16
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.0012490463296294836,
+            "band_best_error": 0.0012485426030897824,
+            "absolute_tolerance": 4.980793487861743e-06,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 3,
+          "new_rank": 3,
+          "law_spec": {
+            "ax": "c1 * sqrt(sqrt(x * x + y * y)) * sin(x)",
+            "ay": "y * c2 + sin(cos(x * sin((x * x + y * y) * cos((x * x + y * y) * y))) * y * cos(vy * x * cos(x * x + y * y)) * c3) * c4 * cos(x)"
+          },
+          "structural_complexity": {
+            "nodes": 64,
+            "parameters": 4,
+            "depth": 16
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.0012485426030897824,
+            "band_best_error": 0.0012485426030897824,
+            "absolute_tolerance": 4.980793487861743e-06,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "538aa441c616043b635e60684f493ad44e56df96841936abf485d4e66525885f"
+    },
+    {
+      "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_6",
+      "search_id": "sr_addf0fad99bb",
+      "original_response_chars": 35281,
+      "compact_response_chars": 7539,
+      "old_ranks_in_new_order": [
+        1,
+        2,
+        3
+      ],
+      "candidates": [
+        {
+          "old_rank": 1,
+          "new_rank": 1,
+          "law_spec": {
+            "ax": "(x + cos(t * c1 + cos(y)) * (x + y) * c2) * c3",
+            "ay": "(y * c4 + sin(sqrt(x * x + y * y) * sin(sin(sin(sin((x * x + y * y) * vy)))))) / c5"
+          },
+          "structural_complexity": {
+            "nodes": 46,
+            "parameters": 5,
+            "depth": 12
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.015939456743758,
+            "band_best_error": 0.015939456743758,
+            "absolute_tolerance": 2.612891709463912e-06,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 2,
+          "new_rank": 2,
+          "law_spec": {
+            "ax": "(x + cos(t * c1) * (x + y) * c2) * c3",
+            "ay": "(y * c4 + sin(sqrt(x * x + y * y) * sin(sin(sin(sin((x * x + y * y) * vy)))))) / c5"
+          },
+          "structural_complexity": {
+            "nodes": 43,
+            "parameters": 5,
+            "depth": 12
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.019566386475570536,
+            "band_best_error": 0.018949848358133,
+            "absolute_tolerance": 2.612891709463912e-06,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        },
+        {
+          "old_rank": 3,
+          "new_rank": 3,
+          "law_spec": {
+            "ax": "c1 * x + c2 * (x + y) * cos(c3 * sqrt(t))",
+            "ay": "(y * c4 + sin(sqrt(x * x + y * y) * sin(sin(sin(sin((x * x + y * y) * vy)))))) / c5"
+          },
+          "structural_complexity": {
+            "nodes": 44,
+            "parameters": 5,
+            "depth": 12
+          },
+          "selection_diagnostics": {
+            "metric": "normalized_acceleration_loss",
+            "error": 0.018949848358133,
+            "band_best_error": 0.018949848358133,
+            "absolute_tolerance": 2.612891709463912e-06,
+            "relative_mse_tolerance": 0.05,
+            "observed_domain_or_pole_risk": false,
+            "rule": "simplest exported expression within comparable-error band",
+            "independent_validation": false
+          }
+        }
+      ],
+      "input_sha256": "754893e80d3c746fabc8a2f4dc31d3208e3952c8e740342ab8d712cf7e8b7b02"
+    }
+  ],
+  "tokenizer_audit": {
+    "tokenizer": "qwen3.8-27b on local vLLM /tokenize",
+    "scope": "Tool message content only, excludes chat envelope; zero generations",
+    "rows": [
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_1",
+        "original_content_tokens": 12396,
+        "compact_content_tokens": 2792,
+        "reduction_fraction": 0.7747660535656664
+      },
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_2",
+        "original_content_tokens": 11819,
+        "compact_content_tokens": 2016,
+        "reduction_fraction": 0.8294271935019883
+      },
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_4",
+        "original_content_tokens": 21324,
+        "compact_content_tokens": 3326,
+        "reduction_fraction": 0.844025511161133
+      },
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_5",
+        "original_content_tokens": 16861,
+        "compact_content_tokens": 2373,
+        "reduction_fraction": 0.8592610165470613
+      },
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_6",
+        "original_content_tokens": 17649,
+        "compact_content_tokens": 3023,
+        "reduction_fraction": 0.828715507960791
+      },
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_1",
+        "original_content_tokens": 11541,
+        "compact_content_tokens": 2925,
+        "reduction_fraction": 0.7465557577332986
+      },
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_3",
+        "original_content_tokens": 14115,
+        "compact_content_tokens": 3041,
+        "reduction_fraction": 0.7845554374778605
+      },
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_4",
+        "original_content_tokens": 13370,
+        "compact_content_tokens": 3202,
+        "reduction_fraction": 0.7605086013462977
+      },
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_5",
+        "original_content_tokens": 12590,
+        "compact_content_tokens": 2980,
+        "reduction_fraction": 0.7633042096902303
+      },
+      {
+        "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_6",
+        "original_content_tokens": 15313,
+        "compact_content_tokens": 3076,
+        "reduction_fraction": 0.7991249265330111
+      }
+    ]
+  },
+  "implementation_notes": {
+    "selection": "At equal observed-risk/check-completion level and comparable metric, prefer the simplest exported AST within best MSE + max(5% of best MSE, numerical/public-noise-energy sampling tolerance). Distinct metric families are never compared numerically. Finite-stencil sensitivity is used for acceleration-only candidates.",
+    "scope": "Tolerance is an engineering heuristic, not a statistical confidence interval, and does not alter submission gates.",
+    "operators": "All existing power, exp/log and sin/cos operations remain available; equal AST operation cost, no force templates or world IDs.",
+    "feedback": "Three distinct complete formulas with intact parameters and concise residuals/risks; full diagnostics and single-axis alternatives stay in run-local audit files; single-axis candidates remain inline when no complete candidate exists.",
+    "pysr_version_on_server": "2.7.2",
+    "expected_effect": "Less context and less incentive to fit noise. No fresh autonomous success-rate improvement is established by this replay."
+  },
+  "tests": {
+    "final_full_suite": {
+      "passed": 1333,
+      "skipped": 9,
+      "elapsed_seconds": 58.01
+    },
+    "new_test_scope": [
+      "Near-equal error favors simpler model; material error improvement retains complex law",
+      "Public-noise-aware tolerance without evaluator truth",
+      "Equal exp/sin structural cost",
+      "Known domain failures and incomplete consistency checks are not promoted by subset error",
+      "Different residual metrics are not compared directly",
+      "Executable formulas/parameters and warnings remain intact while full diagnostics stay archived"
+    ]
+  }
+}
