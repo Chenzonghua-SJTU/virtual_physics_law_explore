@@ -5,7 +5,7 @@ import re
 import uuid
 from pathlib import Path
 
-TYPES = ('body_observation', 'probe', 'law', 'validation', 'residual', 'submission', 'code_execution', 'diagnostic')
+TYPES = ('body_observation', 'probe', 'law', 'validation', 'residual', 'submission', 'code_execution')
 
 
 def preview(value):

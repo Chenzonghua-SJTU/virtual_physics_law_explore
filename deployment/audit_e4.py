@@ -118,7 +118,6 @@ def model_audit(log, result_usage, errors, warnings):
         if not number(elapsed) or elapsed < 0:
             elapsed = None
         calls.append({'call_number': call, 'attempt': end.get('attempt', start.get('attempt')),
-                      'sampling_seed': end.get('seed', start.get('seed')),
                       'started_at': start.get('started_at'), 'elapsed_seconds': elapsed,
                       'started_event_present': bool(start), 'terminal_event_present': bool(end),
                       'requested_max_tokens': cap, 'enable_thinking': thinking,
@@ -309,17 +308,7 @@ def world_audit(root, world, run_id, *, ruleset='e4'):
                                  or type(e.get('max_tokens_per_call')) is not int
                                  or not 0 < e['max_tokens_per_call'] <= 4096 for e in configured):
         errors.append('effective_model_configuration_not_verified')
-    sampling_seed = model.get('sampling_seed')
-    if 'sampling_seed' in model and (type(sampling_seed) is not int
-            or not 0 <= sampling_seed <= 2**32 - 1
-            or any(event.get('seed') != sampling_seed for event in configured)
-            or any(call['sampling_seed'] != sampling_seed for call in model_data['per_call'])):
-        errors.append('model_sampling_seed_not_verified')
     tools = tool_audit(events(directory / 'tools.jsonl', errors), event_log)
-    diagnostics_enabled = config.get('numerics', {}).get('diagnostics_enabled', False)
-    diagnostic_calls = tools['by_category'].get('diagnose_dynamics', {})
-    if (diagnostics_enabled is not True and diagnostic_calls.get('calls', 0) > diagnostic_calls.get('failed_calls', 0)):
-        errors.append('disabled_diagnostic_tool_succeeded')
     submission = submission_audit(directory, result, metadata, event_log, errors)
     evaluation = read(directory / 'evaluation.json', errors, required=False)
     evaluation_after = seconds(metadata.get('exploration_finished_at'), metadata.get('evaluation_started_at'))
@@ -363,9 +352,6 @@ def world_audit(root, world, run_id, *, ruleset='e4'):
     return {'world_id': world, 'run_id': run_id, 'status': metadata.get('status', result.get('status')),
             'reason': result.get('reason'), 'configuration_checks': checks,
             'model_name': model.get('model'), 'model_endpoint': metadata.get('model_endpoint'),
-            'sampling_seed': sampling_seed, 'diagnostics_enabled': diagnostics_enabled,
-            'diagnostic_tool_calls': diagnostic_calls.get('calls', 0),
-            'successful_diagnostic_tool_calls': diagnostic_calls.get('calls', 0) - diagnostic_calls.get('failed_calls', 0),
             'output_limit_tokens': model.get('max_tokens_per_call'),
             'energy_remaining': result.get('budget', {}).get('energy_remaining'),
             'energy_used': 10-result['budget']['energy_remaining'] if number(result.get('budget', {}).get('energy_remaining')) else None,

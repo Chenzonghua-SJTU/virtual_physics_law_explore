@@ -1,41 +1,30 @@
 # qz-infer 本地 Qwen 部署
 
-以下先列 E5 实验配置，后面保留 E4/E3 历史部署说明；历史启动命令不代表当前服务状态。
+当前科研基线已恢复为 `3ba6d63`（E5 R01）；后面保留 E4/E3 的历史部署说明。
 
 服务器项目：`/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery`。
 公共模型根目录：`/inspire/hdd/project/26-the-other-shore/public/models`。
 项目的服务器 `.venv` 链接到已有 `/opt/shore-test5-forge2`（Python 3.12、vLLM 0.24.0、Torch 2.11.0+cu130）。Mac 的虚拟环境、密钥和 `.git` 未复制；代码、文档、实验汇总和运行档案保留。
 
-## E5：10 能量、300 秒、每次输出 4096 token
+## 当前：恢复 3ba6d63 的 E5 R01
 
-探索与独立评测均无噪声，模型关闭思考，E3 主提示词原文保留。探索计时包含模型和科学工具；提交后的独立评测单列，总耗时另含 worker 启动与收尾。累计输入加输出仍保留原有 5M 预算，不能把它与每次输出上限混为一谈。
-
-R14/R15 的服务布局为 GPU0/1 各一份 27B BF16（8000/8001），GPU2+3 为一份 122B FP8、TP=2（8002）。每个端点只安排一场探索，不让任务排队挤占该场的 300 秒。模型与合成接口预热先完成，再启动计时。35B 当前未加载，不能静默用其他模型替代。
-
-27B 的完整六世界复测命令示例（输出目录必须全新）：
+Agent、模型客户端、科学工具、提示词、拟合和评测实现逐文件恢复为该提交。规则为 10 能量、300 秒探索、单次最多 4096 输出 token，关闭思考，探索和独立评测均无噪声。提示词使用原 `main.txt` 加该提交的 `e5.txt`；没有后期诊断、候选公式、HS/谐波、工具筛选或恢复策略。保留原有 8 个工具和 E4 已有的 `save_draft`，共 9 个。
 
 ```bash
-.venv/bin/python benchmark_v15.py \
-  --config deployment/config.e5.hs-seed43.json --ruleset e5 --no-thinking \
-  --model qwen3.8-27b --workers 2 \
-  --model-endpoints http://127.0.0.1:8000/v1,http://127.0.0.1:8001/v1 \
-  --output experiments/E5/my-new-six-world-batch
+.venv/bin/python -m shore_agent.web --config deployment/config.e5.web.json --port 8765
 ```
 
-`config.e5.hs-t1.json` 与 `hs-t02.json` 对照温度，`hs-seed43.json` 与 `hs-seed44.json` 仅改变模型采样 seed；物理环境 seed 始终为 42。`hs-qwen122.json` 用于单独的 122B 对照，启动时显式传 `--model qwen3.5-122b-a10b --workers 1 --model-endpoints http://127.0.0.1:8002/v1`。
+须显式指定配置，避免无参数启动时加载机器上旧的 `config.local.web.json`。`config.e5.server.json` 与目标提交相同；`config.e5.web.json` 只额外登记现有 122B 服务端点，默认仍为 27B，未固定温度或模型采样 seed。网页入口会先合并 `config.example.json`，保留 5M 总 token 预算。
 
-新增可选配置 `config.e5.harmonic-fit.json`（27B）和 `config.e5.harmonic-fit-qwen122.json`（122B）用于后续实验，不能在尚未测评时声称优于旧配置：
+服务器继续使用 GPU0/1 的两份 27B BF16（8000/8001）和 GPU2+3 的 122B FP8 TP=2（8002）；本次不重启模型或启动新实验。
 
-- `numerics.diagnostics_harmonic`：在已取得观测上比较完整一次位置项乘自由频率 sin/cos；每折重新选择频率，报告可辨识性与采样别名限制。最多 2 秒且受剩余探索时间约束。
-- `numerics.diagnostics_on_fit`：拟合残差有警告时，补充诊断该 law 已选择的训练轨迹；不读独立评测、不消耗新探针、不自动替换公式或提交。重复训练集在同一会话缓存诊断。
+历史 `experiments/`、`runs/` 不回退，前端继续展示全部历史批次及诊断记录。历史元数据显示和列表性能修复不参与模型上下文或科学工具。回退前代码、配置及协议烟测保存在 Git 分支 `archive/e5-tools-before-rollback-20261107-101323`；后期配置须配合该历史版本使用。
 
-本轮已按用户要求收束，R16/R17未启动，新增模块没有新一轮分数证据。前端参考配置为 `config.e5.web.json`，默认沿用R13的27B配置，新增两个开关保持关闭。
-
-两个开关默认关闭，仅 E5 生效。候选仍需普通拟合和新轨迹验证；诊断重构 CV 不是独立预测得分。完整批次和失败都在 `/baselines` 展示；报告见 [`experiments/E5`](../experiments/E5/README.md)，不拼接跨批次最高分。
+R01 历史结果为 3/6 个世界达到 90 分、5/6 完成独立测评；这不是此次重新运行的结果。开发世界结果不能证明对九个隐藏世界的泛化能力。
 
 ## E4 历史部署
 
-E4 当时四张卡各运行一个 Qwen3.8-27B BF16 副本，GPU0..3 对应 8000..8003。统一开启 prefix cache 和图执行，`max_num_seqs=1`；推理关闭思考。当时未提供 35B/122B 服务，前端禁选两者，不会转用其他模型。
+E4 当时四张卡各运行一个 Qwen3.8-27B BF16 副本，GPU0..3 对应 8000..8003。统一开启 prefix cache 和图执行，`max_num_seqs=1`；推理关闭思考。当时35B权重不完整，122B暂时没有服务，E4前端禁选两者，不会转用其他模型。
 
 模型冷启动、编译、工具调用烟测在科学会话前完成。`serve_e4.py` 遇到已有监听/自己的存活启动进程即拒绝重启，不会自动杀进程。四个命令可分别在服务器执行：
 

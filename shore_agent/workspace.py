@@ -5,8 +5,7 @@ import re
 from pathlib import Path
 
 FOLDERS = {'probe': 'observations', 'body_observation': 'observations', 'law': 'laws',
-           'validation': 'validations', 'residual': 'residuals', 'submission': 'submissions',
-           'diagnostic': 'diagnostics'}
+           'validation': 'validations', 'residual': 'residuals', 'submission': 'submissions'}
 
 
 def path_key(path, directory=False):

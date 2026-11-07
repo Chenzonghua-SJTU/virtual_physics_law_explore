@@ -76,22 +76,6 @@ def model_auth_config(config):
     return env_name, required
 
 
-def _normalize_strict_schema_patterns(value):
-    """Preserve JSON Schema search semantics in Qwen's full-match grammar.
-
-    Only the known non-whitespace constraint is rewritten, on the request's
-    schema copy. Runtime validation and all other patterns remain unchanged.
-    """
-    if isinstance(value, dict):
-        if value.get('type') == 'string' and value.get('pattern') == r'\S':
-            value['pattern'] = r'^[\s\S]*\S[\s\S]*$'
-        for nested in value.values():
-            _normalize_strict_schema_patterns(nested)
-    elif isinstance(value, list):
-        for nested in value:
-            _normalize_strict_schema_patterns(nested)
-
-
 class DeepSeekClient:
     """Every HTTP attempt (including retries) consumes the research Agent budget.
 
@@ -133,20 +117,6 @@ class DeepSeekClient:
         self.thinking = config.get('thinking', True)
         if not isinstance(self.thinking, bool):
             raise ValueError('thinking must be boolean')
-        self.sampling_seed = config.get('sampling_seed')
-        if 'sampling_seed' in config and (
-                type(self.sampling_seed) is not int or not 0 <= self.sampling_seed <= 2**32 - 1):
-            raise ValueError('sampling_seed must be an integer between 0 and 4294967295')
-        self.temperature = config.get('temperature')
-        if 'temperature' in config and (
-                type(self.temperature) not in (int, float) or not 0 <= self.temperature <= 2
-                or not math.isfinite(self.temperature)):
-            raise ValueError('temperature must be a finite number between 0 and 2')
-        self.strict_tools = config.get('strict_tools', False)
-        if type(self.strict_tools) is not bool:
-            raise ValueError('strict_tools must be boolean')
-        if self.strict_tools and not self.supports_required_tool_choice:
-            raise ValueError('strict_tools requires E5 with deployment=local and reasoning_protocol=qwen')
         self.thinking_budget = (None if config.get('thinking_budget') is None
                                 else _positive(config, 'thinking_budget', None, integer=True))
         self.usage = {'calls': 0, 'prompt_tokens': 0, 'completion_tokens': 0, 'total_tokens': 0,
@@ -174,12 +144,6 @@ class DeepSeekClient:
 
     def close(self):
         self._http.close()
-
-    @property
-    def supports_required_tool_choice(self):
-        """The locally verified Qwen E5 grammar supports per-request recovery."""
-        return (self.config.get('ruleset', 'e3') == 'e5'
-                and self.deployment == 'local' and self.reasoning_protocol == 'qwen')
 
     def _reasoning_parameters(self):
         if self.reasoning_protocol == 'qwen':
@@ -211,10 +175,7 @@ class DeepSeekClient:
         return {'reasoning_protocol': self.reasoning_protocol,
                 'requested_reasoning_effort': (None if self.reasoning_protocol == 'qwen'
                                                else self.reasoning_effort),
-                'reasoning_parameters': self._reasoning_parameters(),
-                'strict_tools': self.strict_tools,
-                **({'temperature': self.temperature} if self.temperature is not None else {}),
-                **({'seed': self.sampling_seed} if self.sampling_seed is not None else {})}
+                'reasoning_parameters': self._reasoning_parameters()}
 
     def _write_progress(self, *, force=False):
         """Publish counters and phases, never model text or request credentials."""
@@ -448,14 +409,7 @@ class DeepSeekClient:
         return {'method': 'utf8_upper_bound', 'estimated_prompt_tokens': upper,
                 'utf8_upper_bound': upper}
 
-    def complete(self, messages, tools=None, role='main', *, tool_choice_override=None) -> dict:
-        if tool_choice_override is not None:
-            if type(tool_choice_override) is not str or tool_choice_override != 'required':
-                raise ValueError('tool_choice_override must be required or None')
-            if not self.supports_required_tool_choice:
-                raise ValueError('tool_choice_override requires local Qwen E5')
-            if not tools:
-                raise ValueError('tool_choice_override requires advertised tools')
+    def complete(self, messages, tools=None, role='main') -> dict:
         self._quota(role)
         key = os.environ.get(self.api_key_env)
         if not key and self.api_key_required:
@@ -466,20 +420,10 @@ class DeepSeekClient:
         body = {'model': self.model, 'messages': copy.deepcopy(messages),
                 'stream': self.reasoning_protocol == 'qwen',
                 **self._reasoning_parameters()}
-        if self.sampling_seed is not None:
-            body['seed'] = self.sampling_seed
-        if self.temperature is not None:
-            body['temperature'] = self.temperature
         if body['stream']:
             body['stream_options'] = {'include_usage': True}
         if tools:
-            body.update(tools=copy.deepcopy(tools), tool_choice=tool_choice_override or 'auto')
-            if self.strict_tools or tool_choice_override == 'required':
-                for tool in body['tools']:
-                    if self.strict_tools:
-                        tool['function']['strict'] = True
-                    _normalize_strict_schema_patterns(tool['function'].get('parameters', {}))
-        advertised_names = [tool['function']['name'] for tool in body.get('tools', [])]
+            body.update(tools=copy.deepcopy(tools), tool_choice='auto')
         estimate = self._prompt_estimate(body)
         prompt_allowance = estimate['estimated_prompt_tokens']
         for attempt in range(self.max_retries + 1):
@@ -505,10 +449,7 @@ class DeepSeekClient:
             started = time.monotonic()
             event = {'event': 'request', 'role': role, 'attempt': attempt + 1,
                      'call_number': self.usage['calls'], 'max_tokens': output_limit,
-                     'timeout_seconds': timeout, **self._request_metadata(),
-                     'tool_choice': body.get('tool_choice'),
-                     'advertised_tool_names': advertised_names,
-                     'advertised_tool_count': len(advertised_names)}
+                     'timeout_seconds': timeout, **self._request_metadata()}
             self._start_progress(started, event)
             append_event(self.run_dir / 'model_events.jsonl', {
                 **event, 'event': 'request_started', 'started_at': self._progress['started_at'],

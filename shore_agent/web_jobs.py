@@ -364,17 +364,6 @@ class RunManager:
         if effort not in REASONING_EFFORTS:
             raise ValueError('invalid_server_reasoning_effort')
         config['model']['reasoning_effort'] = effort
-        if rules_for(config.get('environment'))['ruleset'] != 'e5':
-            # A trusted E5 startup template may be reused with an older profile.
-            # Strip only E5 opt-ins from the fresh merged config, never archives.
-            for section, names in (
-                    ('model', ('strict_tools',)),
-                    ('agent', ('strict_tool_recovery', 'budget_aware_tools', 'repeated_tool_failure_feedback', 'stagnation_recovery')),
-                    ('numerics', ('diagnostics_enabled', 'diagnostics_compact', 'diagnostics_curvature', 'diagnostics_candidates', 'diagnostics_quadrature', 'diagnostics_harmonic', 'diagnostics_on_fit'))):
-                for name in names:
-                    config.get(section, {}).pop(name, None)
-            if config['model'].get('ruleset') == 'e5':
-                config['model'].pop('ruleset')
         model_auth_config(config['model'])
         return apply_rules(config)
 

@@ -54,17 +54,7 @@ CODE_SCHEMA = tool('run_code',
      'files': {'type':'array','items':{'type':'string','minLength':1,'maxLength':300},'uniqueItems':True,'maxItems':128}}, ['code'])
 
 
-DYNAMICS_DIAGNOSTIC_SCHEMA = tool('diagnose_dynamics',
-    '仅E5：显式选择本会话已取得的probe_ids，从相邻位置/速度观测做积分回归与近似径向幂次诊断。'
-    '报告线性/非线性结构、公开属性比例的描述性证据和可辨识性限制；这些是观测近似，不是真实动力学或可提交答案。'
-    '不读取隐藏真值、不投放新探针、不自动拟合或提交law；消耗正常工具运行时间。'
-    '返回诊断预览，完整结果可按workspace_files路径read_file。用于此诊断的数据属于开发数据，最终检查应另用新轨迹。',
-    {'probe_ids': IDS})
-
-
-def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False, diagnostics_compact=False,
-                 diagnostics_curvature=False, diagnostics_candidates=False,
-                 diagnostics_harmonic=False, diagnostics_on_fit=False):
+def tool_schemas(code_enabled=False, *, ruleset='e3'):
     import copy
     schemas = copy.deepcopy(SCHEMAS + ([CODE_SCHEMA] if code_enabled else []))
     if ruleset in ('e4', 'e5'):
@@ -74,47 +64,4 @@ def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False,
             '格式与有限输出验证成功才替换上份草稿，不结束探索。预算截止时封存最后及时有效配对；'
             '不会自动选择规律、补写claims或检查物理真值。')
         schemas.append(draft)
-    if ruleset == 'e5' and diagnostics_enabled is True:
-        schemas.append(copy.deepcopy(DYNAMICS_DIAGNOSTIC_SCHEMA))
-        if diagnostics_compact is True:
-            descriptions = {item['function']['name']: item['function'] for item in schemas}
-            descriptions['diagnose_dynamics']['description'] += (
-                '优先用于已取得的第一束光与后续开发轨迹，避免手算比例。摘要并列给出各阶空间回归的训练/整轨迹交叉验证误差与主要项；'
-                '请比较这些误差，若高阶明显改善，不要仅因径向幂次接近1就忽略非线性或交叉项。'
-                '系数是候选结构与拟合初值的线索，仍须显式fit_law_and_rollout与新轨迹validate_law；'
-                '不要把CV当最终验证，不要把近似径向投影当中心力已成立。')
-            descriptions['insert_probe']['description'] += (
-                '本轮只有10能量，每枚探针消耗1点。先利用免费观测与诊断确定实验目的；'
-                '分批设计以保留修改候选后的新验证轨迹，不要在第一个假设前花尽能量。')
-            descriptions['fit_law_and_rollout']['description'] += (
-                'DSL语法提示：非整数数字幂与常数算术被禁不代表该物理结构被否定；平方根用sqrt(E)，'
-                '例如E的三次平方根幂写成E*sqrt(E)，倒数写成1/(E*sqrt(E))，E须换为合法状态表达式。'
-                '除法后多个因子作分母时必须加括号，a/b*c等于(a/b)*c。'
-                '无噪声观测下，converged只表示优化停止；residual_scale_check有警告且时间仍充足时应继续比较结构或初值，不能声称已准确解释。')
-        if diagnostics_curvature is True:
-            schemas[-1]['function']['description'] += (
-                '补充实验后将新旧开发轨迹一起重新诊断；初始少量轨迹中CV不可用或病态的回归不能固化为动力学结构。'
-                '另比较log半径的一次/二次回归；曲率只描述已测区间中单一全局幂次遗漏的变化，不自动提供动力学公式。'
-                '公开属性未变化意味着作用未知，不能当作零作用；有预算时用相同初态、只改变一个属性的成对实验辨识，避免和距离变化混淆。')
-        if diagnostics_candidates is True:
-            schemas[-1]['function']['description'] += (
-                'candidate_hints把本场回归结果转成至多3个未拟合的合法DSL候选与参数初值，减少手工转写错误。'
-                '剪掉弱项或合并近似系数只是降维假设；原回归CV不等于这些候选已验证。'
-                '由你决定是否采用、修改或拒绝，必须调用fit_law_and_rollout并用未参与开发的新轨迹validate_law；'
-                '候选不读取真值，没有law_id，不能直接提交。初始证据不足时应补充实验后重新诊断。')
-        if diagnostics_harmonic is True:
-            schemas[-1]['function']['description'] += (
-                '另附harmonic_summary/harmonic_candidate：只从选定观测比较完整一次位置基函数与自由时间谐波，'
-                '每个整轨迹CV训练折重新选频率，检查局部频率剖面与别名；只在两类观测噪声明确为0时可用。'
-                '最多使用2秒且受剩余探索时间约束。重构CV可计算不代表频率唯一，原回归CV也不是剪枝/共享候选的验证成绩；'
-                '候选仍须由你决定是否正式fit并用新的未参与开发轨迹validate，不会自动选择或提交law。')
-        if diagnostics_on_fit is True:
-            descriptions = {item['function']['name']: item['function'] for item in schemas}
-            descriptions['fit_law_and_rollout']['description'] += (
-                '本配置会在已完成拟合的residual_scale_check.warning=true时自动附加training_observation_diagnostic，'
-                '仅诊断该law的train_probe_ids，原law先完整保存且不会被诊断修改；不读取或合并验证轨迹，不消耗新探针。'
-                '相同有序probe_ids复用已取得诊断；时间不足或诊断失败会标unavailable，下一步候选仍由你自主选择。'
-                '附加诊断计入真实耗时，原探索截止规则不变。')
-            descriptions['diagnose_dynamics']['description'] += (
-                '本配置按完全相同的有序probe_ids缓存观测诊断，后续拟合训练诊断可引用同一档案；未改变数据时无需重复请求。')
     return schemas
