@@ -62,5 +62,12 @@
     "condition": "Run only if R14 does not meet the single-batch five-world target, concurrently with R16 after source review.",
     "difference_from_r14": "diagnostics_harmonic and diagnostics_on_fit enabled; same model, seed, sampling and serving configuration.",
     "interpretation": "Composite numerical-assistance experiment, paired by configuration with R14; not a same-model 27B result."
+  },
+  "closeout": {
+    "user_requested_to_wrap_up": true,
+    "new_batches_started_after_request": false,
+    "r16_status": "not_run",
+    "r17_status": "not_run",
+    "reason": "User requested experimental closeout before either proposed batch launched. Optional implementation is tested; performance benefit remains unmeasured."
   }
 }

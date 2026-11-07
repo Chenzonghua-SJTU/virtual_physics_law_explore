@@ -1,0 +1,92 @@
+{
+  "source_commit": "eca23ccfe607e2d9bf84307d2fc2a675bdf02c9f",
+  "scientific_source_commit": "abd229364d1cbfe38c73d7488e8747522876263d",
+  "run_source_hashes": "manifest.json:source_sha256",
+  "audit_completed_before_next_source_deployment": true,
+  "audit_source_hashes_all_match": true,
+  "audited_source_count": 19,
+  "audit_errors_preserved": [],
+  "source_hashes_identical_to_r11": true,
+  "configuration_difference_from_r11": [
+    "model.base_url",
+    "model.local_model_endpoints.qwen3.5-122b-a10b",
+    "model.local_model_endpoints.qwen3.8-27b",
+    "model.model"
+  ],
+  "model": "qwen3.5-122b-a10b",
+  "checkpoint_precision": "FP8 checkpoint",
+  "checkpoint_path": "/inspire/hdd/project/26-the-other-shore/public/models/Qwen3.5-122B-A10B-FP8",
+  "weight_checksum_collected": false,
+  "service_versions": {
+    "vllm": "0.24.0",
+    "torch": "2.11.0",
+    "transformers": "5.8.0"
+  },
+  "service_response_fingerprint": "vllm-0.24.0-tp2-b369dbe0",
+  "tensor_parallel_size": 2,
+  "gpus": [
+    2,
+    3
+  ],
+  "workers": 1,
+  "model_endpoints": [
+    8002
+  ],
+  "launch_command": [
+    "/opt/shore-test5-forge2/bin/python",
+    "-m",
+    "vllm.entrypoints.cli.main",
+    "serve",
+    "/inspire/hdd/project/26-the-other-shore/public/models/Qwen3.5-122B-A10B-FP8",
+    "--served-model-name",
+    "qwen3.5-122b-a10b",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8002",
+    "--tensor-parallel-size",
+    "2",
+    "--max-model-len",
+    "262144",
+    "--max-num-seqs",
+    "1",
+    "--gpu-memory-utilization",
+    "0.90",
+    "--enable-auto-tool-choice",
+    "--tool-call-parser",
+    "qwen3_xml",
+    "--reasoning-parser",
+    "qwen3",
+    "--language-model-only",
+    "--enable-prefix-caching",
+    "--linear-backend",
+    "triton",
+    "--moe-backend",
+    "triton"
+  ],
+  "temperature": 1.0,
+  "sampling_seed": 42,
+  "attempts_per_world": 1,
+  "diagnostic_quadrature": "hermite_simpson",
+  "execution_evidence": "execution_evidence.json",
+  "synthetic_preflight": {
+    "artifact": "../../../deployment/qwen122-protocol-smoke.json",
+    "physics_attempt": false,
+    "request_seconds": 2.5126175954937935,
+    "completion_tokens": 38,
+    "service_start_to_preflight_completion_seconds": 589.1249175071716,
+    "timing_note": "Service-start interval includes model loading, compilation and waiting; it is not precise weight-loading time. Synthetic echo warm-up and service startup are outside exploration and experiment totals."
+  },
+  "deployment_artifacts_sha256": {
+    "deployment/e5-qwen122-tp2-optimized.launch.json": "da53d9d6ca2b05ca923cf5cc58756f1ef96281bf65ac26d95b42c49a365b55db",
+    "deployment/qwen122-protocol-smoke.json": "dfce93c5f5ca97a19d42d620bf5a53e7d7f1990b5ba63bf5219afca507705b63"
+  },
+  "archive_evidence_sha256": {
+    "manifest.json": "02d6f303b90bc8a97ae7b96d752059f4560b204c3636bf9e77f4c020cd86207d",
+    "summary.json": "4d97b1f6c8f17d335f1cb91e02429240a1fcf901bceebea0dfc4fc52c6270921",
+    "audit.json": "5a7f3a691c10921e0000bcbbc38b6ba559f08ffe337efac8171aa7fd152f8a7a",
+    "execution_evidence.json": "a29bb88262a92f5d2146f55210080c293cb504bff315c502eb58106c0cf7dc86"
+  },
+  "downloaded_raw_archive_sha256": "0fe6143383e7edb9f3f68858e86dc5e33d7fc93f90b81b2f32b87198cd82a8cb",
+  "source_note": "eca23cc changes configuration/protocol only; all 19 science hashes remain abd2293. Optional next-version harmonic/on-fit diagnostics were not deployed or enabled in R14. Frozen source audit completed before 984071b deployment. This is a separate model/precision/TP-topology baseline, not a 27B reproduction. Original submissions and failures preserved."
+}

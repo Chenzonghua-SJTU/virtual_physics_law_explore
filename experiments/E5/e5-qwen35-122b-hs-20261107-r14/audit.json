@@ -1,0 +1,2496 @@
+{
+  "schema_version": 2,
+  "audited_at": "2026-11-07T01:45:35.466071+00:00",
+  "experiment_id": "e5-qwen35-122b-hs-20261107-r14",
+  "experiment_group": "E5",
+  "ruleset": "e5",
+  "manifest_sha256": "02d6f303b90bc8a97ae7b96d752059f4560b204c3636bf9e77f4c020cd86207d",
+  "all_finished": true,
+  "submitted_worlds": 6,
+  "timely_submitted_worlds": 6,
+  "evaluated_worlds": 6,
+  "worlds_at_or_above_90": 3,
+  "five_world_target_met": false,
+  "target_note": "At least five scores >=90 in this single six-world batch; no rounding or best-of-run selection. Target confirmation also requires a clean audit, complete token usage and six timely submissions. This is a user baseline target, not an official contest pass threshold.",
+  "source_checks": [
+    {
+      "path": "shore_agent/agent.py",
+      "manifest_sha256": "6a939bc0731c29ff3443a1d16aee375fe3c558c116f2838be656a0a997dfbeab",
+      "current_sha256": "6a939bc0731c29ff3443a1d16aee375fe3c558c116f2838be656a0a997dfbeab",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/prompts/main.txt",
+      "manifest_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+      "current_sha256": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/prompts/e5.txt",
+      "manifest_sha256": "302f4db64bc731c1ffb0efeb615f78b33bab241754c227bb6d977e09fa55cb6a",
+      "current_sha256": "302f4db64bc731c1ffb0efeb615f78b33bab241754c227bb6d977e09fa55cb6a",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/schemas.py",
+      "manifest_sha256": "7e6702a119195aa3dcf915eb4ff6a39525b336113e7254b099e7ab8f49c477aa",
+      "current_sha256": "7e6702a119195aa3dcf915eb4ff6a39525b336113e7254b099e7ab8f49c477aa",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/runtime.py",
+      "manifest_sha256": "48105c166722aa05e103ef7007df6be7c604b85aba6e2ff67bd435b3061525c3",
+      "current_sha256": "48105c166722aa05e103ef7007df6be7c604b85aba6e2ff67bd435b3061525c3",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/numerics.py",
+      "manifest_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+      "current_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/expressions.py",
+      "manifest_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+      "current_sha256": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/model.py",
+      "manifest_sha256": "ac44fe63697c80e50580738dd8044a16114e32a6e7bc7ce3f017f10390f7e98f",
+      "current_sha256": "ac44fe63697c80e50580738dd8044a16114e32a6e7bc7ce3f017f10390f7e98f",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/web_worker.py",
+      "manifest_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+      "current_sha256": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/store.py",
+      "manifest_sha256": "3a914623677eb3c4359b95cd2b1f77e800b166ac849f9d557c341c124e9fd611",
+      "current_sha256": "3a914623677eb3c4359b95cd2b1f77e800b166ac849f9d557c341c124e9fd611",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/diagnostics.py",
+      "manifest_sha256": "d177cf9fde4fe2a8444b7682c94f464f4a7843428c347bbcf87581bf67702164",
+      "current_sha256": "d177cf9fde4fe2a8444b7682c94f464f4a7843428c347bbcf87581bf67702164",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/candidate_hints.py",
+      "manifest_sha256": "5e88b0e5852ef120186cf8a78c0d77902597576e9a97b4c34702e01694e89b9f",
+      "current_sha256": "5e88b0e5852ef120186cf8a78c0d77902597576e9a97b4c34702e01694e89b9f",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/workspace.py",
+      "manifest_sha256": "95a7753a7286d32f374121d7733e4182896f9657177412254e4d660ae341dac0",
+      "current_sha256": "95a7753a7286d32f374121d7733e4182896f9657177412254e4d660ae341dac0",
+      "matches": true
+    },
+    {
+      "path": "shore_agent/submission.py",
+      "manifest_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+      "current_sha256": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+      "matches": true
+    },
+    {
+      "path": "shore_rules.py",
+      "manifest_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+      "current_sha256": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+      "matches": true
+    },
+    {
+      "path": "shore_v15/simulator.py",
+      "manifest_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+      "current_sha256": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+      "matches": true
+    },
+    {
+      "path": "shore_v15/evaluation.py",
+      "manifest_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+      "current_sha256": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+      "matches": true
+    },
+    {
+      "path": "benchmark_v15.py",
+      "manifest_sha256": "2d7a36f54df98d91ec12e38918117134190cf2b78db8e03f0d9ba19100bd9607",
+      "current_sha256": "2d7a36f54df98d91ec12e38918117134190cf2b78db8e03f0d9ba19100bd9607",
+      "matches": true
+    },
+    {
+      "path": "shore_v15/vendor/SOURCE.json",
+      "manifest_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+      "current_sha256": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+      "matches": true
+    }
+  ],
+  "source_note": "Compares current on-disk source with the run manifest; cannot prove historical file immutability.",
+  "aggregate": {
+    "total_seconds_including_evaluation": {
+      "sum": 577.4294674862176,
+      "mean": 96.23824458103627,
+      "worlds_with_measurement": 6
+    },
+    "exploration_seconds": {
+      "sum": 538.6250215377659,
+      "mean": 89.77083692296098,
+      "worlds_with_measurement": 6
+    },
+    "evaluation_seconds": {
+      "sum": 18.014434587210417,
+      "mean": 3.0024057645350695,
+      "worlds_with_measurement": 6
+    },
+    "model_seconds_logged": {
+      "sum": 488.69238194078207,
+      "mean": 81.44873032346368,
+      "worlds_with_measurement": 6
+    },
+    "tools_seconds_logged": {
+      "sum": 47.52130935713649,
+      "mean": 7.920218226189415,
+      "worlds_with_measurement": 6
+    },
+    "calls": 52,
+    "completion_tokens_reported": 48548,
+    "average_output_tokens_per_call": 933.6153846153846,
+    "max_call_output_tokens_reported": 4096,
+    "calls_above_4096": 0,
+    "usage_complete": true,
+    "model_fraction_of_exploration": 0.9072961009972635
+  },
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "run_id": "e5-qwen35-122b-hs-20261107-r14-world_1",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "configuration_checks": {
+        "ruleset_e5": true,
+        "world_v15": true,
+        "world_id": true,
+        "energy_10": true,
+        "wall_300": true,
+        "noise_off": true,
+        "thinking_off": true,
+        "model_ruleset_e5": true,
+        "output_cap_le_4096": true,
+        "mission_energy_10": true,
+        "mission_wall_300": true
+      },
+      "model_name": "qwen3.5-122b-a10b",
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "sampling_seed": 42,
+      "diagnostics_enabled": true,
+      "diagnostic_tool_calls": 1,
+      "successful_diagnostic_tool_calls": 1,
+      "output_limit_tokens": 4096,
+      "energy_remaining": 6,
+      "energy_used": 4,
+      "timing": {
+        "total_seconds_including_evaluation": 75.30239089205861,
+        "exploration_seconds": 66.69838821701705,
+        "evaluation_seconds": 3.5193485375493765,
+        "queue_seconds": 0.022518,
+        "model_seconds_logged": 65.9774529710412,
+        "tools_seconds_logged": 0.3391660563647747,
+        "model_fraction_of_exploration": 0.98919111442948,
+        "model_fraction_of_total": 0.8761667749117802,
+        "unattributed_exploration_seconds": 0.3817691896110773,
+        "note": "Total excludes queue; exploration includes final sealing and bookkeeping. Deadline compliance uses the timely pair, not total or finalization time. Unattributed time may include interrupted tools; it is not measured Python overhead."
+      },
+      "model": {
+        "calls": 7,
+        "result_reported_calls": 7,
+        "request_starts": 7,
+        "terminal_requests": 7,
+        "usage_complete": true,
+        "calls_with_usage": 7,
+        "calls_without_usage": 0,
+        "prompt_tokens_reported": 143124,
+        "completion_tokens_reported": 6130,
+        "total_tokens_reported": 149254,
+        "average_output_tokens_per_call": 875.7142857142857,
+        "average_output_tokens_per_reported_call": 875.7142857142857,
+        "max_call_output_tokens_reported": 1733,
+        "calls_above_4096": 0,
+        "observed_output_cap_compliant": true,
+        "elapsed_seconds_logged": 65.9774529710412,
+        "elapsed_complete": true,
+        "ttft_seconds": null,
+        "ttft_note": "Per-call first-token timestamps are not logged; no TTFT or prefill time is inferred.",
+        "per_call": [
+          {
+            "call_number": 1,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:34:54.363891+00:00",
+            "elapsed_seconds": 7.890333967283368,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 7984,
+              "completion_tokens": 662,
+              "total_tokens": 8646
+            }
+          },
+          {
+            "call_number": 2,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:35:02.271024+00:00",
+            "elapsed_seconds": 14.678107716143131,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 12627,
+              "completion_tokens": 1450,
+              "total_tokens": 14077
+            }
+          },
+          {
+            "call_number": 3,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:35:17.033123+00:00",
+            "elapsed_seconds": 9.35011469386518,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 17528,
+              "completion_tokens": 861,
+              "total_tokens": 18389
+            }
+          },
+          {
+            "call_number": 4,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:35:26.438698+00:00",
+            "elapsed_seconds": 9.53449641354382,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 20379,
+              "completion_tokens": 817,
+              "total_tokens": 21196
+            }
+          },
+          {
+            "call_number": 5,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:35:36.121648+00:00",
+            "elapsed_seconds": 5.03960314206779,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 26562,
+              "completion_tokens": 499,
+              "total_tokens": 27061
+            }
+          },
+          {
+            "call_number": 6,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:35:41.194095+00:00",
+            "elapsed_seconds": 3.0653890389949083,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 27797,
+              "completion_tokens": 108,
+              "total_tokens": 27905
+            }
+          },
+          {
+            "call_number": 7,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:35:44.271933+00:00",
+            "elapsed_seconds": 16.419407999143004,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 30247,
+              "completion_tokens": 1733,
+              "total_tokens": 31980
+            }
+          }
+        ]
+      },
+      "tools": {
+        "calls_logged": 7,
+        "elapsed_seconds_logged": 0.3391660563647747,
+        "elapsed_complete": true,
+        "by_category": {
+          "diagnose_dynamics": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.010300759226083755,
+            "max_seconds": 0.010300759226083755
+          },
+          "fit": {
+            "calls": 2,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.22281525284051895,
+            "max_seconds": 0.1431812010705471
+          },
+          "observe": {
+            "calls": 2,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.07990399934351444,
+            "max_seconds": 0.05161203444004059
+          },
+          "validate": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.007761271670460701,
+            "max_seconds": 0.007761271670460701
+          },
+          "submit": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.018384773284196854,
+            "max_seconds": 0.018384773284196854
+          }
+        },
+        "unfinished_tool_calls": [],
+        "per_call": [
+          {
+            "index": 1,
+            "tool": "diagnose_dynamics",
+            "elapsed_seconds": 0.010300759226083755,
+            "ok": true
+          },
+          {
+            "index": 2,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.07963405176997185,
+            "ok": true
+          },
+          {
+            "index": 3,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.05161203444004059,
+            "ok": true
+          },
+          {
+            "index": 4,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.1431812010705471,
+            "ok": true
+          },
+          {
+            "index": 5,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.028291964903473854,
+            "ok": true
+          },
+          {
+            "index": 6,
+            "tool": "validate_law",
+            "elapsed_seconds": 0.007761271670460701,
+            "ok": true
+          },
+          {
+            "index": 7,
+            "tool": "submit",
+            "elapsed_seconds": 0.018384773284196854,
+            "ok": true
+          }
+        ],
+        "note": "Interrupted tools may have no tools.jsonl completion row; their duration is not invented."
+      },
+      "noise": {
+        "position_noise_sigma": 0.0,
+        "velocity_noise_sigma": 0.0,
+        "expected_noise_enabled": false,
+        "noise_note": "Independent Gaussian position and probe-velocity noise on each new measurement when noise is enabled; cached records are immutable. Controlled initial states are exact.",
+        "t0_readings_compared": 6,
+        "t0_position_max_abs_difference": 0.0,
+        "t0_velocity_max_abs_difference": 0.0,
+        "note": "Measured t0 readings are compared with exact launch controls, without loading hidden truth. Nonzero residuals corroborate noisy readouts; this small sample does not establish a Gaussian distribution."
+      },
+      "submission": {
+        "accepted_count": 1,
+        "timely_pair": true,
+        "pair_source": "direct_submit",
+        "explicit_model_tool_call": true,
+        "submission_id": "submission_fc233ac21cb8",
+        "law_id": "law_2",
+        "pair_validated_at": "2026-11-07T01:36:00.710903+00:00",
+        "submission_elapsed_seconds": 66.69448827020824,
+        "finalized_at": null,
+        "artifacts": {
+          "law.py": {
+            "submission_sha256": "c7488cb452a44c39077ce7089dd9f99d78d6149f5f031dcad02633a4eed6c1a2"
+          },
+          "claims.json": {
+            "submission_sha256": "b517c283a35f72c9bb058bce55e88586d424a82c58fed65d841a62c376ba97f3"
+          },
+          "law.json": {
+            "submission_sha256": "97d82f1cc8e35ec5ef238d0321402a19939fbea13252b34f474d68b9216513c6"
+          },
+          "physical_explanation.txt": {
+            "submission_sha256": "ab1e1c350d95a82d194c004c1c212bc64ff70b4430ac05b9575d8616aea36be8"
+          }
+        }
+      },
+      "evaluation": {
+        "checks": {
+          "after_exploration": true,
+          "no_model_requests_after_evaluation_start": true,
+          "submission_identity": true,
+          "law_identity": true,
+          "world_identity": true,
+          "ruleset_e5": true,
+          "energy_10": true,
+          "all_fixed_cases": true,
+          "no_noise_truth_reference": true,
+          "all_cases_completed": true
+        },
+        "complete": true,
+        "score": 97.99995574411456,
+        "score_at_or_above_90": true,
+        "position_rmse": 0.001492970380811971,
+        "failures_count": 0,
+        "official_score": false
+      },
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "world_id": "world_2",
+      "run_id": "e5-qwen35-122b-hs-20261107-r14-world_2",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "configuration_checks": {
+        "ruleset_e5": true,
+        "world_v15": true,
+        "world_id": true,
+        "energy_10": true,
+        "wall_300": true,
+        "noise_off": true,
+        "thinking_off": true,
+        "model_ruleset_e5": true,
+        "output_cap_le_4096": true,
+        "mission_energy_10": true,
+        "mission_wall_300": true
+      },
+      "model_name": "qwen3.5-122b-a10b",
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "sampling_seed": 42,
+      "diagnostics_enabled": true,
+      "diagnostic_tool_calls": 1,
+      "successful_diagnostic_tool_calls": 1,
+      "output_limit_tokens": 4096,
+      "energy_remaining": 2,
+      "energy_used": 8,
+      "timing": {
+        "total_seconds_including_evaluation": 55.36731984093785,
+        "exploration_seconds": 49.44781494513154,
+        "evaluation_seconds": 1.7172403149306774,
+        "queue_seconds": 75.35573,
+        "model_seconds_logged": 48.37119875848293,
+        "tools_seconds_logged": 0.7137251403182745,
+        "model_fraction_of_exploration": 0.9782272242394685,
+        "model_fraction_of_total": 0.8736416878665295,
+        "unattributed_exploration_seconds": 0.36289104633033276,
+        "note": "Total excludes queue; exploration includes final sealing and bookkeeping. Deadline compliance uses the timely pair, not total or finalization time. Unattributed time may include interrupted tools; it is not measured Python overhead."
+      },
+      "model": {
+        "calls": 7,
+        "result_reported_calls": 7,
+        "request_starts": 7,
+        "terminal_requests": 7,
+        "usage_complete": true,
+        "calls_with_usage": 7,
+        "calls_without_usage": 0,
+        "prompt_tokens_reported": 135473,
+        "completion_tokens_reported": 4711,
+        "total_tokens_reported": 140184,
+        "average_output_tokens_per_call": 673.0,
+        "average_output_tokens_per_reported_call": 673.0,
+        "max_call_output_tokens_reported": 1002,
+        "calls_above_4096": 0,
+        "observed_output_cap_compliant": true,
+        "elapsed_seconds_logged": 48.37119875848293,
+        "elapsed_complete": true,
+        "ttft_seconds": null,
+        "ttft_note": "Per-call first-token timestamps are not logged; no TTFT or prefill time is inferred.",
+        "per_call": [
+          {
+            "call_number": 1,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:36:09.673701+00:00",
+            "elapsed_seconds": 6.694819267839193,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 7965,
+              "completion_tokens": 698,
+              "total_tokens": 8663
+            }
+          },
+          {
+            "call_number": 2,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:36:16.385710+00:00",
+            "elapsed_seconds": 7.2041441313922405,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 12695,
+              "completion_tokens": 653,
+              "total_tokens": 13348
+            }
+          },
+          {
+            "call_number": 3,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:36:23.711096+00:00",
+            "elapsed_seconds": 7.288166841492057,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 13955,
+              "completion_tokens": 760,
+              "total_tokens": 14715
+            }
+          },
+          {
+            "call_number": 4,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:36:31.176541+00:00",
+            "elapsed_seconds": 10.182189498096704,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 17326,
+              "completion_tokens": 1002,
+              "total_tokens": 18328
+            }
+          },
+          {
+            "call_number": 5,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:36:41.550909+00:00",
+            "elapsed_seconds": 5.063176468014717,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 24309,
+              "completion_tokens": 491,
+              "total_tokens": 24800
+            }
+          },
+          {
+            "call_number": 6,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:36:46.791248+00:00",
+            "elapsed_seconds": 2.100844716653228,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 27411,
+              "completion_tokens": 106,
+              "total_tokens": 27517
+            }
+          },
+          {
+            "call_number": 7,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:36:48.925552+00:00",
+            "elapsed_seconds": 9.837857834994793,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 31812,
+              "completion_tokens": 1001,
+              "total_tokens": 32813
+            }
+          }
+        ]
+      },
+      "tools": {
+        "calls_logged": 7,
+        "elapsed_seconds_logged": 0.7137251403182745,
+        "elapsed_complete": true,
+        "by_category": {
+          "diagnose_dynamics": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.01070120558142662,
+            "max_seconds": 0.01070120558142662
+          },
+          "observe": {
+            "calls": 3,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.463559590280056,
+            "max_seconds": 0.17339028976857662
+          },
+          "fit": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.18647395633161068,
+            "max_seconds": 0.18647395633161068
+          },
+          "validate": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.028358452022075653,
+            "max_seconds": 0.028358452022075653
+          },
+          "submit": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.024631936103105545,
+            "max_seconds": 0.024631936103105545
+          }
+        },
+        "unfinished_tool_calls": [],
+        "per_call": [
+          {
+            "index": 1,
+            "tool": "diagnose_dynamics",
+            "elapsed_seconds": 0.01070120558142662,
+            "ok": true
+          },
+          {
+            "index": 2,
+            "tool": "observe_body",
+            "elapsed_seconds": 0.11769551411271095,
+            "ok": true
+          },
+          {
+            "index": 3,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.17339028976857662,
+            "ok": true
+          },
+          {
+            "index": 4,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.18647395633161068,
+            "ok": true
+          },
+          {
+            "index": 5,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.17247378639876842,
+            "ok": true
+          },
+          {
+            "index": 6,
+            "tool": "validate_law",
+            "elapsed_seconds": 0.028358452022075653,
+            "ok": true
+          },
+          {
+            "index": 7,
+            "tool": "submit",
+            "elapsed_seconds": 0.024631936103105545,
+            "ok": true
+          }
+        ],
+        "note": "Interrupted tools may have no tools.jsonl completion row; their duration is not invented."
+      },
+      "noise": {
+        "position_noise_sigma": 0.0,
+        "velocity_noise_sigma": 0.0,
+        "expected_noise_enabled": false,
+        "noise_note": "Independent Gaussian position and probe-velocity noise on each new measurement when noise is enabled; cached records are immutable. Controlled initial states are exact.",
+        "t0_readings_compared": 10,
+        "t0_position_max_abs_difference": 0.0,
+        "t0_velocity_max_abs_difference": 0.0,
+        "note": "Measured t0 readings are compared with exact launch controls, without loading hidden truth. Nonzero residuals corroborate noisy readouts; this small sample does not establish a Gaussian distribution."
+      },
+      "submission": {
+        "accepted_count": 1,
+        "timely_pair": true,
+        "pair_source": "direct_submit",
+        "explicit_model_tool_call": true,
+        "submission_id": "submission_0e5f0a744691",
+        "law_id": "law_1",
+        "pair_validated_at": "2026-11-07T01:36:58.788996+00:00",
+        "submission_elapsed_seconds": 49.443920370191336,
+        "finalized_at": null,
+        "artifacts": {
+          "law.py": {
+            "submission_sha256": "853c84cc2c69b2ee211a2829669205ae6674bf3e55f008ff171727e9f9844299"
+          },
+          "claims.json": {
+            "submission_sha256": "b517c283a35f72c9bb058bce55e88586d424a82c58fed65d841a62c376ba97f3"
+          },
+          "law.json": {
+            "submission_sha256": "bc48a4b449c42c4a1f0be1dc09b93311c1492c680133fc9714d6bf6240819b07"
+          },
+          "physical_explanation.txt": {
+            "submission_sha256": "756d1a27d86f54046170f575438d4f5e83cc97f8ea9ae222f989799e3adea9da"
+          }
+        }
+      },
+      "evaluation": {
+        "checks": {
+          "after_exploration": true,
+          "no_model_requests_after_evaluation_start": true,
+          "submission_identity": true,
+          "law_identity": true,
+          "world_identity": true,
+          "ruleset_e5": true,
+          "energy_10": true,
+          "all_fixed_cases": true,
+          "no_noise_truth_reference": true,
+          "all_cases_completed": true
+        },
+        "complete": true,
+        "score": 95.99999999999976,
+        "score_at_or_above_90": true,
+        "position_rmse": 5.379175661441763e-08,
+        "failures_count": 0,
+        "official_score": false
+      },
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "world_id": "world_3",
+      "run_id": "e5-qwen35-122b-hs-20261107-r14-world_3",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "configuration_checks": {
+        "ruleset_e5": true,
+        "world_v15": true,
+        "world_id": true,
+        "energy_10": true,
+        "wall_300": true,
+        "noise_off": true,
+        "thinking_off": true,
+        "model_ruleset_e5": true,
+        "output_cap_le_4096": true,
+        "mission_energy_10": true,
+        "mission_wall_300": true
+      },
+      "model_name": "qwen3.5-122b-a10b",
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "sampling_seed": 42,
+      "diagnostics_enabled": true,
+      "diagnostic_tool_calls": 1,
+      "successful_diagnostic_tool_calls": 1,
+      "output_limit_tokens": 4096,
+      "energy_remaining": 8,
+      "energy_used": 2,
+      "timing": {
+        "total_seconds_including_evaluation": 45.43459231220186,
+        "exploration_seconds": 42.095139326527715,
+        "evaluation_seconds": 2.4683951269835234,
+        "queue_seconds": 130.760196,
+        "model_seconds_logged": 41.535486094653606,
+        "tools_seconds_logged": 0.18002554215490818,
+        "model_fraction_of_exploration": 0.9867050390893606,
+        "model_fraction_of_total": 0.9141819917573881,
+        "unattributed_exploration_seconds": 0.37962768971920013,
+        "note": "Total excludes queue; exploration includes final sealing and bookkeeping. Deadline compliance uses the timely pair, not total or finalization time. Unattributed time may include interrupted tools; it is not measured Python overhead."
+      },
+      "model": {
+        "calls": 5,
+        "result_reported_calls": 5,
+        "request_starts": 5,
+        "terminal_requests": 5,
+        "usage_complete": true,
+        "calls_with_usage": 5,
+        "calls_without_usage": 0,
+        "prompt_tokens_reported": 119669,
+        "completion_tokens_reported": 4314,
+        "total_tokens_reported": 123983,
+        "average_output_tokens_per_call": 862.8,
+        "average_output_tokens_per_reported_call": 862.8,
+        "max_call_output_tokens_reported": 1608,
+        "calls_above_4096": 0,
+        "observed_output_cap_compliant": true,
+        "elapsed_seconds_logged": 41.535486094653606,
+        "elapsed_complete": true,
+        "ttft_seconds": null,
+        "ttft_note": "Per-call first-token timestamps are not logged; no TTFT or prefill time is inferred.",
+        "per_call": [
+          {
+            "call_number": 1,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:37:05.108950+00:00",
+            "elapsed_seconds": 6.555835930630565,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 15135,
+              "completion_tokens": 639,
+              "total_tokens": 15774
+            }
+          },
+          {
+            "call_number": 2,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:37:11.681434+00:00",
+            "elapsed_seconds": 8.060479335486889,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 18987,
+              "completion_tokens": 850,
+              "total_tokens": 19837
+            }
+          },
+          {
+            "call_number": 3,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:37:19.853180+00:00",
+            "elapsed_seconds": 9.710637167096138,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 25578,
+              "completion_tokens": 1022,
+              "total_tokens": 26600
+            }
+          },
+          {
+            "call_number": 4,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:37:29.601648+00:00",
+            "elapsed_seconds": 2.0911314878612757,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 27936,
+              "completion_tokens": 195,
+              "total_tokens": 28131
+            }
+          },
+          {
+            "call_number": 5,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:37:31.709172+00:00",
+            "elapsed_seconds": 15.11740217357874,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 32033,
+              "completion_tokens": 1608,
+              "total_tokens": 33641
+            }
+          }
+        ]
+      },
+      "tools": {
+        "calls_logged": 5,
+        "elapsed_seconds_logged": 0.18002554215490818,
+        "elapsed_complete": true,
+        "by_category": {
+          "diagnose_dynamics": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.009361928328871727,
+            "max_seconds": 0.009361928328871727
+          },
+          "fit": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.10698889568448067,
+            "max_seconds": 0.10698889568448067
+          },
+          "observe": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.03363271802663803,
+            "max_seconds": 0.03363271802663803
+          },
+          "validate": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.011893436312675476,
+            "max_seconds": 0.011893436312675476
+          },
+          "submit": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.01814856380224228,
+            "max_seconds": 0.01814856380224228
+          }
+        },
+        "unfinished_tool_calls": [],
+        "per_call": [
+          {
+            "index": 1,
+            "tool": "diagnose_dynamics",
+            "elapsed_seconds": 0.009361928328871727,
+            "ok": true
+          },
+          {
+            "index": 2,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.10698889568448067,
+            "ok": true
+          },
+          {
+            "index": 3,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.03363271802663803,
+            "ok": true
+          },
+          {
+            "index": 4,
+            "tool": "validate_law",
+            "elapsed_seconds": 0.011893436312675476,
+            "ok": true
+          },
+          {
+            "index": 5,
+            "tool": "submit",
+            "elapsed_seconds": 0.01814856380224228,
+            "ok": true
+          }
+        ],
+        "note": "Interrupted tools may have no tools.jsonl completion row; their duration is not invented."
+      },
+      "noise": {
+        "position_noise_sigma": 0.0,
+        "velocity_noise_sigma": 0.0,
+        "expected_noise_enabled": false,
+        "noise_note": "Independent Gaussian position and probe-velocity noise on each new measurement when noise is enabled; cached records are immutable. Controlled initial states are exact.",
+        "t0_readings_compared": 4,
+        "t0_position_max_abs_difference": 0.0,
+        "t0_velocity_max_abs_difference": 0.0,
+        "note": "Measured t0 readings are compared with exact launch controls, without loading hidden truth. Nonzero residuals corroborate noisy readouts; this small sample does not establish a Gaussian distribution."
+      },
+      "submission": {
+        "accepted_count": 1,
+        "timely_pair": true,
+        "pair_source": "direct_submit",
+        "explicit_model_tool_call": true,
+        "submission_id": "submission_7c0f71375348",
+        "law_id": "law_1",
+        "pair_validated_at": "2026-11-07T01:37:46.846015+00:00",
+        "submission_elapsed_seconds": 42.09143525362015,
+        "finalized_at": null,
+        "artifacts": {
+          "law.py": {
+            "submission_sha256": "66c3699ca35e2e7e2f528142aee2fd3f87da95cca1572633c8c5f4e43c47e21c"
+          },
+          "claims.json": {
+            "submission_sha256": "b517c283a35f72c9bb058bce55e88586d424a82c58fed65d841a62c376ba97f3"
+          },
+          "law.json": {
+            "submission_sha256": "7033bcd7fd75b87144196821d29b49bffd0d617eb5095c20549e74cb0b88bcd4"
+          },
+          "physical_explanation.txt": {
+            "submission_sha256": "757a700aa6c495a2e4ad2e5a862f6db6ea92df9e90541b91dacac8e341e2e47b"
+          }
+        }
+      },
+      "evaluation": {
+        "checks": {
+          "after_exploration": true,
+          "no_model_requests_after_evaluation_start": true,
+          "submission_identity": true,
+          "law_identity": true,
+          "world_identity": true,
+          "ruleset_e5": true,
+          "energy_10": true,
+          "all_fixed_cases": true,
+          "no_noise_truth_reference": true,
+          "all_cases_completed": true
+        },
+        "complete": true,
+        "score": 98.99999999999993,
+        "score_at_or_above_90": true,
+        "position_rmse": 2.6264945120620668e-08,
+        "failures_count": 0,
+        "official_score": false
+      },
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "world_id": "world_4",
+      "run_id": "e5-qwen35-122b-hs-20261107-r14-world_4",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "configuration_checks": {
+        "ruleset_e5": true,
+        "world_v15": true,
+        "world_id": true,
+        "energy_10": true,
+        "wall_300": true,
+        "noise_off": true,
+        "thinking_off": true,
+        "model_ruleset_e5": true,
+        "output_cap_le_4096": true,
+        "mission_energy_10": true,
+        "mission_wall_300": true
+      },
+      "model_name": "qwen3.5-122b-a10b",
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "sampling_seed": 42,
+      "diagnostics_enabled": true,
+      "diagnostic_tool_calls": 1,
+      "successful_diagnostic_tool_calls": 1,
+      "output_limit_tokens": 4096,
+      "energy_remaining": 6,
+      "energy_used": 4,
+      "timing": {
+        "total_seconds_including_evaluation": 91.0762287657708,
+        "exploration_seconds": 83.00947372056544,
+        "evaluation_seconds": 4.120403304696083,
+        "queue_seconds": 176.243249,
+        "model_seconds_logged": 82.19638551585376,
+        "tools_seconds_logged": 0.41930348239839077,
+        "model_fraction_of_exploration": 0.9902048745972204,
+        "model_fraction_of_total": 0.9025009778044922,
+        "unattributed_exploration_seconds": 0.3937847223132849,
+        "note": "Total excludes queue; exploration includes final sealing and bookkeeping. Deadline compliance uses the timely pair, not total or finalization time. Unattributed time may include interrupted tools; it is not measured Python overhead."
+      },
+      "model": {
+        "calls": 8,
+        "result_reported_calls": 8,
+        "request_starts": 8,
+        "terminal_requests": 8,
+        "usage_complete": true,
+        "calls_with_usage": 8,
+        "calls_without_usage": 0,
+        "prompt_tokens_reported": 173264,
+        "completion_tokens_reported": 8265,
+        "total_tokens_reported": 181529,
+        "average_output_tokens_per_call": 1033.125,
+        "average_output_tokens_per_reported_call": 1033.125,
+        "max_call_output_tokens_reported": 2145,
+        "calls_above_4096": 0,
+        "observed_output_cap_compliant": true,
+        "elapsed_seconds_logged": 82.19638551585376,
+        "elapsed_complete": true,
+        "ttft_seconds": null,
+        "ttft_note": "Per-call first-token timestamps are not logged; no TTFT or prefill time is inferred.",
+        "per_call": [
+          {
+            "call_number": 1,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:37:50.590185+00:00",
+            "elapsed_seconds": 11.836282305419445,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 7972,
+              "completion_tokens": 1281,
+              "total_tokens": 9253
+            }
+          },
+          {
+            "call_number": 2,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:38:02.442139+00:00",
+            "elapsed_seconds": 11.736920051276684,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 12215,
+              "completion_tokens": 1265,
+              "total_tokens": 13480
+            }
+          },
+          {
+            "call_number": 3,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:38:14.260352+00:00",
+            "elapsed_seconds": 14.16903849877417,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 16938,
+              "completion_tokens": 1392,
+              "total_tokens": 18330
+            }
+          },
+          {
+            "call_number": 4,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:38:28.475159+00:00",
+            "elapsed_seconds": 3.3236664310097694,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 19701,
+              "completion_tokens": 323,
+              "total_tokens": 20024
+            }
+          },
+          {
+            "call_number": 5,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:38:31.816212+00:00",
+            "elapsed_seconds": 10.73720246180892,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 22927,
+              "completion_tokens": 998,
+              "total_tokens": 23925
+            }
+          },
+          {
+            "call_number": 6,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:38:42.763732+00:00",
+            "elapsed_seconds": 7.150778986513615,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 28740,
+              "completion_tokens": 720,
+              "total_tokens": 29460
+            }
+          },
+          {
+            "call_number": 7,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:38:49.961259+00:00",
+            "elapsed_seconds": 2.4303275290876627,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 30838,
+              "completion_tokens": 141,
+              "total_tokens": 30979
+            }
+          },
+          {
+            "call_number": 8,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:38:52.408929+00:00",
+            "elapsed_seconds": 20.812169251963496,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 33933,
+              "completion_tokens": 2145,
+              "total_tokens": 36078
+            }
+          }
+        ]
+      },
+      "tools": {
+        "calls_logged": 8,
+        "elapsed_seconds_logged": 0.41930348239839077,
+        "elapsed_complete": true,
+        "by_category": {
+          "diagnose_dynamics": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.009885674342513084,
+            "max_seconds": 0.009885674342513084
+          },
+          "fit": {
+            "calls": 2,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.28264425694942474,
+            "max_seconds": 0.2054069098085165
+          },
+          "observe": {
+            "calls": 2,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.08315466158092022,
+            "max_seconds": 0.04172379523515701
+          },
+          "validate": {
+            "calls": 2,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.024142026901245117,
+            "max_seconds": 0.012107819318771362
+          },
+          "submit": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.019476862624287605,
+            "max_seconds": 0.019476862624287605
+          }
+        },
+        "unfinished_tool_calls": [],
+        "per_call": [
+          {
+            "index": 1,
+            "tool": "diagnose_dynamics",
+            "elapsed_seconds": 0.009885674342513084,
+            "ok": true
+          },
+          {
+            "index": 2,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.07723734714090824,
+            "ok": true
+          },
+          {
+            "index": 3,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.04172379523515701,
+            "ok": true
+          },
+          {
+            "index": 4,
+            "tool": "validate_law",
+            "elapsed_seconds": 0.012034207582473755,
+            "ok": true
+          },
+          {
+            "index": 5,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.2054069098085165,
+            "ok": true
+          },
+          {
+            "index": 6,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.041430866345763206,
+            "ok": true
+          },
+          {
+            "index": 7,
+            "tool": "validate_law",
+            "elapsed_seconds": 0.012107819318771362,
+            "ok": true
+          },
+          {
+            "index": 8,
+            "tool": "submit",
+            "elapsed_seconds": 0.019476862624287605,
+            "ok": true
+          }
+        ],
+        "note": "Interrupted tools may have no tools.jsonl completion row; their duration is not invented."
+      },
+      "noise": {
+        "position_noise_sigma": 0.0,
+        "velocity_noise_sigma": 0.0,
+        "expected_noise_enabled": false,
+        "noise_note": "Independent Gaussian position and probe-velocity noise on each new measurement when noise is enabled; cached records are immutable. Controlled initial states are exact.",
+        "t0_readings_compared": 6,
+        "t0_position_max_abs_difference": 0.0,
+        "t0_velocity_max_abs_difference": 0.0,
+        "note": "Measured t0 readings are compared with exact launch controls, without loading hidden truth. Nonzero residuals corroborate noisy readouts; this small sample does not establish a Gaussian distribution."
+      },
+      "submission": {
+        "accepted_count": 1,
+        "timely_pair": true,
+        "pair_source": "direct_submit",
+        "explicit_model_tool_call": true,
+        "submission_id": "submission_5f9b825a1e86",
+        "law_id": "law_2",
+        "pair_validated_at": "2026-11-07T01:39:13.240945+00:00",
+        "submission_elapsed_seconds": 83.00439524278045,
+        "finalized_at": null,
+        "artifacts": {
+          "law.py": {
+            "submission_sha256": "d009c2e8e04fe1417995031c489fefa6bdc4a716060665d54ec8e795a3010c7a"
+          },
+          "claims.json": {
+            "submission_sha256": "b517c283a35f72c9bb058bce55e88586d424a82c58fed65d841a62c376ba97f3"
+          },
+          "law.json": {
+            "submission_sha256": "a93b1fc7d74e5e7cfaa184caef19988900b15bc77af97a12fb2830c4b063768a"
+          },
+          "physical_explanation.txt": {
+            "submission_sha256": "db6aa5fde7999fbfd87e713c809034666cdd17790ce6fddb9afdefbb1d54070b"
+          }
+        }
+      },
+      "evaluation": {
+        "checks": {
+          "after_exploration": true,
+          "no_model_requests_after_evaluation_start": true,
+          "submission_identity": true,
+          "law_identity": true,
+          "world_identity": true,
+          "ruleset_e5": true,
+          "energy_10": true,
+          "all_fixed_cases": true,
+          "no_noise_truth_reference": true,
+          "all_cases_completed": true
+        },
+        "complete": true,
+        "score": 50.748699795319084,
+        "score_at_or_above_90": false,
+        "position_rmse": 1.947903912031051,
+        "failures_count": 0,
+        "official_score": false
+      },
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "world_id": "world_5",
+      "run_id": "e5-qwen35-122b-hs-20261107-r14-world_5",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "configuration_checks": {
+        "ruleset_e5": true,
+        "world_v15": true,
+        "world_id": true,
+        "energy_10": true,
+        "wall_300": true,
+        "noise_off": true,
+        "thinking_off": true,
+        "model_ruleset_e5": true,
+        "output_cap_le_4096": true,
+        "mission_energy_10": true,
+        "mission_wall_300": true
+      },
+      "model_name": "qwen3.5-122b-a10b",
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "sampling_seed": 42,
+      "diagnostics_enabled": true,
+      "diagnostic_tool_calls": 1,
+      "successful_diagnostic_tool_calls": 1,
+      "output_limit_tokens": 4096,
+      "energy_remaining": 8,
+      "energy_used": 2,
+      "timing": {
+        "total_seconds_including_evaluation": 187.84377445094287,
+        "exploration_seconds": 179.9746829625219,
+        "evaluation_seconds": 2.6192706543952227,
+        "queue_seconds": 267.381915,
+        "model_seconds_logged": 147.3326829764992,
+        "tools_seconds_logged": 32.15805222839117,
+        "model_fraction_of_exploration": 0.8186300459114013,
+        "model_fraction_of_total": 0.7843362571218802,
+        "unattributed_exploration_seconds": 0.4839477576315403,
+        "note": "Total excludes queue; exploration includes final sealing and bookkeeping. Deadline compliance uses the timely pair, not total or finalization time. Unattributed time may include interrupted tools; it is not measured Python overhead."
+      },
+      "model": {
+        "calls": 15,
+        "result_reported_calls": 15,
+        "request_starts": 15,
+        "terminal_requests": 15,
+        "usage_complete": true,
+        "calls_with_usage": 15,
+        "calls_without_usage": 0,
+        "prompt_tokens_reported": 634248,
+        "completion_tokens_reported": 14830,
+        "total_tokens_reported": 649078,
+        "average_output_tokens_per_call": 988.6666666666666,
+        "average_output_tokens_per_reported_call": 988.6666666666666,
+        "max_call_output_tokens_reported": 4096,
+        "calls_above_4096": 0,
+        "observed_output_cap_compliant": true,
+        "elapsed_seconds_logged": 147.3326829764992,
+        "elapsed_complete": true,
+        "ttft_seconds": null,
+        "ttft_note": "Per-call first-token timestamps are not logged; no TTFT or prefill time is inferred.",
+        "per_call": [
+          {
+            "call_number": 1,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:39:21.753252+00:00",
+            "elapsed_seconds": 39.10819919407368,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "length",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 15163,
+              "completion_tokens": 4096,
+              "total_tokens": 19259
+            }
+          },
+          {
+            "call_number": 2,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:40:00.866361+00:00",
+            "elapsed_seconds": 0.5911660399287939,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 15239,
+              "completion_tokens": 46,
+              "total_tokens": 15285
+            }
+          },
+          {
+            "call_number": 3,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:40:01.474579+00:00",
+            "elapsed_seconds": 9.081643525511026,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 19404,
+              "completion_tokens": 935,
+              "total_tokens": 20339
+            }
+          },
+          {
+            "call_number": 4,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:40:10.666965+00:00",
+            "elapsed_seconds": 2.311098473146558,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 25942,
+              "completion_tokens": 208,
+              "total_tokens": 26150
+            }
+          },
+          {
+            "call_number": 5,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:40:12.984474+00:00",
+            "elapsed_seconds": 1.1147721763700247,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 26248,
+              "completion_tokens": 99,
+              "total_tokens": 26347
+            }
+          },
+          {
+            "call_number": 6,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:40:14.121949+00:00",
+            "elapsed_seconds": 13.306886654347181,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 32215,
+              "completion_tokens": 1356,
+              "total_tokens": 33571
+            }
+          },
+          {
+            "call_number": 7,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:40:46.336736+00:00",
+            "elapsed_seconds": 7.614558063447475,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 39258,
+              "completion_tokens": 757,
+              "total_tokens": 40015
+            }
+          },
+          {
+            "call_number": 8,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:41:06.779776+00:00",
+            "elapsed_seconds": 17.44681191444397,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 45689,
+              "completion_tokens": 1761,
+              "total_tokens": 47450
+            }
+          },
+          {
+            "call_number": 9,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:41:24.254034+00:00",
+            "elapsed_seconds": 1.3926663734018803,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 48153,
+              "completion_tokens": 123,
+              "total_tokens": 48276
+            }
+          },
+          {
+            "call_number": 10,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:41:25.663226+00:00",
+            "elapsed_seconds": 13.239145200699568,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 51503,
+              "completion_tokens": 1332,
+              "total_tokens": 52835
+            }
+          },
+          {
+            "call_number": 11,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:41:38.920018+00:00",
+            "elapsed_seconds": 12.700704257935286,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 56465,
+              "completion_tokens": 1269,
+              "total_tokens": 57734
+            }
+          },
+          {
+            "call_number": 12,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:41:51.633030+00:00",
+            "elapsed_seconds": 2.8654909934848547,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 58346,
+              "completion_tokens": 271,
+              "total_tokens": 58617
+            }
+          },
+          {
+            "call_number": 13,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:41:54.724991+00:00",
+            "elapsed_seconds": 4.402318986132741,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 65033,
+              "completion_tokens": 389,
+              "total_tokens": 65422
+            }
+          },
+          {
+            "call_number": 14,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:41:59.155626+00:00",
+            "elapsed_seconds": 1.110615886747837,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 66131,
+              "completion_tokens": 90,
+              "total_tokens": 66221
+            }
+          },
+          {
+            "call_number": 15,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:42:00.281310+00:00",
+            "elapsed_seconds": 21.046605236828327,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 69459,
+              "completion_tokens": 2098,
+              "total_tokens": 71557
+            }
+          }
+        ]
+      },
+      "tools": {
+        "calls_logged": 14,
+        "elapsed_seconds_logged": 32.15805222839117,
+        "elapsed_complete": true,
+        "by_category": {
+          "diagnose_dynamics": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.010600004345178604,
+            "max_seconds": 0.010600004345178604
+          },
+          "fit": {
+            "calls": 5,
+            "failed_calls": 1,
+            "elapsed_seconds": 32.03246251307428,
+            "max_seconds": 18.901100615039468
+          },
+          "validate": {
+            "calls": 3,
+            "failed_calls": 1,
+            "elapsed_seconds": 0.021252641454339027,
+            "max_seconds": 0.009983247146010399
+          },
+          "analyze_residual": {
+            "calls": 2,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.03001866489648819,
+            "max_seconds": 0.018082182854413986
+          },
+          "observe": {
+            "calls": 2,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.043348370119929314,
+            "max_seconds": 0.022249722853302956
+          },
+          "submit": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.020370034500956535,
+            "max_seconds": 0.020370034500956535
+          }
+        },
+        "unfinished_tool_calls": [],
+        "per_call": [
+          {
+            "index": 1,
+            "tool": "diagnose_dynamics",
+            "elapsed_seconds": 0.010600004345178604,
+            "ok": true
+          },
+          {
+            "index": 2,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.1036240253597498,
+            "ok": true
+          },
+          {
+            "index": 3,
+            "tool": "validate_law",
+            "elapsed_seconds": 0.002658924087882042,
+            "ok": false
+          },
+          {
+            "index": 4,
+            "tool": "analyze_residual",
+            "elapsed_seconds": 0.018082182854413986,
+            "ok": true
+          },
+          {
+            "index": 5,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 18.901100615039468,
+            "ok": true
+          },
+          {
+            "index": 6,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 12.805707516148686,
+            "ok": true
+          },
+          {
+            "index": 7,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.022249722853302956,
+            "ok": true
+          },
+          {
+            "index": 8,
+            "tool": "validate_law",
+            "elapsed_seconds": 0.009983247146010399,
+            "ok": true
+          },
+          {
+            "index": 9,
+            "tool": "analyze_residual",
+            "elapsed_seconds": 0.011936482042074203,
+            "ok": true
+          },
+          {
+            "index": 10,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.005499096587300301,
+            "ok": false
+          },
+          {
+            "index": 11,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.21653125993907452,
+            "ok": true
+          },
+          {
+            "index": 12,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.021098647266626358,
+            "ok": true
+          },
+          {
+            "index": 13,
+            "tool": "validate_law",
+            "elapsed_seconds": 0.008610470220446587,
+            "ok": true
+          },
+          {
+            "index": 14,
+            "tool": "submit",
+            "elapsed_seconds": 0.020370034500956535,
+            "ok": true
+          }
+        ],
+        "note": "Interrupted tools may have no tools.jsonl completion row; their duration is not invented."
+      },
+      "noise": {
+        "position_noise_sigma": 0.0,
+        "velocity_noise_sigma": 0.0,
+        "expected_noise_enabled": false,
+        "noise_note": "Independent Gaussian position and probe-velocity noise on each new measurement when noise is enabled; cached records are immutable. Controlled initial states are exact.",
+        "t0_readings_compared": 4,
+        "t0_position_max_abs_difference": 0.0,
+        "t0_velocity_max_abs_difference": 0.0,
+        "note": "Measured t0 readings are compared with exact launch controls, without loading hidden truth. Nonzero residuals corroborate noisy readouts; this small sample does not establish a Gaussian distribution."
+      },
+      "submission": {
+        "accepted_count": 1,
+        "timely_pair": true,
+        "pair_source": "direct_submit",
+        "explicit_model_tool_call": true,
+        "submission_id": "submission_52dac5073eab",
+        "law_id": "law_4",
+        "pair_validated_at": "2026-11-07T01:42:21.350432+00:00",
+        "submission_elapsed_seconds": 179.9687477108091,
+        "finalized_at": null,
+        "artifacts": {
+          "law.py": {
+            "submission_sha256": "54a3f55bed5b9435620045eaf20ddb177b102d6cdf1fa560d714a35421d5b791"
+          },
+          "claims.json": {
+            "submission_sha256": "b517c283a35f72c9bb058bce55e88586d424a82c58fed65d841a62c376ba97f3"
+          },
+          "law.json": {
+            "submission_sha256": "379eddadf98e0e261af9179628c15a7f872c90478c3d2c27f584a10ad3d283dc"
+          },
+          "physical_explanation.txt": {
+            "submission_sha256": "6645908f08adabc395ca0a7e9a7601428ae7465ebd2e13cfb6c7f4e759bb8e50"
+          }
+        }
+      },
+      "evaluation": {
+        "checks": {
+          "after_exploration": true,
+          "no_model_requests_after_evaluation_start": true,
+          "submission_identity": true,
+          "law_identity": true,
+          "world_identity": true,
+          "ruleset_e5": true,
+          "energy_10": true,
+          "all_fixed_cases": true,
+          "no_noise_truth_reference": true,
+          "all_cases_completed": true
+        },
+        "complete": true,
+        "score": 25.17667033999065,
+        "score_at_or_above_90": false,
+        "position_rmse": 2.139292978135463,
+        "failures_count": 0,
+        "official_score": false
+      },
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "world_id": "world_6",
+      "run_id": "e5-qwen35-122b-hs-20261107-r14-world_6",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "configuration_checks": {
+        "ruleset_e5": true,
+        "world_v15": true,
+        "world_id": true,
+        "energy_10": true,
+        "wall_300": true,
+        "noise_off": true,
+        "thinking_off": true,
+        "model_ruleset_e5": true,
+        "output_cap_le_4096": true,
+        "mission_energy_10": true,
+        "mission_wall_300": true
+      },
+      "model_name": "qwen3.5-122b-a10b",
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "sampling_seed": 42,
+      "diagnostics_enabled": true,
+      "diagnostic_tool_calls": 1,
+      "successful_diagnostic_tool_calls": 1,
+      "output_limit_tokens": 4096,
+      "energy_remaining": 7,
+      "energy_used": 3,
+      "timing": {
+        "total_seconds_including_evaluation": 122.40516122430563,
+        "exploration_seconds": 117.3995223660022,
+        "evaluation_seconds": 3.569776648655534,
+        "queue_seconds": 455.3059,
+        "model_seconds_logged": 103.27917562425137,
+        "tools_seconds_logged": 13.71103690750897,
+        "model_fraction_of_exploration": 0.8797239847558361,
+        "model_fraction_of_total": 0.8437485363463867,
+        "unattributed_exploration_seconds": 0.40930983424186707,
+        "note": "Total excludes queue; exploration includes final sealing and bookkeeping. Deadline compliance uses the timely pair, not total or finalization time. Unattributed time may include interrupted tools; it is not measured Python overhead."
+      },
+      "model": {
+        "calls": 10,
+        "result_reported_calls": 10,
+        "request_starts": 10,
+        "terminal_requests": 10,
+        "usage_complete": true,
+        "calls_with_usage": 10,
+        "calls_without_usage": 0,
+        "prompt_tokens_reported": 378736,
+        "completion_tokens_reported": 10298,
+        "total_tokens_reported": 389034,
+        "average_output_tokens_per_call": 1029.8,
+        "average_output_tokens_per_reported_call": 1029.8,
+        "max_call_output_tokens_reported": 1834,
+        "calls_above_4096": 0,
+        "observed_output_cap_compliant": true,
+        "elapsed_seconds_logged": 103.27917562425137,
+        "elapsed_complete": true,
+        "ttft_seconds": null,
+        "ttft_note": "Per-call first-token timestamps are not logged; no TTFT or prefill time is inferred.",
+        "per_call": [
+          {
+            "call_number": 1,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:42:29.647538+00:00",
+            "elapsed_seconds": 7.059345846995711,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 15116,
+              "completion_tokens": 692,
+              "total_tokens": 15808
+            }
+          },
+          {
+            "call_number": 2,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:42:36.724788+00:00",
+            "elapsed_seconds": 14.880312163382769,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 19890,
+              "completion_tokens": 1546,
+              "total_tokens": 21436
+            }
+          },
+          {
+            "call_number": 3,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:42:51.682405+00:00",
+            "elapsed_seconds": 9.686394261196256,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 27060,
+              "completion_tokens": 988,
+              "total_tokens": 28048
+            }
+          },
+          {
+            "call_number": 4,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:43:01.471898+00:00",
+            "elapsed_seconds": 6.7788093741983175,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 29991,
+              "completion_tokens": 583,
+              "total_tokens": 30574
+            }
+          },
+          {
+            "call_number": 5,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:43:08.270430+00:00",
+            "elapsed_seconds": 11.016724104061723,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 35052,
+              "completion_tokens": 1118,
+              "total_tokens": 36170
+            }
+          },
+          {
+            "call_number": 6,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:43:19.323124+00:00",
+            "elapsed_seconds": 13.573406970128417,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 43751,
+              "completion_tokens": 1361,
+              "total_tokens": 45112
+            }
+          },
+          {
+            "call_number": 7,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:43:32.909794+00:00",
+            "elapsed_seconds": 2.546846080571413,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 45226,
+              "completion_tokens": 244,
+              "total_tokens": 45470
+            }
+          },
+          {
+            "call_number": 8,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:43:35.524337+00:00",
+            "elapsed_seconds": 15.67446511425078,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 51074,
+              "completion_tokens": 1572,
+              "total_tokens": 52646
+            }
+          },
+          {
+            "call_number": 9,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:43:51.209809+00:00",
+            "elapsed_seconds": 3.7105275355279446,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 52747,
+              "completion_tokens": 360,
+              "total_tokens": 53107
+            }
+          },
+          {
+            "call_number": 10,
+            "attempt": 1,
+            "sampling_seed": 42,
+            "started_at": "2026-11-07T01:44:08.316798+00:00",
+            "elapsed_seconds": 18.352344173938036,
+            "started_event_present": true,
+            "terminal_event_present": true,
+            "requested_max_tokens": 4096,
+            "enable_thinking": false,
+            "http_status": 200,
+            "finish_reason": "tool_calls",
+            "error": null,
+            "usage_complete": true,
+            "usage": {
+              "prompt_tokens": 58829,
+              "completion_tokens": 1834,
+              "total_tokens": 60663
+            }
+          }
+        ]
+      },
+      "tools": {
+        "calls_logged": 10,
+        "elapsed_seconds_logged": 13.71103690750897,
+        "elapsed_complete": true,
+        "by_category": {
+          "diagnose_dynamics": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.011437304317951202,
+            "max_seconds": 0.011437304317951202
+          },
+          "fit": {
+            "calls": 5,
+            "failed_calls": 2,
+            "elapsed_seconds": 13.536202663555741,
+            "max_seconds": 13.390120146796107
+          },
+          "observe": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.09860566817224026,
+            "max_seconds": 0.09860566817224026
+          },
+          "validate": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.014889240264892578,
+            "max_seconds": 0.014889240264892578
+          },
+          "analyze_residual": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.029995303601026535,
+            "max_seconds": 0.029995303601026535
+          },
+          "submit": {
+            "calls": 1,
+            "failed_calls": 0,
+            "elapsed_seconds": 0.019906727597117424,
+            "max_seconds": 0.019906727597117424
+          }
+        },
+        "unfinished_tool_calls": [],
+        "per_call": [
+          {
+            "index": 1,
+            "tool": "diagnose_dynamics",
+            "elapsed_seconds": 0.011437304317951202,
+            "ok": true
+          },
+          {
+            "index": 2,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.07274538651108742,
+            "ok": true
+          },
+          {
+            "index": 3,
+            "tool": "insert_probe",
+            "elapsed_seconds": 0.09860566817224026,
+            "ok": true
+          },
+          {
+            "index": 4,
+            "tool": "validate_law",
+            "elapsed_seconds": 0.014889240264892578,
+            "ok": true
+          },
+          {
+            "index": 5,
+            "tool": "analyze_residual",
+            "elapsed_seconds": 0.029995303601026535,
+            "ok": true
+          },
+          {
+            "index": 6,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.006476575508713722,
+            "ok": false
+          },
+          {
+            "index": 7,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.061626918613910675,
+            "ok": true
+          },
+          {
+            "index": 8,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 0.005233636125922203,
+            "ok": false
+          },
+          {
+            "index": 9,
+            "tool": "fit_law_and_rollout",
+            "elapsed_seconds": 13.390120146796107,
+            "ok": true
+          },
+          {
+            "index": 10,
+            "tool": "submit",
+            "elapsed_seconds": 0.019906727597117424,
+            "ok": true
+          }
+        ],
+        "note": "Interrupted tools may have no tools.jsonl completion row; their duration is not invented."
+      },
+      "noise": {
+        "position_noise_sigma": 0.0,
+        "velocity_noise_sigma": 0.0,
+        "expected_noise_enabled": false,
+        "noise_note": "Independent Gaussian position and probe-velocity noise on each new measurement when noise is enabled; cached records are immutable. Controlled initial states are exact.",
+        "t0_readings_compared": 5,
+        "t0_position_max_abs_difference": 0.0,
+        "t0_velocity_max_abs_difference": 0.0,
+        "note": "Measured t0 readings are compared with exact launch controls, without loading hidden truth. Nonzero residuals corroborate noisy readouts; this small sample does not establish a Gaussian distribution."
+      },
+      "submission": {
+        "accepted_count": 1,
+        "timely_pair": true,
+        "pair_source": "direct_submit",
+        "explicit_model_tool_call": true,
+        "submission_id": "submission_3924eabf28ef",
+        "law_id": "law_1",
+        "pair_validated_at": "2026-11-07T01:44:26.690482+00:00",
+        "submission_elapsed_seconds": 117.39474207349122,
+        "finalized_at": null,
+        "artifacts": {
+          "law.py": {
+            "submission_sha256": "c7fb6c2c9be85136ca80a6356ae8c62fdf59d9c426caa24d0537ac6e172b03e9"
+          },
+          "claims.json": {
+            "submission_sha256": "b517c283a35f72c9bb058bce55e88586d424a82c58fed65d841a62c376ba97f3"
+          },
+          "law.json": {
+            "submission_sha256": "3aee61126338019a2aee81c2d4ade8da77ba990b0a489f49683b7a31628213ea"
+          },
+          "physical_explanation.txt": {
+            "submission_sha256": "e2b106d2d4fcc77253d724e9bef7579d8ad01c1b9dc65e5633fe509aa91c0747"
+          }
+        }
+      },
+      "evaluation": {
+        "checks": {
+          "after_exploration": true,
+          "no_model_requests_after_evaluation_start": true,
+          "submission_identity": true,
+          "law_identity": true,
+          "world_identity": true,
+          "ruleset_e5": true,
+          "energy_10": true,
+          "all_fixed_cases": true,
+          "no_noise_truth_reference": true,
+          "all_cases_completed": true
+        },
+        "complete": true,
+        "score": 15.659023615280125,
+        "score_at_or_above_90": false,
+        "position_rmse": 4.81900424004719,
+        "failures_count": 0,
+        "official_score": false
+      },
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "errors": [],
+  "read_only_scope": "No execution, scoring, model requests or feedback to Agent; only this derived audit.json is written.",
+  "official_score": false,
+  "official_sdk_compatible": false
+}

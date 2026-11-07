@@ -1,0 +1,33 @@
+{
+  "source_commit": "eca23ccfe607e2d9bf84307d2fc2a675bdf02c9f",
+  "scientific_source_commit": "abd229364d1cbfe38c73d7488e8747522876263d",
+  "run_source_hashes": "manifest.json:source_sha256",
+  "audit_completed_before_next_source_deployment": true,
+  "audit_source_hashes_all_match": true,
+  "audited_source_count": 19,
+  "audit_errors_preserved": [],
+  "source_hashes_identical_to_r13": true,
+  "configuration_difference_from_r13": [
+    "model.sampling_seed"
+  ],
+  "temperature": 1.0,
+  "sampling_seed": 44,
+  "model": "qwen3.8-27b",
+  "workers": 2,
+  "model_endpoints": [
+    8000,
+    8001
+  ],
+  "attempts_per_world": 1,
+  "diagnostic_quadrature": "hermite_simpson",
+  "execution_evidence": "execution_evidence.json",
+  "usage_note": "world_5 final model call has missing usage. Its full-run mean and the all-call aggregate mean remain unknown; missing output is not treated as zero. All actual requests retain max_tokens<=4096.",
+  "archive_evidence_sha256": {
+    "manifest.json": "1d17827418e9c520fcd4c1bb8c7229001b2d9d6716b2a7638858d9b4e622e2e4",
+    "summary.json": "40c3b85c37cd1977c5fe3f6cbc9d6236df0fe2fe7861cf6bd423cc6d9aed4db2",
+    "audit.json": "618c6ced0123cd6eee642b1f5593f6dbfbf8587aa84017d6f74f671ee573aa66",
+    "execution_evidence.json": "fa963d5e1176b6091a72e1730b76abbb32a67b4bd342a6b1cc5b286a2a903ca8"
+  },
+  "downloaded_raw_archive_sha256": "b95ffb0931589154489c7b4a3eb767d835d53f8d761201754404d8c315c30710",
+  "source_note": "eca23cc changes configuration/protocol only. All 19 scientific source hashes match abd2293. No optional R16 harmonic or on-fit diagnostics were deployed. Original failure, submission and score records retained unchanged."
+}
