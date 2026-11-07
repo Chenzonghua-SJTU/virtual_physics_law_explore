@@ -845,8 +845,18 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             parallelism='multithreading', warm_start=False, precision=64, verbosity=0, progress=False)
         if output_directory is not None: options['output_directory'] = str(Path(output_directory)/label)
         begin = time.monotonic()
-        model = model_factory(**options)
-        model.fit(search_X, target, weights=weights, variable_names=search_names)
+        try:
+            model = model_factory(**options)
+            model.fit(search_X, target, weights=weights, variable_names=search_names)
+        except Exception as exc:
+            # Backend failures do not erase already checked candidates. Input
+            # validation and export safety checks remain outside this boundary.
+            report['search_stages'].append({'stage': label, 'status': 'error',
+                'requested_seconds': stage_budget, 'elapsed_seconds': time.monotonic()-begin,
+                'error_type': type(exc).__name__, 'message': str(exc)[:500]})
+            report['warnings'].append('Search backend failed; returning earlier checked candidates without retrying the backend.')
+            report['backend_error'] = True
+            break
         elapsed = time.monotonic()-begin
         report['axis_search_seconds'].append(elapsed)
         report['search_stages'].append({'stage': label, 'requested_seconds': stage_budget,
@@ -866,5 +876,6 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             name = ('ax','ay')[component]
             if name not in report['search_axes_completed']: report['search_axes_completed'].append(name)
         snapshot('running')
-    snapshot("timeout" if time.monotonic() >= deadline-final_reserve else "completed")
+    snapshot("timeout" if time.monotonic() >= deadline-final_reserve else
+             "partial_error" if report.get('backend_error') else "completed")
     return report
