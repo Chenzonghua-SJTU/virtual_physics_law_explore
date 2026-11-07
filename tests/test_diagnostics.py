@@ -379,3 +379,124 @@ def test_curvature_is_opt_in_and_summary_preserves_full_evidence():
     assert small['radial_curvature_summary']['status'] == 'descriptive_comparison'
     assert len(small['radial_curvature_summary']['models']) == 2
     json.dumps(small, allow_nan=False)
+
+
+def polynomial_probes(beta, degree, times, seed=802, force_extra=None):
+    """Independent high-accuracy synthetic trajectories with generic polynomial axes."""
+    powers = [(i, power-i) for power in range(degree+1) for i in range(power, -1, -1)]
+    rng = np.random.default_rng(seed)
+    probes = []
+    for i in range(8):
+        initial = np.r_[rng.uniform(-1.5, 1.5, 2), rng.uniform(-.4, .4, 2)]
+        def rhs(time, z):
+            acceleration = np.array([z[0]**a*z[1]**b for a, b in powers]) @ beta
+            if force_extra is not None:
+                acceleration = acceleration + force_extra(time, z)
+            return np.r_[z[2:], acceleration]
+        solution = solve_ivp(rhs, (0., times[-1]), initial, t_eval=times,
+                             rtol=2e-12, atol=2e-13, max_step=.02)
+        assert solution.success
+        probes.append(observed(f'p{i}', times, solution.y[:2].T, solution.y[2:].T))
+    return probes
+
+
+@pytest.mark.parametrize('degree', [1, 2, 3])
+def test_hermite_simpson_recovers_fourth_order_coefficient_convergence(degree):
+    powers = [(i, power-i) for power in range(degree+1) for i in range(power, -1, -1)]
+    rng = np.random.default_rng(800+degree)
+    beta = rng.uniform(-.06, .06, (len(powers), 2))
+    beta[powers.index((1, 0)), 0] = -.6
+    beta[powers.index((0, 1)), 1] = -.9
+    errors = {method: [] for method in ('trapezoid', 'hermite_simpson')}
+    for n_intervals in (4, 8):
+        probes = polynomial_probes(beta, degree, np.linspace(0, 1.6, n_intervals+1))
+        for method in errors:
+            model = diagnose(probes, TASK, quadrature=method)['space_regression']['models'][degree-1]
+            fitted = np.array([[term['ax'], term['ay']] for term in model['diagnostic_coefficients']])
+            errors[method].append(np.linalg.norm(fitted-beta)/np.linalg.norm(beta))
+    assert 3 < errors['trapezoid'][0]/errors['trapezoid'][1] < 5
+    assert 12 < errors['hermite_simpson'][0]/errors['hermite_simpson'][1] < 20
+    assert errors['hermite_simpson'][0] < .01*errors['trapezoid'][0]
+
+
+def test_hermite_simpson_independent_axes_nonuniform_grid_and_whole_probe_cv():
+    beta = np.array([[.07, -.03], [-.6, .17], [.21, -.9]])
+    times = np.array([0., .03, .11, .2, .23, .31, .4, .5, .58, .63, .71, .8])
+    probes = polynomial_probes(beta, 1, times)
+    before = copy.deepcopy(probes)
+    result = diagnose(probes, TASK, quadrature='hermite_simpson')
+    model = result['space_regression']['models'][0]
+    fitted = np.array([[term['ax'], term['ay']] for term in model['diagnostic_coefficients']])
+    np.testing.assert_allclose(fitted, beta, rtol=5e-7, atol=2e-8)
+    assert model['cross_validation']['status'] == 'available'
+    assert model['cross_validation']['split_unit'] == 'whole_probe_trajectory'
+    held_out = [pid for fold in model['cross_validation']['folds'] for pid in fold['held_out_probe_ids']]
+    assert sorted(held_out) == [probe['probe_id'] for probe in probes]
+    assert len(held_out) == len(set(held_out))
+    assert probes == before
+    assert 'law_id' not in result and 'passed' not in result
+    json.dumps(result, allow_nan=False)
+
+
+def test_hermite_simpson_near_zero_cv_does_not_resolve_severe_sampling_aliasing():
+    frequency = 8.
+    times = np.arange(5)*.8  # Nearly one entire oscillation between observations.
+    rng = np.random.default_rng(19)
+    probes = []
+    for i in range(7):
+        r0, v0 = rng.uniform(-1, 1, (2, 2))
+        r = np.cos(frequency*times)[:, None]*r0 + np.sin(frequency*times)[:, None]*v0/frequency
+        v = -frequency*np.sin(frequency*times)[:, None]*r0 + np.cos(frequency*times)[:, None]*v0
+        probes.append(observed(f'p{i}', times, r, v))
+    full = diagnose(probes, TASK, quadrature='hermite_simpson')
+    model = full['space_regression']['models'][0]
+    assert model['cross_validation']['errors']['relative_rmse'] < 1e-10
+    # A perfect reconstruction CV still yields a very wrong force coefficient.
+    fitted = coefficients(model)['x'][0]
+    assert abs(fitted+frequency**2)/frequency**2 > .9
+    assert any('aliasing or wrong coefficients' in note for note in full['space_regression']['limitations'])
+    from shore_agent.diagnostics import summarize
+    assert any('wrong coefficients' in note for note in summarize(full)['comparison_notes'])
+
+
+def test_hermite_simpson_does_not_repair_an_omitted_velocity_dependency():
+    beta = np.array([[0., 0.], [-.6, 0.], [0., -.9]])
+    probes = polynomial_probes(beta, 1, np.linspace(0, 1.6, 17), force_extra=lambda t, z: -.5*z[2:])
+    result = diagnose(probes, TASK, quadrature='hermite_simpson')
+    assert result['space_regression']['models'][0]['cross_validation']['errors']['relative_rmse'] > .1
+
+
+@pytest.mark.parametrize('field', ['position_noise_sigma', 'velocity_noise_sigma'])
+@pytest.mark.parametrize('value', [None, .001, -1., True])
+def test_hermite_simpson_requires_explicitly_noise_free_position_and_velocity(field, value):
+    task = copy.deepcopy(TASK)
+    if value is None:
+        task.pop(field)
+    else:
+        task[field] = value
+    with pytest.raises(ValueError, match='both position_noise_sigma and velocity_noise_sigma explicitly equal to zero'):
+        diagnose(radial_probes(), task, quadrature='hermite_simpson')
+    # The pre-existing diagnostic is still usable under its original noise rules.
+    diagnose(radial_probes(), task)
+
+
+def test_default_quadrature_contract_and_opt_in_method_metadata_are_preserved():
+    from shore_agent.diagnostics import summarize
+    probes = trajectories(lambda r: -.6*r)
+    default = diagnose(probes, TASK)
+    explicit = diagnose(probes, TASK, quadrature='trapezoid')
+    assert default == explicit
+    assert 'quadrature' not in default['space_regression']
+    assert default['space_regression']['method'] == 'Delta-v integral regression; trapezoidal integration on acquired nonuniform time grids'
+    assert 'spatial_quadrature' not in summarize(default)
+    opt_in = diagnose(probes, TASK, quadrature='hermite_simpson')
+    assert opt_in['radial_diagnostic'] == default['radial_diagnostic']
+    metadata = opt_in['space_regression']['quadrature']
+    assert metadata['name'] == 'hermite_simpson'
+    assert 'explicitly equal zero' in metadata['assumptions']
+    assert 'held-out endpoint velocities' in metadata['cv_scope']
+    small = summarize(opt_in)
+    assert small['spatial_quadrature'] == metadata
+    assert 'not independent prediction validation' in small['comparison_notes'][0]
+    with pytest.raises(ValueError, match='quadrature must be'):
+        diagnose(probes, TASK, quadrature='unknown')

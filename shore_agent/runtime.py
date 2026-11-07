@@ -57,6 +57,9 @@ class ToolRuntime:
         self.diagnostics_candidates = self.config.get('diagnostics_candidates', False)
         if type(self.diagnostics_candidates) is not bool:
             raise ValueError('numerics.diagnostics_candidates must be boolean')
+        self.diagnostics_quadrature = self.config.get('diagnostics_quadrature', 'trapezoid')
+        if self.diagnostics_quadrature not in ('trapezoid', 'hermite_simpson'):
+            raise ValueError('numerics.diagnostics_quadrature must be trapezoid or hermite_simpson')
         self.code_config = code_config or {}
         self.code_enabled = self.code_config.get('enabled', False)
         if type(self.code_enabled) is not bool:
@@ -409,7 +412,9 @@ class ToolRuntime:
             raise ValueError('Framework must initialize mission first')
         probes = self._probes(probe_ids)
         from .diagnostics import diagnose
-        diagnostics = diagnose(probes, copy.deepcopy(self.task))
+        diagnostic_kwargs = ({'quadrature': self.diagnostics_quadrature}
+                             if self.diagnostics_quadrature != 'trapezoid' else {})
+        diagnostics = diagnose(probes, copy.deepcopy(self.task), **diagnostic_kwargs)
         if self.diagnostics_curvature:
             from .diagnostics import diagnose_radial_curvature
             diagnostics['radial_curvature'] = diagnose_radial_curvature(probes, copy.deepcopy(self.task))

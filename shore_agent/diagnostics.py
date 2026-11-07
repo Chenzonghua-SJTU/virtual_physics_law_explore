@@ -95,7 +95,7 @@ def _term(i, j):
                      for name, power in (('x', i), ('y', j)) if power]) or '1'
 
 
-def _spatial(rows):
+def _spatial(rows, quadrature='trapezoid'):
     # Normalization changes conditioning, not the complete polynomial span.
     scale = np.sqrt(np.mean([np.mean(row['r']**2, axis=0) for row in rows], axis=0))
     scale = np.where(scale > 0, scale, 1.)
@@ -107,7 +107,17 @@ def _spatial(rows):
         for row in rows:
             q = row['r'] / scale
             phi = np.column_stack([q[:, 0]**i * q[:, 1]**j for i, j in powers])
-            xs.append(.5 * (phi[:-1] + phi[1:]) * np.diff(row['t'])[:, None])
+            dt = np.diff(row['t'])[:, None]
+            if quadrature == 'hermite_simpson':
+                # Cubic Hermite interpolation uses measured endpoint r and dr/dt=v.
+                # Each interval can have a different length. No midpoint is observed
+                # or obtained from a simulator, and no fitted law is evaluated here.
+                midpoint = ((row['r'][:-1] + row['r'][1:]) / 2
+                            + dt * (row['v'][:-1] - row['v'][1:]) / 8) / scale
+                middle_phi = np.column_stack([midpoint[:, 0]**i * midpoint[:, 1]**j for i, j in powers])
+                xs.append((phi[:-1] + 4 * middle_phi + phi[1:]) * dt / 6)
+            else:
+                xs.append(.5 * (phi[:-1] + phi[1:]) * dt)
         coefficients, design, reliable = _solve(xs, ys)
         residuals = [x @ coefficients - y for x, y in zip(xs, ys)]
         fitted = []
@@ -146,13 +156,30 @@ def _spatial(rows):
                        'largest_terms_by_increment_contribution': sorted(fitted, key=lambda c: c['delta_velocity_contribution_rms'], reverse=True)[:6],
                        'coefficient_note': 'ax and ay are independent outputs; no equality, symmetry or shared-axis constraint. '
                                            'Coefficients are in original coordinate units and are diagnostic only, not a submission law.'})
-    return {'method': 'Delta-v integral regression; trapezoidal integration on acquired nonuniform time grids',
+    result = {'method': 'Delta-v integral regression; trapezoidal integration on acquired nonuniform time grids',
             'target': 'observed adjacent velocity increments', 'models': models,
             'limitations': ['Spatial-only regression is a restricted hypothesis: velocity, time and varying public properties can confound it.',
                            'Training residuals are not rollout errors. Trapezoidal quadrature has sampling bias even with noise-free readouts.',
                            'Whole-probe cross-validation is development evidence; using it to change a candidate requires fresh final validation.',
                            'The same initial condition or controls across probes can still leave extrapolation untested.',
                            'Polynomial terms are the full monomial dictionary through each degree, not world-specific formulas.']}
+    if quadrature == 'hermite_simpson':
+        result['method'] = 'Delta-v integral regression; cubic-Hermite position midpoints and Simpson integration on acquired nonuniform time grids'
+        result['quadrature'] = {
+            'name': quadrature,
+            'midpoint_position': '(r[i]+r[i+1])/2 + dt*(v[i]-v[i+1])/8',
+            'basis_integral': 'dt*(phi(r[i])+4*phi(midpoint_position)+phi(r[i+1]))/6',
+            'assumptions': 'Both public position_noise_sigma and velocity_noise_sigma explicitly equal zero; smooth paths with observed velocity equal to dr/dt.',
+            'source': 'Only acquired endpoint positions, velocities and times. Midpoints are approximations, not additional observations.',
+            'cv_scope': 'Whole-probe splits are preserved, but held-out endpoint velocities also construct held-out midpoints. This is observation-reconstruction CV, not independent prediction validation.',
+        }
+        result['limitations'][1] = 'Training residuals are not rollout errors. Hermite/Simpson quadrature retains sampling bias even with noise-free readouts.'
+        result['limitations'].extend([
+            'Large intervals, rapid dynamics or nonsmooth paths can make Hermite midpoints inaccurate. Near-zero reconstruction CV does not exclude aliasing or wrong coefficients.',
+            'With velocity noise, midpoint errors and target velocity-increment errors are correlated; this mode requires explicitly noise-free position and velocity metadata.',
+            'Higher-order spatial quadrature cannot supply missing time, velocity or property terms. Formal trajectory fit and fresh validation are still required.',
+        ])
+    return result
 
 
 def _radial(rows, names, task):
@@ -262,10 +289,16 @@ def _radial(rows, names, task):
     return out
 
 
-def diagnose(probes, public_task):
+def diagnose(probes, public_task, *, quadrature='trapezoid'):
     """Return finite JSON-compatible observation diagnostics without selecting a law."""
     if not isinstance(public_task, dict):
         raise ValueError('public_task must be a mapping')
+    if quadrature not in ('trapezoid', 'hermite_simpson'):
+        raise ValueError('quadrature must be trapezoid or hermite_simpson')
+    if quadrature == 'hermite_simpson':
+        noise = [public_task.get(key) for key in ('position_noise_sigma', 'velocity_noise_sigma')]
+        if any(not _number(value) or value != 0 for value in noise):
+            raise ValueError('hermite_simpson requires both position_noise_sigma and velocity_noise_sigma explicitly equal to zero')
     rows, names = _prepare(probes, public_task)
     # Check actual results below. Some BLAS implementations leave floating-point
     # status flags set after an otherwise finite rank-deficient solve.
@@ -273,7 +306,7 @@ def diagnose(probes, public_task):
         result = {'method_version': 'observation_diagnostics_v1',
                   'source': 'only supplied acquired probes and public task metadata',
                   'probe_ids': [row['id'] for row in rows],
-                  'space_regression': _spatial(rows), 'radial_diagnostic': _radial(rows, names, public_task),
+                  'space_regression': _spatial(rows, quadrature), 'radial_diagnostic': _radial(rows, names, public_task),
                   'meaning': 'Exploratory numerical evidence only. No candidate law, submission or official verdict is produced.'}
     def require_finite(value):
         if isinstance(value, dict):
@@ -351,6 +384,11 @@ def summarize(diagnostics):
         },
         'meaning': diagnostics['meaning'],
     }
+    quadrature = diagnostics['space_regression'].get('quadrature')
+    if quadrature is not None:
+        result['spatial_quadrature'] = dict(quadrature)
+        result['comparison_notes'][0] = 'Compare whole-probe observation-reconstruction CV across degrees; held-out velocities also enter the interpolated midpoints, so this is not independent prediction validation.'
+        result['comparison_notes'].append('Undersampling can produce near-zero reconstruction CV with wrong coefficients; higher-order quadrature does not remove that ambiguity.')
 
     def compact(value):
         if isinstance(value, dict):

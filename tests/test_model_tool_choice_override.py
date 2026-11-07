@@ -50,14 +50,14 @@ def test_rejects_invalid_override_before_http_or_usage(tmp_path, monkeypatch, ch
 
 
 @pytest.mark.parametrize('config', [
-    local_overrides(), local_overrides(ruleset='e3'), local_overrides(ruleset='e4'),
+    local_overrides(ruleset='e3'), local_overrides(ruleset='e4'),
     {'deployment': 'cloud', 'reasoning_protocol': 'qwen', 'ruleset': 'e5'},
     local_overrides(reasoning_protocol='deepseek'),
 ])
 def test_rejects_unverified_profile_before_http(tmp_path, monkeypatch, config):
     value, requests, _ = qwen_client(tmp_path, monkeypatch, [], **config)
     try:
-        with pytest.raises(ValueError, match='requires strict local Qwen E5'):
+        with pytest.raises(ValueError, match='requires local Qwen E5'):
             value.complete([], tools=tool_schemas(), tool_choice_override='required')
     finally:
         value.close()

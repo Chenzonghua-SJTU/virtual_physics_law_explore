@@ -234,6 +234,27 @@ def test_candidate_option_requires_boolean(tmp_path, flag):
         ToolRuntime(Environment(), tmp_path, config={'diagnostics_candidates': flag})
 
 
+def test_quadrature_option_passes_only_acquired_data_and_preserves_default(tmp_path, monkeypatch):
+    rt = runtime(tmp_path)
+    rt.diagnostics_quadrature = 'hermite_simpson'
+    seen = []
+    def diagnose(probes, task, *, quadrature):
+        seen.append((copy.deepcopy(probes), copy.deepcopy(task), quadrature))
+        return {'method_version': 'synthetic_high_accuracy'}
+    stub_diagnose(monkeypatch, diagnose)
+    result = rt.execute('diagnose_dynamics', {'probe_ids': ['selected']})
+    assert result['ok']
+    assert seen == [([rt.store.get('probe', 'selected')], rt.task, 'hermite_simpson')]
+    assert set(rt.environment.requests) == {'budget'}
+    assert ToolRuntime(Environment(), tmp_path / 'default').diagnostics_quadrature == 'trapezoid'
+
+
+@pytest.mark.parametrize('value', [None, 0, True, 'automatic', [], {}])
+def test_quadrature_configuration_rejects_unknown_modes(tmp_path, value):
+    with pytest.raises(ValueError, match='diagnostics_quadrature must be'):
+        ToolRuntime(Environment(), tmp_path, config={'diagnostics_quadrature': value})
+
+
 @pytest.mark.parametrize('flag', [None, 0, 1, 'true', 'false', [], {}])
 def test_diagnostic_switch_requires_an_actual_boolean(tmp_path, flag):
     with pytest.raises(ValueError, match='numerics.diagnostics_enabled must be boolean'):

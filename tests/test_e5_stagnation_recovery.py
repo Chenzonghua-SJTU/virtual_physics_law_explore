@@ -244,6 +244,6 @@ def test_stagnation_flag_requires_boolean(tmp_path, flag):
         Agent(None, Runtime(), tmp_path, {'stagnation_recovery': flag})
 
 
-def test_stagnation_requires_strict_client(tmp_path):
-    with pytest.raises(ValueError, match='stagnation_recovery requires client.strict_tools=true'):
+def test_stagnation_requires_compatible_client(tmp_path):
+    with pytest.raises(ValueError, match='stagnation_recovery requires a local Qwen E5 required-tool client'):
         Agent(None, Runtime(), tmp_path, {'stagnation_recovery': True})

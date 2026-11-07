@@ -137,11 +137,15 @@ class DeepSeekClient:
         if 'sampling_seed' in config and (
                 type(self.sampling_seed) is not int or not 0 <= self.sampling_seed <= 2**32 - 1):
             raise ValueError('sampling_seed must be an integer between 0 and 4294967295')
+        self.temperature = config.get('temperature')
+        if 'temperature' in config and (
+                type(self.temperature) not in (int, float) or not 0 <= self.temperature <= 2
+                or not math.isfinite(self.temperature)):
+            raise ValueError('temperature must be a finite number between 0 and 2')
         self.strict_tools = config.get('strict_tools', False)
         if type(self.strict_tools) is not bool:
             raise ValueError('strict_tools must be boolean')
-        if self.strict_tools and (config.get('ruleset', 'e3') != 'e5'
-                                  or self.deployment != 'local' or self.reasoning_protocol != 'qwen'):
+        if self.strict_tools and not self.supports_required_tool_choice:
             raise ValueError('strict_tools requires E5 with deployment=local and reasoning_protocol=qwen')
         self.thinking_budget = (None if config.get('thinking_budget') is None
                                 else _positive(config, 'thinking_budget', None, integer=True))
@@ -170,6 +174,12 @@ class DeepSeekClient:
 
     def close(self):
         self._http.close()
+
+    @property
+    def supports_required_tool_choice(self):
+        """The locally verified Qwen E5 grammar supports per-request recovery."""
+        return (self.config.get('ruleset', 'e3') == 'e5'
+                and self.deployment == 'local' and self.reasoning_protocol == 'qwen')
 
     def _reasoning_parameters(self):
         if self.reasoning_protocol == 'qwen':
@@ -203,6 +213,7 @@ class DeepSeekClient:
                                                else self.reasoning_effort),
                 'reasoning_parameters': self._reasoning_parameters(),
                 'strict_tools': self.strict_tools,
+                **({'temperature': self.temperature} if self.temperature is not None else {}),
                 **({'seed': self.sampling_seed} if self.sampling_seed is not None else {})}
 
     def _write_progress(self, *, force=False):
@@ -441,9 +452,8 @@ class DeepSeekClient:
         if tool_choice_override is not None:
             if type(tool_choice_override) is not str or tool_choice_override != 'required':
                 raise ValueError('tool_choice_override must be required or None')
-            if (not self.strict_tools or self.config.get('ruleset', 'e3') != 'e5'
-                    or self.deployment != 'local' or self.reasoning_protocol != 'qwen'):
-                raise ValueError('tool_choice_override requires strict local Qwen E5')
+            if not self.supports_required_tool_choice:
+                raise ValueError('tool_choice_override requires local Qwen E5')
             if not tools:
                 raise ValueError('tool_choice_override requires advertised tools')
         self._quota(role)
@@ -458,13 +468,16 @@ class DeepSeekClient:
                 **self._reasoning_parameters()}
         if self.sampling_seed is not None:
             body['seed'] = self.sampling_seed
+        if self.temperature is not None:
+            body['temperature'] = self.temperature
         if body['stream']:
             body['stream_options'] = {'include_usage': True}
         if tools:
             body.update(tools=copy.deepcopy(tools), tool_choice=tool_choice_override or 'auto')
-            if self.strict_tools:
+            if self.strict_tools or tool_choice_override == 'required':
                 for tool in body['tools']:
-                    tool['function']['strict'] = True
+                    if self.strict_tools:
+                        tool['function']['strict'] = True
                     _normalize_strict_schema_patterns(tool['function'].get('parameters', {}))
         advertised_names = [tool['function']['name'] for tool in body.get('tools', [])]
         estimate = self._prompt_estimate(body)

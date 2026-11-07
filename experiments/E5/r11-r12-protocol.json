@@ -1,0 +1,50 @@
+{
+  "comparison_id": "e5-hermite-simpson-temperature-20261107",
+  "status": "pre_registered_before_runs",
+  "source_starting_point": "7e977c1 R10",
+  "changes_shared_from_r10": [
+    "Hermite midpoint plus Simpson observation integral regression, same acquired positions and velocities",
+    "Normal auto tool calls restore unmodified runtime schemas; required recovery remains available for local Qwen E5",
+    "Physical explanation transport normalization applies only to structured requests"
+  ],
+  "arms": {
+    "t1": {
+      "temperature": 1.0,
+      "config": "deployment/config.e5.hs-t1.json",
+      "batch": "e5-qwen38-hs-t1-20261107-r11",
+      "endpoints": [
+        8000,
+        8001
+      ]
+    },
+    "t02": {
+      "temperature": 0.2,
+      "config": "deployment/config.e5.hs-t02.json",
+      "batch": "e5-qwen38-hs-t02-20261107-r12",
+      "endpoints": [
+        8002,
+        8003
+      ]
+    }
+  },
+  "only_config_difference_between_arms": "model.temperature",
+  "shared": {
+    "model": "qwen3.8-27b",
+    "seed": 42,
+    "thinking": false,
+    "energy": 10,
+    "exploration_wall_seconds": 300,
+    "output_tokens_per_call": 4096,
+    "exploration_noise": false,
+    "independent_evaluation_noise": false,
+    "workers_per_arm": 2,
+    "attempts_per_world_per_arm": 1,
+    "system_prompt": "E3 main byte-identical"
+  },
+  "primary_outcome": "At least five raw scores >=90 in a single complete six-world batch; never combine per-world bests",
+  "limitations": [
+    "One batch per arm and separate GPU endpoints; not a stable success probability estimate",
+    "Several shared engineering changes from R10; between-arm difference only temperature",
+    "Observation reconstruction CV is not clean independent evaluation; all submitted candidates still evaluated with unchanged evaluator"
+  ]
+}

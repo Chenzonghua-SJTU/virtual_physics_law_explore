@@ -11,7 +11,7 @@ from test_e5_length_recovery import Runtime, tool_message
 from test_e5_tool_failure_feedback import FailureRuntime, messages_for
 
 
-def run_mock(directory, runtime, replies, config=None):
+def run_mock(directory, runtime, replies, config=None, *, model_config=None):
     requests = []
     queue = iter(replies)
 
@@ -31,7 +31,8 @@ def run_mock(directory, runtime, replies, config=None):
     client = DeepSeekClient({'ruleset': runtime.ruleset, 'deployment': 'local',
         'base_url': 'http://127.0.0.1:8000/v1', 'api_key_required': False,
         'reasoning_protocol': 'qwen', 'thinking': False, 'sampling_seed': 42,
-        'strict_tools': runtime.ruleset == 'e5', 'max_tokens_per_call': 4096}, directory,
+        'strict_tools': runtime.ruleset == 'e5', 'max_tokens_per_call': 4096,
+        **(model_config or {})}, directory,
         remaining_seconds=lambda: runtime.remaining, transport=httpx.MockTransport(handler))
     try:
         result = Agent(client, runtime, directory,
@@ -197,6 +198,6 @@ def test_recovery_flag_requires_boolean(tmp_path, flag):
         Agent(None, Runtime(), tmp_path, {'strict_tool_recovery': flag})
 
 
-def test_recovery_requires_strict_client(tmp_path):
-    with pytest.raises(ValueError, match='requires client.strict_tools=true'):
+def test_recovery_requires_compatible_client(tmp_path):
+    with pytest.raises(ValueError, match='requires a local Qwen E5 required-tool client'):
         Agent(None, Runtime(), tmp_path, {'strict_tool_recovery': True})

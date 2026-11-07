@@ -44,14 +44,14 @@ class Agent:
         if type(strict_tool_recovery) is not bool:
             raise ValueError('strict_tool_recovery must be boolean')
         self.strict_tool_recovery = self.ruleset == 'e5' and strict_tool_recovery
-        if self.strict_tool_recovery and getattr(client, 'strict_tools', False) is not True:
-            raise ValueError('strict_tool_recovery requires client.strict_tools=true')
+        if self.strict_tool_recovery and getattr(client, 'supports_required_tool_choice', False) is not True:
+            raise ValueError('strict_tool_recovery requires a local Qwen E5 required-tool client')
         stagnation_recovery = config.get('stagnation_recovery', False)
         if type(stagnation_recovery) is not bool:
             raise ValueError('stagnation_recovery must be boolean')
         self.stagnation_recovery = self.ruleset == 'e5' and stagnation_recovery
-        if self.stagnation_recovery and getattr(client, 'strict_tools', False) is not True:
-            raise ValueError('stagnation_recovery requires client.strict_tools=true')
+        if self.stagnation_recovery and getattr(client, 'supports_required_tool_choice', False) is not True:
+            raise ValueError('stagnation_recovery requires a local Qwen E5 required-tool client')
         self._successful_tool_counts = {}
         self._data_version = 0
         self.finish_reserve_seconds = 30.0 if self.e4 else 0.0
