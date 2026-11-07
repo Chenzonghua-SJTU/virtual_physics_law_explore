@@ -1,0 +1,38 @@
+{
+  "selected_profile": "baseline",
+  "sampling_seed": null,
+  "max_total_tokens": null,
+  "loop_recovery": true,
+  "configuration": "deployment/config.e6.final.json",
+  "last_repeat_batch": "e6-qwen38-recovery-baseline-20261107-r02",
+  "batches": {
+    "baseline": [
+      "e6-qwen38-recovery-baseline-20261107-r01",
+      "e6-qwen38-recovery-baseline-20261107-r02"
+    ],
+    "concise": [
+      "e6-qwen38-recovery-concise-20261107-r01",
+      "e6-qwen38-recovery-concise-20261107-r02"
+    ]
+  },
+  "quality": {
+    "baseline": [
+      4,
+      12,
+      52.969381314394035
+    ],
+    "concise": [
+      3,
+      10,
+      48.35203271170692
+    ]
+  },
+  "selection_basis": "Most complete worlds with raw score>=90 across both complete repeats; then completion; then mean with incomplete=0. No best-of-world aggregation.",
+  "limitations": "Best among these tested configurations; no claim of global or hidden-world optimality.",
+  "display_name": "E5: 8 tool best performance",
+  "scientific_source_commit": "9b9cdcaafcd962365f22d9c4cc89ec162c176a77",
+  "research_tool_count": 8,
+  "total_tool_count_including_save_draft": 9,
+  "target_five_worlds_at_least_90_met": false,
+  "selection_scope": "Best among the two prompt configurations tested in this bounded study; not a global optimum."
+}

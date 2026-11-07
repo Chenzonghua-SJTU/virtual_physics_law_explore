@@ -6,6 +6,14 @@
 公共模型根目录：`/inspire/hdd/project/26-the-other-shore/public/models`。
 项目的服务器 `.venv` 链接到已有 `/opt/shore-test5-forge2`（Python 3.12、vLLM 0.24.0、Torch 2.11.0+cu130）。Mac 的虚拟环境、密钥和 `.git` 未复制；代码、文档、实验汇总和运行档案保留。
 
+## 已冻结：E5: 8 tool best performance
+
+无新增研究工具的候选版本按本轮两种提示词、各两批完整六世界比较，保留 baseline 提示词。科学源码提交 `9b9cdca`；复现配置为 `deployment/config.e6.final.json`，选择依据见 `experiments/E5/e6-final-selection.json`。保留 8 个研究工具和已有的 save_draft（实际接口总数 9），累计 token 不限，单次 4096、探索 300 秒、10 能量、关闭思考与噪声。
+
+baseline 两批分别 2/6 达到 90 分，12/12 完成独立评测；concise 两批为 3/6 与 0/6（严格按原始分数），10/12 完成。按预先约定的两批合计高分数、完成数、均分排序选出 baseline。这个提交名表示本轮候选选择，不表示已经达到至少五世界 ≥90 的目标或全局最优。
+
+用户指出的 world_1 53.41 分已核查：Agent 的规律漏掉公开属性依赖。仅用于离线诊断、保持原参数补属性因子后为 97.50；该诊断不是 Agent 成绩，原评价未修改。证据在 `experiments/E5/e6-world1-property-diagnostic.json`。完整逐世界分数、探索/评测/总时长、平均和最大输出 token、循环反馈审计均保留在 E6 批次及审计 JSON 中。
+
 ## E6：无新增工具的循环修复比较
 
 当前配置继续使用原有 9 个工具、10 能量、300 秒探索、单次最多 4096 输出 token，关闭思考与噪声。用户已取消累计 5M token 限制；`model.max_total_tokens: null` 仅取消累计配额，保留完整用量统计。前端高级设置留空表示不限累计用量。

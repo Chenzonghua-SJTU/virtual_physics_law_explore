@@ -1,0 +1,1518 @@
+{
+  "created_at": "2026-11-07T03:58:38.879698+00:00",
+  "kind": "post_session_evaluator_diagnostic_not_agent_experiment",
+  "run_id": "e6-qwen38-recovery-concise-20261107-r01-world_1",
+  "warning": "Uses publicly available simulator information after session end only. This is an audit counterfactual, not an Agent-discovered law, not an E6 baseline score, and must never replace the archived evaluation or be added to Agent prompts. No parameter fitting or model generation was performed.",
+  "change": "Multiply each original acceleration component by q(charge)/q(mass), retaining the exact archived k and all other settings.",
+  "original_law_spec": {
+    "ax": "-k*x/(x**2+y**2)",
+    "ay": "-k*y/(x**2+y**2)"
+  },
+  "diagnostic_law_spec": {
+    "ax": "(-k*x/(x**2+y**2))*q('charge')/q('mass')",
+    "ay": "(-k*y/(x**2+y**2))*q('charge')/q('mass')"
+  },
+  "fitted_parameters_unchanged": {
+    "k": 0.0795045545075704
+  },
+  "original_complete": true,
+  "diagnostic_complete": true,
+  "n_trajectories": 24,
+  "diagnostic_elapsed_seconds": 3.15243649110198,
+  "original_overall": {
+    "position_mse": 4.363188962644522,
+    "velocity_mse": 0.0497599822999717,
+    "position_rmse": 2.088824780263898,
+    "velocity_rmse": 0.2230694562237773
+  },
+  "diagnostic_overall": {
+    "position_mse": 1.2092114233650031e-05,
+    "velocity_mse": 1.85872055044236e-07,
+    "position_rmse": 0.003477371742228609,
+    "velocity_rmse": 0.0004311288149083009
+  },
+  "original_score": {
+    "status": "scored",
+    "total": 53.40823842891941,
+    "maximum": 100,
+    "prediction": 38.40823842891941,
+    "law": 15,
+    "conservation": 0.0,
+    "position_mse": 4.363188962644523,
+    "reference_variance": 40.292210682464365,
+    "normalized_error": 0.10828864658308344,
+    "energy_used": 5.0,
+    "energy_budget": 10,
+    "claim_checks": [
+      {
+        "field": "dynamics_order",
+        "submitted": 2,
+        "expected": 2,
+        "correct": true,
+        "points": 5
+      },
+      {
+        "field": "hidden_matter",
+        "submitted": false,
+        "expected": false,
+        "correct": true,
+        "points": 5
+      },
+      {
+        "field": "time_dependence",
+        "submitted": false,
+        "expected": false,
+        "correct": true,
+        "points": 5
+      }
+    ],
+    "reason": null,
+    "formula_version": "shore_e4_10energy",
+    "local_only": true,
+    "official_score": false,
+    "source_note": "Local discovery score: P=80/(1+10e), three declarations worth 5 each; C=5*(1-E/10) only when P>=40. Ruleset=e5; this remains a local compatibility evaluation.",
+    "source": "v15_public_catalog_local_agent_evaluation",
+    "energy_source": "result.json:budget.energy_remaining"
+  },
+  "diagnostic_score_not_agent_score": {
+    "status": "scored",
+    "total": 97.49975991234555,
+    "maximum": 100,
+    "prediction": 79.99975991234555,
+    "law": 15,
+    "conservation": 2.5,
+    "position_mse": 1.2092114233650031e-05,
+    "reference_variance": 40.292210682464365,
+    "normalized_error": 3.001104687192718e-07,
+    "energy_used": 5.0,
+    "energy_budget": 10,
+    "claim_checks": [
+      {
+        "field": "dynamics_order",
+        "submitted": 2,
+        "expected": 2,
+        "correct": true,
+        "points": 5
+      },
+      {
+        "field": "hidden_matter",
+        "submitted": false,
+        "expected": false,
+        "correct": true,
+        "points": 5
+      },
+      {
+        "field": "time_dependence",
+        "submitted": false,
+        "expected": false,
+        "correct": true,
+        "points": 5
+      }
+    ],
+    "reason": null,
+    "formula_version": "shore_e4_10energy",
+    "local_only": true,
+    "official_score": false,
+    "source_note": "Local discovery score: P=80/(1+10e), three declarations worth 5 each; C=5*(1-E/10) only when P>=40. Ruleset=e5; this remains a local compatibility evaluation.",
+    "source": "v15_public_catalog_local_agent_evaluation",
+    "energy_source": "result.json:budget.energy_remaining"
+  },
+  "grouped_by_property_ratio": [
+    {
+      "charge_over_mass": 1.0,
+      "count": 3,
+      "original_mse": 1.676430262009655e-05,
+      "original_rmse": 0.004094423356236694,
+      "diagnostic_mse": 1.676430262011989e-05,
+      "diagnostic_rmse": 0.004094423356239544
+    },
+    {
+      "charge_over_mass": 0.7,
+      "count": 3,
+      "original_mse": 2.13388992070757,
+      "original_rmse": 1.4607840089169823,
+      "diagnostic_mse": 5.364237090614023e-06,
+      "diagnostic_rmse": 0.002316082271987337
+    },
+    {
+      "charge_over_mass": 0.538461538462,
+      "count": 3,
+      "original_mse": 3.294081017156975,
+      "original_rmse": 1.8149603348715297,
+      "diagnostic_mse": 2.390660329312566e-06,
+      "diagnostic_rmse": 0.0015461760343869536
+    },
+    {
+      "charge_over_mass": 0.4375,
+      "count": 3,
+      "original_mse": 3.789333488261878,
+      "original_rmse": 1.9466210438248832,
+      "diagnostic_mse": 1.36711990736136e-06,
+      "diagnostic_rmse": 0.001169239029181527
+    },
+    {
+      "charge_over_mass": 2.428571428571,
+      "count": 3,
+      "original_mse": 13.879142606504763,
+      "original_rmse": 3.725472132026324,
+      "diagnostic_mse": 1.652449607715086e-05,
+      "diagnostic_rmse": 0.00406503334268624
+    },
+    {
+      "charge_over_mass": 1.7,
+      "count": 3,
+      "original_mse": 10.034910952430558,
+      "original_rmse": 3.1677927571781836,
+      "diagnostic_mse": 2.5806467477723686e-05,
+      "diagnostic_rmse": 0.005080006641503895
+    },
+    {
+      "charge_over_mass": 1.307692307692,
+      "count": 3,
+      "original_mse": 1.7196531932949133,
+      "original_rmse": 1.3113554793780797,
+      "diagnostic_mse": 1.8708819710425796e-05,
+      "diagnostic_rmse": 0.004325369314917027
+    },
+    {
+      "charge_over_mass": 1.0625,
+      "count": 3,
+      "original_mse": 0.05448375849690921,
+      "original_rmse": 0.23341756252884915,
+      "diagnostic_mse": 9.810810656492073e-06,
+      "diagnostic_rmse": 0.003132221361349174
+    }
+  ],
+  "per_probe": [
+    {
+      "probe_id": "v15_b0-s0_1",
+      "charge_over_mass": 1.0,
+      "properties": {
+        "mass": 0.7,
+        "charge": 0.7
+      },
+      "r0": [
+        1.119716354256181,
+        0.2621741520654666
+      ],
+      "v0": [
+        -0.0756966378265518,
+        0.39309446226317574
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b0-s0_1",
+        "n_samples": 20,
+        "position_mse": 2.242682697735478e-05,
+        "position_rmse": 0.004735697095186175,
+        "velocity_mse": 4.792676660678691e-07,
+        "velocity_rmse": 0.0006922916047937235
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b0-s0_1",
+        "n_samples": 20,
+        "position_mse": 2.2426826977422043e-05,
+        "position_rmse": 0.004735697095193277,
+        "velocity_mse": 4.792676660691812e-07,
+        "velocity_rmse": 0.0006922916047946712
+      }
+    },
+    {
+      "probe_id": "v15_b0-s0_2",
+      "charge_over_mass": 0.7,
+      "properties": {
+        "mass": 1.0,
+        "charge": 0.7
+      },
+      "r0": [
+        -0.3191685329492636,
+        1.3631329530075247
+      ],
+      "v0": [
+        -0.43375420883903315,
+        -0.1213632937679471
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b0-s0_2",
+        "n_samples": 20,
+        "position_mse": 4.13760580922038,
+        "position_rmse": 2.0341105695660646,
+        "velocity_mse": 0.026590511186549315,
+        "velocity_rmse": 0.16306597188423252
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b0-s0_2",
+        "n_samples": 20,
+        "position_mse": 7.738555484350876e-06,
+        "position_rmse": 0.0027818259263208537,
+        "velocity_mse": 5.293052661180963e-08,
+        "velocity_rmse": 0.00023006635262856154
+      }
+    },
+    {
+      "probe_id": "v15_b0-s0_3",
+      "charge_over_mass": 0.5384615384615384,
+      "properties": {
+        "mass": 1.3,
+        "charge": 0.7
+      },
+      "r0": [
+        -1.6065495517588684,
+        -0.3761629138330606
+      ],
+      "v0": [
+        0.12948313335511769,
+        -0.48320529324166167
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b0-s0_3",
+        "n_samples": 20,
+        "position_mse": 6.376443064947281,
+        "position_rmse": 2.5251619878628144,
+        "velocity_mse": 0.03560289639994808,
+        "velocity_rmse": 0.1886872979295323
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b0-s0_3",
+        "n_samples": 20,
+        "position_mse": 3.7698869184043666e-06,
+        "position_rmse": 0.0019416196636839994,
+        "velocity_mse": 2.1974998531921923e-08,
+        "velocity_rmse": 0.0001482396658520314
+      }
+    },
+    {
+      "probe_id": "v15_b0-s0_4",
+      "charge_over_mass": 0.43749999999999994,
+      "properties": {
+        "mass": 1.6,
+        "charge": 0.7
+      },
+      "r0": [
+        0.4331572947168584,
+        -1.849966150510212
+      ],
+      "v0": [
+        0.5399121861663417,
+        0.10661422976724141
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b0-s0_4",
+        "n_samples": 20,
+        "position_mse": 6.7344545696819536,
+        "position_rmse": 2.5950827674049153,
+        "velocity_mse": 0.03589011492621876,
+        "velocity_rmse": 0.18944686570703345
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b0-s0_4",
+        "n_samples": 20,
+        "position_mse": 2.0872334487223814e-06,
+        "position_rmse": 0.0014447260808618295,
+        "velocity_mse": 1.1391770096365532e-08,
+        "velocity_rmse": 0.00010673223550720528
+      }
+    },
+    {
+      "probe_id": "v15_b0-s1_1",
+      "charge_over_mass": 2.428571428571429,
+      "properties": {
+        "mass": 0.7,
+        "charge": 1.7
+      },
+      "r0": [
+        0.8012127157492402,
+        0.824959504534451
+      ],
+      "v0": [
+        -0.27517744311463505,
+        0.29079637440753453
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b0-s1_1",
+        "n_samples": 20,
+        "position_mse": 4.831854118569897,
+        "position_rmse": 2.1981478836897885,
+        "velocity_mse": 0.23214212717284596,
+        "velocity_rmse": 0.4818112983034395
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b0-s1_1",
+        "n_samples": 20,
+        "position_mse": 2.593678964635635e-06,
+        "position_rmse": 0.0016104902870354837,
+        "velocity_mse": 4.5788012108661546e-07,
+        "velocity_rmse": 0.0006766683981734447
+      }
+    },
+    {
+      "probe_id": "v15_b0-s1_2",
+      "charge_over_mass": 1.7,
+      "properties": {
+        "mass": 1.0,
+        "charge": 1.7
+      },
+      "r0": [
+        -1.0042985272593314,
+        0.9753893930860318
+      ],
+      "v0": [
+        -0.32674236603708806,
+        -0.30996656217858465
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b0-s1_2",
+        "n_samples": 20,
+        "position_mse": 16.25626715731964,
+        "position_rmse": 4.031906144408578,
+        "velocity_mse": 0.17640760479013456,
+        "velocity_rmse": 0.4200090532240163
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b0-s1_2",
+        "n_samples": 20,
+        "position_mse": 1.7707156065861357e-05,
+        "position_rmse": 0.004207987175106568,
+        "velocity_mse": 7.684512981073018e-07,
+        "velocity_rmse": 0.0008766135397695508
+      }
+    },
+    {
+      "probe_id": "v15_b0-s1_3",
+      "charge_over_mass": 1.3076923076923077,
+      "properties": {
+        "mass": 1.3,
+        "charge": 1.7
+      },
+      "r0": [
+        -1.1495660704228232,
+        -1.1836375499842122
+      ],
+      "v0": [
+        0.3704430386949354,
+        -0.33623966400491445
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b0-s1_3",
+        "n_samples": 20,
+        "position_mse": 3.4806450260481605,
+        "position_rmse": 1.8656486877352232,
+        "velocity_mse": 0.023687079717443032,
+        "velocity_rmse": 0.1539060743357553
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b0-s1_3",
+        "n_samples": 20,
+        "position_mse": 3.293980001328568e-05,
+        "position_rmse": 0.005739320518431226,
+        "velocity_mse": 2.871002294162235e-07,
+        "velocity_rmse": 0.0005358173470654188
+      }
+    },
+    {
+      "probe_id": "v15_b0-s1_4",
+      "charge_over_mass": 1.0625,
+      "properties": {
+        "mass": 1.6,
+        "charge": 1.7
+      },
+      "r0": [
+        1.3629765727090926,
+        -1.3237427477596149
+      ],
+      "v0": [
+        0.36996434331007766,
+        0.4073895287209379
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b0-s1_4",
+        "n_samples": 20,
+        "position_mse": 0.09806573480157402,
+        "position_rmse": 0.31315449031041215,
+        "velocity_mse": 0.0005620647178125297,
+        "velocity_rmse": 0.0237079041210422
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b0-s1_4",
+        "n_samples": 20,
+        "position_mse": 1.545064096178321e-05,
+        "position_rmse": 0.003930730334401384,
+        "velocity_mse": 9.677887530640588e-08,
+        "velocity_rmse": 0.0003110930332013333
+      }
+    },
+    {
+      "probe_id": "v15_b1-s0_1",
+      "charge_over_mass": 1.0,
+      "properties": {
+        "mass": 0.7,
+        "charge": 0.7
+      },
+      "r0": [
+        2.3740312448120013,
+        1.0601771779548825
+      ],
+      "v0": [
+        -0.10059455689075937,
+        0.2836323018197072
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b1-s0_1",
+        "n_samples": 20,
+        "position_mse": 1.9774931676367647e-05,
+        "position_rmse": 0.004446901356716567,
+        "velocity_mse": 1.945500486841046e-07,
+        "velocity_rmse": 0.00044107827954242384
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b1-s0_1",
+        "n_samples": 20,
+        "position_mse": 1.977493167635503e-05,
+        "position_rmse": 0.004446901356715148,
+        "velocity_mse": 1.9455004868371186e-07,
+        "velocity_rmse": 0.00044107827954197867
+      }
+    },
+    {
+      "probe_id": "v15_b1-s0_2",
+      "charge_over_mass": 0.7,
+      "properties": {
+        "mass": 1.0,
+        "charge": 0.7
+      },
+      "r0": [
+        -1.264057404484667,
+        2.830575714968156
+      ],
+      "v0": [
+        -0.36211807509708316,
+        -0.170085132143846
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b1-s0_2",
+        "n_samples": 20,
+        "position_mse": 1.6634094667353867,
+        "position_rmse": 1.2897323236762683,
+        "velocity_mse": 0.010636002508833097,
+        "velocity_rmse": 0.10313099683816257
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b1-s0_2",
+        "n_samples": 20,
+        "position_mse": 5.855814129119425e-06,
+        "position_rmse": 0.002419878949269865,
+        "velocity_mse": 3.703944730267668e-08,
+        "velocity_rmse": 0.0001924563516818208
+      }
+    },
+    {
+      "probe_id": "v15_b1-s0_3",
+      "charge_over_mass": 0.5384615384615384,
+      "properties": {
+        "mass": 1.3,
+        "charge": 0.7
+      },
+      "r0": [
+        -3.2871201851243104,
+        -1.467937631014452
+      ],
+      "v0": [
+        0.2256138055568967,
+        -0.44683885043013943
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b1-s0_3",
+        "n_samples": 20,
+        "position_mse": 2.467359070939074,
+        "position_rmse": 1.5707829483856366,
+        "velocity_mse": 0.014383540931054936,
+        "velocity_rmse": 0.11993140093843203
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b1-s0_3",
+        "n_samples": 20,
+        "position_mse": 2.309831290222301e-06,
+        "position_rmse": 0.0015198129129015523,
+        "velocity_mse": 1.3366088637720095e-08,
+        "velocity_rmse": 0.00011561180146386481
+      }
+    },
+    {
+      "probe_id": "v15_b1-s0_4",
+      "charge_over_mass": 0.43749999999999994,
+      "properties": {
+        "mass": 1.6,
+        "charge": 0.7
+      },
+      "r0": [
+        1.6718178575442366,
+        -3.743664655280464
+      ],
+      "v0": [
+        0.414007524168379,
+        0.1765112529567885
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b1-s0_4",
+        "n_samples": 20,
+        "position_mse": 3.266661951248917,
+        "position_rmse": 1.8073909237486274,
+        "velocity_mse": 0.01977753323637384,
+        "velocity_rmse": 0.14063261796743257
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b1-s0_4",
+        "n_samples": 20,
+        "position_mse": 1.3757917525660882e-06,
+        "position_rmse": 0.001172941495798528,
+        "velocity_mse": 8.150991115292826e-09,
+        "velocity_rmse": 9.028283953937662e-05
+      }
+    },
+    {
+      "probe_id": "v15_b1-s1_1",
+      "charge_over_mass": 2.428571428571429,
+      "properties": {
+        "mass": 0.7,
+        "charge": 1.7
+      },
+      "r0": [
+        1.4265936375121275,
+        2.1736675443613533
+      ],
+      "v0": [
+        -0.24846554864962478,
+        0.16817578229689403
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b1-s1_1",
+        "n_samples": 20,
+        "position_mse": 14.604260637041895,
+        "position_rmse": 3.8215521240775843,
+        "velocity_mse": 0.30889506682989926,
+        "velocity_rmse": 0.5557832912474963
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b1-s1_1",
+        "n_samples": 20,
+        "position_mse": 1.2969466844463966e-05,
+        "position_rmse": 0.0036013145994850224,
+        "velocity_mse": 7.102278752957697e-07,
+        "velocity_rmse": 0.0008427501855803828
+      }
+    },
+    {
+      "probe_id": "v15_b1-s1_2",
+      "charge_over_mass": 1.7,
+      "properties": {
+        "mass": 1.0,
+        "charge": 1.7
+      },
+      "r0": [
+        -2.591680533661614,
+        1.700938567802921
+      ],
+      "v0": [
+        -0.24006964818414883,
+        -0.32089459547304267
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b1-s1_2",
+        "n_samples": 20,
+        "position_mse": 10.219445724830559,
+        "position_rmse": 3.196786781258731,
+        "velocity_mse": 0.07843605209539853,
+        "velocity_rmse": 0.2800643713423729
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b1-s1_2",
+        "n_samples": 20,
+        "position_mse": 4.151684921324967e-05,
+        "position_rmse": 0.006443356983223083,
+        "velocity_mse": 4.3187701464321553e-07,
+        "velocity_rmse": 0.0006571735042157555
+      }
+    },
+    {
+      "probe_id": "v15_b1-s1_3",
+      "charge_over_mass": 1.3076923076923077,
+      "properties": {
+        "mass": 1.3,
+        "charge": 1.7
+      },
+      "r0": [
+        -1.975283498093715,
+        -3.0096935229618738
+      ],
+      "v0": [
+        0.42035523423079163,
+        -0.270776106168376
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b1-s1_3",
+        "n_samples": 20,
+        "position_mse": 1.2011321915063047,
+        "position_rmse": 1.0959617655312182,
+        "velocity_mse": 0.007432589743170792,
+        "velocity_rmse": 0.08621246860617547
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b1-s1_3",
+        "n_samples": 20,
+        "position_mse": 1.618212330991888e-05,
+        "position_rmse": 0.004022700996832711,
+        "velocity_mse": 1.053012906143951e-07,
+        "velocity_rmse": 0.0003245016034080496
+      }
+    },
+    {
+      "probe_id": "v15_b1-s1_4",
+      "charge_over_mass": 1.0625,
+      "properties": {
+        "mass": 1.6,
+        "charge": 1.7
+      },
+      "r0": [
+        3.4277065122621337,
+        -2.2496284283845087
+      ],
+      "v0": [
+        0.22631673331020052,
+        0.38972748633739984
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b1-s1_4",
+        "n_samples": 20,
+        "position_mse": 0.046690210979447,
+        "position_rmse": 0.2160791775702763,
+        "velocity_mse": 0.0002974115539158223,
+        "velocity_rmse": 0.017245624196178644
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b1-s1_4",
+        "n_samples": 20,
+        "position_mse": 9.749893151439954e-06,
+        "position_rmse": 0.003122481889689667,
+        "velocity_mse": 6.339654648638411e-08,
+        "velocity_rmse": 0.0002517867083195301
+      }
+    },
+    {
+      "probe_id": "v15_b2-s0_1",
+      "charge_over_mass": 1.0,
+      "properties": {
+        "mass": 0.7,
+        "charge": 0.7
+      },
+      "r0": [
+        4.262169692796493,
+        2.9789107925225027
+      ],
+      "v0": [
+        -0.15205355859697642,
+        0.25973766720856656
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b2-s0_1",
+        "n_samples": 20,
+        "position_mse": 8.091149206567226e-06,
+        "position_rmse": 0.0028444945432479257,
+        "velocity_mse": 6.1134337994826e-08,
+        "velocity_rmse": 0.0002472535904589173
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b2-s0_1",
+        "n_samples": 20,
+        "position_mse": 8.09114920658259e-06,
+        "position_rmse": 0.0028444945432506263,
+        "velocity_mse": 6.113433799488663e-08,
+        "velocity_rmse": 0.0002472535904590399
+      }
+    },
+    {
+      "probe_id": "v15_b2-s0_2",
+      "charge_over_mass": 0.7,
+      "properties": {
+        "mass": 1.0,
+        "charge": 0.7
+      },
+      "r0": [
+        -3.3799180145928385,
+        4.83592330528833
+      ],
+      "v0": [
+        -0.33153001161300055,
+        -0.22389486584317084
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b2-s0_2",
+        "n_samples": 20,
+        "position_mse": 0.6006544861669437,
+        "position_rmse": 0.7750190231000422,
+        "velocity_mse": 0.003963305520932684,
+        "velocity_rmse": 0.06295478949955026
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b2-s0_2",
+        "n_samples": 20,
+        "position_mse": 2.498341658371769e-06,
+        "position_rmse": 0.0015806143294212441,
+        "velocity_mse": 1.6260228660565014e-08,
+        "velocity_rmse": 0.00012751560163589792
+      }
+    },
+    {
+      "probe_id": "v15_b2-s0_3",
+      "charge_over_mass": 0.5384615384615384,
+      "properties": {
+        "mass": 1.3,
+        "charge": 0.7
+      },
+      "r0": [
+        -5.409676917780166,
+        -3.7809252366631747
+      ],
+      "v0": [
+        0.3062404094834085,
+        -0.3959807470678171
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b2-s0_3",
+        "n_samples": 20,
+        "position_mse": 1.0384409155845713,
+        "position_rmse": 1.0190392119955793,
+        "velocity_mse": 0.006503166512867725,
+        "velocity_rmse": 0.08064221297104715
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b2-s0_3",
+        "n_samples": 20,
+        "position_mse": 1.0922627793110297e-06,
+        "position_rmse": 0.0010451137638128347,
+        "velocity_mse": 6.755564927079533e-09,
+        "velocity_rmse": 8.219224371605591e-05
+      }
+    },
+    {
+      "probe_id": "v15_b2-s0_4",
+      "charge_over_mass": 0.43749999999999994,
+      "properties": {
+        "mass": 1.6,
+        "charge": 0.7
+      },
+      "r0": [
+        4.181932458733514,
+        -5.983430530272
+      ],
+      "v0": [
+        0.36517080355565706,
+        0.2630424752422382
+      ],
+      "t0": 0.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b2-s0_4",
+        "n_samples": 20,
+        "position_mse": 1.3668839438547646,
+        "position_rmse": 1.1691381200930728,
+        "velocity_mse": 0.008821428639685115,
+        "velocity_rmse": 0.09392246078380355
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b2-s0_4",
+        "n_samples": 20,
+        "position_mse": 6.383345207956108e-07,
+        "position_rmse": 0.0007989583974122875,
+        "velocity_mse": 4.041808294449885e-09,
+        "velocity_rmse": 6.357521761228887e-05
+      }
+    },
+    {
+      "probe_id": "v15_b2-s1_1",
+      "charge_over_mass": 2.428571428571429,
+      "properties": {
+        "mass": 0.7,
+        "charge": 1.7
+      },
+      "r0": [
+        1.9808090867077857,
+        4.807951264521706
+      ],
+      "v0": [
+        -0.2810763071044042,
+        0.10530990352886119
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b2-s1_1",
+        "n_samples": 20,
+        "position_mse": 22.201313063902493,
+        "position_rmse": 4.711826934841993,
+        "velocity_mse": 0.17527016657651456,
+        "velocity_rmse": 0.4186527995565234
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b2-s1_1",
+        "n_samples": 20,
+        "position_mse": 3.401034242235298e-05,
+        "position_rmse": 0.005831838682812907,
+        "velocity_mse": 4.2020086034437783e-07,
+        "velocity_rmse": 0.0006482290184374485
+      }
+    },
+    {
+      "probe_id": "v15_b2-s1_2",
+      "charge_over_mass": 1.7,
+      "properties": {
+        "mass": 1.0,
+        "charge": 1.7
+      },
+      "r0": [
+        -5.455175473207319,
+        2.247456463764604
+      ],
+      "v0": [
+        -0.17367470227300535,
+        -0.3610651348353584
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b2-s1_2",
+        "n_samples": 20,
+        "position_mse": 3.6290199751414725,
+        "position_rmse": 1.9049986811390376,
+        "velocity_mse": 0.02574300038817202,
+        "velocity_rmse": 0.16044625389261047
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b2-s1_2",
+        "n_samples": 20,
+        "position_mse": 1.8195397154060037e-05,
+        "position_rmse": 0.0042656063055631415,
+        "velocity_mse": 1.3854810240153648e-07,
+        "velocity_rmse": 0.00037222050239278393
+      }
+    },
+    {
+      "probe_id": "v15_b2-s1_3",
+      "charge_over_mass": 1.3076923076923077,
+      "properties": {
+        "mass": 1.3,
+        "charge": 1.7
+      },
+      "r0": [
+        -2.514103840821422,
+        -6.102399681892933
+      ],
+      "v0": [
+        0.458608502822012,
+        -0.1994299559646444
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b2-s1_3",
+        "n_samples": 20,
+        "position_mse": 0.47718236233027456,
+        "position_rmse": 0.6907838752679991,
+        "velocity_mse": 0.003072726818146636,
+        "velocity_rmse": 0.05543218215212744
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b2-s1_3",
+        "n_samples": 20,
+        "position_mse": 7.00453580807283e-06,
+        "position_rmse": 0.0026466083594050764,
+        "velocity_mse": 4.596084937819669e-08,
+        "velocity_rmse": 0.0002143848161092494
+      }
+    },
+    {
+      "probe_id": "v15_b2-s1_4",
+      "charge_over_mass": 1.0625,
+      "properties": {
+        "mass": 1.6,
+        "charge": 1.7
+      },
+      "r0": [
+        6.7496238905785475,
+        -2.78075121787824
+      ],
+      "v0": [
+        0.15011139843884447,
+        0.42484997571145877
+      ],
+      "t0": 4.0,
+      "readout": [
+        1.5,
+        3.0,
+        4.5,
+        6.0,
+        7.5,
+        9.0,
+        10.5,
+        12.0,
+        13.5,
+        15.0,
+        16.5,
+        18.0,
+        19.5,
+        21.0,
+        22.5,
+        24.0,
+        25.5,
+        27.0,
+        28.5,
+        30.0
+      ],
+      "original_errors": {
+        "probe_id": "v15_b2-s1_4",
+        "n_samples": 20,
+        "position_mse": 0.018695329709706603,
+        "position_rmse": 0.13673086597292727,
+        "velocity_mse": 0.00012444998135091386,
+        "velocity_rmse": 0.011155715187782174
+      },
+      "property_factor_diagnostic_errors": {
+        "probe_id": "v15_b2-s1_4",
+        "n_samples": 20,
+        "position_mse": 4.231897856253053e-06,
+        "position_rmse": 0.0020571577130237373,
+        "velocity_mse": 2.834278105558154e-08,
+        "velocity_rmse": 0.00016835314388386556
+      }
+    }
+  ],
+  "diagnostic_failures": [],
+  "archive_hashes_before": {
+    "runs/e6-qwen38-recovery-concise-20261107-r01-world_1/evaluation.json": "192189edfebc4103f0c0042c9913989007bf158bc05d427b34e514721f0d000c",
+    "runs/e6-qwen38-recovery-concise-20261107-r01-world_1/records/law/law_2.json": "4c62c0f229efb3c6f066a87898099a7654f89be4a7052611da0a3be0dbf4547f"
+  },
+  "archive_hashes_after": {
+    "runs/e6-qwen38-recovery-concise-20261107-r01-world_1/evaluation.json": "192189edfebc4103f0c0042c9913989007bf158bc05d427b34e514721f0d000c",
+    "runs/e6-qwen38-recovery-concise-20261107-r01-world_1/records/law/law_2.json": "4c62c0f229efb3c6f066a87898099a7654f89be4a7052611da0a3be0dbf4547f"
+  },
+  "archives_unchanged": true
+}
