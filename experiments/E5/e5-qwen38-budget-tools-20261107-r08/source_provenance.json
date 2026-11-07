@@ -1,0 +1,27 @@
+{
+  "source_commit": "072899f9406e2adb0b07456c780fa075508d287c",
+  "run_source_hashes": "manifest.json:source_sha256",
+  "audit_completed_before_next_source_deployment": true,
+  "audit_source_hashes_all_match": true,
+  "audit_errors_preserved": [
+    "world_6:evaluation:all_cases_completed"
+  ],
+  "audit_error_note": "world_6 candidate integration failed on 14 of 32 fixed cases; source and other rule checks pass. This failure is preserved, not repaired or re-evaluated.",
+  "guidance_profile": "e3",
+  "diagnostics_enabled": true,
+  "diagnostics_compact": true,
+  "repeated_tool_failure_feedback": true,
+  "budget_aware_tools": true,
+  "sampling_seed": 42,
+  "attempts_per_world": 1,
+  "configuration_difference_from_r07": [
+    "agent.budget_aware_tools"
+  ],
+  "archive_evidence_sha256": {
+    "manifest.json": "e4b27b3940701de02e269b892101a57f3a04392000ff960bc952f88c800c14f9",
+    "summary.json": "777246f4476d23eace5349af4ca3a34f2a73765dcbc8fabe7f7aaa1b797741a7",
+    "audit.json": "f61171be864f0aa0125f3ab204e910f637cc96baebfc086c1fb9c6c6e83f25a0"
+  },
+  "downloaded_raw_archive_sha256": "beeab83416c1f40e7c521f40daf00f828f4a2c406d1091e5eaa67d72a6f8a9a8",
+  "source_note": "Server audit and all frozen source hashes checked before subsequent scientific-source deployment; raw six-world records retained locally and on server."
+}
