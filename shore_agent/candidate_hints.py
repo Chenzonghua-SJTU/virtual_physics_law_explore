@@ -134,7 +134,7 @@ def _spatial_candidate(model, allowed):
         'This candidate has not been fitted or validated. Source CV describes the complete diagnostic regression BEFORE pruning or coefficient sharing.',
         'Small observed contributions can matter outside sampled trajectories; discarded terms are not proven absent.',
         'Spatial-only candidates omit time, velocity and property dependence. Their absence from this dictionary does not establish independence.',
-        'Integral regression uses approximate trapezoidal integration; its coefficients are initial guesses, not exact physical constants.'
+        'Integral regression uses approximate numerical quadrature; its coefficients are initial guesses, not exact physical constants.'
     ]
     if shared:
         warnings.append('Approximate equal-coefficient groups are testable parameter-sharing hypotheses, not evidence of symmetry. Refitting may reject the constraint.')
