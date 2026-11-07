@@ -11,7 +11,7 @@
 <p class="protocol">E5：10 能量 / 300 秒 / 无探索噪声 / 单次输出至多 4096 token。所有批次的交卷后独立测评均使用无噪声真值。</p>
 <p class="protocol">E6：不增加工具的提示词对照；recovery 批次启用重复调用恢复并取消累计 Token 上限。E7：在选定 E6 基线上单独测试 PySR 符号回归。均保留 10 能量、300 秒探索、单次 4096 输出上限；完整批次分别展示，不合并各世界最高分。</p>
 <p class="protocol">E8：分阶段 PySR 搜索、通用回归候选与实验设计反馈。候选来源分别记录；离线工具检验与本页自主 Agent 得分分开报告。</p>
-<label for="experiment-group">显示批次：</label> <select id="experiment-group"><option value="all">全部实验</option><option value="E8">E8 · 符号回归策略</option><option value="E7">E7 · PySR 对照</option><option value="E6">E6 · 不增加工具</option><option value="E5_AB">E5 · 有 / 无诊断工具对照</option><option value="E5">E5 · 无噪声对齐</option><option value="E4">E4 · 新规则</option><option value="E3">E3 · 已归档</option></select>
+<label for="experiment-group">显示批次：</label> <select id="experiment-group"><option value="all">全部实验</option><option value="E9">E9 · 噪声与验证策略对照</option><option value="E8">E8 · 符号回归策略</option><option value="E7">E7 · PySR 对照</option><option value="E6">E6 · 不增加工具</option><option value="E5_AB">E5 · 有 / 无诊断工具对照</option><option value="E5">E5 · 无噪声对齐</option><option value="E4">E4 · 新规则</option><option value="E3">E3 · 已归档</option></select>
 <p id="connection" role="status">正在读取服务器实验记录…</p>
 <div id="batches"></div>
 <footer>点击世界可查看原始观测、候选规律、模型调用与提交记录。未完成、超时和缺失用量均如实保留。</footer>

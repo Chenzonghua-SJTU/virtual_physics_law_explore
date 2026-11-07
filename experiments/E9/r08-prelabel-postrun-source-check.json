@@ -1,0 +1,228 @@
+{
+  "batch": "e8-qwen38-pysr-stage-20261107-r08",
+  "checked_at": "2026-11-07T11:35:02.307730+00:00",
+  "launch": {
+    "pid": 3854712,
+    "commit": "c09a0f6e789c52b118339ace3e77d362e10d30cf",
+    "scientific_implementation_commit": "52dbdd6b3c1b1293798bc7e2227abab9160afa55",
+    "started_at": "2026-11-07T11:26:04.046298+00:00",
+    "command": [
+      "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv/bin/python",
+      "-B",
+      "-u",
+      "-m",
+      "deployment.run_e8_symbolic",
+      "--repeat",
+      "r08"
+    ],
+    "log": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/deployment/e8-r08-agent-stage.log",
+    "ready_health": {
+      "status": "ready",
+      "pool_size": 4,
+      "ready": 4,
+      "busy": 0,
+      "failed": 0,
+      "warming": 0,
+      "actual_julia_threads": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "worker_warmup": [
+        {
+          "actual_julia_threads": 4,
+          "warmup_stages": [
+            {
+              "stage": "algebra",
+              "maxsize": 24,
+              "unary_operators": [
+                "sin",
+                "cos",
+                "exp",
+                "sqrt",
+                "log",
+                "abs"
+              ],
+              "elapsed_seconds": 27.27641553618014
+            },
+            {
+              "stage": "full",
+              "maxsize": 48,
+              "unary_operators": [
+                "sin",
+                "cos",
+                "exp",
+                "sqrt",
+                "log",
+                "abs"
+              ],
+              "elapsed_seconds": 0.4052734263241291
+            }
+          ],
+          "warmup_seconds": 32.94447950087488
+        },
+        {
+          "actual_julia_threads": 4,
+          "warmup_stages": [
+            {
+              "stage": "algebra",
+              "maxsize": 24,
+              "unary_operators": [
+                "sin",
+                "cos",
+                "exp",
+                "sqrt",
+                "log",
+                "abs"
+              ],
+              "elapsed_seconds": 25.826469836756587
+            },
+            {
+              "stage": "full",
+              "maxsize": 48,
+              "unary_operators": [
+                "sin",
+                "cos",
+                "exp",
+                "sqrt",
+                "log",
+                "abs"
+              ],
+              "elapsed_seconds": 1.5555134881287813
+            }
+          ],
+          "warmup_seconds": 32.61886167526245
+        },
+        {
+          "actual_julia_threads": 4,
+          "warmup_stages": [
+            {
+              "stage": "algebra",
+              "maxsize": 24,
+              "unary_operators": [
+                "sin",
+                "cos",
+                "exp",
+                "sqrt",
+                "log",
+                "abs"
+              ],
+              "elapsed_seconds": 26.287255439907312
+            },
+            {
+              "stage": "full",
+              "maxsize": 48,
+              "unary_operators": [
+                "sin",
+                "cos",
+                "exp",
+                "sqrt",
+                "log",
+                "abs"
+              ],
+              "elapsed_seconds": 0.4031850006431341
+            }
+          ],
+          "warmup_seconds": 31.871047295629978
+        },
+        {
+          "actual_julia_threads": 4,
+          "warmup_stages": [
+            {
+              "stage": "algebra",
+              "maxsize": 24,
+              "unary_operators": [
+                "sin",
+                "cos",
+                "exp",
+                "sqrt",
+                "log",
+                "abs"
+              ],
+              "elapsed_seconds": 25.65658531524241
+            },
+            {
+              "stage": "full",
+              "maxsize": 48,
+              "unary_operators": [
+                "sin",
+                "cos",
+                "exp",
+                "sqrt",
+                "log",
+                "abs"
+              ],
+              "elapsed_seconds": 1.110243808478117
+            }
+          ],
+          "warmup_seconds": 31.910415709018707
+        }
+      ]
+    },
+    "source_sha256": {
+      "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+      "shore_agent/symbolic_algebra.py": "d55f5ce4534fe36455b942c14a4ba98afcaa64eaadca2746484511b64c1b3a1e",
+      "shore_agent/schemas.py": "f3ca2c0f2fa60d2207cf8292c881716f656c8f4a91b7b8ed46d3c0d6e2c0d7d1",
+      "shore_agent/environment.py": "43d04b3c29bda7064d39c226cca12ee4d5856adcb4048fd8b854934efa69d728",
+      "shore_agent/prompts/symbolic.txt": "43f3d13f89963b2055ff2281f8c34e82546ebd7565d6b85a5724fd4d594feaa0",
+      "shore_agent/code_response.py": "16ac5bc9f4b00f78ad42822c9b367182974539e8c6acaa06575b5b51b04c8278",
+      "shore_agent/symbolic_geometry.py": "f4cb7c57826179afa617e6d0ebcb8a3333e8a7c3e0f423a9b3eb946b7f1af6e6",
+      "shore_agent/symbolic_feedback.py": "44292efecd9d8bdf169a76321c7fd2758a5c9a4479900c15795e807492813c21",
+      "shore_agent/symbolic_selection.py": "23cc010399843ece059ab618845880aca7df95506d2251fb913aa358c969cb94",
+      "shore_agent/agent.py": "d0c7d9a045c6b9bd4e2d7ac296201467451445d8cf388ffd358eb2329fab4eac",
+      "shore_agent/symbolic_regression.py": "b89bfa95cf312edef43e3803a453e6d20e0622b1e237ed097e5ded3683700d00",
+      "shore_agent/symbolic_guidance.py": "0225c64eccef6a5c3ffe654af784dd0b22abf64a942e726085909a7ce725fb1c",
+      "shore_agent/symbolic_quality.py": "980a27d30d89becc09c6d1d2c043afb8506207a4fdbfe5c58aba2cfafb4550e7",
+      "shore_agent/store.py": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+      "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+      "shore_agent/prompts/code.txt": "c7ae9c21261fb133886c2fefc70b3f60cd1cd553d21c805ba0ed2f5ef6561483",
+      "shore_agent/observations.py": "2462c3ecc85d263be1b6f4bbcf1411e2a553f9225900e5cc4aaa4125f7e79197",
+      "shore_agent/__init__.py": "0547ccfeb2e41c0e42a47e4e2b97f50c5dbe01b7a6fd99dd789d2ca25cf530f6",
+      "deployment/config.e8.symbolic.json": "89b330b503eaf0c09c7823c701a40db9a43857cc52e6fb4970d4fbf4d8118e25",
+      "shore_agent/cli.py": "51cc1ca33fadb5d472d767d7fc94bbc1465da6acb2795b8a5e7fa53fe451d092",
+      "shore_agent/symbolic_service.py": "acddc0e6ea2bc61cd9da4a0a5e30831d6ed45125bb4a996a2cf1d5afd5f2c23c",
+      "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+      "experiments/E5/e8-protocol.json": "41aee25df4070a1bb3419b6a726e47024eb2fd1620da1029240809fc14e841f9",
+      "benchmark_v15.py": "f3248958305a083ee5a344d7621b2715a5996c8cc242d1a696ae92951aa241e3",
+      "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+      "shore_agent/prompts/e5.txt": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+      "shore_agent/runtime.py": "e3d929f62b0d7fbb3bf027b90591118c50bf52a8e6569baf19dd6a1e01420e62",
+      "deployment/run_e7.py": "897168cf80facc0ba437e86c7c6dd885a9b06efc7a3225a74d94dd54aa06aed6",
+      "shore_agent/symbolic_basis.py": "faef5985ab2132c6aa796979ee5413c78c893970044eb964770591dcdf52c924",
+      "shore_worlds.py": "6f0da6c687baa62b63e245e659643d85dd786022a4e8aea7b05cf5b4096b0836",
+      "config.example.json": "f5535179afa3117724dbc4070815efc0a5f8de157b0ae2fe5f81c252870142b3",
+      "shore_v15/evaluation.py": "28711d4ef0061b9921423f81b1db2df7c1387d3bd732db9a2cde3ece1d350164",
+      "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+      "shore_agent/model.py": "a4f5ca331ae373718b6ba8a8153fc4f13b4afe07d461deccf79718cd61c3a211",
+      "deployment/run_e8_symbolic.py": "f576d731824776ddc952ebd0ad09408e38630559c77ecd23bd18d02bd260a1b1",
+      "shore_agent/code_execution.py": "2732a262a8b5ec11e58eff6614a4f9f9b9f6b7e32c69d06d700191fd2611ba73",
+      "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+      "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+      "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+      "shore_agent/prompts/e5_concise.txt": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+      "shore_agent/workspace.py": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab"
+    },
+    "source_exceptions": {
+      "shore_agent/web.py": {
+        "reason": "Preserve concurrent preexisting web work; not changed by this experiment.",
+        "actual_sha256": "276ff981be4fd47cba30e0e66b6c62a6f534f901a694f2253b8cbdc4d2b38bed"
+      },
+      "shore_agent/web_jobs.py": {
+        "reason": "Preserve concurrent preexisting web work; not changed by this experiment.",
+        "actual_sha256": "feb70349021878eb3b5a3b70b4637b465c2eee6bb7ad96894be98ebd6c44dd64"
+      }
+    },
+    "model_endpoints": [
+      "http://127.0.0.1:8001/v1",
+      "http://127.0.0.1:8002/v1",
+      "http://127.0.0.1:8003/v1"
+    ],
+    "parallelism": 3,
+    "observation_noise": true,
+    "evaluation_noise": false,
+    "attempts_per_world": 1
+  },
+  "changed_files": [],
+  "source_unchanged": true
+}

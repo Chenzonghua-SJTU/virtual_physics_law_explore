@@ -1,0 +1,577 @@
+{
+  "experiment_group": "E9",
+  "repeat": "R09",
+  "batch": "e9-qwen38-pysr-stage-20261107-r09",
+  "original_batch_id": "e8-qwen38-pysr-stage-20261107-r09",
+  "scientific_commit": "94ad8ac",
+  "registration_commit": "4d02701",
+  "pysr_search_implementation": "52dbdd6; unchanged from R08",
+  "observation_noise": true,
+  "evaluation_noise": false,
+  "attempts_per_world": 1,
+  "strict_scores_at_least_90": 2,
+  "all_limits_met": true,
+  "source_unchanged_during_experiment": true,
+  "audit_warnings": [],
+  "all_six_tool_traces_reviewed": true,
+  "worlds": {
+    "world_1": {
+      "score": 28.897664612552084,
+      "timing": {
+        "exploration_seconds": 110.44623794034123,
+        "evaluation_seconds": 3.520728964358568,
+        "wall_seconds_including_evaluation": 115.13288832455873,
+        "model_elapsed_seconds": 61.37443166971207,
+        "symbolic_search_seconds": 45.11656944081187,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 11,
+        "completion_tokens": 3618,
+        "average_output_tokens_per_call": 328.90909090909093,
+        "max_call_output_tokens": 642,
+        "requests_with_reported_usage": 11,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 7,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "x * (q('charge') / q('mass')) * c1 / (x * x + y * y)",
+          "ay": "(vx * (vy * c2 - 1 * c3) - (-c4 * vy - c5)) / sqrt(x * x + y * y)"
+        },
+        "fitted_parameters": {
+          "c1": -0.07988110781243467,
+          "c2": -0.2366397280456173,
+          "c3": -0.39122652262118346,
+          "c4": -0.0931350046811353,
+          "c5": 0.02839983037715537
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "fit_status": "converged"
+      },
+      "submission_gate": {
+        "enabled": true,
+        "fit_error_field": "selected_law.errors.overall.position_rmse",
+        "fit_rmse_threshold": 0.1,
+        "time_remaining_threshold_seconds": 60.0,
+        "condition": "(training_position_rmse < 0.1 AND (all_acquired_probes_used_for_fit OR heldout_validation_position_rmse < 0.1)) OR remaining_seconds < 60",
+        "requires_validation_for_error_branch": true,
+        "validation_waiver": "all_acquired_probes_used_for_selected_law_fit",
+        "validation_rmse_threshold": 0.1,
+        "force_submit_remaining_seconds": 40.0,
+        "comparison": "strict",
+        "independent_validation_is_hard_requirement": false,
+        "save_draft_allowed_before_eligibility": true,
+        "law_id": "law_2",
+        "fit_position_rmse": 0.07489654055076177,
+        "fit_error_valid": true,
+        "validation_position_rmse": 0.08307548412864879,
+        "validation_ids": [
+          "validation_145e40fd23aa"
+        ],
+        "validation_eligible_probe_ids": [
+          "probe_0009"
+        ],
+        "all_acquired_probes_used_for_fit": false,
+        "validation_waived": false,
+        "wall_seconds_remaining": 189.9063939023763,
+        "remaining_time_source": "environment_budget",
+        "fit_condition_met": true,
+        "time_condition_met": false,
+        "allowed": true
+      },
+      "validations": [
+        {
+          "law_id": "law_2",
+          "test_probe_ids": [
+            "probe_0009"
+          ],
+          "validation_scope": "parameter_holdout",
+          "independent_of_discovery": false,
+          "errors": {
+            "position_mse": 0.006901536063209377,
+            "velocity_mse": 3.6680981582763987e-06,
+            "position_rmse": 0.08307548412864879,
+            "velocity_rmse": 0.0019152279650935548
+          }
+        }
+      ],
+      "review": [
+        "Acquired paid trajectories overwhelmingly start on the positive x axis, with one same-state delayed holdout. Little directional diversity exposes the y equation.",
+        "SR recovered the x component well but returned a velocity-dependent approximation for y. Agent adopted it after one incorrect inverse-square attempt; delayed same-state holdout RMSE 0.083 passed but did not challenge the missing spatial/property dependence of y.",
+        "New per-law parameter-holdout validation worked. Failure is extrapolation from inadequate controls, not a validation rejection."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_2": {
+      "score": 95.66780342257128,
+      "timing": {
+        "exploration_seconds": 106.52871847711504,
+        "evaluation_seconds": 1.7180461529642344,
+        "wall_seconds_including_evaluation": 108.87060383148491,
+        "model_elapsed_seconds": 59.94124753959477,
+        "symbolic_search_seconds": 45.13360055536032,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 11,
+        "completion_tokens": 3480,
+        "average_output_tokens_per_call": 316.3636363636364,
+        "max_call_output_tokens": 923,
+        "requests_with_reported_usage": 11,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 7,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "q('charge') / q('mass') * c1 * x",
+          "ay": "q('charge') / q('mass') * c1 * y"
+        },
+        "fitted_parameters": {
+          "c1": -0.05890162278913443
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009"
+        ],
+        "fit_status": "converged"
+      },
+      "submission_gate": {
+        "enabled": true,
+        "fit_error_field": "selected_law.errors.overall.position_rmse",
+        "fit_rmse_threshold": 0.1,
+        "time_remaining_threshold_seconds": 60.0,
+        "condition": "(training_position_rmse < 0.1 AND (all_acquired_probes_used_for_fit OR heldout_validation_position_rmse < 0.1)) OR remaining_seconds < 60",
+        "requires_validation_for_error_branch": true,
+        "validation_waiver": "all_acquired_probes_used_for_selected_law_fit",
+        "validation_rmse_threshold": 0.1,
+        "force_submit_remaining_seconds": 40.0,
+        "comparison": "strict",
+        "independent_validation_is_hard_requirement": false,
+        "save_draft_allowed_before_eligibility": true,
+        "law_id": "law_2",
+        "fit_position_rmse": 0.05675231897720299,
+        "fit_error_valid": true,
+        "validation_position_rmse": null,
+        "validation_ids": [],
+        "validation_eligible_probe_ids": [],
+        "all_acquired_probes_used_for_fit": true,
+        "validation_waived": true,
+        "wall_seconds_remaining": 193.80638455413282,
+        "remaining_time_source": "environment_budget",
+        "fit_condition_met": true,
+        "time_condition_met": false,
+        "allowed": true
+      },
+      "validations": [],
+      "review": [
+        "Simplified noisy SR proposals to a shared linear coefficient times charge/mass; fitted coefficient -0.05890 is close to reference, with train RMSE 0.05675.",
+        "All nine acquired probes fitted, so validation was correctly waived. One attempt to validate on actual fitted data was correctly rejected. Clean score 95.67."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_3": {
+      "score": 91.98962039751177,
+      "timing": {
+        "exploration_seconds": 91.13803988322616,
+        "evaluation_seconds": 2.4685202054679394,
+        "wall_seconds_including_evaluation": 94.30498536117375,
+        "model_elapsed_seconds": 46.23800974339247,
+        "symbolic_search_seconds": 42.61021255142987,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 8,
+        "completion_tokens": 2643,
+        "average_output_tokens_per_call": 330.375,
+        "max_call_output_tokens": 746,
+        "requests_with_reported_usage": 8,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 6,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1 * vy + c2 * x + c3 * y",
+          "ay": "c4 * x + c5 * y"
+        },
+        "fitted_parameters": {
+          "c1": -0.00015352192155056657,
+          "c2": -0.060101724607300254,
+          "c3": 0.034826884084866325,
+          "c4": 0.03471632125233326,
+          "c5": -0.10006599173595658
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "fit_status": "converged"
+      },
+      "submission_gate": {
+        "enabled": true,
+        "fit_error_field": "selected_law.errors.overall.position_rmse",
+        "fit_rmse_threshold": 0.1,
+        "time_remaining_threshold_seconds": 60.0,
+        "condition": "(training_position_rmse < 0.1 AND (all_acquired_probes_used_for_fit OR heldout_validation_position_rmse < 0.1)) OR remaining_seconds < 60",
+        "requires_validation_for_error_branch": true,
+        "validation_waiver": "all_acquired_probes_used_for_selected_law_fit",
+        "validation_rmse_threshold": 0.1,
+        "force_submit_remaining_seconds": 40.0,
+        "comparison": "strict",
+        "independent_validation_is_hard_requirement": false,
+        "save_draft_allowed_before_eligibility": true,
+        "law_id": "law_1",
+        "fit_position_rmse": 0.059203193656675514,
+        "fit_error_valid": true,
+        "validation_position_rmse": null,
+        "validation_ids": [],
+        "validation_eligible_probe_ids": [],
+        "all_acquired_probes_used_for_fit": true,
+        "validation_waived": true,
+        "wall_seconds_remaining": 209.2108316682279,
+        "remaining_time_source": "environment_budget",
+        "fit_condition_met": true,
+        "time_condition_met": false,
+        "allowed": true
+      },
+      "validations": [],
+      "review": [
+        "Adopted near-correct linear tensor plus an unnecessary small velocity term, coefficient about -0.000154. All eight acquired probes fitted; validation waived.",
+        "Clean prediction is nearly perfect. Unsupported hidden_matter=true loses 5 declaration points. High score does not establish exact structural recovery."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_4": {
+      "score": 87.5281942968353,
+      "timing": {
+        "exploration_seconds": 153.9333706665784,
+        "evaluation_seconds": 4.320524835959077,
+        "wall_seconds_including_evaluation": 159.4224279243499,
+        "model_elapsed_seconds": 74.8029120657593,
+        "symbolic_search_seconds": 45.11770832724869,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 14,
+        "completion_tokens": 4323,
+        "average_output_tokens_per_call": 308.7857142857143,
+        "max_call_output_tokens": 916,
+        "requests_with_reported_usage": 14,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 8,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "q('charge') / q('mass') * c1 * exp(c2 * sqrt(sqrt(x * x + y * y))) * x / (c3 + x * x + y * y)",
+          "ay": "q('charge') / q('mass') * c1 * exp(c2 * sqrt(sqrt(x * x + y * y))) * y / (c3 + x * x + y * y)"
+        },
+        "fitted_parameters": {
+          "c1": -0.6115018961479286,
+          "c2": -0.8085189284409465,
+          "c3": 0.07262275427505756
+        },
+        "train_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0001",
+          "probe_0002"
+        ],
+        "fit_status": "converged"
+      },
+      "submission_gate": {
+        "enabled": true,
+        "fit_error_field": "selected_law.errors.overall.position_rmse",
+        "fit_rmse_threshold": 0.1,
+        "time_remaining_threshold_seconds": 60.0,
+        "condition": "(training_position_rmse < 0.1 AND (all_acquired_probes_used_for_fit OR heldout_validation_position_rmse < 0.1)) OR remaining_seconds < 60",
+        "requires_validation_for_error_branch": true,
+        "validation_waiver": "all_acquired_probes_used_for_selected_law_fit",
+        "validation_rmse_threshold": 0.1,
+        "force_submit_remaining_seconds": 40.0,
+        "comparison": "strict",
+        "independent_validation_is_hard_requirement": false,
+        "save_draft_allowed_before_eligibility": true,
+        "law_id": "law_3",
+        "fit_position_rmse": 0.09958074911629658,
+        "fit_error_valid": true,
+        "validation_position_rmse": null,
+        "validation_ids": [],
+        "validation_eligible_probe_ids": [],
+        "all_acquired_probes_used_for_fit": true,
+        "validation_waived": true,
+        "wall_seconds_remaining": 146.43652358278632,
+        "remaining_time_source": "environment_budget",
+        "fit_condition_met": true,
+        "time_condition_met": false,
+        "allowed": true
+      },
+      "validations": [
+        {
+          "law_id": "law_2",
+          "test_probe_ids": [
+            "probe_0001",
+            "probe_0002",
+            "probe_0009",
+            "probe_0010"
+          ],
+          "validation_scope": "parameter_holdout",
+          "independent_of_discovery": false,
+          "errors": {
+            "position_mse": 0.010276405821037133,
+            "velocity_mse": 0.0002216668232453137,
+            "position_rmse": 0.10137260883018219,
+            "velocity_rmse": 0.01488847954780184
+          }
+        }
+      ],
+      "review": [
+        "SR returned an approximate sqrt-radius exponential ranked first and a much closer radius-exponential/log-radius/log-properties candidate ranked second (train RMSE 0.09922).",
+        "Agent never fitted rank two. It manually simplified rank one, validated (RMSE 0.10137), then refitted a modified version on all ten acquired probes (train RMSE 0.09958).",
+        "All-data waiver correctly allowed submission. Wrong radial shape and hidden_matter=true explain remaining loss; score 87.53 is not exact-law discovery."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_5": {
+      "score": 24.81991760063641,
+      "timing": {
+        "exploration_seconds": 141.6870610844344,
+        "evaluation_seconds": 2.518289428204298,
+        "wall_seconds_including_evaluation": 144.85707082226872,
+        "model_elapsed_seconds": 95.01963601261377,
+        "symbolic_search_seconds": 45.11681333184242,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 10,
+        "completion_tokens": 5501,
+        "average_output_tokens_per_call": 550.1,
+        "max_call_output_tokens": 1352,
+        "requests_with_reported_usage": 10,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 9,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1 * x",
+          "ay": "c2 * y"
+        },
+        "fitted_parameters": {
+          "c1": -0.0664491293536566,
+          "c2": -0.10789739359623116
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "fit_status": "converged"
+      },
+      "submission_gate": {
+        "enabled": true,
+        "fit_error_field": "selected_law.errors.overall.position_rmse",
+        "fit_rmse_threshold": 0.1,
+        "time_remaining_threshold_seconds": 60.0,
+        "condition": "(training_position_rmse < 0.1 AND (all_acquired_probes_used_for_fit OR heldout_validation_position_rmse < 0.1)) OR remaining_seconds < 60",
+        "requires_validation_for_error_branch": true,
+        "validation_waiver": "all_acquired_probes_used_for_selected_law_fit",
+        "validation_rmse_threshold": 0.1,
+        "force_submit_remaining_seconds": 40.0,
+        "comparison": "strict",
+        "independent_validation_is_hard_requirement": false,
+        "save_draft_allowed_before_eligibility": true,
+        "law_id": "law_1",
+        "fit_position_rmse": 0.05056367886143467,
+        "fit_error_valid": true,
+        "validation_position_rmse": 0.048711375156372215,
+        "validation_ids": [
+          "validation_f034a245a763"
+        ],
+        "validation_eligible_probe_ids": [
+          "probe_0011"
+        ],
+        "all_acquired_probes_used_for_fit": false,
+        "validation_waived": false,
+        "wall_seconds_remaining": 158.66610293462873,
+        "remaining_time_source": "environment_budget",
+        "fit_condition_met": true,
+        "time_condition_met": false,
+        "allowed": true
+      },
+      "validations": [
+        {
+          "law_id": "law_1",
+          "test_probe_ids": [
+            "probe_0011"
+          ],
+          "validation_scope": "fresh_observations",
+          "independent_of_discovery": true,
+          "errors": {
+            "position_mse": 0.002372798069624836,
+            "velocity_mse": 2.5073954260757163e-05,
+            "position_rmse": 0.048711375156372215,
+            "velocity_rmse": 0.005007389964917568
+          }
+        }
+      ],
+      "review": [
+        "One short 2.45-time-unit paid batch stayed near the origin. SR returned nonlinear cross terms and complex alternatives, but Agent replaced them with a purely linear diagonal model.",
+        "A fresh short two-unit trajectory also stayed in the weak-nonlinearity region and passed (RMSE 0.04871). It did not test larger amplitude or longer-time accumulation.",
+        "Clean broad-domain score 24.82: passing local noisy validation did not reveal omitted cubic/cross coupling."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_6": {
+      "score": 10.000000043036371,
+      "timing": {
+        "exploration_seconds": 256.5181789342314,
+        "evaluation_seconds": 3.3698295429348946,
+        "wall_seconds_including_evaluation": 262.0836092736572,
+        "model_elapsed_seconds": 139.50267528742552,
+        "symbolic_search_seconds": 87.48408605158329,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 18,
+        "completion_tokens": 7920,
+        "average_output_tokens_per_call": 440.0,
+        "max_call_output_tokens": 1040,
+        "requests_with_reported_usage": 18,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 8,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1 * x + c2 * y",
+          "ay": "c3 * x + c4 * y + c5 * (t * y)"
+        },
+        "fitted_parameters": {
+          "c1": -0.09520742691124132,
+          "c2": 0.0496080349838047,
+          "c3": 0.04980656051306675,
+          "c4": -0.17296972151318174,
+          "c5": 0.019843421224253498
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      },
+      "submission_gate": {
+        "enabled": true,
+        "fit_error_field": "selected_law.errors.overall.position_rmse",
+        "fit_rmse_threshold": 0.1,
+        "time_remaining_threshold_seconds": 60.0,
+        "condition": "(training_position_rmse < 0.1 AND (all_acquired_probes_used_for_fit OR heldout_validation_position_rmse < 0.1)) OR remaining_seconds < 60",
+        "requires_validation_for_error_branch": true,
+        "validation_waiver": "all_acquired_probes_used_for_selected_law_fit",
+        "validation_rmse_threshold": 0.1,
+        "force_submit_remaining_seconds": 40.0,
+        "comparison": "strict",
+        "independent_validation_is_hard_requirement": false,
+        "save_draft_allowed_before_eligibility": true,
+        "law_id": "law_1",
+        "fit_position_rmse": 0.06383053373099004,
+        "fit_error_valid": true,
+        "validation_position_rmse": 0.6383133988996593,
+        "validation_ids": [
+          "validation_d1d46a04aac6"
+        ],
+        "validation_eligible_probe_ids": [
+          "probe_0007",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "all_acquired_probes_used_for_fit": false,
+        "validation_waived": false,
+        "wall_seconds_remaining": 43.82768867537379,
+        "remaining_time_source": "environment_budget",
+        "fit_condition_met": false,
+        "time_condition_met": true,
+        "allowed": true
+      },
+      "validations": [
+        {
+          "law_id": "law_1",
+          "test_probe_ids": [
+            "probe_0007",
+            "probe_0008",
+            "probe_0009",
+            "probe_0010"
+          ],
+          "validation_scope": "parameter_holdout",
+          "independent_of_discovery": false,
+          "errors": {
+            "position_mse": 0.40744399521483565,
+            "velocity_mse": 0.10844534193578405,
+            "position_rmse": 0.6383133988996593,
+            "velocity_rmse": 0.3293104036251877
+          }
+        }
+      ],
+      "review": [
+        "First SR excluded already-acquired delayed controls, giving a linear-in-time approximation over a 4.6-unit span. Per-law holdout on delayed controls worked and refuted it (RMSE 0.63831).",
+        "Agent then tried handwritten periodic and central-force structures with syntax errors and weak fits; second search included delayed observations but still returned inaccurate nonperiodic approximations.",
+        "No additional long continuous probe was collected despite remaining energy. Agent submitted the first, refuted law through the remaining-time branch, producing severe extrapolation error and only about 10 points."
+      ],
+      "all_complete_candidates_preserved": true
+    }
+  },
+  "limitations": [
+    "Stochastic Agent runs selected different trajectories; score differences do not isolate the validation-policy effect.",
+    "No reference laws, coefficients or world-specific hints were added to Agent prompts or search tools.",
+    "Meeting local noisy RMSE thresholds or scoring >=90 does not prove exact-law recovery or robustness on the unknown nine worlds."
+  ],
+  "next_priorities": [
+    "Compare returned alternatives on the same observation set; do not compare raw training RMSE across different subsets as a ranking rule.",
+    "Use generic experimental-design coverage diagnostics to challenge direction, amplitude, public properties and time, using only current-session evidence.",
+    "Respect observed counterexamples when selecting drafts; deadline submission should not cause a refuted low-training-error model to dominate alternatives.",
+    "Evaluate noise-aware simplification and candidate selection separately from the completed validation-policy change."
+  ]
+}

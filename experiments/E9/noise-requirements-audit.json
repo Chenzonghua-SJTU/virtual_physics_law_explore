@@ -1,0 +1,58 @@
+{
+  "source_pdf": "/Users/zonghuachen/Desktop/创智实训题目/彼岸更新版.pdf",
+  "source_sha256": "8cdc71ebf6c5b1c75c66ccffdaa790cd36ab81663eee5bc6cf47fd4433206fb2",
+  "page": 3,
+  "visually_verified": true,
+  "position_rule": "per coordinate independent zero-mean Gaussian sigma = 0.01 * published reference_length",
+  "velocity_rule": "per coordinate independent zero-mean Gaussian sigma = 0.0001 * initial_speed_max",
+  "initial_states": "known controlled initial states remain exact; observed time-zero readouts can be noisy",
+  "cache": "first light uses same noise rule; cached reads do not resample; new observations sample new noise",
+  "post_session_evaluation": "clean trajectories and clean background; verified exploration_noise=true, evaluation_noise=false",
+  "runtime_noise_code_changed": false,
+  "tests": {
+    "command": ".venv/bin/python -m pytest tests/test_v15_environment.py -q",
+    "result": "50 passed"
+  },
+  "worlds": {
+    "world_1": {
+      "reference_length": 5.70087712549569,
+      "initial_speed_max": 5.0,
+      "position_noise_sigma": 0.057008771254956896,
+      "velocity_noise_sigma": 0.0005
+    },
+    "world_2": {
+      "reference_length": 4.257346591481601,
+      "initial_speed_max": 3.0,
+      "position_noise_sigma": 0.042573465914816006,
+      "velocity_noise_sigma": 0.00030000000000000003
+    },
+    "world_3": {
+      "reference_length": 4.257346591481601,
+      "initial_speed_max": 3.0,
+      "position_noise_sigma": 0.042573465914816006,
+      "velocity_noise_sigma": 0.00030000000000000003
+    },
+    "world_4": {
+      "reference_length": 7.106335201775948,
+      "initial_speed_max": 5.0,
+      "position_noise_sigma": 0.07106335201775947,
+      "velocity_noise_sigma": 0.0005
+    },
+    "world_5": {
+      "reference_length": 3.553167600887974,
+      "initial_speed_max": 3.0,
+      "position_noise_sigma": 0.035531676008879735,
+      "velocity_noise_sigma": 0.00030000000000000003
+    },
+    "world_6": {
+      "reference_length": 4.257346591481601,
+      "initial_speed_max": 3.0,
+      "position_noise_sigma": 0.042573465914816006,
+      "velocity_noise_sigma": 0.00030000000000000003
+    }
+  },
+  "verified_batches": [
+    "E9/R08",
+    "E9/R09"
+  ]
+}
