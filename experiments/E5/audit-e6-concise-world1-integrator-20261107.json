@@ -1,0 +1,572 @@
+{
+  "kind": "read_only_evaluator_audit_not_agent_experiment",
+  "created_at": "2026-11-07T03:59:57.014326+00:00",
+  "original_run_id": "e6-qwen38-recovery-concise-20261107-r01-world_1",
+  "original_remote_project": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery",
+  "original_run_untouched": true,
+  "source_sha256_match_between_local_and_server": true,
+  "source_sha256": {
+    "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+    "shore_v15/source.py": "807a419648ec493ac0b613ab84d54b9060b9066449f09cdfc39ceb97a25a6638",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_v15/vendor/development_worlds/worlds.py": "576f3700e583682e63b56177d73046a6e8c728c33251aaeb8424630f7ab873e6",
+    "shore_v15/vendor/development_worlds/catalog.py": "52d4d53949521af8c3d09d0190cdeaf88749bd58cad375fd1f64c70b47745bd0",
+    "shore_scoring.py": "55749b8eb8e8a96d31b466b6e711d2a9c7fd8be55a3a588e575a31ed0947c4ed"
+  },
+  "archive_sha256": {
+    "evaluation.json": "192189edfebc4103f0c0042c9913989007bf158bc05d427b34e514721f0d000c",
+    "records/law/law_2.json": "4c62c0f229efb3c6f066a87898099a7654f89be4a7052611da0a3be0dbf4547f"
+  },
+  "catalog_version": "public-development-design-1.1.0",
+  "all_fixed_cases": 6,
+  "all_fixed_probes": 24,
+  "truth_noise": false,
+  "archived_law_id": "law_2",
+  "archived_training_errors": {
+    "position_mse": 8.794492318269656e-08,
+    "velocity_mse": 8.522923872095168e-09,
+    "position_rmse": 0.0002965550929974,
+    "velocity_rmse": 9.231968301556916e-05
+  },
+  "archived_validation_errors": {
+    "position_mse": 4.0708740160555685e-08,
+    "velocity_mse": 4.018538524534693e-09,
+    "position_rmse": 0.00020176407053922084,
+    "velocity_rmse": 6.339194368793792e-05
+  },
+  "acquired_controls": [
+    {
+      "probe_id": "probe_0001",
+      "properties": {
+        "mass": 1.0,
+        "charge": 1.0
+      },
+      "t0": 0.0,
+      "last_time": 1.0
+    },
+    {
+      "probe_id": "probe_0002",
+      "properties": {
+        "mass": 1.0,
+        "charge": 1.0
+      },
+      "t0": 0.0,
+      "last_time": 1.0
+    },
+    {
+      "probe_id": "probe_0003",
+      "properties": {
+        "charge": 1.0,
+        "mass": 1.0
+      },
+      "t0": 0.0,
+      "last_time": 8.0
+    },
+    {
+      "probe_id": "probe_0004",
+      "properties": {
+        "charge": 1.0,
+        "mass": 1.0
+      },
+      "t0": 0.0,
+      "last_time": 8.0
+    },
+    {
+      "probe_id": "probe_0005",
+      "properties": {
+        "charge": 1.0,
+        "mass": 1.0
+      },
+      "t0": 0.0,
+      "last_time": 8.0
+    },
+    {
+      "probe_id": "probe_0006",
+      "properties": {
+        "charge": 1.0,
+        "mass": 1.0
+      },
+      "t0": 0.0,
+      "last_time": 8.0
+    },
+    {
+      "probe_id": "probe_0007",
+      "properties": {
+        "charge": 1.0,
+        "mass": 1.0
+      },
+      "t0": 0.0,
+      "last_time": 8.0
+    }
+  ],
+  "archived_score": {
+    "status": "scored",
+    "total": 53.40823842891941,
+    "maximum": 100,
+    "prediction": 38.40823842891941,
+    "law": 15,
+    "conservation": 0.0,
+    "position_mse": 4.363188962644523,
+    "reference_variance": 40.292210682464365,
+    "normalized_error": 0.10828864658308344,
+    "energy_used": 5.0,
+    "energy_budget": 10,
+    "claim_checks": [
+      {
+        "field": "dynamics_order",
+        "submitted": 2,
+        "expected": 2,
+        "correct": true,
+        "points": 5
+      },
+      {
+        "field": "hidden_matter",
+        "submitted": false,
+        "expected": false,
+        "correct": true,
+        "points": 5
+      },
+      {
+        "field": "time_dependence",
+        "submitted": false,
+        "expected": false,
+        "correct": true,
+        "points": 5
+      }
+    ],
+    "reason": null,
+    "formula_version": "shore_e4_10energy",
+    "local_only": true,
+    "official_score": false,
+    "source_note": "Local discovery score: P=80/(1+10e), three declarations worth 5 each; C=5*(1-E/10) only when P>=40. Ruleset=e5; this remains a local compatibility evaluation.",
+    "source": "v15_public_catalog_local_agent_evaluation",
+    "energy_source": "result.json:budget.energy_remaining"
+  },
+  "archived_overall": {
+    "position_mse": 4.363188962644522,
+    "velocity_mse": 0.0497599822999717,
+    "position_rmse": 2.088824780263898,
+    "velocity_rmse": 0.2230694562237773
+  },
+  "audits": {
+    "archived_formula_dop853": {
+      "formula": {
+        "ax": "-k*x/(x**2+y**2)",
+        "ay": "-k*y/(x**2+y**2)"
+      },
+      "parameters": {
+        "k": 0.0795045545075704
+      },
+      "metrics": {
+        "position_mse": 4.363188962644516,
+        "velocity_mse": 0.0497599822999717,
+        "position_rmse": 2.088824780263897,
+        "velocity_rmse": 0.2230694562237773
+      },
+      "score_arithmetic_only": {
+        "status": "scored",
+        "total": 53.408238428919454,
+        "maximum": 100,
+        "prediction": 38.408238428919454,
+        "law": 15,
+        "conservation": 0.0,
+        "position_mse": 4.363188962644516,
+        "reference_variance": 40.29221068246438,
+        "normalized_error": 0.10828864658308324,
+        "energy_used": 5.0,
+        "energy_budget": 10,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_e4_10energy",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples correspond to 5e and conflict with that formula; this implementation uses 10e and applies the P>=40 conservation gate before display rounding."
+      },
+      "max_probe_position_rmse": 4.711826934841992
+    },
+    "public_complete_formula_dop853": {
+      "formula": {
+        "ax": "-k*q(\"charge\")*x/(q(\"mass\")*sqrt(x**2+y**2)*sqrt(x**2+y**2+eps**2))",
+        "ay": "-k*q(\"charge\")*y/(q(\"mass\")*sqrt(x**2+y**2)*sqrt(x**2+y**2+eps**2))"
+      },
+      "parameters": {
+        "k": 0.07957747154594767,
+        "eps": 0.05
+      },
+      "metrics": {
+        "position_mse": 3.909622125318201e-15,
+        "velocity_mse": 3.397647146688805e-16,
+        "position_rmse": 6.252697118298792e-08,
+        "velocity_rmse": 1.843270774110197e-08
+      },
+      "score_arithmetic_only": {
+        "status": "scored",
+        "total": 97.49999999999993,
+        "maximum": 100,
+        "prediction": 79.99999999999993,
+        "law": 15,
+        "conservation": 2.5,
+        "position_mse": 3.909622125318201e-15,
+        "reference_variance": 40.29221068246438,
+        "normalized_error": 9.703171057376884e-17,
+        "energy_used": 5.0,
+        "energy_budget": 10,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_e4_10energy",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples correspond to 5e and conflict with that formula; this implementation uses 10e and applies the P>=40 conservation gate before display rounding."
+      },
+      "max_probe_position_rmse": 2.1398656650338404e-07
+    },
+    "archived_formula_yoshida": {
+      "formula": {
+        "ax": "-k*x/(x**2+y**2)",
+        "ay": "-k*y/(x**2+y**2)"
+      },
+      "parameters": {
+        "k": 0.0795045545075704
+      },
+      "metrics": {
+        "position_mse": 4.3631889547364,
+        "velocity_mse": 0.04975998226685102,
+        "position_rmse": 2.0888247783709386,
+        "velocity_rmse": 0.22306945614953883
+      },
+      "score_arithmetic_only": {
+        "status": "scored",
+        "total": 53.408238465111296,
+        "maximum": 100,
+        "prediction": 38.408238465111296,
+        "law": 15,
+        "conservation": 0.0,
+        "position_mse": 4.3631889547364,
+        "reference_variance": 40.29221068246438,
+        "normalized_error": 0.10828864638681414,
+        "energy_used": 5.0,
+        "energy_budget": 10,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_e4_10energy",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Uses the displayed PDF formula P=80/(1+10e). The nearby numeric examples correspond to 5e and conflict with that formula; this implementation uses 10e and applies the P>=40 conservation gate before display rounding."
+      },
+      "max_position_difference_vs_dop853": 3.0347212598656954e-07
+    }
+  },
+  "property_time_bridge_checks": [
+    {
+      "probe_id": "v15_b0-s0_1",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 0.7,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b0-s0_2",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 1.0,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b0-s0_3",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 1.3,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b0-s0_4",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 1.6,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b0-s1_1",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 0.7,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b0-s1_2",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 1.0,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b0-s1_3",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 1.3,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b0-s1_4",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 1.6,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b1-s0_1",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 0.7,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b1-s0_2",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 1.0,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b1-s0_3",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 1.3,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b1-s0_4",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 1.6,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b1-s1_1",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 0.7,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b1-s1_2",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 1.0,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b1-s1_3",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 1.3,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b1-s1_4",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 1.6,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b2-s0_1",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 0.7,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b2-s0_2",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 1.0,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b2-s0_3",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 1.3,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b2-s0_4",
+      "t_launch": 0.0,
+      "first_sample": 1.5,
+      "last_sample": 30.0,
+      "charge": 0.7,
+      "mass": 1.6,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b2-s1_1",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 0.7,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b2-s1_2",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 1.0,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b2-s1_3",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 1.3,
+      "property_round_trip_matches": true
+    },
+    {
+      "probe_id": "v15_b2-s1_4",
+      "t_launch": 4.0,
+      "first_sample": 5.5,
+      "last_sample": 34.0,
+      "charge": 1.7,
+      "mass": 1.6,
+      "property_round_trip_matches": true
+    }
+  ],
+  "complete_formula_vs_source_acceleration_max_abs_error": 5.551115123125783e-17,
+  "complete_formula_acceleration_checks": 480,
+  "body_inputs": {
+    "archived_expression_uses_bodies": false,
+    "source_marker_initial": [
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "provided_at_t0": [
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "provided_at_latest_time": [
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "conclusion": "World 1 origin is static; archived formula does not request body positions, so interpolation/extrapolation does not affect these results."
+  },
+  "method": "Regenerate clean public fixed trajectories once. Replay archived and complete public-force DSL with unchanged candidate DOP853. Replay archived force with fixed Yoshida4 grid. Independently compare complete DSL acceleration to public source at all 480 reference states. Round-trip every public source/probe attribute through the adapter. No fit, tuning, submission, archived-score rewrite, or Agent observation supplied.",
+  "conclusion": "No world-1 evaluator/body/time/property/unit mismatch found. Original score reproduces; property dependence was untested by the Agent. Full public formula agrees across the numerical adapter at ~1e-7 position error.",
+  "limitations": "This is a truth-informed developer audit, not autonomous discovery success or evidence of hidden-world generalization; diagnostics must not be supplied to the exploring Agent.",
+  "elapsed_local_computation_seconds": 1.674141875
+}

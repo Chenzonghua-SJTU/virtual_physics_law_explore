@@ -54,7 +54,18 @@ CODE_SCHEMA = tool('run_code',
      'files': {'type':'array','items':{'type':'string','minLength':1,'maxLength':300},'uniqueItems':True,'maxItems':128}}, ['code'])
 
 
-def tool_schemas(code_enabled=False, *, ruleset='e3'):
+SYMBOLIC_SCHEMA = tool('symbolic_regression',
+    '在当前会话指定训练探针的完整位置和速度观测上，以速度差分估计加速度，用PySR搜索候选公式。'
+    '只搜索t,x,y,vx,vy和这些探针共同提供的mass/charge；当前不支持天体集合位置输入。'
+    '变量不变化不能证明无依赖；先用控制实验提供可辨识的数据。时间包含在300秒内，建议一次20–30秒，两轴合计；余时不足会拒绝。'
+    '返回至多3个符合现有DSL的law_spec与parameter_spec初值、搜索误差和来源；误差不是轨迹验证分数。'
+    '候选仍需fit_law_and_rollout按位置轨迹重拟合，再用新探针validate_law；所有搜索用过的探针均不能冒充独立验证。'
+    '超时/不可用/无好候选时按已有工具继续研究，不要机械重复相同搜索；本工具不投放探针、不自动提交。',
+    {'train_probe_ids': IDS,
+     'time_budget_seconds': {'type': 'number', 'minimum': 1, 'maximum': 60}})
+
+
+def tool_schemas(code_enabled=False, *, ruleset='e3', symbolic_enabled=False):
     import copy
     schemas = copy.deepcopy(SCHEMAS + ([CODE_SCHEMA] if code_enabled else []))
     if ruleset in ('e4', 'e5'):
@@ -64,4 +75,8 @@ def tool_schemas(code_enabled=False, *, ruleset='e3'):
             '格式与有限输出验证成功才替换上份草稿，不结束探索。预算截止时封存最后及时有效配对；'
             '不会自动选择规律、补写claims或检查物理真值。')
         schemas.append(draft)
+    if symbolic_enabled:
+        if ruleset != 'e5':
+            raise ValueError('symbolic_regression requires ruleset=e5')
+        schemas.append(copy.deepcopy(SYMBOLIC_SCHEMA))
     return schemas

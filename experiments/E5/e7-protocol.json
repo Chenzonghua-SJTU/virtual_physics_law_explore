@@ -1,0 +1,65 @@
+{
+  "registered_at": "2026-11-07T03:54:46.829345+00:00",
+  "study": "E7: optional PySR after frozen no-extra-tool E6 selection",
+  "baseline_selection": "experiments/E5/e6-final-selection.json",
+  "baseline_configuration": "deployment/config.e6.final.json",
+  "sequence": "Publish the complete E6 baseline results before starting any E7 world. Synthetic setup tests are separate.",
+  "design": {
+    "arms": [
+      "symbolic_regression_disabled",
+      "symbolic_regression_enabled"
+    ],
+    "complete_repeats_per_arm": 2,
+    "worlds_per_repeat": 6,
+    "total_attempts": 24,
+    "queue": "interleave four arms/repeats by world across four identical 27B replicas; one active world per endpoint",
+    "automatic_session_retries": false,
+    "per_world_best_of_selection": false
+  },
+  "limits": {
+    "energy": 10,
+    "exploration_seconds": 300,
+    "output_tokens_per_request": 4096,
+    "cumulative_token_quota": null,
+    "thinking": false,
+    "exploration_noise": false,
+    "evaluation_noise": false,
+    "sampling_seed": null
+  },
+  "symbolic_search": {
+    "inputs": [
+      "current_session_train_probe_ids",
+      "time_budget_seconds"
+    ],
+    "target": "velocity_difference_acceleration",
+    "features": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy",
+      "mass_if_observed",
+      "charge_if_observed"
+    ],
+    "body_positions_included": false,
+    "search_cap_seconds": 60,
+    "finish_reserve_seconds": 35,
+    "pysr_version": "2.7.2",
+    "julia_version": "1.13.3",
+    "workers": 4,
+    "julia_threads_per_worker": 4,
+    "search_seed": 42,
+    "bitwise_determinism_claimed": false,
+    "warm_start": false,
+    "default_enabled": false
+  },
+  "report": [
+    "each full batch scores, completion and raw>=90 count",
+    "per-world exploration, evaluation, total elapsed seconds",
+    "per-request mean and maximum output tokens with usage completeness",
+    "search calls, actual elapsed, completed axes, candidate adoption evidence",
+    "keep every failure and do not claim hidden-world generalization"
+  ],
+  "baseline_commit": "eae6745",
+  "selected_guidance_profile": "baseline"
+}

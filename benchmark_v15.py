@@ -96,7 +96,8 @@ def _hashes(project):
     paths = ['shore_agent/agent.py', 'shore_agent/prompts/main.txt', 'shore_agent/prompts/e5.txt', 'shore_agent/prompts/e5_concise.txt', 'shore_agent/schemas.py',
              'shore_agent/runtime.py', 'shore_agent/numerics.py', 'shore_agent/expressions.py',
              'shore_agent/model.py', 'shore_agent/web_worker.py', 'shore_agent/store.py', 'shore_agent/workspace.py',
-             'shore_agent/submission.py', 'shore_rules.py', 'shore_v15/simulator.py',
+             'shore_agent/submission.py', 'shore_agent/symbolic_regression.py', 'shore_agent/symbolic_service.py',
+             'shore_rules.py', 'shore_v15/simulator.py',
              'shore_v15/evaluation.py', 'benchmark_v15.py', 'shore_v15/vendor/SOURCE.json']
     return {path: hashlib.sha256((project / path).read_bytes()).hexdigest()
             for path in paths if (project / path).is_file()}
@@ -247,6 +248,7 @@ def summarize(snapshot, directory):
     result = snapshot.get('result') or {}
     usage, budget = snapshot.get('model_usage') or {}, snapshot.get('budget') or {}
     records = snapshot.get('records') or {}
+    searches = records.get('symbolic_searches', [])
     accepted = [s for s in records.get('submissions', [])
                 if s.get('status') == 'accepted' and s.get('session_ended') is True]
     submission = accepted[0] if len(accepted) == 1 else None
@@ -300,6 +302,10 @@ def summarize(snapshot, directory):
             'exploration_deadline_met': metadata.get('submission_deadline_met',
                 bool(submission) and exploration <= wall_limit if terminal and exploration is not None else None),
             'model_elapsed_seconds': usage.get('elapsed_seconds'),
+            'symbolic_search_calls': len(searches),
+            'symbolic_search_seconds': sum(s.get('wall_seconds', 0) for s in searches),
+            'symbolic_search_completed_calls': sum(len(s.get('search_axes_completed', [])) == 2 for s in searches),
+            'symbolic_search_candidate_count': sum(len(s.get('candidates', [])) for s in searches),
             'average_output_tokens_per_call': average,
             'max_call_output_tokens': max(output_values) if output_values else None,
             'output_limit_tokens': output_limit,

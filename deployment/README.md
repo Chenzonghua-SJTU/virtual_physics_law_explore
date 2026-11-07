@@ -26,6 +26,30 @@ baseline 两批分别 2/6 达到 90 分，12/12 完成独立评测；concise 两
 .venv/bin/python -u deployment/run_e6_recovery.py
 ```
 
+## E7：冻结 E6 后的可选 PySR 对照
+
+`numerics.symbolic_regression_enabled` 默认关闭。打开后仅增加 `symbolic_regression(train_probe_ids, time_budget_seconds)` 一个工具；普通 baseline 仍是 9 个工具。搜索只读取当前会话已获取的指定探针位置、速度、时间和共同提供的 mass/charge，从速度中心差分估计加速度，分别搜索 ax/ay。当前未输入天体集合位置，不预置引力、周期项或开发世界公式。
+
+输入示例：`{"train_probe_ids":["probe_..."],"time_budget_seconds":25}`。工具输出 feature_names、被移除的常量列、两轴搜索完成情况、搜索耗时及最多 3 个候选。每个候选含现有 DSL 的 law_spec、最多 5 个 parameter_spec 初值、加速度搜索误差、复杂度和来源。Pareto 候选保留误差最小端、复杂度最小端及中部，防止微小数值误差把简单式挤出结果；搜索误差不作为独立预测分数。
+
+Agent 仍须用原 fit_law_and_rollout 按位置轨迹拟合，再取得独立新探针验证并自行提交。搜索用过的所有探针会记入发现数据，不能在后续验证中冒充未见数据；搜索失败也保留这项来源记录。每次搜索最多 60 秒，并为拟合/验证/交卷保留至少 35 秒，搜索计入原 300 秒时限。CPU 服务预热在实验开始前完成，进程级硬超时可返回已取得的部分候选；服务不可用有明确失败反馈，不扩大预算。
+
+服务器安装独立 PySR 2.7.2 / Julia 1.13.3 环境，4 个 CPU worker，每个固定 4 线程，保留原 vLLM Python 环境。已安装依赖后可离线启动：
+
+```bash
+mkdir -p deployment/pysr-work
+env PYTHON_JULIAPKG_EXE="$PWD/.venv-pysr/julia-1.13.3/bin/julia" \
+  JULIA_DEPOT_PATH="$PWD/.venv-pysr/julia-depot" PYTHON_JULIAPKG_OFFLINE=yes \
+  PYTHON_JULIACALL_THREADS=4 JULIA_NUM_THREADS=4 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
+  .venv/bin/python -u -m shore_agent.symbolic_service serve \
+  --worker-python "$PWD/.venv-pysr/bin/python" --pool-size 4 --port 8890 \
+  --spool-dir deployment/pysr-work
+```
+
+服务仅监听 127.0.0.1:8890。确认 `/health` 中 4 个 worker ready 后，再运行纯合成验证或正式比较。依赖首次安装、编译、重启记录见 `deployment/pysr-setup-evidence.json`；合成数据结果不是宇宙测评分数。
+
+`deployment/run_e7.py` 必须读取已冻结的 `e6-final-selection.json` 与 `config.e6.final.json`，交错运行 PySR 开/关各两批完整六世界；四卡各接一个活跃会话，排队不计入探索时间。保留所有尝试，不按世界选最好的结果。E6/E7 均记录每次实验探索耗时、交卷后评测、总耗时、平均/最大输出 token；E7 额外记录搜索次数和耗时。开发世界结果不代表九个隐藏世界泛化能力。
+
 ## 历史：恢复 3ba6d63 的 E5 R01
 
 Agent、模型客户端、科学工具、提示词、拟合和评测实现逐文件恢复为该提交。规则为 10 能量、300 秒探索、单次最多 4096 输出 token，关闭思考，探索和独立评测均无噪声。提示词使用原 `main.txt` 加该提交的 `e5.txt`；没有后期诊断、候选公式、HS/谐波、工具筛选或恢复策略。保留原有 8 个工具和 E4 已有的 `save_draft`，共 9 个。

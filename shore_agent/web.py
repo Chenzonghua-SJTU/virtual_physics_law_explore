@@ -144,6 +144,10 @@ class Handler(BaseHTTPRequestHandler):
                             diagnostics_enabled=data['configuration'].get('numerics', {}).get('diagnostics_enabled', False),
                             diagnostics_harmonic=data['configuration'].get('numerics', {}).get('diagnostics_harmonic', False),
                             diagnostics_on_fit=data['configuration'].get('numerics', {}).get('diagnostics_on_fit', False),
+                            symbolic_regression_enabled=data['configuration'].get('numerics', {}).get('symbolic_regression_enabled', False),
+                            guidance_profile=data['configuration'].get('agent', {}).get('guidance_profile', 'baseline'),
+                            loop_recovery=data['configuration'].get('agent', {}).get('loop_recovery', False),
+                            max_total_tokens=model.get('max_total_tokens'),
                             model_sampling_seed=model.get('sampling_seed'),
                             model_temperature=model.get('temperature'),
                             updated_at=data['updated_at'], model=model['model'],
@@ -157,6 +161,7 @@ class Handler(BaseHTTPRequestHandler):
                                 'output_limit_exceeded_calls', 'output_cap_compliant',
                                 'requests_above_4096',
                                 'requests_without_reported_usage',
+                                'symbolic_search_calls', 'symbolic_search_seconds', 'symbolic_search_completed_calls',
                                 'energy_used', 'evaluation_complete', 'evaluation_score',
                                 'independent_rmse', 'n_test_trajectories')}
                                 for row in data['worlds']]))

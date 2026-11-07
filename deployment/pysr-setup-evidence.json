@@ -1,0 +1,709 @@
+{
+  "recorded_at": "2026-11-07T03:33:54.682179+00:00",
+  "scope": "Environment and synthetic-only readiness verification; zero universe experiments",
+  "environment": {
+    "import_seconds": 5.514555484056473,
+    "versions": {
+      "pysr": "2.7.2",
+      "juliacall": "0.9.36",
+      "juliapkg": "0.1.28",
+      "numpy": "2.5.4",
+      "pandas": "3.1.1",
+      "scikit-learn": "1.9.1",
+      "sympy": "1.14.0"
+    },
+    "julia": "1.13.3",
+    "julia_threads": 4,
+    "cpu_count": 192,
+    "measurements": [
+      {
+        "phase": "warmup",
+        "elapsed_seconds": 21.143687419593334,
+        "requested_search_timeout_seconds": 3,
+        "candidates": [
+          [],
+          []
+        ]
+      },
+      {
+        "phase": "warm_search",
+        "elapsed_seconds": 10.048997197300196,
+        "requested_search_timeout_seconds": 10,
+        "candidates": [
+          [
+            {
+              "complexity": 7,
+              "loss": 1.8365985391079763e-27,
+              "equation": "(y * -0.30000000000000004) + (x * 1.6999999999999242)"
+            },
+            {
+              "complexity": 9,
+              "loss": 5.705567460247186e-33,
+              "equation": "(x + x) + ((y + x) * -0.30000000000000004)"
+            },
+            {
+              "complexity": 11,
+              "loss": 2.8263021933882688e-33,
+              "equation": "(-0.30000000000000004 * y) + ((-0.30000000000000004 * x) + (x + x))"
+            }
+          ],
+          [
+            {
+              "complexity": 1,
+              "loss": 0.2848942172903088,
+              "equation": "0.07916871659696863"
+            },
+            {
+              "complexity": 3,
+              "loss": 0.0,
+              "equation": "vx * -0.9"
+            }
+          ]
+        ]
+      },
+      {
+        "phase": "repeat_fresh_search",
+        "elapsed_seconds": 10.102802645415068,
+        "requested_search_timeout_seconds": 10,
+        "candidates": [
+          [
+            {
+              "complexity": 7,
+              "loss": 7.979561093833806e-31,
+              "equation": "(y * -0.30000000000000004) + (x * 1.7000000000000015)"
+            },
+            {
+              "complexity": 9,
+              "loss": 5.705567460247186e-33,
+              "equation": "(x + x) + ((x + y) * -0.30000000000000004)"
+            },
+            {
+              "complexity": 11,
+              "loss": 2.407412430484045e-34,
+              "equation": "(y * -0.3) + ((x + x) + (x * -0.30000000000000004))"
+            }
+          ],
+          [
+            {
+              "complexity": 1,
+              "loss": 0.2848942172903087,
+              "equation": "0.07916872189158104"
+            },
+            {
+              "complexity": 3,
+              "loss": 0.0,
+              "equation": "vx * -0.9"
+            }
+          ]
+        ]
+      }
+    ],
+    "data": "synthetic only; independent random state 9723; no universe data",
+    "symbolic_regression_julia_version": "2.7.2",
+    "first_import_with_install_and_precompile_seconds": 197.1300827972591,
+    "first_import_thread_setting_issue": "JULIA_NUM_THREADS=4 alone yielded192; first search aborted; corrected using PYTHON_JULIACALL_THREADS=4",
+    "manual_python_and_julia_download_time_included": false,
+    "python_executable": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/bin/python",
+    "julia_executable": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/julia-1.13.3/bin/julia",
+    "julia_depot": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/julia-depot"
+  },
+  "http_smoke": {
+    "recovery_seconds": 0.0006468836218118668,
+    "synthetic_only": true,
+    "world_experiments": 0,
+    "ready_wait_seconds": 20.03263877891004,
+    "results": [
+      {
+        "phase": "http_search",
+        "requested_seconds": 20,
+        "http_wall_seconds": 16.249352399259806,
+        "result": {
+          "status": "timeout",
+          "backend": "pysr",
+          "target": "velocity_difference_acceleration",
+          "feature_names": [
+            "t",
+            "x",
+            "y",
+            "vx",
+            "vy",
+            "mass",
+            "charge"
+          ],
+          "samples_per_probe": {
+            "synthetic_0": 19,
+            "synthetic_1": 19,
+            "synthetic_2": 19
+          },
+          "dropped_constant_features": [],
+          "omitted_incomplete_properties": [],
+          "search_configuration": {
+            "maxsize": 20,
+            "binary_operators": [
+              "+",
+              "-",
+              "*",
+              "/"
+            ],
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "random_state": 9723,
+            "warm_start": false,
+            "parallelism": "multithreading"
+          },
+          "warnings": [
+            "Search loss is against velocity-difference acceleration, not independent trajectory prediction.",
+            "All selected probes were used for structure discovery and cannot serve as independent validation.",
+            "Constant or absent properties do not establish absence of physical dependence.",
+            "This version searches state and public probe properties only; body-set expressions are not supported.",
+            "State-only dependence on t does not establish explicit physical time dependence; it may substitute for unmodeled body motion.",
+            "A fixed seed with multithreaded search does not guarantee bitwise reproducibility."
+          ],
+          "axis_search_seconds": [
+            8.710684485733509,
+            7.3118034191429615
+          ],
+          "search_axes_completed": [
+            "ax",
+            "ay"
+          ],
+          "rejected_candidate_pairs": 0,
+          "elapsed_seconds": 16.24830226972699,
+          "used_probe_ids": [
+            "synthetic_0",
+            "synthetic_1",
+            "synthetic_2"
+          ],
+          "candidates": [
+            {
+              "law_spec": {
+                "ax": "t + t - (-t + t + t + t - 1 * c1)",
+                "ay": "t - (t - 1 * c2) - 1 * c3"
+              },
+              "parameter_spec": [
+                {
+                  "name": "c1",
+                  "initial": 0.7000000000000001
+                },
+                {
+                  "name": "c2",
+                  "initial": -0.4261092601935932
+                },
+                {
+                  "name": "c3",
+                  "initial": -0.02610926019359311
+                }
+              ],
+              "complexity": 20,
+              "acceleration_search_mse_by_axis": [
+                1.4637608189257204e-30,
+                2.5684472044305283e-31
+              ],
+              "acceleration_search_mse": 1.720605539368773e-30,
+              "normalized_acceleration_search_loss": 2.296273240084254e-30,
+              "dsl_valid": true,
+              "component_sources": [
+                "pysr",
+                "pysr"
+              ],
+              "discovery_probe_ids": [
+                "synthetic_0",
+                "synthetic_1",
+                "synthetic_2"
+              ]
+            },
+            {
+              "law_spec": {
+                "ax": "-vx + (abs(vx) + c1)",
+                "ay": "t - (t - 1 * c2) - 1 * c3"
+              },
+              "parameter_spec": [
+                {
+                  "name": "c1",
+                  "initial": 0.7000000000000001
+                },
+                {
+                  "name": "c2",
+                  "initial": -0.4261092601935932
+                },
+                {
+                  "name": "c3",
+                  "initial": -0.02610926019359311
+                }
+              ],
+              "complexity": 14,
+              "acceleration_search_mse_by_axis": [
+                1.470896896193345e-30,
+                2.5684472044305283e-31
+              ],
+              "acceleration_search_mse": 1.727741616636398e-30,
+              "normalized_acceleration_search_loss": 2.30355495158183e-30,
+              "dsl_valid": true,
+              "component_sources": [
+                "pysr",
+                "pysr"
+              ],
+              "discovery_probe_ids": [
+                "synthetic_0",
+                "synthetic_1",
+                "synthetic_2"
+              ]
+            },
+            {
+              "law_spec": {
+                "ax": "c1",
+                "ay": "t - (t - 1 * c2) - 1 * c3"
+              },
+              "parameter_spec": [
+                {
+                  "name": "c1",
+                  "initial": 0.7000000000000001
+                },
+                {
+                  "name": "c2",
+                  "initial": -0.4261092601935932
+                },
+                {
+                  "name": "c3",
+                  "initial": -0.02610926019359311
+                }
+              ],
+              "complexity": 8,
+              "acceleration_search_mse_by_axis": [
+                1.498359981435414e-30,
+                2.5684472044305283e-31
+              ],
+              "acceleration_search_mse": 1.755204701878467e-30,
+              "normalized_acceleration_search_loss": 2.3315785079512885e-30,
+              "dsl_valid": true,
+              "component_sources": [
+                "constant_initialization",
+                "pysr"
+              ],
+              "discovery_probe_ids": [
+                "synthetic_0",
+                "synthetic_1",
+                "synthetic_2"
+              ]
+            }
+          ],
+          "search_elapsed_seconds": 16.18346017599106,
+          "service_elapsed_seconds": 16.24830226972699,
+          "requested_time_budget_seconds": 20.0,
+          "worker_search_budget_seconds": 17.99945735000074,
+          "cleanup_reserve_seconds": 2.0,
+          "service_budget_exceeded": false,
+          "worker_reap_pending": false,
+          "cleanup_pending": false,
+          "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing"
+        }
+      },
+      {
+        "phase": "http_repeat_search",
+        "requested_seconds": 20,
+        "http_wall_seconds": 16.11519794166088,
+        "result": {
+          "status": "timeout",
+          "backend": "pysr",
+          "target": "velocity_difference_acceleration",
+          "feature_names": [
+            "t",
+            "x",
+            "y",
+            "vx",
+            "vy",
+            "mass",
+            "charge"
+          ],
+          "samples_per_probe": {
+            "synthetic_0": 19,
+            "synthetic_1": 19,
+            "synthetic_2": 19
+          },
+          "dropped_constant_features": [],
+          "omitted_incomplete_properties": [],
+          "search_configuration": {
+            "maxsize": 20,
+            "binary_operators": [
+              "+",
+              "-",
+              "*",
+              "/"
+            ],
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "random_state": 9723,
+            "warm_start": false,
+            "parallelism": "multithreading"
+          },
+          "warnings": [
+            "Search loss is against velocity-difference acceleration, not independent trajectory prediction.",
+            "All selected probes were used for structure discovery and cannot serve as independent validation.",
+            "Constant or absent properties do not establish absence of physical dependence.",
+            "This version searches state and public probe properties only; body-set expressions are not supported.",
+            "State-only dependence on t does not establish explicit physical time dependence; it may substitute for unmodeled body motion.",
+            "A fixed seed with multithreaded search does not guarantee bitwise reproducibility."
+          ],
+          "axis_search_seconds": [
+            8.05017721094191,
+            7.986048901453614
+          ],
+          "search_axes_completed": [
+            "ax",
+            "ay"
+          ],
+          "rejected_candidate_pairs": 44,
+          "elapsed_seconds": 16.11404314637184,
+          "used_probe_ids": [
+            "synthetic_0",
+            "synthetic_1",
+            "synthetic_2"
+          ],
+          "candidates": [
+            {
+              "law_spec": {
+                "ax": "-t + t + c1 - c2 / (c3 - t)",
+                "ay": "c4"
+              },
+              "parameter_spec": [
+                {
+                  "name": "c1",
+                  "initial": 0.6999999999999998
+                },
+                {
+                  "name": "c2",
+                  "initial": 8.052566863106131e-18
+                },
+                {
+                  "name": "c3",
+                  "initial": 0.8474115637280873
+                },
+                {
+                  "name": "c4",
+                  "initial": -0.4000000000000001
+                }
+              ],
+              "complexity": 12,
+              "acceleration_search_mse_by_axis": [
+                1.0448947077927435e-30,
+                2.883623950417267e-31
+              ],
+              "acceleration_search_mse": 1.3332571028344702e-30,
+              "normalized_acceleration_search_loss": 1.967351574089827e-30,
+              "dsl_valid": true,
+              "component_sources": [
+                "pysr",
+                "pysr"
+              ],
+              "discovery_probe_ids": [
+                "synthetic_0",
+                "synthetic_1",
+                "synthetic_2"
+              ]
+            },
+            {
+              "law_spec": {
+                "ax": "c1",
+                "ay": "c2 / cos(c3 * cos(c4 / sqrt(t)))"
+              },
+              "parameter_spec": [
+                {
+                  "name": "c1",
+                  "initial": 0.7000000000000001
+                },
+                {
+                  "name": "c2",
+                  "initial": -0.39999999999999974
+                },
+                {
+                  "name": "c3",
+                  "initial": 6.341952949045276e-08
+                },
+                {
+                  "name": "c4",
+                  "initial": 34.41997511311428
+                }
+              ],
+              "complexity": 11,
+              "acceleration_search_mse_by_axis": [
+                1.498359981435414e-30,
+                2.230024146132588e-31
+              ],
+              "acceleration_search_mse": 1.7213623960486728e-30,
+              "normalized_acceleration_search_loss": 2.225821302233182e-30,
+              "dsl_valid": true,
+              "component_sources": [
+                "constant_initialization",
+                "pysr"
+              ],
+              "discovery_probe_ids": [
+                "synthetic_0",
+                "synthetic_1",
+                "synthetic_2"
+              ]
+            },
+            {
+              "law_spec": {
+                "ax": "c1",
+                "ay": "c2 / cos(cos(t * c3) * c4)"
+              },
+              "parameter_spec": [
+                {
+                  "name": "c1",
+                  "initial": 0.7000000000000001
+                },
+                {
+                  "name": "c2",
+                  "initial": -0.39999999999999974
+                },
+                {
+                  "name": "c3",
+                  "initial": 26.37390528349573
+                },
+                {
+                  "name": "c4",
+                  "initial": 5.410247658541152e-08
+                }
+              ],
+              "complexity": 10,
+              "acceleration_search_mse_by_axis": [
+                1.498359981435414e-30,
+                2.2662451443849243e-31
+              ],
+              "acceleration_search_mse": 1.7249844958739066e-30,
+              "normalized_acceleration_search_loss": 2.237140364187037e-30,
+              "dsl_valid": true,
+              "component_sources": [
+                "constant_initialization",
+                "pysr"
+              ],
+              "discovery_probe_ids": [
+                "synthetic_0",
+                "synthetic_1",
+                "synthetic_2"
+              ]
+            }
+          ],
+          "search_elapsed_seconds": 16.0983679946512,
+          "service_elapsed_seconds": 16.11404314637184,
+          "requested_time_budget_seconds": 20.0,
+          "worker_search_budget_seconds": 17.999495623633265,
+          "cleanup_reserve_seconds": 2.0,
+          "service_budget_exceeded": false,
+          "worker_reap_pending": false,
+          "cleanup_pending": false,
+          "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing"
+        }
+      },
+      {
+        "phase": "tiny_budget_timeout",
+        "requested_seconds": 0.05,
+        "http_wall_seconds": 0.013009294867515564,
+        "result": {
+          "status": "timeout",
+          "backend": "pysr",
+          "target": "velocity_difference_acceleration",
+          "feature_names": [
+            "t",
+            "x",
+            "y",
+            "vx",
+            "vy",
+            "mass",
+            "charge"
+          ],
+          "samples_per_probe": {
+            "synthetic_0": 19,
+            "synthetic_1": 19,
+            "synthetic_2": 19
+          },
+          "dropped_constant_features": [],
+          "omitted_incomplete_properties": [],
+          "search_configuration": {
+            "maxsize": 20,
+            "binary_operators": [
+              "+",
+              "-",
+              "*",
+              "/"
+            ],
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "random_state": 9723,
+            "warm_start": false,
+            "parallelism": "multithreading"
+          },
+          "warnings": [
+            "Search loss is against velocity-difference acceleration, not independent trajectory prediction.",
+            "All selected probes were used for structure discovery and cannot serve as independent validation.",
+            "Constant or absent properties do not establish absence of physical dependence.",
+            "This version searches state and public probe properties only; body-set expressions are not supported.",
+            "State-only dependence on t does not establish explicit physical time dependence; it may substitute for unmodeled body motion.",
+            "A fixed seed with multithreaded search does not guarantee bitwise reproducibility."
+          ],
+          "axis_search_seconds": [],
+          "search_axes_completed": [],
+          "rejected_candidate_pairs": 0,
+          "elapsed_seconds": 0.012086918577551842,
+          "used_probe_ids": [
+            "synthetic_0",
+            "synthetic_1",
+            "synthetic_2"
+          ],
+          "candidates": [
+            {
+              "law_spec": {
+                "ax": "c1",
+                "ay": "c2"
+              },
+              "parameter_spec": [
+                {
+                  "name": "c1",
+                  "initial": 0.7000000000000001
+                },
+                {
+                  "name": "c2",
+                  "initial": -0.4
+                }
+              ],
+              "complexity": 2,
+              "acceleration_search_mse_by_axis": [
+                1.498359981435414e-30,
+                2.9036265912431827e-31
+              ],
+              "acceleration_search_mse": 1.7887226405597323e-30,
+              "normalized_acceleration_search_loss": 2.4363220663302427e-30,
+              "dsl_valid": true,
+              "component_sources": [
+                "constant_initialization",
+                "constant_initialization"
+              ],
+              "discovery_probe_ids": [
+                "synthetic_0",
+                "synthetic_1",
+                "synthetic_2"
+              ]
+            }
+          ],
+          "search_elapsed_seconds": 0.0027675945311784744,
+          "service_elapsed_seconds": 0.012086918577551842,
+          "requested_time_budget_seconds": 0.05,
+          "worker_search_budget_seconds": 0.044485144317150116,
+          "cleanup_reserve_seconds": 0.005000000000000001,
+          "service_budget_exceeded": false,
+          "worker_reap_pending": false,
+          "cleanup_pending": false,
+          "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing"
+        }
+      }
+    ],
+    "health_after": {
+      "status": "ready",
+      "pool_size": 4,
+      "ready": 4,
+      "busy": 0,
+      "failed": 0,
+      "warming": 0
+    }
+  },
+  "hard_timeout_fault_injection": {
+    "fault_injection": "SIGSTOP only idle workers owned by current symbolic service; remaining workers resumed in finally",
+    "requested_seconds": 1.0,
+    "http_wall_seconds": 0.9871059972792864,
+    "result": {
+      "used_probe_ids": [
+        "synthetic_timeout_probe"
+      ],
+      "candidates": [],
+      "search_elapsed_seconds": null,
+      "status": "timeout",
+      "stop_reason": "hard_timeout",
+      "elapsed_seconds": 0.986239604651928,
+      "service_elapsed_seconds": 0.986239604651928,
+      "requested_time_budget_seconds": 1.0,
+      "worker_search_budget_seconds": 0.8996915910393,
+      "cleanup_reserve_seconds": 0.1,
+      "service_budget_exceeded": false,
+      "worker_reap_pending": false,
+      "cleanup_pending": false,
+      "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing"
+    },
+    "worker_rewarm_seconds": 29.059340039268136,
+    "health_after": {
+      "status": "ready",
+      "pool_size": 4,
+      "ready": 4,
+      "busy": 0,
+      "failed": 0,
+      "warming": 0
+    }
+  },
+  "short_budget_fault_injection_note": {
+    "requested_seconds": 0.2,
+    "observed_service_seconds": 0.20051569305360317,
+    "status": "service_budget_exceeded",
+    "worker_reap_pending": true,
+    "cleanup_pending": true,
+    "note": "Earlier paused-worker test overran by0.000516s; remaining workers resumed; replacement warmed automatically. Retried with1.0s reserve-aware budget as recorded above."
+  },
+  "service": {
+    "pid": 4022043,
+    "endpoint": "http://127.0.0.1:8890",
+    "pool_size": 4,
+    "julia_threads_per_worker": 4,
+    "offline": true,
+    "health": {
+      "status": "ready",
+      "pool_size": 4,
+      "ready": 4,
+      "busy": 0,
+      "failed": 0,
+      "warming": 0
+    }
+  },
+  "thread_configuration": {
+    "PYTHON_JULIACALL_THREADS": "4",
+    "JULIA_NUM_THREADS": "4",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "dependency_transfer": {
+    "source": "https://julialang-s3.julialang.org/bin/linux/x64/1.13/julia-1.13.3-linux-x86_64.tar.gz",
+    "sha256": "5c61cb4b40332cb5a3504e7779e2f5dac093caa4a1116ded19f01413f85c63e4",
+    "verified_on_local_and_server": true,
+    "temporary_dependency_relays_stopped": true
+  },
+  "compatibility_fixes": [
+    "Warmup population_size27 satisfies PySR tournament constraint",
+    "Restore blocking pipe reads after JuliaCall import and each search to prevent false EOF"
+  ],
+  "regression_tests": {
+    "command": ".venv/bin/python -m pytest -q tests/test_symbolic_service.py",
+    "passed": 23,
+    "elapsed_seconds": 3.51
+  },
+  "limitations": [
+    "Synthetic success is not six-world performance",
+    "Multithreaded searches are not bitwise deterministic even with a fixed random_state",
+    "Constant-acceleration differencing roundoff can yield complicated near-constant candidates under current loss-first sorting; algorithm unchanged",
+    "HTTP timeout status with both axes completed can mean a planned search-budget stop, not a service wall-time violation"
+  ]
+}

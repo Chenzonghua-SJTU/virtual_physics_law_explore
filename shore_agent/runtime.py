@@ -42,6 +42,26 @@ class EnvironmentToolError(ValueError):
         super().__init__(str(error.get('message', error)))
 
 
+class SymbolicSearchToolError(ValueError):
+    """Expose stable public failures without forwarding worker exception text."""
+    SAFE_CODES = frozenset({
+        'symbolic_service_busy', 'symbolic_service_unavailable', 'symbolic_worker_failed',
+        'symbolic_search_failed', 'symbolic_search_timeout', 'symbolic_search_incomplete',
+        'invalid_worker_result', 'invalid_service_response', 'invalid_symbolic_endpoint',
+        'service_closed', 'invalid_search_budget', 'invalid_search_seed',
+        'invalid_search_probes', 'invalid_search_payload',
+    })
+
+    @classmethod
+    def safe_code(cls, code):
+        return code if isinstance(code, str) and code in cls.SAFE_CODES else 'symbolic_service_unavailable'
+
+    def __init__(self, code, search_id):
+        self.code = self.safe_code(code)
+        super().__init__(f'{self.code}. Search record: analyses/{search_id}.json. '
+                         'No usable search result; continue with existing observations and tools.')
+
+
 class ToolRuntime:
     schemas = SCHEMAS
 
@@ -58,7 +78,11 @@ class ToolRuntime:
         if type(self.code_enabled) is not bool:
             raise ValueError('code_execution.enabled must be boolean')
         self.ruleset = getattr(environment, 'ruleset', 'e3')
-        self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset)
+        self.symbolic_enabled = self.config.get('symbolic_regression_enabled', False)
+        if type(self.symbolic_enabled) is not bool:
+            raise ValueError('symbolic_regression_enabled must be boolean')
+        self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset, symbolic_enabled=self.symbolic_enabled)
+        self.discovery_probe_ids = set()
         self.last_valid_draft = None
         self.exploration_started_monotonic = None
         self.exploration_deadline_monotonic = None
@@ -237,6 +261,10 @@ class ToolRuntime:
         record = dict(result, law_id=rid, law_spec=law_spec, parameter_spec=parameter_spec,
                       train_probe_ids=train_probe_ids, known_bodies=copy.deepcopy(self.known_bodies),
                       body_position_estimate=copy.deepcopy(self.body_position_estimate))
+        if self.symbolic_enabled:
+            # Conservative provenance: a later law may be influenced by every
+            # structure search already observed, including unsuccessful searches.
+            record['discovery_probe_ids'] = sorted(self.discovery_probe_ids)
         if self._time_series_bodies():
             record.update(body_context=body_inputs, body_input_protocol='instantaneous_visible_state')
         self.store.add('law', record, rid)
@@ -252,7 +280,10 @@ class ToolRuntime:
 
     def validate_law(self, law_id, test_probe_ids):
         law = self._law(law_id)
-        if set(test_probe_ids) & set(law['train_probe_ids']):
+        used = set(law['train_probe_ids']) | set(law.get('discovery_probe_ids', []))
+        if self.symbolic_enabled:
+            used |= self.discovery_probe_ids
+        if set(test_probe_ids) & used:
             raise ValueError('Training and validation trajectories overlap')
         probes = self._probes(test_probe_ids)
         body_inputs = self._body_inputs(law)
@@ -268,6 +299,65 @@ class ToolRuntime:
             data['warnings'].append('Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty.')
         self.store.add('validation', data, rid)
         return preview(data)
+
+    def symbolic_regression(self, train_probe_ids, time_budget_seconds):
+        if not self.symbolic_enabled:
+            raise ValueError('symbolic_regression is disabled')
+        probes = self._probes(train_probe_ids)
+        remaining = self.budget()['wall_seconds_remaining']
+        allowed = min(float(time_budget_seconds), 60.0, remaining - 35.0)
+        if allowed < 1.0:
+            raise ValueError('Insufficient time for search and subsequent fit/validation/submission')
+        started = time.monotonic()
+        self.discovery_probe_ids.update(train_probe_ids)
+        rid = 'sr_' + uuid.uuid4().hex[:12]
+        failure_code = None
+        try:
+            from .symbolic_service import search_remote
+            result = search_remote(probes, allowed,
+                endpoint=self.config.get('symbolic_regression_endpoint', 'http://127.0.0.1:8890'),
+                random_state=self.config.get('symbolic_regression_seed', 42))
+        except Exception as exc:
+            failure_code = SymbolicSearchToolError.safe_code(getattr(exc, 'code', None))
+            result = {'status': 'unavailable', 'candidates': [],
+                      'warnings': ['Symbolic search failed or is unavailable; continue with existing tools.']}
+        if failure_code is None:
+            try:
+                if not isinstance(result, dict) or not isinstance(result.get('candidates'), list):
+                    raise ValueError('Invalid result shape')
+                if result.get('status') in ('error', 'failed', 'unavailable'):
+                    # Only a documented code is public; discard backend messages and paths.
+                    error = result.get('error')
+                    code = error.get('code') if isinstance(error, dict) else None
+                    failure_code = SymbolicSearchToolError.safe_code(code)
+                    result = {'status': 'unavailable', 'candidates': []}
+                elif result.get('status') not in ('completed', 'timeout', 'partial'):
+                    raise ValueError('Invalid result status')
+                else:
+                    for candidate in result['candidates']:
+                        Expression(candidate['law_spec'], candidate['parameter_spec'])
+                        candidate['discovery_probe_ids'] = list(train_probe_ids)
+                    if not result['candidates'] and result['status'] != 'completed':
+                        failure_code = ('symbolic_search_timeout' if result['status'] == 'timeout'
+                                        else 'symbolic_search_incomplete')
+            except Exception:
+                failure_code = 'invalid_service_response'
+                result = {'status': 'unavailable', 'candidates': []}
+        # The runtime owns provenance, not the worker or the language model.
+        result.update(search_id=rid, used_probe_ids=list(train_probe_ids),
+                      discovery_probe_ids=sorted(self.discovery_probe_ids),
+                      requested_time_budget_seconds=time_budget_seconds,
+                      effective_time_budget_seconds=allowed,
+                      wall_seconds=time.monotonic() - started,
+                      body_positions_included=False)
+        if failure_code is not None:
+            result['error'] = {'code': failure_code,
+                               'message': 'Symbolic search produced no usable result; continue with existing tools.'}
+        self.store.add('symbolic_search', result, rid)
+        if failure_code is not None:
+            # Archive provenance before the generic Agent failure/retry path sees it.
+            raise SymbolicSearchToolError(failure_code, rid)
+        return preview(result)
 
     def list_files(self, path='', offset=0, limit=100):
         return self.files.list_files(path, offset, limit)

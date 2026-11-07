@@ -1,0 +1,329 @@
+"""Real subprocess and HTTP boundaries without importing or installing PySR."""
+import http.client
+import json
+from pathlib import Path
+import subprocess
+import sys
+import threading
+import time
+
+import pytest
+
+from shore_agent import symbolic_service
+from shore_agent.symbolic_service import SymbolicServiceError, WorkerPool, make_server, search_remote
+
+
+FAKE_WORKER = r'''
+import json, pathlib, sys, time, subprocess
+directory=pathlib.Path(sys.argv[1])
+(directory/'ready.json').write_text('{"ready":true}')
+def save(path,data):
+ temp=path.with_suffix('.tmp');temp.write_text(json.dumps(data));temp.replace(path)
+for line in sys.stdin:
+ job=pathlib.Path(json.loads(line)['job_directory'])
+ data=json.loads((job/'request.json').read_text())
+ probe=data['probes'][0]
+ result={'status':'completed','elapsed_seconds':.01,'search_axes_completed':['ax','ay'],
+         'output_directory':'/private/worker/path',
+         'candidates':[{'law_spec':{'ax':'c1*x','ay':'0'},
+                        'parameter_spec':[{'name':'c1','initial':float(data['random_state'])}],
+                        'discovery_probe_ids':['wrong'], 'host_path':'/private/secret',
+                        'component_sources':['pysr','constant_initialization']}],
+         'used_probe_ids':['wrong']}
+ save(job/'progress.json',dict(result,status='running',search_axes_completed=['ax']))
+ if probe.get('crash'):
+  sys.exit(2)
+ if probe.get('error'):
+  save(job/'result.json',{'status':'error','message':'/private/secret'});continue
+ if probe.get('spawn_child'):
+  subprocess.Popen([sys.executable,'-c',"import pathlib,time;time.sleep(.7);pathlib.Path("+repr(probe['marker'])+").write_text('alive')"])
+ time.sleep(probe.get('sleep',0))
+ save(job/'result.json',result)
+'''
+
+
+def wait_until(condition, seconds=4):
+    deadline = time.monotonic() + seconds
+    while time.monotonic() < deadline:
+        if condition():
+            return
+        time.sleep(.01)
+    pytest.fail('condition not reached')
+
+
+@pytest.fixture
+def pool(tmp_path):
+    value = WorkerPool(1, spool_dir=tmp_path,
+        worker_command_factory=lambda directory: [sys.executable, '-u', '-c', FAKE_WORKER, str(directory)])
+    wait_until(lambda: value.health()['ready'] == 1)
+    try:
+        yield value
+    finally:
+        value.close()
+
+
+def test_each_job_has_isolated_input_output_and_server_owned_provenance(pool):
+    first = pool.search([{'probe_id': 'a'}], 2, random_state=11)
+    second = pool.search([{'probe_id': 'b'}], 2, random_state=22)
+    assert first['used_probe_ids'] == ['a'] and second['used_probe_ids'] == ['b']
+    assert first['candidates'][0]['discovery_probe_ids'] == ['a']
+    assert second['candidates'][0]['parameter_spec'][0]['initial'] == 22
+    assert first['candidates'][0]['parameter_spec'][0]['initial'] == 11
+    assert '/private/' not in json.dumps(first)
+    assert not list((pool.root / 'jobs').iterdir())
+
+
+def test_worker_survives_juliacall_nonblocking_stdin_import_and_multiple_searches(tmp_path):
+    fake_package = tmp_path / 'fake_package'
+    fake_package.mkdir()
+    (fake_package / 'pysr.py').write_text('''
+import os, pathlib, sys
+os.set_blocking(0, False)
+(pathlib.Path(sys.argv[1])/'nonblocking-import').write_text(str(os.get_blocking(0)))
+class PySRRegressor:
+    def __init__(self, **kwargs): pass
+    def fit(self, *args, **kwargs): os.set_blocking(0, False)
+''')
+    command = '''
+import os, sys
+sys.path.insert(0, sys.argv[2])
+from shore_agent import symbolic_regression
+from shore_agent.symbolic_service import _worker
+def search(probes, budget, **kwargs):
+    os.set_blocking(0, False)
+    return {'status':'completed', 'elapsed_seconds':0.01,
+            'search_axes_completed':['ax','ay'],
+            'candidates':[{'law_spec':{'ax':'c1*x','ay':'0'},
+                           'parameter_spec':[{'name':'c1','initial':kwargs['random_state']}]}]}
+symbolic_regression.run_search = search
+_worker(sys.argv[1])
+'''
+    value = WorkerPool(1, spool_dir=tmp_path,
+        worker_command_factory=lambda directory: [sys.executable, '-u', '-c', command,
+                                                  str(directory), str(fake_package)])
+    try:
+        wait_until(lambda: value.health()['ready'] == 1)
+        worker = value.workers[0]
+        assert (worker.directory / 'nonblocking-import').read_text() == 'False'
+        # The parent keeps its write end open without sending a command.
+        time.sleep(.1)
+        assert value.health()['ready'] == 1 and worker.process.poll() is None
+        for index in (11, 22):
+            result = value.search([{'probe_id': 'p' + str(index)}], 2, random_state=index)
+            assert result['candidates'][0]['parameter_spec'][0]['initial'] == index
+            time.sleep(.05)
+            assert value.health()['ready'] == 1 and value.workers[0] is worker
+    finally:
+        value.close()
+
+
+def test_no_hidden_queue_when_pool_is_busy(pool):
+    outcomes = []
+    thread = threading.Thread(target=lambda: outcomes.append(pool.search([{'probe_id': 'busy', 'sleep': .4}], 2)))
+    thread.start()
+    wait_until(lambda: pool.health()['busy'] == 1)
+    started = time.monotonic()
+    with pytest.raises(SymbolicServiceError) as exc:
+        pool.search([{'probe_id': 'next'}], 1)
+    assert exc.value.code == 'symbolic_service_busy' and exc.value.http_status == 409
+    assert time.monotonic() - started < .1
+    thread.join(3)
+    assert len(outcomes) == 1
+
+
+def test_hard_timeout_kills_reaps_owned_group_recovers_checkpoint_and_rewarms(pool, tmp_path):
+    marker = tmp_path / 'child-survived'
+    old = pool.workers[0]
+    started = time.monotonic()
+    result = pool.search([{'probe_id': 'slow', 'sleep': 5, 'spawn_child': True, 'marker': str(marker)}], .15)
+    assert time.monotonic() - started < .6
+    assert result['status'] == 'timeout' and result['stop_reason'] == 'hard_timeout'
+    assert result['worker_search_budget_seconds'] < .15
+    assert result['cleanup_reserve_seconds'] == pytest.approx(.015)
+    assert result['service_elapsed_seconds'] == result['elapsed_seconds']
+    assert result['search_axes_completed'] == ['ax']
+    assert result['candidates'][0]['discovery_probe_ids'] == ['slow']
+    assert old.process.poll() is not None and old.stopped
+    wait_until(lambda: pool.health()['ready'] == 1)
+    assert pool.workers[0].process.pid != old.process.pid
+    time.sleep(.8)
+    assert not marker.exists()
+    assert pool.search([{'probe_id': 'after'}], 2)['status'] == 'completed'
+
+
+def test_worker_crash_is_generic_and_pool_can_recover(pool):
+    with pytest.raises(SymbolicServiceError) as exc:
+        pool.search([{'probe_id': 'crash', 'crash': True}], 1)
+    assert exc.value.code == 'symbolic_worker_failed'
+    wait_until(lambda: pool.health()['ready'] == 1)
+
+
+def test_worker_exception_does_not_expose_host_paths(pool):
+    with pytest.raises(SymbolicServiceError) as exc:
+        pool.search([{'probe_id': 'error', 'error': True}], 1)
+    assert str(exc.value) == 'symbolic_search_failed'
+    assert pool.health()['ready'] == 1
+
+
+@pytest.mark.parametrize('endpoint', [
+    'http://example.com:8890', 'https://127.0.0.1:8890', 'http://127.0.0.1:8890/other',
+    'http://user:password@127.0.0.1:8890', 'http://localhost:8890/search?data=secret',
+    'http://127.0.0.1', 'http://127.0.0.1:8890#fragment', 'http://127.0.0.1:99999',
+])
+def test_remote_client_rejects_nonlocal_or_ambiguous_endpoints(endpoint):
+    with pytest.raises(SymbolicServiceError) as exc:
+        search_remote([{'probe_id': 'p'}], 1, endpoint)
+    assert exc.value.code == 'invalid_symbolic_endpoint'
+
+
+def test_http_round_trip_and_request_path_control(pool):
+    server = make_server(pool, 0)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        endpoint = f'http://localhost:{server.server_port}'
+        result = search_remote([{'probe_id': 'p'}], 2, endpoint)
+        assert result['used_probe_ids'] == ['p']
+        assert result['candidates'][0]['parameter_spec'][0]['initial'] == 42
+        assert result['tool_client_wall_seconds'] >= result['service_elapsed_seconds']
+        assert result['requested_time_budget_seconds'] == 2
+        connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
+        connection.request('GET', '/health')
+        response = connection.getresponse()
+        assert response.status == 200 and json.load(response)['ready'] == 1
+        connection.close()
+        connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
+        connection.request('POST', '/search', json.dumps({'probes': [{'probe_id': 'p'}],
+                           'time_budget_seconds': 1, 'job_directory': '/private/secret'}),
+                           {'Content-Type': 'application/json'})
+        response = connection.getresponse()
+        assert response.status == 400 and '/private/' not in response.read().decode()
+        connection.close()
+    finally:
+        server.shutdown(); server.server_close(); thread.join(2)
+
+
+def test_close_terminates_idle_owned_workers_and_rejects_more_jobs(pool):
+    worker = pool.workers[0]
+    pool.close()
+    assert worker.process.poll() is not None
+    with pytest.raises(SymbolicServiceError, match='service_closed'):
+        pool.search([{'probe_id': 'p'}], 1)
+
+
+def test_missing_worker_interpreter_reports_failed_instead_of_warming_forever(tmp_path):
+    pool = WorkerPool(1, worker_python=tmp_path/'missing-python', spool_dir=tmp_path)
+    try:
+        wait_until(lambda: pool.health()['failed'] == 1)
+        assert pool.health()['status'] == 'failed'
+        assert pool.health()['warming'] == 0
+    finally:
+        pool.close()
+
+
+def test_worker_venv_executable_symlink_is_not_resolved(tmp_path):
+    executable = tmp_path / 'venv-python'
+    executable.symlink_to(sys.executable)
+    pool = WorkerPool(1, worker_python=executable, spool_dir=tmp_path,
+        worker_command_factory=lambda directory: [sys.executable, '-u', '-c', FAKE_WORKER, str(directory)])
+    try:
+        wait_until(lambda: pool.health()['ready'] == 1)
+        assert pool.worker_python == str(executable)
+    finally:
+        pool.close()
+
+
+def test_validation_time_is_charged_and_expired_request_never_reaches_worker(pool, monkeypatch):
+    original = symbolic_service._request
+    worker = pool.workers[0]
+
+    def slow_validation(*args, **kwargs):
+        time.sleep(.12)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(symbolic_service, '_request', slow_validation)
+    result = pool.search([{'probe_id': 'late'}], .1)
+    assert result['stop_reason'] == 'budget_exhausted_before_dispatch'
+    assert result['elapsed_seconds'] >= .12
+    assert result['service_budget_exceeded'] is True
+    assert result['worker_search_budget_seconds'] == 0
+    assert pool.workers[0] is worker and pool.health()['ready'] == 1
+    assert not list((pool.root / 'jobs').iterdir())
+
+
+def test_service_elapsed_includes_completed_cleanup(pool, monkeypatch):
+    original = symbolic_service.shutil.rmtree
+
+    def slow_cleanup(*args, **kwargs):
+        time.sleep(.025)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(symbolic_service.shutil, 'rmtree', slow_cleanup)
+    started = time.monotonic()
+    result = pool.search([{'probe_id': 'cleanup'}], 1)
+    actual = time.monotonic() - started
+    assert result['elapsed_seconds'] >= .025
+    assert result['elapsed_seconds'] <= actual < result['elapsed_seconds'] + .05
+    assert result['cleanup_pending'] is False
+    assert result['service_budget_exceeded'] is False
+
+
+def test_slow_cleanup_is_explicitly_pending_instead_of_blocking_response(pool, monkeypatch):
+    original = symbolic_service.shutil.rmtree
+    gate = threading.Event()
+
+    def blocked_cleanup(*args, **kwargs):
+        gate.wait(2)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(symbolic_service.shutil, 'rmtree', blocked_cleanup)
+    try:
+        started = time.monotonic()
+        result = pool.search([{'probe_id': 'cleanup'}], .3)
+        assert time.monotonic() - started < .5
+        assert result['cleanup_pending'] is True
+        assert result['elapsed_seconds'] >= .04
+    finally:
+        gate.set()
+        wait_until(lambda: not list((pool.root / 'jobs').iterdir()))
+
+
+def test_result_validation_overrun_is_reported_honestly(pool, monkeypatch):
+    original = symbolic_service._public_result
+
+    def slow_validation(*args, **kwargs):
+        time.sleep(.15)
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(symbolic_service, '_public_result', slow_validation)
+    result = pool.search([{'probe_id': 'result'}], .1)
+    assert result['status'] == 'timeout' and result['stop_reason'] == 'service_budget_exceeded'
+    assert result['service_budget_exceeded'] is True
+    assert result['elapsed_seconds'] >= .15
+
+
+def test_slow_reap_uses_background_wait_and_reports_pending(pool, monkeypatch):
+    worker = pool.workers[0]
+    original = worker.process.wait
+    gate = threading.Event()
+    called = []
+
+    def slow_wait(timeout=None):
+        called.append(timeout)
+        if timeout is not None:
+            raise subprocess.TimeoutExpired(worker.process.args, timeout)
+        gate.wait(2)
+        return original()
+
+    monkeypatch.setattr(worker.process, 'wait', slow_wait)
+    try:
+        started = time.monotonic()
+        result = pool.search([{'probe_id': 'reap', 'sleep': 2}], .2)
+        assert time.monotonic() - started < .4
+        assert result['worker_reap_pending'] is True
+        assert result['cleanup_pending'] is True
+        assert called[0] <= .05
+    finally:
+        gate.set()
+        wait_until(worker.reaped.is_set)
+        wait_until(lambda: not list((pool.root / 'jobs').iterdir()))
