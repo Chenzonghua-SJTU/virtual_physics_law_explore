@@ -136,6 +136,25 @@
         "next_action_must_submit_when_remaining_below": 40,
         "comparisons": "strict"
       }
+    },
+    "r05": {
+      "batch_id": "e8-qwen38-pysr-stage-20261107-r05",
+      "registration": "Registered before execution. First complete six-world iteration after user requested continued autonomous optimization with mandatory per-round tool input/output audit.",
+      "observation_noise": false,
+      "evaluation_noise": false,
+      "ruleset": "e5",
+      "scientific_implementation": "882315c: error/complexity bands and compact model feedback, retaining all operator families.",
+      "inherits": "27B, four replicas, 10 energy, 300 seconds, 4096 output tokens/call, no thinking or total-token cap; unchanged clean submission gate.",
+      "changes": [
+        "Measure the already deployed 882315c implementation; no additional scientific tuning before this round."
+      ],
+      "audit_required_before_next_round": [
+        "Every acquired-probe plan and public coverage",
+        "Every SR input, returned candidate and selection/fit residual",
+        "Every Agent fit/validation/submit argument and feedback",
+        "Final formula compared with public reference only after completion; no truth injected into exploration"
+      ],
+      "selection_policy": "One attempt per world, retain all six results; no replacing failed worlds with retries. Diagnose the complete round before registering the next frozen implementation."
     }
   }
 }

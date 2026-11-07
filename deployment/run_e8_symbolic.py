@@ -23,7 +23,7 @@ from deployment import run_e7
 from shore_worlds import V15_WORLD_IDS
 
 BATCH_ID = 'e8-qwen38-pysr-stage-20261107-r01'
-REGISTERED_REPEATS = ('r01', 'r02', 'r03', 'r04', 'paired')
+REGISTERED_REPEATS = ('r01', 'r02', 'r03', 'r04', 'r05', 'paired')
 CONFIG = 'deployment/config.e8.symbolic.json'
 PROTOCOL = 'experiments/E5/e8-protocol.json'
 
