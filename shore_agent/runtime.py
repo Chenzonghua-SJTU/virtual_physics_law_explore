@@ -45,12 +45,16 @@ class ToolRuntime:
         from .workspace import SessionFiles
         self.files = SessionFiles(self.store, self.run_dir)
         self.config = config or {}
+        self.diagnostics_enabled = self.config.get('diagnostics_enabled', False)
+        if type(self.diagnostics_enabled) is not bool:
+            raise ValueError('numerics.diagnostics_enabled must be boolean')
         self.code_config = code_config or {}
         self.code_enabled = self.code_config.get('enabled', False)
         if type(self.code_enabled) is not bool:
             raise ValueError('code_execution.enabled must be boolean')
         self.ruleset = getattr(environment, 'ruleset', 'e3')
-        self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset)
+        self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset,
+                                    diagnostics_enabled=self.diagnostics_enabled)
         self.last_valid_draft = None
         self.exploration_started_monotonic = None
         self.exploration_deadline_monotonic = None
@@ -384,6 +388,33 @@ class ToolRuntime:
 
     def read_file(self, path, offset=0, limit=12000):
         return self.files.read_file(path, offset, limit)
+
+    def diagnose_dynamics(self, probe_ids):
+        """Describe selected acquired readouts; never create a law or query truth."""
+        if self.ruleset != 'e5' or not self.diagnostics_enabled:
+            raise ValueError('Observation dynamics diagnostics require E5 and diagnostics_enabled=true')
+        if self.task is None:
+            raise ValueError('Framework must initialize mission first')
+        probes = self._probes(probe_ids)
+        from .diagnostics import diagnose
+        diagnostics = diagnose(probes, copy.deepcopy(self.task))
+        # Validate before creating an immutable archive entry. A diagnostic is
+        # intentionally a different record type from fitted laws and residuals.
+        json.dumps(diagnostics, allow_nan=False)
+        if not isinstance(diagnostics, dict) or 'law_id' in diagnostics:
+            raise ValueError('Observation diagnostic must be a JSON object without a law_id')
+        budget = self.budget()
+        if budget.get('session_ended') or budget['wall_seconds_remaining'] <= 0:
+            raise ValueError('Session wall time exhausted during observation diagnostics')
+        rid = 'diagnostic_' + uuid.uuid4().hex[:12]
+        record = {'diagnostic_id': rid, 'diagnostic_kind': 'integral_observation_regression',
+                  'probe_ids': list(probe_ids), 'source': 'current_session_acquired_observations_only',
+                  'diagnostics': diagnostics,
+                  'meaning': 'Descriptive approximations from selected acquired readouts, not true dynamics, '
+                             'a fitted law, a submission, or a correctness verdict. No extra observation was made. '
+                             'These selected trajectories are development data; use fresh trajectories for final validation.'}
+        self.store.add('diagnostic', record, rid)
+        return preview(record)
 
     def analyze_residual(self, law_id, probe_ids):
         law = self._law(law_id)

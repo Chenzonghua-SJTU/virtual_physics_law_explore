@@ -96,6 +96,7 @@ def _hashes(project):
     paths = ['shore_agent/agent.py', 'shore_agent/prompts/main.txt', 'shore_agent/prompts/e5.txt', 'shore_agent/schemas.py',
              'shore_agent/runtime.py', 'shore_agent/numerics.py', 'shore_agent/expressions.py',
              'shore_agent/model.py', 'shore_agent/web_worker.py', 'shore_agent/store.py',
+             'shore_agent/diagnostics.py', 'shore_agent/workspace.py',
              'shore_agent/submission.py', 'shore_rules.py', 'shore_v15/simulator.py',
              'shore_v15/evaluation.py', 'benchmark_v15.py', 'shore_v15/vendor/SOURCE.json']
     return {path: hashlib.sha256((project / path).read_bytes()).hexdigest()
@@ -159,6 +160,8 @@ def prepare(output, config, workers=3, project=PROJECT, model_endpoints=None):
                              'resume_sessions': False, 'candidate_answers_supplied': False,
                              'energy_budget': energy_budget, 'wall_seconds_per_world': wall_seconds,
                              'single_active_world_per_endpoint': bool(endpoints),
+                             'diagnostics_enabled': config.get('numerics', {}).get('diagnostics_enabled', False),
+                             'model_sampling_seed': config.get('model', {}).get('sampling_seed'),
                              'queue_time_excluded_from_mission_budget': True,
                              'evaluation': 'all_fixed_v15_cases_after_accepted_submission',
                              'official_score': False, 'official_sdk_compatible': False}}

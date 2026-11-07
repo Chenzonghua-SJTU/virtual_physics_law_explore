@@ -38,7 +38,8 @@ PRIVATE_FIELDS = {'api_key', 'deepseek_api_key', 'authorization', 'access_token'
                   'raw_response', 'raw_messages', 'model_messages', 'password', 'secret'}
 RECORD_KINDS = {'probes': 'probe', 'laws': 'law', 'validations': 'validation',
                 'summaries': 'data_summary', 'submissions': 'submission',
-                'body_observations': 'body_observation', 'code_executions': 'code_execution'}
+                'body_observations': 'body_observation', 'code_executions': 'code_execution',
+                'diagnostics': 'diagnostic'}
 MAX_FILE_BYTES = 32 * 1024 * 1024
 
 

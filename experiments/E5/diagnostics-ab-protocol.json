@@ -1,0 +1,64 @@
+{
+  "comparison_id": "e5-diagnostics-ab-20261107",
+  "status": "pre_registered_before_runs",
+  "primary_outcome": "number_of_worlds_with_full_clean_independent_evaluation_score_at_least_90",
+  "target": "at least 5 of 6 in a single complete batch; never combine per-world bests",
+  "worlds": [
+    "world_1",
+    "world_2",
+    "world_3",
+    "world_4",
+    "world_5",
+    "world_6"
+  ],
+  "attempts_per_world_per_arm": 1,
+  "automatic_session_restarts": false,
+  "arms": {
+    "off": {
+      "config": "deployment/config.e5.tools-off.json",
+      "output": "experiments/E5/e5-qwen38-tools-off-20261107-r05",
+      "endpoints": [
+        8000,
+        8001
+      ]
+    },
+    "on": {
+      "config": "deployment/config.e5.tools-on.json",
+      "output": "experiments/E5/e5-qwen38-tools-on-20261107-r06",
+      "endpoints": [
+        8002,
+        8003
+      ]
+    }
+  },
+  "shared": {
+    "model": "qwen3.8-27b",
+    "model_sampling_seed": 42,
+    "system_prompt": "E3 main.txt byte-identical",
+    "energy": 10,
+    "wall_seconds": 300,
+    "max_output_tokens": 4096,
+    "thinking": false,
+    "exploration_noise": false,
+    "independent_evaluation_noise": false,
+    "property_coverage": true,
+    "residual_scale_check": true,
+    "max_workers_per_arm": 2,
+    "single_active_world_per_model_endpoint": true
+  },
+  "only_config_difference": "numerics.diagnostics_enabled",
+  "secondary_outcomes": [
+    "completed_evaluations",
+    "per-world exploration_seconds",
+    "per-world total_seconds_including_evaluation",
+    "average_output_tokens_per_call_if_complete_usage",
+    "max_reported_output_tokens",
+    "actual_diagnostic_tool_calls"
+  ],
+  "limitations": [
+    "one paired attempt per world per arm does not establish stable success probabilities",
+    "distinct identical-hardware GPU endpoints assigned to arms; no endpoint crossover in this first comparison",
+    "tool access does not guarantee actual tool use"
+  ],
+  "registered_at": "2026-11-06T23:59:43.591011+00:00"
+}

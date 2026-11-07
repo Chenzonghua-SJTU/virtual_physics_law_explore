@@ -54,7 +54,15 @@ CODE_SCHEMA = tool('run_code',
      'files': {'type':'array','items':{'type':'string','minLength':1,'maxLength':300},'uniqueItems':True,'maxItems':128}}, ['code'])
 
 
-def tool_schemas(code_enabled=False, *, ruleset='e3'):
+DYNAMICS_DIAGNOSTIC_SCHEMA = tool('diagnose_dynamics',
+    '仅E5：显式选择本会话已取得的probe_ids，从相邻位置/速度观测做积分回归与近似径向幂次诊断。'
+    '报告线性/非线性结构、公开属性比例的描述性证据和可辨识性限制；这些是观测近似，不是真实动力学或可提交答案。'
+    '不读取隐藏真值、不投放新探针、不自动拟合或提交law；消耗正常工具运行时间。'
+    '返回诊断预览，完整结果可按workspace_files路径read_file。用于此诊断的数据属于开发数据，最终检查应另用新轨迹。',
+    {'probe_ids': IDS})
+
+
+def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False):
     import copy
     schemas = copy.deepcopy(SCHEMAS + ([CODE_SCHEMA] if code_enabled else []))
     if ruleset in ('e4', 'e5'):
@@ -64,4 +72,6 @@ def tool_schemas(code_enabled=False, *, ruleset='e3'):
             '格式与有限输出验证成功才替换上份草稿，不结束探索。预算截止时封存最后及时有效配对；'
             '不会自动选择规律、补写claims或检查物理真值。')
         schemas.append(draft)
+    if ruleset == 'e5' and diagnostics_enabled is True:
+        schemas.append(copy.deepcopy(DYNAMICS_DIAGNOSTIC_SCHEMA))
     return schemas

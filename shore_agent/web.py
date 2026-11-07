@@ -141,6 +141,8 @@ class Handler(BaseHTTPRequestHandler):
                             energy_budget=data.get('protocol', {}).get('energy_budget', profile['energy_budget']),
                             wall_seconds=environment.get('wall_seconds', profile['wall_seconds']),
                             noise=environment.get('noise', False), output_limit=model.get('max_tokens_per_call'),
+                            diagnostics_enabled=data['configuration'].get('numerics', {}).get('diagnostics_enabled', False),
+                            model_sampling_seed=model.get('sampling_seed'),
                             updated_at=data['updated_at'], model=model['model'],
                             thinking=model['thinking'], deployment=model['deployment'],
                             worlds=[{key: row.get(key) for key in (

@@ -15,7 +15,7 @@
     observe_body: '观测公开天体', insert_probe: '投放探针', summarize_data: '分析实验数据',
     fit_law_and_rollout: '拟合候选规律', validate_law: '验证独立轨迹',
     call_back: '查阅实验档案', list_files: '浏览实验文件', read_file: '读取实验文件', analyze_residual: '分析预测残差', submit: '提交候选规律',
-    run_code: '运行分析代码',
+    run_code: '运行分析代码', diagnose_dynamics: '诊断观测中的数值关系',
   };
   const statuses = {
     queued: '排队等待', running: '正在探索', starting: '正在启动', stopping: '正在停止', stopped: '已停止', evaluating: '独立评测中', interrupted: '探索已中断',
