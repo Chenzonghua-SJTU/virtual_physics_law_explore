@@ -1,0 +1,873 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-07T00:18:36.358963+00:00",
+  "comparison_kind": "one_six_world_batch_per_arm_no_best_of_selection",
+  "checks": {
+    "only_diagnostic_toggle_differs": true,
+    "same_frozen_source_hashes": true,
+    "same_workers": true,
+    "same_protocol_except_toggle": true,
+    "disjoint_six_world_attempts": true,
+    "different_batch_ids": true
+  },
+  "configuration_differences_other_than_toggle": [],
+  "comparison_verified": true,
+  "primary_metric": "complete_timely_local_scores_at_or_above_90_out_of_six",
+  "observed_primary_winner": "on",
+  "on_minus_off_success_count": 3,
+  "arms": {
+    "off": {
+      "experiment_id": "e5-qwen38-tools-off-20261107-r05",
+      "batch_directory": "/Users/zonghuachen/Desktop/创智实训题目/physics_discovery/experiments/E5/e5-qwen38-tools-off-20261107-r05",
+      "diagnostics_enabled": false,
+      "all_finished": true,
+      "configuration": {
+        "environment": {
+          "world_id": "world_1",
+          "physics_version": "shore_v15",
+          "noise": false,
+          "seed": 42,
+          "wall_seconds": 300,
+          "world_set": "v15",
+          "ruleset": "e5",
+          "energy_budget": 10
+        },
+        "model": {
+          "base_url": "http://127.0.0.1:8000/v1",
+          "model": "qwen3.8-27b",
+          "thinking": false,
+          "reasoning_protocol": "qwen",
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 4096,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "local",
+          "ruleset": "e5",
+          "api_key_env": "LOCAL_LLM_API_KEY",
+          "api_key_required": false,
+          "local_model_endpoints": {
+            "qwen3.8-27b": "http://127.0.0.1:8000/v1"
+          },
+          "sampling_seed": 42
+        },
+        "agent": {
+          "max_no_action": 3,
+          "guidance_profile": "e3"
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-r04",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80,
+          "diagnostics_enabled": false
+        }
+      },
+      "source_sha256": {
+        "shore_agent/agent.py": "e78413780f9dbfa4c38ff206e69fe568c6ee6ccbc592ac691fccbfa080a02d5f",
+        "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+        "shore_agent/prompts/e5.txt": "302f4db64bc731c1ffb0efeb615f78b33bab241754c227bb6d977e09fa55cb6a",
+        "shore_agent/schemas.py": "0081fd76fac3f49d159f5bdc06d5f80cd1cdad4c55464c5dd0714221531734ed",
+        "shore_agent/runtime.py": "4c11dda9b5b15f6a29e454cfe40ea9041407b101a9c94d848dd4e51a388f095f",
+        "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+        "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+        "shore_agent/model.py": "2cd59a541ed37ee38a9736e13e9d52b7a70b0a870b998dae838e33cb591a6496",
+        "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+        "shore_agent/store.py": "3a914623677eb3c4359b95cd2b1f77e800b166ac849f9d557c341c124e9fd611",
+        "shore_agent/diagnostics.py": "1b86304a0a5d3b46041e29d10cadb6dcf644a1a95b914737aa463f850bbf158e",
+        "shore_agent/workspace.py": "95a7753a7286d32f374121d7733e4182896f9657177412254e4d660ae341dac0",
+        "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+        "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+        "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+        "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+        "benchmark_v15.py": "a815ef664d59c010691aa6b94db0b1775afae8c12707c2b248f24e57f4636f89",
+        "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2"
+      },
+      "model_endpoints": [
+        "http://127.0.0.1:8000/v1",
+        "http://127.0.0.1:8001/v1"
+      ],
+      "workers": 2,
+      "protocol": {
+        "attempts_per_world": 1,
+        "automatic_session_retries": false,
+        "resume_sessions": false,
+        "candidate_answers_supplied": false,
+        "energy_budget": 10,
+        "wall_seconds_per_world": 300,
+        "single_active_world_per_endpoint": true,
+        "diagnostics_enabled": false,
+        "model_sampling_seed": 42,
+        "queue_time_excluded_from_mission_budget": true,
+        "evaluation": "all_fixed_v15_cases_after_accepted_submission",
+        "official_score": false,
+        "official_sdk_compatible": false
+      },
+      "fixed_condition_checks": {
+        "energy_10": true,
+        "wall_300": true,
+        "exploration_no_noise": true,
+        "thinking_off": true,
+        "output_cap_4096": true,
+        "sampling_seed_42": true,
+        "e3_prompt_selected": true,
+        "e3_main_prompt_bytes": true
+      },
+      "input_sha256": {
+        "manifest.json": "7f276d8dfbbf302ea11f07f485510fc32299f71088df309c8a13ab6bfe462062",
+        "summary.json": "c6c55358ffae71e107d38963e953bd82cc254f3ac428a163193a6ccb4d012d56",
+        "audit.json": "b802d63fac6a8904ab14fdcbda899d394e2a76c0c1ff80666306cebf2290ebfa"
+      },
+      "aggregate": {
+        "worlds_at_or_above_90": 0,
+        "evaluated_worlds": 2,
+        "timely_submitted_worlds": 2,
+        "batch_wall_seconds": 904.332852,
+        "mean_total_seconds_per_experiment": 260.9823904884979,
+        "mean_score_completed_worlds": 24.59949963985795,
+        "calls": 323,
+        "usage_complete": false,
+        "completion_tokens_reported": 84931,
+        "average_output_tokens_per_call": null,
+        "max_call_output_tokens_reported": 1672,
+        "diagnostic_tool": {
+          "calls": 0,
+          "completed": 0,
+          "successful": 0,
+          "failed": 0,
+          "unfinished": 0
+        },
+        "five_world_target_met": false
+      },
+      "worlds": [
+        {
+          "world_id": "world_1",
+          "run_id": "e5-qwen38-tools-off-20261107-r05-world_1",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 23.922033288379914,
+          "evaluation_complete": true,
+          "noise_free_evaluation_verified": true,
+          "timely_submission": true,
+          "at_or_above_90": false,
+          "exploration_seconds": 70.28902658261359,
+          "evaluation_seconds": 3.629182195290923,
+          "total_seconds_including_evaluation": 75.6201571021229,
+          "calls": 13,
+          "usage_complete": true,
+          "completion_tokens_reported": 3722,
+          "average_output_tokens_per_call": 286.3076923076923,
+          "max_call_output_tokens_reported": 1539,
+          "max_call_output_tokens": 1539,
+          "output_cap_compliant": true,
+          "request_seed_42_verified": true,
+          "energy_used": 10,
+          "diagnostic_tool": {
+            "calls": 0,
+            "completed": 0,
+            "successful": 0,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8000/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "7486eba9e4661c28efc36e26ca7596e1a349e5fdbb7c6b9195ca363fd7f09c42",
+              "events.jsonl": "1b7e4f00be5ea5f4a672199e3635ba3223f3030611d46121263438b8030346a6",
+              "tools.jsonl": "93c315111dea0928ed15d113dde7ddf47da7a463734acecc6fe689fd3aed2a99",
+              "evaluation.json": "cf469d745de065844b8f662701055d807c06459574879dcc51260f724c636cb6"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 0,
+              "completed": 0,
+              "successful": 0,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_2",
+          "run_id": "e5-qwen38-tools-off-20261107-r05-world_2",
+          "status": "incomplete",
+          "reason": "wall_time_exhausted",
+          "score": null,
+          "evaluation_complete": false,
+          "noise_free_evaluation_verified": false,
+          "timely_submission": false,
+          "at_or_above_90": false,
+          "exploration_seconds": 295.9917633794248,
+          "evaluation_seconds": null,
+          "total_seconds_including_evaluation": 298.62442051805556,
+          "calls": 84,
+          "usage_complete": false,
+          "completion_tokens_reported": 17914,
+          "average_output_tokens_per_call": null,
+          "max_call_output_tokens_reported": 448,
+          "max_call_output_tokens": null,
+          "output_cap_compliant": null,
+          "request_seed_42_verified": true,
+          "energy_used": 9,
+          "diagnostic_tool": {
+            "calls": 0,
+            "completed": 0,
+            "successful": 0,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8001/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "e5a7aa53a368d09249ec287cc41fd67efbde981fb4eadfd7df1dfc0e253380ad",
+              "events.jsonl": "7dbebbf18a723bdbd430f9c655c7435481bf91b90a0bc2706ab8361ed34db519",
+              "tools.jsonl": "a01192f620aedbba9cc987ba2b907cf73df398ab5b5d48ce7e45893c973f168a"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 0,
+              "completed": 0,
+              "successful": 0,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_3",
+          "run_id": "e5-qwen38-tools-off-20261107-r05-world_3",
+          "status": "incomplete",
+          "reason": "wall_time_exhausted",
+          "score": null,
+          "evaluation_complete": false,
+          "noise_free_evaluation_verified": false,
+          "timely_submission": false,
+          "at_or_above_90": false,
+          "exploration_seconds": 295.9392533060163,
+          "evaluation_seconds": null,
+          "total_seconds_including_evaluation": 299.27924317494035,
+          "calls": 58,
+          "usage_complete": false,
+          "completion_tokens_reported": 16860,
+          "average_output_tokens_per_call": null,
+          "max_call_output_tokens_reported": 391,
+          "max_call_output_tokens": null,
+          "output_cap_compliant": null,
+          "request_seed_42_verified": true,
+          "energy_used": 8,
+          "diagnostic_tool": {
+            "calls": 0,
+            "completed": 0,
+            "successful": 0,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8000/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "46f69e4520422049a784a1186c31c796305aaaa8fd1492c8232d54ff96708e76",
+              "events.jsonl": "89137f63133223ef06b4d8369e6498957452cda388abea076b85b6288eca07ed",
+              "tools.jsonl": "f108e306a887681c90915d0b3cc5d7b81a279357acc7756bf17861229fdb1478"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 0,
+              "completed": 0,
+              "successful": 0,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_4",
+          "run_id": "e5-qwen38-tools-off-20261107-r05-world_4",
+          "status": "incomplete",
+          "reason": "wall_time_exhausted",
+          "score": null,
+          "evaluation_complete": false,
+          "noise_free_evaluation_verified": false,
+          "timely_submission": false,
+          "at_or_above_90": false,
+          "exploration_seconds": 295.5880648586899,
+          "evaluation_seconds": null,
+          "total_seconds_including_evaluation": 296.2008518129587,
+          "calls": 89,
+          "usage_complete": false,
+          "completion_tokens_reported": 17743,
+          "average_output_tokens_per_call": null,
+          "max_call_output_tokens_reported": 456,
+          "max_call_output_tokens": null,
+          "output_cap_compliant": null,
+          "request_seed_42_verified": true,
+          "energy_used": 10,
+          "diagnostic_tool": {
+            "calls": 0,
+            "completed": 0,
+            "successful": 0,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8001/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "c32f0dc26d316154d1eb1ea2f5fc3a9a36c80c4efbcf007d1ca3524560e33791",
+              "events.jsonl": "2b7494af2d6de57c9285d691e3ea384ec2262877713a607e6cf998b364036bb9",
+              "tools.jsonl": "f85805b2c411f3501989803e302dc796b5391701fcdcd2e2c29257096a34692c"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 0,
+              "completed": 0,
+              "successful": 0,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_5",
+          "run_id": "e5-qwen38-tools-off-20261107-r05-world_5",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 25.276965991335985,
+          "evaluation_complete": true,
+          "noise_free_evaluation_verified": true,
+          "timely_submission": true,
+          "at_or_above_90": false,
+          "exploration_seconds": 292.9695858359337,
+          "evaluation_seconds": 2.5682786144316196,
+          "total_seconds_including_evaluation": 297.19884099438787,
+          "calls": 20,
+          "usage_complete": true,
+          "completion_tokens_reported": 11510,
+          "average_output_tokens_per_call": 575.5,
+          "max_call_output_tokens_reported": 1672,
+          "max_call_output_tokens": 1672,
+          "output_cap_compliant": true,
+          "request_seed_42_verified": true,
+          "energy_used": 10,
+          "diagnostic_tool": {
+            "calls": 0,
+            "completed": 0,
+            "successful": 0,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8000/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "22bda0b981f2dc2e9c34d711effc822f6b6631196c3541ada29e57e8a8363c9f",
+              "events.jsonl": "fd3aa7518051b54c299bd558639d2435a719d6a55e6853608d9a275fa4511d94",
+              "tools.jsonl": "a3a91b39d119be0e16e899c17b3269a3f30323f68184b30453b59484cdeab5ed",
+              "evaluation.json": "e7de02ae754980bbbc8e4ce8e6de66ba298e588125d34145cd885d5506f7bc20"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 0,
+              "completed": 0,
+              "successful": 0,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_6",
+          "run_id": "e5-qwen38-tools-off-20261107-r05-world_6",
+          "status": "incomplete",
+          "reason": "wall_time_exhausted",
+          "score": null,
+          "evaluation_complete": false,
+          "noise_free_evaluation_verified": false,
+          "timely_submission": false,
+          "at_or_above_90": false,
+          "exploration_seconds": 295.9264345038682,
+          "evaluation_seconds": null,
+          "total_seconds_including_evaluation": 298.9708293285221,
+          "calls": 59,
+          "usage_complete": false,
+          "completion_tokens_reported": 17182,
+          "average_output_tokens_per_call": null,
+          "max_call_output_tokens_reported": 391,
+          "max_call_output_tokens": null,
+          "output_cap_compliant": null,
+          "request_seed_42_verified": true,
+          "energy_used": 8,
+          "diagnostic_tool": {
+            "calls": 0,
+            "completed": 0,
+            "successful": 0,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8001/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "1c75b37b10890da80ff2aa200efba849ff1308238ce025f4dd8e2103689a0329",
+              "events.jsonl": "7a7dbb4b6457eb8aed9405e6fc388a304c23ff7903c81680d694850120c9c6d7",
+              "tools.jsonl": "eb7986e5c75fc69bb0ecc972dd91100c2a7da5416364d99dd75e84181dd54612"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 0,
+              "completed": 0,
+              "successful": 0,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        }
+      ],
+      "errors": [],
+      "warnings": [
+        "world_2:output_usage_incomplete_average_unknown",
+        "world_3:output_usage_incomplete_average_unknown",
+        "world_4:output_usage_incomplete_average_unknown",
+        "world_6:output_usage_incomplete_average_unknown"
+      ]
+    },
+    "on": {
+      "experiment_id": "e5-qwen38-tools-on-20261107-r06",
+      "batch_directory": "/Users/zonghuachen/Desktop/创智实训题目/physics_discovery/experiments/E5/e5-qwen38-tools-on-20261107-r06",
+      "diagnostics_enabled": true,
+      "all_finished": true,
+      "configuration": {
+        "environment": {
+          "world_id": "world_1",
+          "physics_version": "shore_v15",
+          "noise": false,
+          "seed": 42,
+          "wall_seconds": 300,
+          "world_set": "v15",
+          "ruleset": "e5",
+          "energy_budget": 10
+        },
+        "model": {
+          "base_url": "http://127.0.0.1:8000/v1",
+          "model": "qwen3.8-27b",
+          "thinking": false,
+          "reasoning_protocol": "qwen",
+          "reasoning_effort": "low",
+          "timeout_seconds": 600,
+          "max_calls": null,
+          "main_max_calls": null,
+          "max_tokens_per_call": 4096,
+          "max_total_tokens": 5000000,
+          "max_retries": 1,
+          "deployment": "local",
+          "ruleset": "e5",
+          "api_key_env": "LOCAL_LLM_API_KEY",
+          "api_key_required": false,
+          "local_model_endpoints": {
+            "qwen3.8-27b": "http://127.0.0.1:8000/v1"
+          },
+          "sampling_seed": 42
+        },
+        "agent": {
+          "max_no_action": 3,
+          "guidance_profile": "e3"
+        },
+        "code_execution": {
+          "enabled": false,
+          "image": "shore-code:e2-r04",
+          "timeout_seconds": 90,
+          "memory_mb": 1024
+        },
+        "numerics": {
+          "max_nfev": 80,
+          "diagnostics_enabled": true
+        }
+      },
+      "source_sha256": {
+        "shore_agent/agent.py": "e78413780f9dbfa4c38ff206e69fe568c6ee6ccbc592ac691fccbfa080a02d5f",
+        "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+        "shore_agent/prompts/e5.txt": "302f4db64bc731c1ffb0efeb615f78b33bab241754c227bb6d977e09fa55cb6a",
+        "shore_agent/schemas.py": "0081fd76fac3f49d159f5bdc06d5f80cd1cdad4c55464c5dd0714221531734ed",
+        "shore_agent/runtime.py": "4c11dda9b5b15f6a29e454cfe40ea9041407b101a9c94d848dd4e51a388f095f",
+        "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+        "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+        "shore_agent/model.py": "2cd59a541ed37ee38a9736e13e9d52b7a70b0a870b998dae838e33cb591a6496",
+        "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+        "shore_agent/store.py": "3a914623677eb3c4359b95cd2b1f77e800b166ac849f9d557c341c124e9fd611",
+        "shore_agent/diagnostics.py": "1b86304a0a5d3b46041e29d10cadb6dcf644a1a95b914737aa463f850bbf158e",
+        "shore_agent/workspace.py": "95a7753a7286d32f374121d7733e4182896f9657177412254e4d660ae341dac0",
+        "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+        "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+        "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+        "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+        "benchmark_v15.py": "a815ef664d59c010691aa6b94db0b1775afae8c12707c2b248f24e57f4636f89",
+        "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2"
+      },
+      "model_endpoints": [
+        "http://127.0.0.1:8002/v1",
+        "http://127.0.0.1:8003/v1"
+      ],
+      "workers": 2,
+      "protocol": {
+        "attempts_per_world": 1,
+        "automatic_session_retries": false,
+        "resume_sessions": false,
+        "candidate_answers_supplied": false,
+        "energy_budget": 10,
+        "wall_seconds_per_world": 300,
+        "single_active_world_per_endpoint": true,
+        "diagnostics_enabled": true,
+        "model_sampling_seed": 42,
+        "queue_time_excluded_from_mission_budget": true,
+        "evaluation": "all_fixed_v15_cases_after_accepted_submission",
+        "official_score": false,
+        "official_sdk_compatible": false
+      },
+      "fixed_condition_checks": {
+        "energy_10": true,
+        "wall_300": true,
+        "exploration_no_noise": true,
+        "thinking_off": true,
+        "output_cap_4096": true,
+        "sampling_seed_42": true,
+        "e3_prompt_selected": true,
+        "e3_main_prompt_bytes": true
+      },
+      "input_sha256": {
+        "manifest.json": "1319f264d8be97e6aafd0d7f10e92f24e3a65b15f990d161a15fed1777083e06",
+        "summary.json": "f105ea9ee4ae1a0a64daf2f36f63266a329c5c524366b37199ab36d6ce7dc1c6",
+        "audit.json": "a27bc2bbac4fffb8ee200d9b628cae01aeee36d809cd5de4f5cb6db1646dad2c"
+      },
+      "aggregate": {
+        "worlds_at_or_above_90": 3,
+        "evaluated_worlds": 6,
+        "timely_submitted_worlds": 6,
+        "batch_wall_seconds": 366.706836,
+        "mean_total_seconds_per_experiment": 95.67390168861796,
+        "mean_score_completed_worlds": 62.25826393273251,
+        "calls": 56,
+        "usage_complete": true,
+        "completion_tokens_reported": 27217,
+        "average_output_tokens_per_call": 486.01785714285717,
+        "max_call_output_tokens_reported": 2104,
+        "diagnostic_tool": {
+          "calls": 5,
+          "completed": 5,
+          "successful": 5,
+          "failed": 0,
+          "unfinished": 0
+        },
+        "five_world_target_met": false
+      },
+      "worlds": [
+        {
+          "world_id": "world_1",
+          "run_id": "e5-qwen38-tools-on-20261107-r06-world_1",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 96.9998685809809,
+          "evaluation_complete": true,
+          "noise_free_evaluation_verified": true,
+          "timely_submission": true,
+          "at_or_above_90": true,
+          "exploration_seconds": 149.11682134121656,
+          "evaluation_seconds": 3.669573986902833,
+          "total_seconds_including_evaluation": 156.70053049735725,
+          "calls": 12,
+          "usage_complete": true,
+          "completion_tokens_reported": 8620,
+          "average_output_tokens_per_call": 718.3333333333334,
+          "max_call_output_tokens_reported": 2104,
+          "max_call_output_tokens": 2104,
+          "output_cap_compliant": true,
+          "request_seed_42_verified": true,
+          "energy_used": 6,
+          "diagnostic_tool": {
+            "calls": 1,
+            "completed": 1,
+            "successful": 1,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8002/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "8cc006b47276bc109a5809b74fed95e5721b875972cd22648eaeb86390e043fb",
+              "events.jsonl": "06a12b9b38601683912e74776773dd3fc70555fa04ba2a16362f6eca963cecf3",
+              "tools.jsonl": "7af107450ab009699603bd1f010ec9c8731431102e2481f670b074cbe67a9d31",
+              "evaluation.json": "c312a221030b29a49d2071d84364cfd928c8b47ae0af6a9da649d4c6e78ee065"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 1,
+              "completed": 1,
+              "successful": 1,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_2",
+          "run_id": "e5-qwen38-tools-on-20261107-r06-world_2",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 96.49999999999987,
+          "evaluation_complete": true,
+          "noise_free_evaluation_verified": true,
+          "timely_submission": true,
+          "at_or_above_90": true,
+          "exploration_seconds": 69.7796810567379,
+          "evaluation_seconds": 1.9250095169991255,
+          "total_seconds_including_evaluation": 75.57511309720576,
+          "calls": 9,
+          "usage_complete": true,
+          "completion_tokens_reported": 3912,
+          "average_output_tokens_per_call": 434.6666666666667,
+          "max_call_output_tokens_reported": 1354,
+          "max_call_output_tokens": 1354,
+          "output_cap_compliant": true,
+          "request_seed_42_verified": true,
+          "energy_used": 7,
+          "diagnostic_tool": {
+            "calls": 1,
+            "completed": 1,
+            "successful": 1,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8003/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "41598b7d05a1bba02334f472fa963b644e7706457948e2b170caa785d0c51dab",
+              "events.jsonl": "38c24c09968d512440791f46401056e420c57c36c716f5c30be39c1908b5657e",
+              "tools.jsonl": "466774deb2ac559f5bf29ffe3ae34bc6167b0bb5420a36b38a3ea68a5e8135dd",
+              "evaluation.json": "6dfcc67714f184e576667836d4fac4c90ee53daaf38db81a4a92edabaad0cd6c"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 1,
+              "completed": 1,
+              "successful": 1,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_3",
+          "run_id": "e5-qwen38-tools-on-20261107-r06-world_3",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 90.99999999999993,
+          "evaluation_complete": true,
+          "noise_free_evaluation_verified": true,
+          "timely_submission": true,
+          "at_or_above_90": true,
+          "exploration_seconds": 52.26141849346459,
+          "evaluation_seconds": 2.518891265615821,
+          "total_seconds_including_evaluation": 55.71935849264264,
+          "calls": 8,
+          "usage_complete": true,
+          "completion_tokens_reported": 2835,
+          "average_output_tokens_per_call": 354.375,
+          "max_call_output_tokens_reported": 1000,
+          "max_call_output_tokens": 1000,
+          "output_cap_compliant": true,
+          "request_seed_42_verified": true,
+          "energy_used": 8,
+          "diagnostic_tool": {
+            "calls": 1,
+            "completed": 1,
+            "successful": 1,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8003/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "078ab8093a81a8b07e0fbfe203cea99e34b2d5ef92496482d76cb6a8b033e243",
+              "events.jsonl": "e851f61aa6f8bfc31ed68b8efd27302f93ed322a1fc35baa04565e8a56fff357",
+              "tools.jsonl": "e4a0d0abd9703949ab612168540399a90fff2f2d11f9fe37a176064c352252d4",
+              "evaluation.json": "60192e8032258aacb0277f1b44ee3be95e1622c850094c94e82c45dd33275cb5"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 1,
+              "completed": 1,
+              "successful": 1,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_4",
+          "run_id": "e5-qwen38-tools-on-20261107-r06-world_4",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 42.50088331758373,
+          "evaluation_complete": true,
+          "noise_free_evaluation_verified": true,
+          "timely_submission": true,
+          "at_or_above_90": false,
+          "exploration_seconds": 72.00258099474013,
+          "evaluation_seconds": 4.370851147919893,
+          "total_seconds_including_evaluation": 81.50243698246777,
+          "calls": 10,
+          "usage_complete": true,
+          "completion_tokens_reported": 3840,
+          "average_output_tokens_per_call": 384.0,
+          "max_call_output_tokens_reported": 647,
+          "max_call_output_tokens": 647,
+          "output_cap_compliant": true,
+          "request_seed_42_verified": true,
+          "energy_used": 10,
+          "diagnostic_tool": {
+            "calls": 1,
+            "completed": 1,
+            "successful": 1,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8003/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "091841317d5b939f8806e3c00506484ba272a5feb97ef7333c8c43979c14139d",
+              "events.jsonl": "3b3eaf8d5bc77e502c3103a23c535a41bd466fde0ad1d019f78e67fb0ae1e8f5",
+              "tools.jsonl": "d2f3fdf7ed1b5026a00f47231d8dc75b865c582869107628cbb07b2d4fd7d611",
+              "evaluation.json": "a814f79ea64a0416d565d477d85e01f23f7feef9b593b5b82d48c8999d41ff20"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 1,
+              "completed": 1,
+              "successful": 1,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_5",
+          "run_id": "e5-qwen38-tools-on-20261107-r06-world_5",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 29.612916338033862,
+          "evaluation_complete": true,
+          "noise_free_evaluation_verified": true,
+          "timely_submission": true,
+          "at_or_above_90": false,
+          "exploration_seconds": 53.04332145676017,
+          "evaluation_seconds": 2.618589472025633,
+          "total_seconds_including_evaluation": 61.19644368812442,
+          "calls": 7,
+          "usage_complete": true,
+          "completion_tokens_reported": 2750,
+          "average_output_tokens_per_call": 392.85714285714283,
+          "max_call_output_tokens_reported": 989,
+          "max_call_output_tokens": 989,
+          "output_cap_compliant": true,
+          "request_seed_42_verified": true,
+          "energy_used": 9,
+          "diagnostic_tool": {
+            "calls": 1,
+            "completed": 1,
+            "successful": 1,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8002/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "1429785c53adc23a5271b08af1b1b27de193a12ac0c37a199a582f8db13585c6",
+              "events.jsonl": "7460fa51fef86cb499c8f8f9e122c57b075e8c55ff084b70e69ada155dbd9905",
+              "tools.jsonl": "ef6c45c8c2cf73183bfe368d40203d47c978a442af317e76da9676648933f2aa",
+              "evaluation.json": "2ec4fc65502861b1876a263fbdce15fa7dd5abd3ed9cf63e5897d828f069c6cd"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 1,
+              "completed": 1,
+              "successful": 1,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        },
+        {
+          "world_id": "world_6",
+          "run_id": "e5-qwen38-tools-on-20261107-r06-world_6",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 16.935915359796752,
+          "evaluation_complete": true,
+          "noise_free_evaluation_verified": true,
+          "timely_submission": true,
+          "at_or_above_90": false,
+          "exploration_seconds": 119.90969355218112,
+          "evaluation_seconds": 18.537525622174144,
+          "total_seconds_including_evaluation": 143.34952737390995,
+          "calls": 10,
+          "usage_complete": true,
+          "completion_tokens_reported": 5260,
+          "average_output_tokens_per_call": 526.0,
+          "max_call_output_tokens_reported": 1737,
+          "max_call_output_tokens": 1737,
+          "output_cap_compliant": true,
+          "request_seed_42_verified": true,
+          "energy_used": 10,
+          "diagnostic_tool": {
+            "calls": 0,
+            "completed": 0,
+            "successful": 0,
+            "failed": 0,
+            "unfinished": 0
+          },
+          "model_endpoint": "http://127.0.0.1:8002/v1",
+          "raw_evidence": {
+            "files_sha256": {
+              "model_events.jsonl": "1509cdb81a0097902576f5f6f0b1508179b445e2c41388ff1cefe80ce4d9656c",
+              "events.jsonl": "c4e659114a5d13400ea9546fc0197739e7201cf8b073abf429fb077265f307cb",
+              "tools.jsonl": "369d485fc1c48bf883763da081536238248da45ce54a422bed5c941d7c399399",
+              "evaluation.json": "02eb4f398b81173229667d96dfc1e2d507c445dfeba5c209d1dee36d89125ff5"
+            },
+            "request_seed_42_verified": true,
+            "diagnostic_tool": {
+              "calls": 0,
+              "completed": 0,
+              "successful": 0,
+              "failed": 0,
+              "unfinished": 0
+            }
+          },
+          "errors": []
+        }
+      ],
+      "errors": [],
+      "warnings": []
+    }
+  },
+  "errors": [],
+  "limitations": [
+    "One fixed six-world batch per arm, one attempt per world. No cross-batch best-score selection.",
+    "Same request seed does not guarantee identical hardware scheduling or deterministic model execution.",
+    "Arms use distinct local model endpoints; endpoint and GPU allocation remain execution differences.",
+    "Only a single-batch observed difference is reported, not a stable or statistically established causal effect.",
+    "Unfinished worlds do not pass. Missing token usage is unknown, never imputed as zero.",
+    "Scores use the existing local development evaluator, not official contest scoring."
+  ],
+  "read_only_scope": "Reads existing archives; does not run models, simulation, fitting or evaluation or alter input files."
+}

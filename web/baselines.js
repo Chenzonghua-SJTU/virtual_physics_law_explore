@@ -44,7 +44,7 @@ function render(batch) {
 }
 function renderAll(){
   const selected=document.getElementById('experiment-group').value;
-  const sorted=latestBatches.filter(b=>selected==='all'||b.experiment_group===selected).sort((a,b)=>b.experiment_group.localeCompare(a.experiment_group)||a.id.localeCompare(b.id));
+  const sorted=latestBatches.filter(b=>selected==='all'||b.experiment_group===selected||(selected==='E5_AB'&&b.id.startsWith('e5-qwen38-tools-'))).sort((a,b)=>b.experiment_group.localeCompare(a.experiment_group)||a.id.localeCompare(b.id));
   document.getElementById('batches').replaceChildren(...sorted.map(render));
   const rows=sorted.flatMap(b=>b.worlds), completed=rows.filter(r=>r.evaluation_complete).length;
   document.getElementById('connection').textContent=`当前筛选已完成独立评测 ${completed} / ${rows.length} · 更新于 ${lastRefreshed??'—'} · 每 5 秒刷新`;
