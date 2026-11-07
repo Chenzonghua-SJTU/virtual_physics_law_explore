@@ -196,7 +196,8 @@
       "review": [
         "Distance exponential found, but mass dependence wrong: exp(c4*mass), not a power. Correct alternative exp(c4*log(mass)) was returned at rank 2.",
         "Training had only two mass levels. Fresh validation at mass=1.5 and altered spatial/velocity conditions contradicted the first candidate; Agent did not compare rank 2, and misread exp(c4*mass) as mass**c4 in its explanation.",
-        "Submitted with 130 seconds and 2 energy left. This is not true-law recovery."
+        "Submitted with 130 seconds and 2 energy left. This is not true-law recovery.",
+        "Posthoc frozen-candidate replay: third mass-level probe_0009 RMSE is 0.00258 for rank 1 versus 4.03e-7 for rank 2. Both remain about 0.00308 on probe_0008, so changing the mass form alone does not resolve every observed residual. This diagnostic does not alter the Agent score."
       ],
       "all_complete_candidates_preserved": true
     },

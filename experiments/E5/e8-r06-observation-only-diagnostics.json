@@ -1,0 +1,352 @@
+{
+  "source_commit": "52dbdd6",
+  "scope": "Read-only replay diagnostics on R06 acquired observations; no Agent/search calls or independent score changes. No reference laws used.",
+  "projection": [
+    {
+      "world": 1,
+      "observations_sha256": "df06569a8a5620115ac2145c3d91c7bcf193b921e27f4ecfed45f2c09be92ef6",
+      "before": {
+        "supported": true,
+        "relative_transverse_residual": 3.824527194520573e-06,
+        "direction_coverage_min_eigenvalue": 0.4943741734601974,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source.",
+        "log_response": {
+          "enabled": true,
+          "models_fitted": 67,
+          "target": "log(abs(observed_radial_scalar))",
+          "features": [
+            "sqrt(x*x+y*y)",
+            "log(sqrt(x*x+y*y))",
+            "t",
+            "mass",
+            "log(mass)",
+            "charge",
+            "log(charge)"
+          ],
+          "scope": "Data-supported sign/collinearity hypothesis; coefficients fitted only to discovery observations."
+        }
+      },
+      "after": {
+        "supported": true,
+        "relative_transverse_residual": 3.824527194520573e-06,
+        "relative_derivative_resolution": 9.39521206424576e-05,
+        "effective_transverse_tolerance": 0.0003758084825698304,
+        "tolerance_rule": "min(relative cap, four times observed stencil/noise sensitivity); not a confidence interval",
+        "direction_coverage_min_eigenvalue": 0.4943741734601974,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source."
+      }
+    },
+    {
+      "world": 2,
+      "observations_sha256": "44fd10bbce2ea4c792f26e45a8b81e2ba8106b7e27282517f02432ecf5600643",
+      "before": {
+        "supported": true,
+        "relative_transverse_residual": 4.866621647908313e-07,
+        "direction_coverage_min_eigenvalue": 0.23470256535099118,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source.",
+        "log_response": {
+          "enabled": true,
+          "models_fitted": 67,
+          "target": "log(abs(observed_radial_scalar))",
+          "features": [
+            "sqrt(x*x+y*y)",
+            "log(sqrt(x*x+y*y))",
+            "t",
+            "mass",
+            "log(mass)",
+            "charge",
+            "log(charge)"
+          ],
+          "scope": "Data-supported sign/collinearity hypothesis; coefficients fitted only to discovery observations."
+        }
+      },
+      "after": {
+        "supported": true,
+        "relative_transverse_residual": 4.866621647908313e-07,
+        "relative_derivative_resolution": 0.00015498379365246485,
+        "effective_transverse_tolerance": 0.0006199351746098594,
+        "tolerance_rule": "min(relative cap, four times observed stencil/noise sensitivity); not a confidence interval",
+        "direction_coverage_min_eigenvalue": 0.23470256535099115,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source."
+      }
+    },
+    {
+      "world": 3,
+      "observations_sha256": "f61efb81f89cc45209ee7b6dfbcd22de5d145889b54431697194ceddb2f3b364",
+      "before": {
+        "supported": false,
+        "relative_transverse_residual": 0.3488610681286667,
+        "direction_coverage_min_eigenvalue": 0.36685171083477797,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source.",
+        "log_response": {
+          "enabled": false
+        }
+      },
+      "after": {
+        "supported": false,
+        "relative_transverse_residual": 0.3488610681286667,
+        "relative_derivative_resolution": 0.00059197631580592,
+        "effective_transverse_tolerance": 0.00236790526322368,
+        "tolerance_rule": "min(relative cap, four times observed stencil/noise sensitivity); not a confidence interval",
+        "direction_coverage_min_eigenvalue": 0.36685171083477797,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source."
+      }
+    },
+    {
+      "world": 4,
+      "observations_sha256": "3036dec83b80e7488a8137692f17cd2c53ef69d4dd62355a838b474235b5964c",
+      "before": {
+        "supported": true,
+        "relative_transverse_residual": 0.0001278969282663746,
+        "direction_coverage_min_eigenvalue": 0.32200240333716523,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source.",
+        "log_response": {
+          "enabled": true,
+          "models_fitted": 67,
+          "target": "log(abs(observed_radial_scalar))",
+          "features": [
+            "sqrt(x*x+y*y)",
+            "log(sqrt(x*x+y*y))",
+            "t",
+            "mass",
+            "log(mass)",
+            "charge",
+            "log(charge)"
+          ],
+          "scope": "Data-supported sign/collinearity hypothesis; coefficients fitted only to discovery observations."
+        }
+      },
+      "after": {
+        "supported": true,
+        "relative_transverse_residual": 0.0001278969282663746,
+        "relative_derivative_resolution": 0.000217400840452655,
+        "effective_transverse_tolerance": 0.00086960336181062,
+        "tolerance_rule": "min(relative cap, four times observed stencil/noise sensitivity); not a confidence interval",
+        "direction_coverage_min_eigenvalue": 0.3220024033371652,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source."
+      }
+    },
+    {
+      "world": 5,
+      "observations_sha256": "7327e273cd10f813ca8f9bf698ea9966136c2eb2566482bf1bb459f0a304d09b",
+      "before": {
+        "supported": true,
+        "relative_transverse_residual": 0.03560497293869946,
+        "direction_coverage_min_eigenvalue": 0.33814547781619886,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source.",
+        "log_response": {
+          "enabled": true,
+          "models_fitted": 7,
+          "target": "log(abs(observed_radial_scalar))",
+          "features": [
+            "sqrt(x*x+y*y)",
+            "log(sqrt(x*x+y*y))",
+            "t"
+          ],
+          "scope": "Data-supported sign/collinearity hypothesis; coefficients fitted only to discovery observations."
+        }
+      },
+      "after": {
+        "supported": false,
+        "relative_transverse_residual": 0.03560497293869946,
+        "relative_derivative_resolution": 0.00037218840189498904,
+        "effective_transverse_tolerance": 0.0014887536075799562,
+        "tolerance_rule": "min(relative cap, four times observed stencil/noise sensitivity); not a confidence interval",
+        "direction_coverage_min_eigenvalue": 0.3381454778161988,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source."
+      }
+    },
+    {
+      "world": 6,
+      "observations_sha256": "2462dab6a6962d4a56c28d3c3919627bb490ae6923a0283768076582411b0f66",
+      "before": {
+        "supported": false,
+        "relative_transverse_residual": 0.31968337705575656,
+        "direction_coverage_min_eigenvalue": 0.35562957290785213,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source.",
+        "log_response": {
+          "enabled": false
+        }
+      },
+      "after": {
+        "supported": false,
+        "relative_transverse_residual": 0.31968337705575656,
+        "relative_derivative_resolution": 0.0012112804935963185,
+        "effective_transverse_tolerance": 0.004845121974385274,
+        "tolerance_rule": "min(relative cap, four times observed stencil/noise sensitivity); not a confidence interval",
+        "direction_coverage_min_eigenvalue": 0.35562957290785213,
+        "hypothesis": "acceleration equals an unknown scalar response times position",
+        "scope": "Acquired-data hypothesis only; not proof of isotropy or an origin force source."
+      }
+    }
+  ],
+  "frozen_candidate_comparison": {
+    "run": "e8-qwen38-pysr-stage-20261107-r06-world_4",
+    "probe_ids": [
+      "probe_0008",
+      "probe_0009",
+      "probe_0010"
+    ],
+    "selection": "All three original candidates evaluated without refitting; retrospective diagnosis, not a new independent validation or Agent run.",
+    "candidates": [
+      {
+        "rank": 1,
+        "law_spec": {
+          "ax": "-1 * exp(c1 + c2 * sqrt(x * x + y * y) + c3 * log(sqrt(x * x + y * y)) + c4 * q('mass') + c5 * log(q('charge'))) * x",
+          "ay": "-1 * exp(c1 + c2 * sqrt(x * x + y * y) + c3 * log(sqrt(x * x + y * y)) + c4 * q('mass') + c5 * log(q('charge'))) * y"
+        },
+        "frozen_training_parameters": {
+          "c1": -0.45235408403441707,
+          "c2": -0.2503055000421901,
+          "c3": -1.9986852716207855,
+          "c4": -0.6931459704431334,
+          "c5": 0.9999989432853983
+        },
+        "observed_validation_errors": {
+          "overall": {
+            "position_mse": 5.376736960959407e-06,
+            "velocity_mse": 2.0381367823117122e-05,
+            "position_rmse": 0.002318779196249485,
+            "velocity_rmse": 0.004514572828420993
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 31,
+              "position_mse": 9.474816864493733e-06,
+              "position_rmse": 0.003078119046510991,
+              "velocity_mse": 5.607086915515612e-05,
+              "velocity_rmse": 0.00748804842099436
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 31,
+              "position_mse": 6.6538514374911096e-06,
+              "position_rmse": 0.0025795060452519026,
+              "velocity_mse": 5.0457207792858e-06,
+              "velocity_rmse": 0.0022462681895280895
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 1.5425808933773351e-09,
+              "position_rmse": 3.9275703601302105e-05,
+              "velocity_mse": 2.7513534909458466e-08,
+              "velocity_rmse": 0.00016587204378513718
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        }
+      },
+      {
+        "rank": 2,
+        "law_spec": {
+          "ax": "-1 * exp(c1 + c2 * sqrt(x * x + y * y) + c3 * log(sqrt(x * x + y * y)) + c4 * log(q('mass')) + c5 * log(q('charge'))) * x",
+          "ay": "-1 * exp(c1 + c2 * sqrt(x * x + y * y) + c3 * log(sqrt(x * x + y * y)) + c4 * log(q('mass')) + c5 * log(q('charge'))) * y"
+        },
+        "frozen_training_parameters": {
+          "c1": -1.1455000630190397,
+          "c2": -0.25030545898566087,
+          "c3": -1.998685375700794,
+          "c4": -0.9999982562422207,
+          "c5": 0.9999989405397942
+        },
+        "observed_validation_errors": {
+          "overall": {
+            "position_mse": 3.1588282267389806e-06,
+            "velocity_mse": 1.8699676617848564e-05,
+            "position_rmse": 0.001777309265923908,
+            "velocity_rmse": 0.004324312271084104
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 31,
+              "position_mse": 9.474941725657454e-06,
+              "position_rmse": 0.003078139328499841,
+              "velocity_mse": 5.60715139040769e-05,
+              "velocity_rmse": 0.007488091472737022
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 31,
+              "position_mse": 1.6268900327784148e-13,
+              "position_rmse": 4.033472490024464e-07,
+              "velocity_mse": 9.276590626337183e-14,
+              "velocity_rmse": 3.045749600071743e-07
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 1.5427918704843466e-09,
+              "position_rmse": 3.927838935705417e-05,
+              "velocity_mse": 2.7515856702894737e-08,
+              "velocity_rmse": 0.00016587904238599504
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        }
+      },
+      {
+        "rank": 3,
+        "law_spec": {
+          "ax": "q('charge') / q('mass') * (c1 - sin(sin(sin(c2 / ((x * x + y * y) * log(x * x + y * y + c3)))))) * x",
+          "ay": "q('charge') / q('mass') * (c4 - c2 / ((x * x + y * y) * log(x * x + y * y + c5))) * y"
+        },
+        "frozen_training_parameters": {
+          "c1": 0.0015918422322775988,
+          "c2": 0.43035641469534225,
+          "c3": 4.639424594199736,
+          "c4": 0.0015760242693151482,
+          "c5": 4.672358588090214
+        },
+        "observed_validation_errors": {
+          "overall": {
+            "position_mse": 0.0004677140674088792,
+            "velocity_mse": 0.00788625910492831,
+            "position_rmse": 0.02162669802371317,
+            "velocity_rmse": 0.08880461195753467
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 31,
+              "position_mse": 0.0013997167801052199,
+              "position_rmse": 0.037412788991269014,
+              "velocity_mse": 0.02358147172538523,
+              "velocity_rmse": 0.1535625987191713
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 31,
+              "position_mse": 6.970486589513188e-09,
+              "position_rmse": 8.348943998801998e-05,
+              "velocity_mse": 3.3942249757697853e-09,
+              "velocity_rmse": 5.825997747828079e-05
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 3.418451634828341e-06,
+              "position_rmse": 0.0018489055234998735,
+              "velocity_mse": 7.730219517472018e-05,
+              "velocity_rmse": 0.008792166693979373
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        }
+      }
+    ]
+  }
+}
