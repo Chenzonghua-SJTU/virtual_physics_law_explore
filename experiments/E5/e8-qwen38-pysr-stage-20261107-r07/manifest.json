@@ -1,0 +1,174 @@
+{
+  "experiment_id": "e8-qwen38-pysr-stage-20261107-r07",
+  "created_at": "2026-11-07T11:11:42.590841+00:00",
+  "status": "completed",
+  "kind": "real_autonomous_v15_baseline",
+  "workers": 3,
+  "experiment_group": "E8",
+  "ruleset": "e5",
+  "model_endpoints": [
+    "http://127.0.0.1:8001/v1",
+    "http://127.0.0.1:8002/v1",
+    "http://127.0.0.1:8003/v1"
+  ],
+  "configuration": {
+    "environment": {
+      "world_id": "world_1",
+      "physics_version": "shore_v15",
+      "noise": false,
+      "seed": 42,
+      "wall_seconds": 300,
+      "world_set": "v15",
+      "ruleset": "e5",
+      "energy_budget": 10
+    },
+    "model": {
+      "base_url": "http://127.0.0.1:8000/v1",
+      "model": "qwen3.8-27b",
+      "thinking": false,
+      "reasoning_protocol": "qwen",
+      "reasoning_effort": "low",
+      "timeout_seconds": 600,
+      "max_calls": null,
+      "main_max_calls": null,
+      "max_tokens_per_call": 4096,
+      "max_total_tokens": null,
+      "max_retries": 1,
+      "deployment": "local",
+      "ruleset": "e5",
+      "api_key_env": "LOCAL_LLM_API_KEY",
+      "api_key_required": false,
+      "local_model_endpoints": {
+        "qwen3.8-27b": "http://127.0.0.1:8000/v1"
+      }
+    },
+    "agent": {
+      "max_no_action": 3,
+      "guidance_profile": "baseline",
+      "loop_recovery": true,
+      "submission_fit_rmse_threshold": 1e-05,
+      "submission_time_remaining_seconds": 40
+    },
+    "code_execution": {
+      "enabled": false,
+      "image": "shore-code:e2-r04",
+      "timeout_seconds": 90,
+      "memory_mb": 1024
+    },
+    "numerics": {
+      "max_nfev": 80,
+      "symbolic_regression_enabled": true,
+      "symbolic_regression_endpoint": "http://127.0.0.1:8890",
+      "symbolic_regression_seed": 42
+    }
+  },
+  "source_sha256": {
+    "shore_agent/agent.py": "d0c7d9a045c6b9bd4e2d7ac296201467451445d8cf388ffd358eb2329fab4eac",
+    "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+    "shore_agent/prompts/e5.txt": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+    "shore_agent/prompts/e5_concise.txt": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+    "shore_agent/prompts/symbolic.txt": "43f3d13f89963b2055ff2281f8c34e82546ebd7565d6b85a5724fd4d594feaa0",
+    "shore_agent/schemas.py": "f3ca2c0f2fa60d2207cf8292c881716f656c8f4a91b7b8ed46d3c0d6e2c0d7d1",
+    "shore_agent/runtime.py": "e3d929f62b0d7fbb3bf027b90591118c50bf52a8e6569baf19dd6a1e01420e62",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_agent/model.py": "a4f5ca331ae373718b6ba8a8153fc4f13b4afe07d461deccf79718cd61c3a211",
+    "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+    "shore_agent/store.py": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+    "shore_agent/workspace.py": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+    "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+    "shore_agent/symbolic_regression.py": "b89bfa95cf312edef43e3803a453e6d20e0622b1e237ed097e5ded3683700d00",
+    "shore_agent/symbolic_service.py": "acddc0e6ea2bc61cd9da4a0a5e30831d6ed45125bb4a996a2cf1d5afd5f2c23c",
+    "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+    "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+    "shore_v15/evaluation.py": "28711d4ef0061b9921423f81b1db2df7c1387d3bd732db9a2cde3ece1d350164",
+    "benchmark_v15.py": "f3248958305a083ee5a344d7621b2715a5996c8cc242d1a696ae92951aa241e3",
+    "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2",
+    "deployment/config.e8.symbolic.json": "89b330b503eaf0c09c7823c701a40db9a43857cc52e6fb4970d4fbf4d8118e25",
+    "deployment/run_e7.py": "897168cf80facc0ba437e86c7c6dd885a9b06efc7a3225a74d94dd54aa06aed6",
+    "deployment/run_e8_symbolic.py": "63749e8a22ece089e5fbf3622e63ee221de796aa960ca43401d2eccddc9a9914",
+    "experiments/E5/e8-protocol.json": "1891274917cc5da6839fc10a115445f507427fb8deeef5f103d96b77881596d1",
+    "shore_agent/__init__.py": "0547ccfeb2e41c0e42a47e4e2b97f50c5dbe01b7a6fd99dd789d2ca25cf530f6",
+    "shore_agent/cli.py": "51cc1ca33fadb5d472d767d7fc94bbc1465da6acb2795b8a5e7fa53fe451d092",
+    "shore_agent/code_execution.py": "2732a262a8b5ec11e58eff6614a4f9f9b9f6b7e32c69d06d700191fd2611ba73",
+    "shore_agent/code_response.py": "16ac5bc9f4b00f78ad42822c9b367182974539e8c6acaa06575b5b51b04c8278",
+    "shore_agent/environment.py": "43d04b3c29bda7064d39c226cca12ee4d5856adcb4048fd8b854934efa69d728",
+    "shore_agent/observations.py": "2462c3ecc85d263be1b6f4bbcf1411e2a553f9225900e5cc4aaa4125f7e79197",
+    "shore_agent/prompts/code.txt": "c7ae9c21261fb133886c2fefc70b3f60cd1cd553d21c805ba0ed2f5ef6561483",
+    "shore_agent/symbolic_algebra.py": "d55f5ce4534fe36455b942c14a4ba98afcaa64eaadca2746484511b64c1b3a1e",
+    "shore_agent/symbolic_basis.py": "faef5985ab2132c6aa796979ee5413c78c893970044eb964770591dcdf52c924",
+    "shore_agent/symbolic_feedback.py": "44292efecd9d8bdf169a76321c7fd2758a5c9a4479900c15795e807492813c21",
+    "shore_agent/symbolic_geometry.py": "f4cb7c57826179afa617e6d0ebcb8a3333e8a7c3e0f423a9b3eb946b7f1af6e6",
+    "shore_agent/symbolic_guidance.py": "0225c64eccef6a5c3ffe654af784dd0b22abf64a942e726085909a7ce725fb1c",
+    "shore_agent/symbolic_quality.py": "980a27d30d89becc09c6d1d2c043afb8506207a4fdbfe5c58aba2cfafb4550e7",
+    "shore_agent/symbolic_selection.py": "23cc010399843ece059ab618845880aca7df95506d2251fb913aa358c969cb94",
+    "shore_agent/web.py": "276ff981be4fd47cba30e0e66b6c62a6f534f901a694f2253b8cbdc4d2b38bed",
+    "shore_agent/web_jobs.py": "feb70349021878eb3b5a3b70b4637b465c2eee6bb7ad96894be98ebd6c44dd64"
+  },
+  "runs": {
+    "world_1": "e8-qwen38-pysr-stage-20261107-r07-world_1",
+    "world_2": "e8-qwen38-pysr-stage-20261107-r07-world_2",
+    "world_3": "e8-qwen38-pysr-stage-20261107-r07-world_3",
+    "world_4": "e8-qwen38-pysr-stage-20261107-r07-world_4",
+    "world_5": "e8-qwen38-pysr-stage-20261107-r07-world_5",
+    "world_6": "e8-qwen38-pysr-stage-20261107-r07-world_6"
+  },
+  "protocol": {
+    "attempts_per_world": 1,
+    "automatic_session_retries": false,
+    "resume_sessions": false,
+    "candidate_answers_supplied": false,
+    "energy_budget": 10,
+    "wall_seconds_per_world": 300,
+    "single_active_world_per_endpoint": true,
+    "queue_time_excluded_from_mission_budget": true,
+    "evaluation": "all_fixed_v15_cases_after_accepted_submission",
+    "official_score": false,
+    "official_sdk_compatible": false,
+    "registered_repeat": "r07",
+    "repeat_registration": {
+      "batch_id": "e8-qwen38-pysr-stage-20261107-r07",
+      "registration": "Registered after full R06 trace audit and generic rotated noncentral-force tests, before execution. One unchanged implementation for all six worlds.",
+      "observation_noise": false,
+      "evaluation_noise": false,
+      "ruleset": "e5",
+      "scientific_implementation": "52dbdd6: derivative-resolution-aware radial hypothesis acceptance; all prompts, operators, model settings, scoring and submission gates unchanged.",
+      "inherits": "27B, three exclusively allocated replicas, 10 energy, 300 seconds, 4096 output tokens/call, no thinking or total-token cap; unchanged clean submission gate.",
+      "changes": [
+        "Use observed velocity-difference resolution to reject resolved transverse acceleration before allocating radial search budget. No world identity, force formula, or reference coefficient."
+      ],
+      "audit_required_before_next_round": [
+        "Every acquired-probe plan and public coverage",
+        "Every SR input, returned candidate and selection/fit residual",
+        "Every Agent fit/validation/submit argument and feedback",
+        "Final formula compared with public reference only after completion; no truth injected into exploration"
+      ],
+      "selection_policy": "One attempt per world, retain all six results; no replacing failed worlds with retries. Diagnose the complete round before registering the next frozen implementation.",
+      "preceding_audit": "experiments/E5/e8-r06-diagnosis.json",
+      "model_endpoints": [
+        "http://127.0.0.1:8001/v1",
+        "http://127.0.0.1:8002/v1",
+        "http://127.0.0.1:8003/v1"
+      ],
+      "parallelism": 3,
+      "resource_allocation": "Continue user-reserved 8001-8003 after idle checks; official_test remains on 8000. Separate symbolic service."
+    }
+  },
+  "symbolic_runtime_preflight": {
+    "actual_threads": 4,
+    "environment": {
+      "PYTHON_JULIAPKG_EXE": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/julia-1.13.3/bin/julia",
+      "JULIA_DEPOT_PATH": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/julia-depot",
+      "PYTHON_JULIAPKG_OFFLINE": "yes",
+      "PYTHON_JULIACALL_THREADS": "4",
+      "JULIA_NUM_THREADS": "4",
+      "PYTHON_JULIACALL_HANDLE_SIGNALS": "yes",
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "searches_started": 0,
+    "model_calls": 0
+  },
+  "finished_at": "2026-11-07T11:18:33.381453+00:00"
+}

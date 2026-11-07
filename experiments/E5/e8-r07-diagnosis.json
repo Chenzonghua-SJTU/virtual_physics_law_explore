@@ -1,0 +1,322 @@
+{
+  "batch": "e8-qwen38-pysr-stage-20261107-r07",
+  "scientific_commit": "52dbdd6",
+  "registration_commit": "fab9810",
+  "observation_noise": false,
+  "evaluation_noise": false,
+  "attempts_per_world": 1,
+  "strict_scores_at_least_90": 3,
+  "numerical_boundary_world": "world_2",
+  "all_limits_met": true,
+  "source_unchanged_after_completion": true,
+  "audit_inputs_unchanged": true,
+  "audit_warnings": [],
+  "all_six_tool_traces_reviewed": true,
+  "worlds": {
+    "world_1": {
+      "score": 53.41470615803576,
+      "timing": {
+        "exploration_seconds": 102.84506158903241,
+        "evaluation_seconds": 3.419496353715658,
+        "wall_seconds_including_evaluation": 107.16244604066014,
+        "model_elapsed_seconds": 60.20049647428095,
+        "symbolic_search_seconds": 40.18781468458474,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 11,
+        "completion_tokens": 3641,
+        "average_output_tokens_per_call": 331.0,
+        "max_call_output_tokens": 1007,
+        "requests_with_reported_usage": 11,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 6,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-k / (x * x + y * y) * x",
+          "ay": "-k / (x * x + y * y) * y"
+        },
+        "fitted_parameters": {
+          "k": 0.0795533083191998
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Missing property dependence. Training varied mass and charge together, keeping their ratio constant; fresh validation also kept both at baseline. These observations cannot distinguish their individual effects.",
+        "Agent simplified an SR candidate and submitted a low training-error spatial law. Low acquired-data error was not broad generalization."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_2": {
+      "score": 89.99999999999972,
+      "timing": {
+        "exploration_seconds": 187.3682086803019,
+        "evaluation_seconds": 1.7170555479824543,
+        "wall_seconds_including_evaluation": 191.3905933033675,
+        "model_elapsed_seconds": 143.5603248551488,
+        "symbolic_search_seconds": 40.747124725952744,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 25,
+        "completion_tokens": 8236,
+        "average_output_tokens_per_call": 329.44,
+        "max_call_output_tokens": 1408,
+        "requests_with_reported_usage": 25,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 10,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-k*(q('charge')/q('mass'))*x",
+          "ay": "-k*(q('charge')/q('mass'))*y"
+        },
+        "fitted_parameters": {
+          "k": 0.059999999634304496
+        },
+        "train_probe_ids": [
+          "probe_0003",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0010",
+          "probe_0012"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Correct isotropic linear law and property ratio ultimately recovered after late SR.",
+        "Repeated invalid reuse of discovery data as validation; energy exhausted before fresh validation of final law. Unsupported hidden_matter declaration lost 5 points. Raw score 89.99999999999972 rounds to 90.00 but fails strict raw >=90 count."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_3": {
+      "score": 95.49999999999993,
+      "timing": {
+        "exploration_seconds": 92.518041331321,
+        "evaluation_seconds": 2.5685356371104717,
+        "wall_seconds_including_evaluation": 96.72862007655203,
+        "model_elapsed_seconds": 49.12184531241655,
+        "symbolic_search_seconds": 42.13910407572985,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 11,
+        "completion_tokens": 2901,
+        "average_output_tokens_per_call": 263.72727272727275,
+        "max_call_output_tokens": 620,
+        "requests_with_reported_usage": 11,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 9,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1 * x + c2 * y",
+          "ay": "c3 * x + c4 * y"
+        },
+        "fitted_parameters": {
+          "c1": -0.059999999996288626,
+          "c2": 0.034641016137143835,
+          "c3": 0.034641016145226626,
+          "c4": -0.09999999997494528
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Correct static linear tensor, original SR candidate fitted and fresh spatial validation passed.",
+        "One malformed per-probe t0 argument repaired."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_4": {
+      "score": 34.50844925537061,
+      "timing": {
+        "exploration_seconds": 163.58053351566195,
+        "evaluation_seconds": 4.120567116886377,
+        "wall_seconds_including_evaluation": 169.63989819958806,
+        "model_elapsed_seconds": 120.42427857406437,
+        "symbolic_search_seconds": 42.03739255666733,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 12,
+        "completion_tokens": 7439,
+        "average_output_tokens_per_call": 619.9166666666666,
+        "max_call_output_tokens": 2166,
+        "requests_with_reported_usage": 12,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 6,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-1 * exp(c1 + c2 * sqrt(x * x + y * y) + c3 * log(sqrt(x * x + y * y)) + c4 * log(q('mass'))) * x",
+          "ay": "-1 * exp(c1 + c2 * sqrt(x * x + y * y) + c3 * log(sqrt(x * x + y * y)) + c4 * log(q('mass'))) * y"
+        },
+        "fitted_parameters": {
+          "c1": -1.1455109689354064,
+          "c2": -0.2502568397346378,
+          "c3": -1.9988082571581351,
+          "c4": -0.9999998860863555
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Distance exponential and mass power recovered, but charge was never varied in training or validation and omitted from submitted formula.",
+        "Training windows mostly 0.49 time units; fresh validation equally short. Correct spatial form at fixed charge did not establish property independence.",
+        "Agent also asserted hidden_matter without a demonstrated need for unseen sources."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_5": {
+      "score": 94.99999999999888,
+      "timing": {
+        "exploration_seconds": 115.41364976763725,
+        "evaluation_seconds": 2.8688950706273317,
+        "wall_seconds_including_evaluation": 120.62245565280318,
+        "model_elapsed_seconds": 71.1167308408767,
+        "symbolic_search_seconds": 40.508798873052,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 16,
+        "completion_tokens": 4073,
+        "average_output_tokens_per_call": 254.5625,
+        "max_call_output_tokens": 1033,
+        "requests_with_reported_usage": 16,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 10,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+          "ay": "c4 * y + c3 * (x ** 2 * y) + c5 * y ** 3"
+        },
+        "fitted_parameters": {
+          "c1": -0.06000000003878042,
+          "c2": -0.0019999999468482362,
+          "c3": -0.011999999468619467,
+          "c4": -0.10000000003546562,
+          "c5": -0.0019999999471456294
+        },
+        "train_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Correct cubic self/cross coupling recovered from generic sparse polynomial proposals, then fitted and freshly validated.",
+        "Do not attribute success causally to geometry patch: this batch had better trajectories and a transverse residual 0.129, which both old and new geometry rules reject.",
+        "Malformed t0 fields and three attempts to validate on discovery data recovered; all 10 energy used."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_6": {
+      "score": 90.99999999999986,
+      "timing": {
+        "exploration_seconds": 212.2503062877804,
+        "evaluation_seconds": 3.5194840133190155,
+        "wall_seconds_including_evaluation": 217.10464193299413,
+        "model_elapsed_seconds": 126.12453626655042,
+        "symbolic_search_seconds": 84.09524236246943,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 16,
+        "completion_tokens": 7428,
+        "average_output_tokens_per_call": 464.25,
+        "max_call_output_tokens": 1734,
+        "requests_with_reported_usage": 16,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 8,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-(c1 * x) + c2 * y + c3 * (x * sin(c4 * t + c5)) - (c3 * (y * cos(c4 * t + c5)))",
+          "ay": "-(c1 * y) - (c3 * (y * sin(c4 * t + c5))) - (c3 * (x * cos(c4 * t + c5)))"
+        },
+        "fitted_parameters": {
+          "c1": 0.11999999957678528,
+          "c2": -4.6151591384337406e-10,
+          "c3": 0.059999999716414586,
+          "c4": 0.3926990811203055,
+          "c5": 2.1707963289969343
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "First search on short window returned inaccurate approximation. Agent acquired later-time evidence, observed validation contradiction, then searched again including those observations.",
+        "Second SR yielded the correct periodic linear tensor; final law includes a coefficient near zero. Fresh validation passed.",
+        "Unsupported hidden_matter declaration lost 5 points. This is a useful example of the intended evidence-driven recovery loop without a known-frequency hint."
+      ],
+      "all_complete_candidates_preserved": true
+    }
+  },
+  "causal_limitations": [
+    "One stochastic Agent attempt per world; trajectories differ between R06 and R07, so score differences are not a paired estimate of the geometry correction.",
+    "Fixed-observation tool replay on original R06 W5 gave heldout RMSE 0.047902 before versus 0.052412 after; the bounded replay did not improve recovery. This is not a new Agent score and does not overwrite R06.",
+    "No noisy batch launched; no robust-best-version claim."
+  ],
+  "generalization_requirements": [
+    "No world-specific prompt hints, hidden law templates, reference coefficients or world-index branches.",
+    "Agent and SR access current-session public observations only. All development truths and synthetic generator formulas stay in evaluator/diagnostic artifacts.",
+    "Retain every complete batch and negative result; no assembling six best worlds from different attempts.",
+    "Explicitly distinguish polynomial/periodic/log-response helper priors from pure PySR discoveries. Absence of literal laws does not prove absence of development-set overfitting.",
+    "Freeze new versions before evaluation on additional structures, random coefficients and rotated coordinates; tool-only transfer checks do not certify Agent performance on unknown nine worlds."
+  ],
+  "next_priorities": [
+    "Generic experimental-design diagnostics for unvaried and perfectly confounded public attributes; never prescribe a physical relationship.",
+    "Deliver validation-to-training discrepancies and observed counterexamples at validation time; do not alter user submission OR gate or silently select a formula.",
+    "Evaluate new generic diagnostics with synthetic data and frozen full-Agent batches, without per-world retries."
+  ]
+}
