@@ -9,6 +9,14 @@ function element(tag, text, cls) {
 const number=(value,digits=2)=>typeof value==='number'&&Number.isFinite(value)?value.toFixed(digits):'—';
 const duration=(seconds)=>typeof seconds==='number'&&Number.isFinite(seconds)?`${Math.floor(Math.round(seconds)/60)}分${Math.round(seconds)%60}秒`:'—';
 let latestBatches=[], lastRefreshed=null;
+const query=new URLSearchParams(location.search), requestedBatch=query.get('batch');
+const groupSelector=document.getElementById('experiment-group');
+if(requestedBatch&&/^[A-Za-z0-9_-]{1,80}$/.test(requestedBatch)){
+  const option=element('option',`单批：${requestedBatch}`);
+  option.value='batch:'+requestedBatch;groupSelector.append(option);groupSelector.value=option.value;
+}else if(['all','E5_AB','E5','E4','E3'].includes(query.get('group'))){
+  groupSelector.value=query.get('group');
+}
 function render(batch) {
   const section=element('section');
   const repeat=(batch.id.match(/r\d+$/i)?.[0]||'R01').toUpperCase();
@@ -44,7 +52,7 @@ function render(batch) {
 }
 function renderAll(){
   const selected=document.getElementById('experiment-group').value;
-  const sorted=latestBatches.filter(b=>selected==='all'||b.experiment_group===selected||(selected==='E5_AB'&&b.id.startsWith('e5-qwen38-tools-'))).sort((a,b)=>b.experiment_group.localeCompare(a.experiment_group)||a.id.localeCompare(b.id));
+  const sorted=latestBatches.filter(b=>selected==='all'||b.experiment_group===selected||selected==='batch:'+b.id||(selected==='E5_AB'&&b.id.startsWith('e5-qwen38-tools-'))).sort((a,b)=>b.experiment_group.localeCompare(a.experiment_group)||a.id.localeCompare(b.id));
   document.getElementById('batches').replaceChildren(...sorted.map(render));
   const rows=sorted.flatMap(b=>b.worlds), completed=rows.filter(r=>r.evaluation_complete).length;
   document.getElementById('connection').textContent=`当前筛选已完成独立评测 ${completed} / ${rows.length} · 更新于 ${lastRefreshed??'—'} · 每 5 秒刷新`;

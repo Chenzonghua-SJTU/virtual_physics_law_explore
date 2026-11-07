@@ -189,6 +189,80 @@ def test_history_keeps_its_own_energy_limit_under_e4_server(manager, ruleset):
         assert {p.name: p.read_bytes() for p in directory.iterdir()} == before
 
 
+@pytest.mark.parametrize('ruleset', ['e3', 'e4', 'e5'])
+def test_reusing_strict_template_does_not_leak_e5_flags_into_older_profiles(manager, ruleset):
+    from shore_agent.agent import Agent
+    from shore_agent.model import DeepSeekClient
+    from shore_agent.runtime import ToolRuntime
+
+    source = json.loads((PROJECT / 'deployment/config.e5.strict.json').read_text())
+    # Exercise a trusted profile change while the remaining strict template is
+    # inherited. Browser payloads still cannot change the server's ruleset.
+    source['environment']['ruleset'] = ruleset
+    if ruleset == 'e3':
+        source['environment'].update(energy_budget=100, wall_seconds=3600)
+        source['model'].update(thinking=True, max_tokens_per_call=8192)
+    path = manager.project_root / 'strict-profile.json'
+    _write(path, source)
+    original = path.read_bytes()
+    manager.config_path = path
+    config, key = manager._config({'world_set': 'v15'})
+    assert not key and path.read_bytes() == original
+    assert config['numerics']['max_nfev'] == 80
+    assert config['model']['sampling_seed'] == 42
+    assert config['model']['base_url'] == source['model']['base_url']
+    assert config['agent']['guidance_profile'] == 'e3'
+    run_dir = manager.runs_dir / ('construct-' + ruleset)
+    client = DeepSeekClient(config['model'], run_dir, remaining_seconds=lambda: 300)
+    try:
+        environment = type('NoRequestEnvironment', (), {'ruleset': ruleset})()
+        runtime = ToolRuntime(environment, run_dir, config=config['numerics'])
+        agent = Agent(client, runtime, run_dir, config['agent'])
+        assert client.strict_tools is (ruleset == 'e5')
+        assert agent.strict_tool_recovery is (ruleset == 'e5')
+        assert agent.budget_aware_tools is (ruleset == 'e5')
+        assert runtime.diagnostics_enabled is (ruleset == 'e5')
+        if ruleset != 'e5':
+            assert 'strict_tools' not in config['model']
+            assert not ({'strict_tool_recovery', 'budget_aware_tools', 'repeated_tool_failure_feedback'} & set(config['agent']))
+            assert not ({'diagnostics_enabled', 'diagnostics_compact', 'diagnostics_curvature'} & set(config['numerics']))
+            assert 'diagnose_dynamics' not in [s['function']['name'] for s in runtime.schemas]
+        if ruleset == 'e3':
+            assert config['model'].get('ruleset', 'e3') == 'e3'
+            assert client.max_tokens_per_call == 8192 and client.thinking is True
+            assert config['environment']['energy_budget'] == 100 and config['environment']['wall_seconds'] == 3600
+        else:
+            assert config['model']['ruleset'] == ruleset
+            assert client.max_tokens_per_call == 4096 and client.thinking is False
+            assert config['environment']['noise'] is (ruleset == 'e4')
+    finally:
+        client.close()
+    assert path.read_bytes() == original
+
+
+def test_strict_web_default_preserves_history_and_does_not_add_profile_payload_switch(manager):
+    path = manager.project_root / 'strict-profile.json'
+    _write(path, json.loads((PROJECT / 'deployment/config.e5.strict.json').read_text()))
+    manager.config_path = path
+    for payload in ({'ruleset': 'e3'}, {'strict_tools': False}):
+        with pytest.raises(ValidationError, match='invalid_run_configuration'):
+            manager._config(payload)
+    with pytest.raises(ValidationError, match='e5_requires_v15'):
+        manager._config({'world_set': 'legacy'})
+    for ruleset, energy in [('e3', 100), ('e4', 10)]:
+        directory = manager.runs_dir / ('historical-' + ruleset)
+        directory.mkdir()
+        _write(directory / 'config.json', {'environment': {'ruleset': ruleset, 'world_set': 'v15',
+                                                          'physics_version': 'shore_v15'},
+                                          'model': {'model': 'historical-model'}})
+        _write(directory / 'mission.json', {'task': {'limits': {'initial_energy': energy}}})
+        _write(directory / 'result.json', {'status': 'incomplete', 'budget': {'energy_remaining': energy - 2}})
+        before = {p.name: p.read_bytes() for p in directory.iterdir()}
+        snapshot = manager.snapshot(directory.name)
+        assert snapshot['ruleset'] == ruleset and snapshot['energy_budget'] == energy
+        assert {p.name: p.read_bytes() for p in directory.iterdir()} == before
+
+
 def test_stream_progress_projects_only_counters_and_advances_wait_time(manager, launch):
     run_id = manager.start({'api_key': 'test-only'})
     directory = manager.runs_dir / run_id

@@ -1,0 +1,41 @@
+{
+  "source_commit": "bf546d692c08b1d3edb99c12d132768f44fc4919",
+  "run_source_hashes": "manifest.json:source_sha256",
+  "audit_completed_before_next_source_deployment": true,
+  "audit_source_hashes_all_match": true,
+  "audit_errors_preserved": [],
+  "guidance_profile": "e3",
+  "diagnostics_enabled": true,
+  "diagnostics_compact": true,
+  "diagnostics_curvature": true,
+  "repeated_tool_failure_feedback": true,
+  "budget_aware_tools": true,
+  "strict_tools": true,
+  "strict_tool_recovery": true,
+  "sampling_seed": 42,
+  "attempts_per_world": 1,
+  "configuration_difference_from_r08": [
+    "agent.strict_tool_recovery",
+    "model.strict_tools",
+    "numerics.diagnostics_curvature"
+  ],
+  "archive_evidence_sha256": {
+    "manifest.json": "ced652fac1bd6b7000ca5ae8efb73382ef87efa7116ca277af71c33e3103de63",
+    "summary.json": "556e3aefd1d59bee3daec32e32bbac33bf910b1c23c44eb243fbf239eae424f8",
+    "audit.json": "6812178107f1a0d80f9ad4abf3f346d6ed9db2e79524ed47b247ff352becac1b"
+  },
+  "downloaded_raw_archive_sha256": "aaf450fc8125d4b3d8dc5d02f845b7d3b3f463918e9ff6c27fad8670d318583b",
+  "source_note": "Server audit and all frozen source hashes checked before subsequent scientific-source deployment; raw six-world records retained locally and on server. Post-run strict-pattern compatibility testing found incomplete one-character physical explanations; see post_run_limitations. Original archived evidence and scores are unchanged.",
+  "post_run_limitations": {
+    "strict_pattern_semantics": "Post-run CPU checks confirmed the strict decoder treats JSON schema pattern \\S as a full-string match in both auto and required modes; the runtime accepts substring matching. This constrained physical_explanation for submit/save_draft to one non-whitespace character.",
+    "submitted_physical_explanations": {
+      "world_2": "被",
+      "world_3": "【",
+      "world_4": "本",
+      "world_6": "【"
+    },
+    "interpretation": "Timely submission and completed numerical evaluation do not establish complete physical explanations. The archived audit does not check this semantic completeness issue.",
+    "next_version_fix": "A transport-schema copy changes the pattern to ^[\\s\\S]*\\S[\\s\\S]*$ and has been checked with multi-paragraph Chinese/non-empty text. The fix is not part of R09 source.",
+    "archive_policy": "Original submissions, raw records, audit and scores remain unchanged; no explanation backfill or re-evaluation."
+  }
+}
