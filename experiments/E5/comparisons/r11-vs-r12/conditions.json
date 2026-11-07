@@ -1,0 +1,68 @@
+{
+  "comparison_id": "r11-vs-r12",
+  "arms": [
+    "e5-qwen38-hs-t1-20261107-r11",
+    "e5-qwen38-hs-t02-20261107-r12"
+  ],
+  "source_commit": "abd229364d1cbfe38c73d7488e8747522876263d",
+  "source_hashes_equal": true,
+  "source_hash_count": 19,
+  "configuration_difference": [
+    "model.temperature"
+  ],
+  "temperatures": [
+    1.0,
+    0.2
+  ],
+  "worker_endpoints_per_arm": [
+    [
+      8000,
+      8001
+    ],
+    [
+      8002,
+      8003
+    ]
+  ],
+  "per_world_run_config_differences": {
+    "world_1": [
+      "model.base_url",
+      "model.local_model_endpoints.qwen3.8-27b",
+      "model.temperature"
+    ],
+    "world_2": [
+      "model.base_url",
+      "model.local_model_endpoints.qwen3.8-27b",
+      "model.temperature"
+    ],
+    "world_3": [
+      "model.base_url",
+      "model.local_model_endpoints.qwen3.8-27b",
+      "model.temperature"
+    ],
+    "world_4": [
+      "model.base_url",
+      "model.local_model_endpoints.qwen3.8-27b",
+      "model.temperature"
+    ],
+    "world_5": [
+      "model.base_url",
+      "model.local_model_endpoints.qwen3.8-27b",
+      "model.temperature"
+    ],
+    "world_6": [
+      "model.base_url",
+      "model.local_model_endpoints.qwen3.8-27b",
+      "model.temperature"
+    ]
+  },
+  "actual_request_temperatures_verified": true,
+  "seed": 42,
+  "hs_diagnostics_acquired_observations_verified": true,
+  "noise_free_independent_evaluations_verified": true,
+  "limitations": [
+    "One six-world batch per arm and different GPU endpoints; no stable causal or success-probability claim.",
+    "Canonical scientific configs differ only in temperature; per-world configs also differ in assigned endpoint URLs.",
+    "Do not combine best worlds across arms."
+  ]
+}

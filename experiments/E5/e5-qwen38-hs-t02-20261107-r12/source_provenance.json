@@ -1,0 +1,28 @@
+{
+  "source_commit": "abd229364d1cbfe38c73d7488e8747522876263d",
+  "run_source_hashes": "manifest.json:source_sha256",
+  "audit_completed_before_next_source_deployment": true,
+  "audit_source_hashes_all_match": true,
+  "audited_source_count": 19,
+  "audit_errors_preserved": [],
+  "guidance_profile": "e3",
+  "diagnostic_quadrature": "hermite_simpson",
+  "diagnostic_input_scope": "current session previously acquired endpoint position, velocity and time only; no midpoint truth queries",
+  "normal_auto_strict_tools": false,
+  "strict_tool_recovery": true,
+  "stagnation_recovery": true,
+  "temperature": 0.2,
+  "sampling_seed": 42,
+  "workers": 2,
+  "attempts_per_world": 1,
+  "execution_evidence": "execution_evidence.json",
+  "temperature_comparison_conditions": "../comparisons/r11-vs-r12/conditions.json",
+  "archive_evidence_sha256": {
+    "manifest.json": "787f10b1fb0667b6f850194fe461048201887cbe22a919cc0874c7f8f49e82e5",
+    "summary.json": "15bb6951b4361cc9041e52392c81e69c684b170ba0b2a970d2ba57997fb3c95d",
+    "audit.json": "2a9129d949927cd351e75710729285ed6ac7aefcbaebebbf9dd9cd86d33fe32c",
+    "execution_evidence.json": "59ee85377b9ef23bf6a40edb34bd6ab5e3a82ea79e0588dd2285634ebc778099"
+  },
+  "downloaded_raw_archive_sha256": "a3451f593720ebd21a6f98b90fea06a7a241ad207b3a3d79bcf6301dfbb41842",
+  "source_note": "All 19 frozen science hashes match the run manifest. Reports-only/config-only subsequent commit df9f418 does not change science hashes. Raw runs and all failures preserved without backfill or re-evaluation. Hermite/Simpson held-out observation reconstruction CV is not independent predictive validation."
+}

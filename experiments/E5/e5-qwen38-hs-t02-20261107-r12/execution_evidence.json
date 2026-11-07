@@ -1,0 +1,372 @@
+{
+  "method": "Read-only raw requests, ordered acquired probe IDs, and diagnostic record checks; no hidden world definitions or independent evaluation outputs are inputs to diagnostics. Candidate matches compare prior hinted expressions by AST (whitespace normalization only), not conceptual influence or parameter identity.",
+  "temperature": 0.2,
+  "sampling_seed": 42,
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "model_calls_verified": 17,
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "actual_temperatures": [
+        0.2
+      ],
+      "seed_verified": 42,
+      "clean_independent_evaluation": true,
+      "diagnostics": [
+        {
+          "diagnostic_id": "diagnostic_250041ba4c1d",
+          "probe_ids": [
+            "probe_0001",
+            "probe_0002"
+          ],
+          "already_acquired_at_call": true,
+          "quadrature": "hermite_simpson",
+          "source": "current_session_acquired_observations_only",
+          "candidate_count": 2,
+          "elapsed_seconds": 0.010699234902858734
+        }
+      ],
+      "fit_calls": [
+        {
+          "tool_index": 2,
+          "matching_prior_hint_indices": [],
+          "ok": false
+        },
+        {
+          "tool_index": 3,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 4,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 6,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 8,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 11,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        }
+      ],
+      "required_recovery_events": 3,
+      "actual_required_requests": 3,
+      "explanation_character_lengths": [
+        1342
+      ]
+    },
+    {
+      "world_id": "world_2",
+      "model_calls_verified": 6,
+      "model_endpoint": "http://127.0.0.1:8003/v1",
+      "actual_temperatures": [
+        0.2
+      ],
+      "seed_verified": 42,
+      "clean_independent_evaluation": true,
+      "diagnostics": [
+        {
+          "diagnostic_id": "diagnostic_c62533ec9cac",
+          "probe_ids": [
+            "probe_0001",
+            "probe_0002"
+          ],
+          "already_acquired_at_call": true,
+          "quadrature": "hermite_simpson",
+          "source": "current_session_acquired_observations_only",
+          "candidate_count": 2,
+          "elapsed_seconds": 0.015033187344670296
+        }
+      ],
+      "fit_calls": [
+        {
+          "tool_index": 3,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        }
+      ],
+      "required_recovery_events": 0,
+      "actual_required_requests": 0,
+      "explanation_character_lengths": [
+        1495
+      ]
+    },
+    {
+      "world_id": "world_3",
+      "model_calls_verified": 6,
+      "model_endpoint": "http://127.0.0.1:8003/v1",
+      "actual_temperatures": [
+        0.2
+      ],
+      "seed_verified": 42,
+      "clean_independent_evaluation": true,
+      "diagnostics": [
+        {
+          "diagnostic_id": "diagnostic_daff9e7d6bcc",
+          "probe_ids": [
+            "probe_0001",
+            "probe_0002"
+          ],
+          "already_acquired_at_call": true,
+          "quadrature": "hermite_simpson",
+          "source": "current_session_acquired_observations_only",
+          "candidate_count": 1,
+          "elapsed_seconds": 0.010101975873112679
+        }
+      ],
+      "fit_calls": [
+        {
+          "tool_index": 2,
+          "matching_prior_hint_indices": [
+            0
+          ],
+          "ok": true
+        }
+      ],
+      "required_recovery_events": 0,
+      "actual_required_requests": 0,
+      "explanation_character_lengths": [
+        1400
+      ]
+    },
+    {
+      "world_id": "world_4",
+      "model_calls_verified": 19,
+      "model_endpoint": "http://127.0.0.1:8003/v1",
+      "actual_temperatures": [
+        0.2
+      ],
+      "seed_verified": 42,
+      "clean_independent_evaluation": true,
+      "diagnostics": [
+        {
+          "diagnostic_id": "diagnostic_dada644018d1",
+          "probe_ids": [
+            "probe_0001",
+            "probe_0002"
+          ],
+          "already_acquired_at_call": true,
+          "quadrature": "hermite_simpson",
+          "source": "current_session_acquired_observations_only",
+          "candidate_count": 1,
+          "elapsed_seconds": 0.010510725900530815
+        },
+        {
+          "diagnostic_id": "diagnostic_63e78a57be72",
+          "probe_ids": [
+            "probe_0001",
+            "probe_0002",
+            "probe_0007",
+            "probe_0008",
+            "probe_0009",
+            "probe_0010"
+          ],
+          "already_acquired_at_call": true,
+          "quadrature": "hermite_simpson",
+          "source": "current_session_acquired_observations_only",
+          "candidate_count": 1,
+          "elapsed_seconds": 0.014634460210800171
+        }
+      ],
+      "fit_calls": [
+        {
+          "tool_index": 1,
+          "matching_prior_hint_indices": [
+            0
+          ],
+          "ok": true
+        },
+        {
+          "tool_index": 8,
+          "matching_prior_hint_indices": [
+            0,
+            6
+          ],
+          "ok": true
+        },
+        {
+          "tool_index": 11,
+          "matching_prior_hint_indices": [],
+          "ok": false
+        },
+        {
+          "tool_index": 12,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 14,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 16,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        }
+      ],
+      "required_recovery_events": 0,
+      "actual_required_requests": 0,
+      "explanation_character_lengths": [
+        2669
+      ]
+    },
+    {
+      "world_id": "world_5",
+      "model_calls_verified": 11,
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "actual_temperatures": [
+        0.2
+      ],
+      "seed_verified": 42,
+      "clean_independent_evaluation": true,
+      "diagnostics": [
+        {
+          "diagnostic_id": "diagnostic_ae2104ab8e10",
+          "probe_ids": [
+            "probe_0001",
+            "probe_0002"
+          ],
+          "already_acquired_at_call": true,
+          "quadrature": "hermite_simpson",
+          "source": "current_session_acquired_observations_only",
+          "candidate_count": 2,
+          "elapsed_seconds": 0.01162957027554512
+        }
+      ],
+      "fit_calls": [
+        {
+          "tool_index": 2,
+          "matching_prior_hint_indices": [],
+          "ok": false
+        },
+        {
+          "tool_index": 3,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 6,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        }
+      ],
+      "required_recovery_events": 0,
+      "actual_required_requests": 0,
+      "explanation_character_lengths": [
+        1478
+      ]
+    },
+    {
+      "world_id": "world_6",
+      "model_calls_verified": 13,
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "actual_temperatures": [
+        0.2
+      ],
+      "seed_verified": 42,
+      "clean_independent_evaluation": true,
+      "diagnostics": [
+        {
+          "diagnostic_id": "diagnostic_361f84c79609",
+          "probe_ids": [
+            "probe_0001",
+            "probe_0002"
+          ],
+          "already_acquired_at_call": true,
+          "quadrature": "hermite_simpson",
+          "source": "current_session_acquired_observations_only",
+          "candidate_count": 2,
+          "elapsed_seconds": 0.016438204795122147
+        },
+        {
+          "diagnostic_id": "diagnostic_d7a978326337",
+          "probe_ids": [
+            "probe_0001",
+            "probe_0002",
+            "probe_0003",
+            "probe_0004",
+            "probe_0005",
+            "probe_0006",
+            "probe_0007",
+            "probe_0008",
+            "probe_0009",
+            "probe_0010"
+          ],
+          "already_acquired_at_call": true,
+          "quadrature": "hermite_simpson",
+          "source": "current_session_acquired_observations_only",
+          "candidate_count": 1,
+          "elapsed_seconds": 0.01826581172645092
+        }
+      ],
+      "fit_calls": [
+        {
+          "tool_index": 4,
+          "matching_prior_hint_indices": [],
+          "ok": false
+        },
+        {
+          "tool_index": 5,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 6,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 7,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 8,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 9,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 10,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        },
+        {
+          "tool_index": 11,
+          "matching_prior_hint_indices": [],
+          "ok": true
+        }
+      ],
+      "required_recovery_events": 1,
+      "actual_required_requests": 1,
+      "explanation_character_lengths": [
+        659
+      ]
+    }
+  ],
+  "aggregate": {
+    "calls_verified": 72,
+    "diagnostic_calls": 8,
+    "diagnostic_seconds": 0.10731317102909088,
+    "hint_entries": 12,
+    "fit_calls": 25,
+    "fit_calls_matching_prior_hint": 3,
+    "required_recovery_events": 4,
+    "actual_required_requests": 4
+  },
+  "batch_wall_seconds": 475.9743
+}

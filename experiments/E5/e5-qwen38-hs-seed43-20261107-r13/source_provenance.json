@@ -1,0 +1,35 @@
+{
+  "source_commit": "df9f418ba0c20d978476315c64dce74c327b0acf",
+  "scientific_source_commit": "abd229364d1cbfe38c73d7488e8747522876263d",
+  "run_source_hashes": "manifest.json:source_sha256",
+  "audit_completed_before_next_source_deployment": true,
+  "audit_source_hashes_all_match": true,
+  "audited_source_count": 19,
+  "audit_errors_preserved": [],
+  "source_hashes_identical_to_r11": true,
+  "configuration_difference_from_r11": [
+    "model.sampling_seed"
+  ],
+  "guidance_profile": "e3",
+  "diagnostic_quadrature": "hermite_simpson",
+  "normal_auto_strict_tools": false,
+  "strict_tool_recovery": true,
+  "stagnation_recovery": true,
+  "temperature": 1.0,
+  "sampling_seed": 43,
+  "workers": 2,
+  "model_endpoints": [
+    8000,
+    8001
+  ],
+  "attempts_per_world": 1,
+  "execution_evidence": "execution_evidence.json",
+  "archive_evidence_sha256": {
+    "manifest.json": "e48ccba133121b54cfe627edbfceaa84769ee81cedc9c45f96eeb00a2244fbaa",
+    "summary.json": "78cf43d1eff587314fe798defae1a3effc868df56276c3a8268125372264e449",
+    "audit.json": "72ab7a800d288649fd8880866b3932f766c5eadd6b1f512b4c25ae402146a168",
+    "execution_evidence.json": "7ff2284919c11bea0114a793989060a998fe80ca79732c840f3c0d21cbf3b46c"
+  },
+  "downloaded_raw_archive_sha256": "daec14d48b52661d82adf6e68bfef7f5382ee284f42c72c5f59eb3c7cc6ee5c8",
+  "source_note": "df9f418 adds only configuration/protocol files; all 19 scientific source hashes are identical to abd2293 and R11/R12. Audit captured before subsequent scientific-source deployment. Actual request seed 43 and temperature 1.0, acquired-observation-only HS diagnostics, clean evaluations and complete usage checked. Original submissions and scores unchanged; no per-world selection across seeds."
+}
