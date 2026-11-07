@@ -1,0 +1,27 @@
+{
+  "experiment": "e5-qwen38-compact-20261107-r07",
+  "status": "prepared_before_run",
+  "starting_point": "5002d16 R06 diagnostics on",
+  "changes": [
+    "Compact diagnostic response preserves full immutable evidence and unchanged numerical regression",
+    "Tool documentation explains comparing nonlinear CV evidence and equivalent sqrt/parenthesis syntax",
+    "Opt-in E5 feedback after repeated identical failed tool calls; original tool results and selection preserved"
+  ],
+  "preserved": [
+    "Exact E3 system prompt",
+    "Qwen3.8-27B BF16; thinking off; seed42",
+    "10 energy; 300s exploration;4096 output tokens per call",
+    "No exploration noise; clean independent evaluation",
+    "No change to dynamics, fit objective, evaluation, or scoring",
+    "One attempt for each of six worlds; no cross-batch best selection"
+  ],
+  "workers": 4,
+  "endpoints": [
+    8000,
+    8001,
+    8002,
+    8003
+  ],
+  "primary_outcome": "at least five raw scores >=90 in this single complete batch",
+  "interpretation": "R07 is an engineering follow-up, not a one-factor causal comparison with R06; multiple interface changes and concurrency differ."
+}

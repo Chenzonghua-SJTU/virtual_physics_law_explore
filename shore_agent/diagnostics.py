@@ -286,3 +286,79 @@ def diagnose(probes, public_task):
             raise ValueError('Observation diagnostics produced nonfinite values')
     require_finite(result)
     return result
+
+
+def summarize(diagnostics):
+    """Compact model-facing projection; the complete diagnostic remains unchanged."""
+    models = diagnostics['space_regression']['models']
+    linear = next((m for m in models if m['degree'] == 1), None)
+    linear_cv = ((linear or {}).get('cross_validation', {}).get('errors') or {}).get('relative_rmse')
+    comparisons = []
+    for model in models:
+        cv = model['cross_validation']
+        cv_relative = (cv.get('errors') or {}).get('relative_rmse')
+        improvement = (linear_cv / cv_relative if _number(linear_cv) and _number(cv_relative)
+                       and cv_relative > 0 else None)
+        if improvement is not None and not math.isfinite(improvement):
+            improvement = None
+        comparisons.append({
+            'degree': model['degree'], 'basis_term_count': len(model['basis']),
+            'rank': model['design']['rank'], 'condition_number': model['design']['condition_number'],
+            'coefficient_identifiability': model['design']['coefficient_identifiability'],
+            'training_relative_delta_velocity_rmse': model['training_errors']['relative_rmse'],
+            'whole_probe_cv_status': cv['status'], 'whole_probe_cv_reason': cv.get('reason'),
+            'whole_probe_cv_relative_delta_velocity_rmse': cv_relative,
+            'linear_cv_divided_by_this_cv': improvement,
+            'largest_terms': [{key: item[key] for key in ('term', 'ax', 'ay')}
+                              for item in model['largest_terms_by_increment_contribution'][:6]],
+        })
+    radial = diagnostics['radial_diagnostic']
+    log_rmse = radial.get('log_magnitude_rmse')
+    scatter_factor = None
+    if _number(log_rmse):
+        try:
+            scatter_factor = math.exp(log_rmse)
+        except OverflowError:
+            pass
+    result = {
+        'summary_version': 'observation_diagnostics_summary_v1',
+        'probe_ids': list(diagnostics['probe_ids']),
+        'spatial_model_comparison': comparisons,
+        'comparison_notes': [
+            'Compare whole-probe CV errors across degrees, including nonlinear terms that improve held-out prediction; training error alone is insufficient.',
+            'The ratio linear_cv_divided_by_this_cv is an error ratio, not confidence or a score; ratios near numerical precision may not be meaningful.',
+            'ax and ay coefficients are independent. Terms are sorted by velocity-increment contribution; full basis, coefficients and CV splits are in the saved diagnostic file.',
+            'These are approximate velocity-increment regressions, not integrated-trajectory validation. Any scientific candidate still needs formal fit_law_and_rollout and validate_law on new probes.',
+        ],
+        'radial_power_summary': {
+            'reference_point': radial['reference_point'],
+            'reference_point_meaning': radial['reference_point_meaning'],
+            'empirical_fit_status': radial['status'], 'unavailable_reason': radial.get('reason'),
+            'geometry_and_design_screen_satisfied': radial['usable_for_power_interpretation'],
+            'screen_reasons': radial['power_interpretation_reasons'],
+            'screen_scope': 'Geometry/design screening is NOT a goodness-of-fit check. Even a true screen does not establish a single power law; inspect the log residual below.',
+            'acceleration_magnitude_radius_power': radial['acceleration_magnitude_radius_power'],
+            'vector_factor_power': radial['vector_factor_power'],
+            'power_meaning': radial['power_meaning'],
+            'positive_property_powers': radial.get('positive_property_powers'),
+            'unidentified_property_controls': radial.get('unidentified_property_controls', []),
+            'conditional_on_fixed_property_values': radial.get('conditional_on_fixed_property_values', {}),
+            'log_magnitude_rmse': log_rmse,
+            'exp_log_rmse_multiplicative_factor': scatter_factor,
+            'scatter_factor_meaning': 'exp(log RMSE), a residual scale only; neither an average relative error nor a fit acceptance threshold.',
+            'transverse_acceleration_rms_fraction': radial['transverse_acceleration_rms_fraction'],
+            'radius_range': radial.get('radius_range'),
+        },
+        'meaning': diagnostics['meaning'],
+    }
+
+    def compact(value):
+        if isinstance(value, dict):
+            return {key: compact(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [compact(item) for item in value]
+        if isinstance(value, float):
+            return float(f'{value:.6g}')
+        return value
+
+    return compact(result)

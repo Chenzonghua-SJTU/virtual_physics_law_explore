@@ -48,13 +48,17 @@ class ToolRuntime:
         self.diagnostics_enabled = self.config.get('diagnostics_enabled', False)
         if type(self.diagnostics_enabled) is not bool:
             raise ValueError('numerics.diagnostics_enabled must be boolean')
+        self.diagnostics_compact = self.config.get('diagnostics_compact', False)
+        if type(self.diagnostics_compact) is not bool:
+            raise ValueError('numerics.diagnostics_compact must be boolean')
         self.code_config = code_config or {}
         self.code_enabled = self.code_config.get('enabled', False)
         if type(self.code_enabled) is not bool:
             raise ValueError('code_execution.enabled must be boolean')
         self.ruleset = getattr(environment, 'ruleset', 'e3')
         self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset,
-                                    diagnostics_enabled=self.diagnostics_enabled)
+                                    diagnostics_enabled=self.diagnostics_enabled,
+                                    diagnostics_compact=self.diagnostics_compact)
         self.last_valid_draft = None
         self.exploration_started_monotonic = None
         self.exploration_deadline_monotonic = None
@@ -414,6 +418,12 @@ class ToolRuntime:
                              'a fitted law, a submission, or a correctness verdict. No extra observation was made. '
                              'These selected trajectories are development data; use fresh trajectories for final validation.'}
         self.store.add('diagnostic', record, rid)
+        if self.diagnostics_compact:
+            from .diagnostics import summarize
+            response = {key: value for key, value in record.items() if key != 'diagnostics'}
+            response['diagnostic_summary'] = summarize(diagnostics)
+            response['full_evidence'] = f'diagnostics/{rid}.json'
+            return preview(response)
         return preview(record)
 
     def analyze_residual(self, law_id, probe_ids):

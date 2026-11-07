@@ -138,6 +138,47 @@ def test_e5_diagnostic_switch_defaults_off_and_cannot_be_bypassed(tmp_path, monk
     assert not rt.store.records['diagnostic']
 
 
+def test_compact_diagnostic_preserves_full_evidence_and_returns_summary(tmp_path, monkeypatch):
+    rt = runtime(tmp_path)
+    rt.diagnostics_compact = True
+    full = {'synthetic': list(range(12)), 'meaning': 'descriptive evidence'}
+    seen = []
+    def summarize(value):
+        seen.append(copy.deepcopy(value))
+        return {'status': 'summary', 'source_count': len(value['synthetic'])}
+    monkeypatch.setitem(sys.modules, 'shore_agent.diagnostics',
+                        SimpleNamespace(diagnose=lambda *args: copy.deepcopy(full), summarize=summarize))
+    reply = rt.execute('diagnose_dynamics', {'probe_ids': ['selected']})
+    assert reply['ok']
+    data = reply['data']
+    assert 'diagnostics' not in data
+    assert data['diagnostic_summary'] == {'status': 'summary', 'source_count': 12}
+    assert seen == [full]
+    assert rt.store.get('diagnostic', data['diagnostic_id'])['diagnostics'] == full
+    assert data['workspace_files'] == [data['full_evidence']]
+    read = rt.read_file(data['full_evidence'])
+    assert json.loads(read['content'])['diagnostics'] == full
+    assert not rt.store.records['law'] and not rt.session_ended
+
+
+def test_compact_guidance_requires_e5_and_enabled_diagnostic():
+    for ruleset in ('e3', 'e4'):
+        assert tool_schemas(ruleset=ruleset, diagnostics_enabled=True, diagnostics_compact=True) == tool_schemas(ruleset=ruleset)
+    assert tool_schemas(ruleset='e5', diagnostics_compact=True) == tool_schemas(ruleset='e5')
+    schemas = tool_schemas(ruleset='e5', diagnostics_enabled=True, diagnostics_compact=True)
+    by_name = {s['function']['name']: s['function'] for s in schemas}
+    full = tool_schemas(ruleset='e5', diagnostics_enabled=True)
+    assert [s['function']['parameters'] for s in schemas] == [s['function']['parameters'] for s in full]
+    assert 'sqrt' in by_name['fit_law_and_rollout']['description']
+    assert '交叉验证' in by_name['diagnose_dynamics']['description']
+
+
+@pytest.mark.parametrize('flag', [None, 0, 1, 'true', [], {}])
+def test_compact_option_requires_boolean(tmp_path, flag):
+    with pytest.raises(ValueError, match='diagnostics_compact must be boolean'):
+        ToolRuntime(Environment(), tmp_path, config={'diagnostics_compact': flag})
+
+
 @pytest.mark.parametrize('flag', [None, 0, 1, 'true', 'false', [], {}])
 def test_diagnostic_switch_requires_an_actual_boolean(tmp_path, flag):
     with pytest.raises(ValueError, match='numerics.diagnostics_enabled must be boolean'):

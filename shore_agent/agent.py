@@ -31,6 +31,11 @@ class Agent:
         self.session_ended = False
         self.ruleset = getattr(tool_runtime, 'ruleset', 'e3')
         self.e4 = self.ruleset in ('e4', 'e5')
+        failure_feedback = config.get('repeated_tool_failure_feedback', False)
+        if type(failure_feedback) is not bool:
+            raise ValueError('repeated_tool_failure_feedback must be boolean')
+        self.repeated_tool_failure_feedback = self.ruleset == 'e5' and failure_feedback
+        self._failed_tool_counts = {}
         self.finish_reserve_seconds = 30.0 if self.e4 else 0.0
         self.max_no_action = config.get('max_no_action', 3)
         if isinstance(self.max_no_action, bool) or not isinstance(self.max_no_action, int) or self.max_no_action < 1:
@@ -45,6 +50,57 @@ class Agent:
     def _failure(self, code):
         return {'ok': False, 'data': None, 'error': {'code': code, 'message': code},
                 'budget': self.last_budget}
+
+    def _track_tool_failure(self, name, args, result):
+        """Observe actual tool outcomes without changing them or invoking tools."""
+        if not self.repeated_tool_failure_feedback or args is None:
+            return None, None
+        key = (name, json.dumps(args, sort_keys=True, ensure_ascii=False, allow_nan=False))
+        if result.get('ok') is True:
+            self._failed_tool_counts.pop(key, None)
+            return key, None
+        if result.get('ok') is not False:
+            return key, None
+        count = self._failed_tool_counts.get(key, 0) + 1
+        self._failed_tool_counts[key] = count
+        if count < 2:
+            return key, None
+        constraints = []
+        schema = next((s['function']['parameters'] for s in self.runtime.schemas
+                       if s['function']['name'] == name), {})
+        for field, value in args.items():
+            maximum = schema.get('properties', {}).get(field, {}).get('maxItems')
+            if isinstance(value, list) and type(maximum) is int and len(value) > maximum:
+                constraints.append(f'参数 {field} 当前有 {len(value)} 项，公开 schema 上限为 {maximum} 项。'
+                                   '请自行减少数量；如分批调用，先核对剩余观察次数和能量。')
+        error = copy.deepcopy(result.get('error'))
+        if 'energy_budget' in json.dumps(error, ensure_ascii=False):
+            constraints.append('这批请求超过剩余能量；请自行减少本批消耗，或改用已经取得的观测继续分析。')
+        return key, {'tool': name, 'arguments': copy.deepcopy(args),
+                     'repeat_count': count, 'error': error, 'constraints': constraints}
+
+    def _append_failure_feedback(self, pending, turn):
+        """Append only after every tool call in the assistant turn has a reply."""
+        notices = list(pending.values())
+        lines = ['工具失败恢复提醒（调度层提示，不是新观测或工具执行结果）：']
+        for notice in notices:
+            error_text = json.dumps(notice['error'], ensure_ascii=False, allow_nan=False)
+            if len(error_text) > 800:
+                error_text = error_text[:800] + '…（完整错误见上方原始工具结果）'
+            lines.append(f"{notice['tool']} 的同名同参数调用已失败 {notice['repeat_count']} 次。"
+                         f'本次错误：{error_text}')
+            lines.extend(notice['constraints'])
+            if notice['repeat_count'] >= 3:
+                lines.append('此前恢复提醒后仍在重复失败。请停止这一无进展调用，重新选择合法下一步。')
+        lines.append('当前剩余预算：' + json.dumps(self.last_budget, ensure_ascii=False, allow_nan=False))
+        lines.append('不得原样重试。请依据错误和预算修改参数或改用已有数据；'
+                     '失败不等于物理假设被否定。所有选择仍由你决定，需重新发出完整合法调用；'
+                     '不要声称失败操作成功，也不要虚构观测或提交。')
+        content = '\n'.join(lines)
+        self.messages.append({'role': 'user', 'content': content})
+        self._event('repeated_tool_failure_feedback', turn=turn, failures=notices,
+                    budget=copy.deepcopy(self.last_budget), content=content)
+        self._persist()
 
     def _finish(self, status, reason):
         if self.e4 and self.submission is None and status != 'submitted':
@@ -169,8 +225,10 @@ class Agent:
                 self._persist()
                 continue
             no_action = 0
+            pending_failure_feedback = {}
             for call in calls:
                 name = call['function']['name']
+                args = None
                 print(f'工具调用：{name}', flush=True)
                 if self.session_ended:
                     result = self._failure('session_ended')
@@ -200,6 +258,11 @@ class Agent:
                                       'content': json.dumps(result, ensure_ascii=False, allow_nan=False)})
                 self._event('tool_finished', tool_call_id=call['id'], name=name, result=result)
                 self._persist()
+                failure_key, feedback = self._track_tool_failure(name, args, result)
+                if feedback is not None:
+                    pending_failure_feedback[failure_key] = feedback
+                elif failure_key is not None and result.get('ok') is True:
+                    pending_failure_feedback.pop(failure_key, None)
                 data = result.get('data') or {}
                 if (name == 'submit' and result.get('ok') and data.get('status') == 'accepted'
                         and data.get('session_ended') is True):
@@ -214,3 +277,5 @@ class Agent:
                 return self._finish('submitted', 'submission_accepted_locally')
             if self.session_ended:
                 return self._finish('incomplete', 'session_ended_without_accepted_submission')
+            if pending_failure_feedback:
+                self._append_failure_feedback(pending_failure_feedback, turn)

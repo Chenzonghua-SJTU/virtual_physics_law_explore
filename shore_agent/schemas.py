@@ -62,7 +62,7 @@ DYNAMICS_DIAGNOSTIC_SCHEMA = tool('diagnose_dynamics',
     {'probe_ids': IDS})
 
 
-def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False):
+def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False, diagnostics_compact=False):
     import copy
     schemas = copy.deepcopy(SCHEMAS + ([CODE_SCHEMA] if code_enabled else []))
     if ruleset in ('e4', 'e5'):
@@ -74,4 +74,19 @@ def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False)
         schemas.append(draft)
     if ruleset == 'e5' and diagnostics_enabled is True:
         schemas.append(copy.deepcopy(DYNAMICS_DIAGNOSTIC_SCHEMA))
+        if diagnostics_compact is True:
+            descriptions = {item['function']['name']: item['function'] for item in schemas}
+            descriptions['diagnose_dynamics']['description'] += (
+                '优先用于已取得的第一束光与后续开发轨迹，避免手算比例。摘要并列给出各阶空间回归的训练/整轨迹交叉验证误差与主要项；'
+                '请比较这些误差，若高阶明显改善，不要仅因径向幂次接近1就忽略非线性或交叉项。'
+                '系数是候选结构与拟合初值的线索，仍须显式fit_law_and_rollout与新轨迹validate_law；'
+                '不要把CV当最终验证，不要把近似径向投影当中心力已成立。')
+            descriptions['insert_probe']['description'] += (
+                '本轮只有10能量，每枚探针消耗1点。先利用免费观测与诊断确定实验目的；'
+                '分批设计以保留修改候选后的新验证轨迹，不要在第一个假设前花尽能量。')
+            descriptions['fit_law_and_rollout']['description'] += (
+                'DSL语法提示：非整数数字幂与常数算术被禁不代表该物理结构被否定；平方根用sqrt(E)，'
+                '例如E的三次平方根幂写成E*sqrt(E)，倒数写成1/(E*sqrt(E))，E须换为合法状态表达式。'
+                '除法后多个因子作分母时必须加括号，a/b*c等于(a/b)*c。'
+                '无噪声观测下，converged只表示优化停止；residual_scale_check有警告且时间仍充足时应继续比较结构或初值，不能声称已准确解释。')
     return schemas

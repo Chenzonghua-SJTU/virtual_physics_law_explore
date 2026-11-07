@@ -220,3 +220,56 @@ def test_numerics_compatible_thousand_samples_and_six_top_terms():
     result = diagnose(probes, TASK)
     assert len(result['space_regression']['models'][2]['largest_terms_by_increment_contribution']) <= 6
     assert result['probe_ids'] == ['p000', 'p001']
+
+
+def test_summary_keeps_all_degree_cv_comparisons_and_independent_axis_coefficients():
+    from shore_agent.diagnostics import summarize
+    full = diagnose(trajectories(lambda r: np.array([-.2*r[0]+.03*r[1]**3, -.4*r[1]])), TASK)
+    before = copy.deepcopy(full)
+    summary = summarize(full)
+    assert full == before
+    rows = summary['spatial_model_comparison']
+    assert [row['degree'] for row in rows] == [1, 2, 3]
+    for source, row in zip(full['space_regression']['models'], rows):
+        assert row['basis_term_count'] == len(source['basis'])
+        assert row['rank'] == source['design']['rank']
+        assert row['whole_probe_cv_status'] == source['cross_validation']['status']
+        expected = (source['cross_validation'].get('errors') or {}).get('relative_rmse')
+        assert row['whole_probe_cv_relative_delta_velocity_rmse'] == pytest.approx(expected, rel=1e-5)
+        assert len(row['largest_terms']) <= 6
+        assert all(set(item) == {'term', 'ax', 'ay'} for item in row['largest_terms'])
+    assert rows[2]['linear_cv_divided_by_this_cv'] > 10
+    assert 'law_id' not in summary
+    json.dumps(summary, allow_nan=False)
+
+
+def test_summary_does_not_present_geometric_screen_as_power_law_fit_quality():
+    from shore_agent.diagnostics import summarize
+    full = diagnose(radial_probes(), TASK)
+    full['radial_diagnostic']['log_magnitude_rmse'] = .2144
+    summary = summarize(full)['radial_power_summary']
+    assert summary['geometry_and_design_screen_satisfied'] is True
+    assert 'NOT a goodness-of-fit check' in summary['screen_scope']
+    assert summary['log_magnitude_rmse'] == .2144
+    assert summary['exp_log_rmse_multiplicative_factor'] == pytest.approx(math.exp(.2144), rel=1e-5)
+    assert summary['acceleration_magnitude_radius_power'] == pytest.approx(2)
+    assert summary['vector_factor_power'] == pytest.approx(1)
+    assert 'accepted' not in summary and 'passed' not in summary
+
+
+def test_summary_preserves_unavailable_cv_and_radial_diagnostics_without_invented_values():
+    from shore_agent.diagnostics import summarize
+    data = observed('one', [0., .1], [[1., 0.], [1., 0.]], [[0., 0.], [0., 0.]])
+    full = diagnose([data], TASK)
+    summary = summarize(full)
+    for row in summary['spatial_model_comparison']:
+        assert row['whole_probe_cv_status'] == 'unavailable'
+        assert row['whole_probe_cv_relative_delta_velocity_rmse'] is None
+        assert row['linear_cv_divided_by_this_cv'] is None
+        assert row['largest_terms'] == []
+    radial = summary['radial_power_summary']
+    assert radial['empirical_fit_status'] == 'unavailable'
+    assert radial['log_magnitude_rmse'] is None
+    assert radial['exp_log_rmse_multiplicative_factor'] is None
+    assert radial['vector_factor_power'] is None
+    json.dumps(summary, allow_nan=False)
