@@ -24,6 +24,9 @@ class Agent:
         self.run_dir = Path(run_dir)
         self.run_dir.mkdir(parents=True, exist_ok=True)
         self.config = config
+        configure_gate = getattr(tool_runtime, 'configure_submission_gate', None)
+        if callable(configure_gate):
+            configure_gate(config)
         self.messages = []
         self.last_budget = {}
         self.submission = None
@@ -114,6 +117,14 @@ class Agent:
         budget = self.runtime.budget()
         if budget.get('session_ended') or budget.get('wall_seconds_remaining', 0) < 100:
             return None
+        gate_reader = getattr(self.runtime, 'submission_gate_policy', None)
+        eligibility = getattr(self.runtime, 'submission_eligibility', None)
+        if callable(gate_reader) and callable(eligibility) and gate_reader().get('enabled'):
+            law = records.get('law', {}).get(args.get('law_id'), {})
+            if eligibility(law, budget).get('allowed'):
+                # The requested OR is sufficient: scientific diagnostics must
+                # not become a third hard requirement once it is satisfied.
+                return None
         from .symbolic_guidance import build_review
         review = build_review(records, budget, getattr(self.runtime, 'task', None), law_id=args.get('law_id'))
         untested = self._untested_symbolic_joint_candidates(records)
@@ -196,6 +207,17 @@ class Agent:
                     view = {'error_type': type(exc).__name__, 'error': str(exc)[:500]}
                 file_view = hashlib.sha256(json.dumps(view, sort_keys=True, ensure_ascii=False,
                                                       allow_nan=False).encode('utf-8')).hexdigest()
+        if name == 'submit' and args is not None:
+            gate_reader = getattr(self.runtime, 'submission_gate_policy', None)
+            eligibility = getattr(self.runtime, 'submission_eligibility', None)
+            if callable(gate_reader) and callable(eligibility) and gate_reader().get('enabled'):
+                records = getattr(getattr(self.runtime, 'store', None), 'records', {})
+                law = records.get('law', {}).get(args.get('law_id'), {})
+                gate = eligibility(law)
+                # Time passing within one side of the threshold is not new
+                # evidence. Crossing it must allow a previously rejected submit.
+                file_view = ('submission_gate', gate.get('allowed'), gate.get('time_condition_met'),
+                             gate.get('fit_position_rmse'), gate.get('fit_error_valid'))
         return name, canonical, file_view
 
     def _repeat_block_reason(self, key):
@@ -245,6 +267,13 @@ class Agent:
             '不要把新的law_id或validation_id当作新证据。首次失败最多允许一次原样重试；'
             '同错误失败两次或确定性调用执行两次后，再原样调用会被阻止，并给一次改变操作的机会；'
             '下一轮仍原样重复才结束本轮探索，保留已有有效草稿。')
+        if code == 'submission_fit_gate_not_met':
+            notice['temporary_submission_gate_rejection'] = True
+            notice['instruction'] = (
+                '当前提交条件尚未达到；不要把临时拒绝当作物理反证，也不要原样反复提交。'
+                '可用已有数据继续拟合或比较不同候选，并save_draft保留选择。'
+                '仅所选训练位置RMSE严格低于阈值、或剩余时间严格低于门槛时才允许结束。'
+                '同样的拒绝仍受有界重复保护；早停且未达门槛的草稿保留为incomplete，不会自动绕过提交。')
         self._event('loop_recovery_feedback', **notice)
         return json.dumps(notice, ensure_ascii=False, allow_nan=False)
 
@@ -280,6 +309,9 @@ class Agent:
                 self._event('budget_refresh_failed', reason='budget_unavailable')
         result = {'status': status, 'reason': reason, 'submission': self.submission,
                   'model_usage': copy.deepcopy(self.client.usage), 'budget': self.last_budget}
+        finalization_gate = getattr(self.runtime, 'last_draft_finalization_gate', None)
+        if finalization_gate is not None and not finalization_gate.get('allowed'):
+            result['draft_finalization_blocked_by_submission_gate'] = finalization_gate
         self._persist()
         _save(self.run_dir / 'result.json', result)
         self._event('session_finished', **result)
@@ -316,6 +348,14 @@ class Agent:
             prompt += '\n\n' + (Path(__file__).parent / 'prompts' / filename).read_text(encoding='utf-8')
         if getattr(self.runtime, 'symbolic_enabled', False):
             prompt += '\n\n' + (Path(__file__).parent / 'prompts' / 'symbolic.txt').read_text(encoding='utf-8')
+        gate_reader = getattr(self.runtime, 'submission_gate_policy', None)
+        gate = gate_reader() if callable(gate_reader) else {}
+        if gate.get('enabled'):
+            prompt += (f"\n\n提交硬门槛：所选law的errors.overall.position_rmse必须是有限非负数且严格小于"
+                       f"{gate['fit_rmse_threshold']}，或者剩余时间严格少于{gate['time_remaining_threshold_seconds']}秒。"
+                       '这是OR条件，独立验证仍提供诊断，不增加第三个硬阈值。'
+                       'save_draft可随时保存有效配对，但提前模型失败或退出不能绕过同一提交门槛。'
+                       '不满足时继续使用已有数据改进；零能量仍可拟合，不要原样反复submit或空等。')
         if getattr(self.runtime, 'code_enabled', False):
             prompt = prompt.replace('不可访问任意文件、Shell、网络、源码或任意 Python。',
                                     '代码只可通过run_code在隔离环境执行，不可访问宿主文件、网络或仿真源码。')

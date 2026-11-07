@@ -2,6 +2,7 @@
 import ast
 import copy
 import json
+import math
 import time
 import uuid
 from datetime import datetime, timezone
@@ -62,6 +63,19 @@ class SymbolicSearchToolError(ValueError):
                          'No usable search result; continue with existing observations and tools.')
 
 
+class SubmissionFitGateError(ValueError):
+    code = 'submission_fit_gate_not_met'
+
+    def __init__(self, details):
+        self.details = details
+        super().__init__(
+            f"本次submit未执行，未扣能量、未结束会话。所选{details['law_id']}的训练位置RMSE="
+            f"{details['fit_position_rmse']}；必须严格小于{details['fit_rmse_threshold']}，"
+            f"或者剩余时间严格少于{details['time_remaining_threshold_seconds']}秒（当前"
+            f"{details['wall_seconds_remaining']}秒）。请继续用已有数据拟合/比较候选、检查残差，"
+            '可save_draft保存当前选择；能量为0仍可使用已有数据。不要原样反复submit或等待刷调用。')
+
+
 class ToolRuntime:
     schemas = SCHEMAS
 
@@ -81,6 +95,7 @@ class ToolRuntime:
         self.symbolic_enabled = self.config.get('symbolic_regression_enabled', False)
         if type(self.symbolic_enabled) is not bool:
             raise ValueError('symbolic_regression_enabled must be boolean')
+        self.configure_submission_gate(self.config)
         self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset, symbolic_enabled=self.symbolic_enabled)
         self.discovery_probe_ids = set()
         self.last_valid_draft = None
@@ -91,12 +106,65 @@ class ToolRuntime:
         self.body_position_estimate = None
         self._initial_mission = None
         self.session_ended = False
+        self.last_draft_finalization_gate = None
+
+    def configure_submission_gate(self, config):
+        """Agent configuration may opt in/out; SR defaults to the requested gate."""
+        threshold = config.get('submission_fit_rmse_threshold',
+                               getattr(self, 'submission_fit_rmse_threshold', 1e-5 if self.symbolic_enabled else None))
+        remaining = config.get('submission_time_remaining_seconds',
+                               getattr(self, 'submission_time_remaining_seconds', 40.))
+        for name, value in (('submission_fit_rmse_threshold', threshold),
+                            ('submission_time_remaining_seconds', remaining)):
+            if value is None and name == 'submission_fit_rmse_threshold':
+                continue
+            if type(value) not in (int, float) or not math.isfinite(value) or value <= 0:
+                raise ValueError(f'{name} must be a positive finite number')
+        self.submission_fit_rmse_threshold = threshold
+        self.submission_time_remaining_seconds = remaining
+
+    def submission_gate_policy(self):
+        return {'enabled': self.submission_fit_rmse_threshold is not None,
+                'fit_error_field': 'selected_law.errors.overall.position_rmse',
+                'fit_rmse_threshold': self.submission_fit_rmse_threshold,
+                'time_remaining_threshold_seconds': self.submission_time_remaining_seconds,
+                'condition': 'finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold',
+                'comparison': 'strict', 'independent_validation_is_hard_requirement': False,
+                'save_draft_allowed_before_eligibility': True}
+
+    def submission_eligibility(self, law, budget=None):
+        if budget is None:
+            try:
+                budget = self.budget()
+            except Exception:
+                budget = {'budget_available': False}
+        errors = law.get('errors') or {}
+        overall = errors.get('overall') if isinstance(errors, dict) else None
+        error = overall.get('position_rmse') if isinstance(overall, dict) else None
+        finite_error = type(error) in (int, float) and math.isfinite(error)
+        valid_error = finite_error and error >= 0
+        remaining = budget.get('wall_seconds_remaining')
+        known_remaining = (budget.get('budget_available') is not False
+                           and type(remaining) in (int, float) and math.isfinite(remaining))
+        time_source = 'environment_budget'
+        if not known_remaining and self.exploration_deadline_monotonic is not None:
+            remaining = max(0., self.exploration_deadline_monotonic - time.monotonic())
+            known_remaining, time_source = True, 'runtime_monotonic_deadline'
+        enabled = self.submission_fit_rmse_threshold is not None
+        fit_allowed = bool(enabled and valid_error and error < self.submission_fit_rmse_threshold)
+        time_allowed = bool(known_remaining and remaining < self.submission_time_remaining_seconds)
+        return dict(self.submission_gate_policy(), law_id=law.get('law_id'),
+                    fit_position_rmse=error if finite_error else None, fit_error_valid=valid_error,
+                    wall_seconds_remaining=remaining if known_remaining else None,
+                    remaining_time_source=time_source if known_remaining else 'unavailable',
+                    fit_condition_met=fit_allowed, time_condition_met=time_allowed,
+                    allowed=not enabled or fit_allowed or time_allowed)
 
     def budget(self):
         response = self.environment.request('budget')
         if not response['ok']:
             return {'energy_remaining': None, 'observations_remaining': None,
-                    'wall_seconds_remaining': 0, 'session_ended': True}
+                    'wall_seconds_remaining': 0, 'session_ended': True, 'budget_available': False}
         return response['budget']
 
     def mission(self):
@@ -129,6 +197,8 @@ class ToolRuntime:
             (self.run_dir / 'mission.json').write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
         data = copy.deepcopy(self._initial_mission)
         data['expression_syntax'] = self.expression_syntax()
+        if self.submission_gate_policy()['enabled']:
+            data['submission_gate'] = self.submission_gate_policy()
         response['data'] = data
         return response
 
@@ -180,6 +250,9 @@ class ToolRuntime:
         except Exception as exc:
             response = {'ok': False, 'data': None, 'error': {'code': getattr(exc, 'code', type(exc).__name__),
                         'message': str(exc)[:1500]}, 'budget': self.budget()}
+            if isinstance(exc, SubmissionFitGateError):
+                response['error'].update(submission_gate=exc.details, temporary_rejection=True,
+                                         requires_changed_fit_or_remaining_time=True)
         try:
             json.dumps(args, allow_nan=False)
             logged_args = args
@@ -508,6 +581,9 @@ class ToolRuntime:
     def submit(self, law_id, claims, physical_explanation):
         from .submission import export_submission
         law = self._law(law_id)
+        eligibility = self.submission_eligibility(law)
+        if not eligibility['allowed']:
+            raise SubmissionFitGateError(eligibility)
         rid = 'submission_' + uuid.uuid4().hex[:12]
         timing = {}
         try:
@@ -528,6 +604,8 @@ class ToolRuntime:
                 'meaning': 'Local acceptance only; no truth or hidden-test check was performed.'}
         if status == 'accepted':
             data.update(timing)
+            if eligibility['enabled']:
+                data['submission_gate'] = eligibility
         self.store.add('submission', data, rid)
         return data
 
@@ -559,6 +637,12 @@ class ToolRuntime:
         if self.ruleset not in ('e4', 'e5') or self.last_valid_draft is None:
             return None
         draft = copy.deepcopy(self.last_valid_draft)
+        eligibility = self.submission_eligibility(self._law(draft['law_id']))
+        self.last_draft_finalization_gate = eligibility
+        if not eligibility['allowed']:
+            append_event(self.run_dir / 'events.jsonl', {'event': 'draft_finalization_deferred',
+                         'reason': reason, 'draft_id': draft['draft_id'], 'submission_gate': eligibility})
+            return None
         rid = 'submission_' + uuid.uuid4().hex[:12]
         target = self.run_dir / 'submissions' / rid
         target.parent.mkdir(exist_ok=True)
@@ -579,5 +663,7 @@ class ToolRuntime:
                 'meaning': 'Sealed last timely model-selected pair, without new inference or truth access.'}
         data.update({key: draft[key] for key in ('pair_validated_at',
                      'pair_validated_elapsed_seconds', 'submission_deadline_met')})
+        if eligibility['enabled']:
+            data['submission_gate'] = eligibility
         self.store.add('submission', data, rid)
         return data

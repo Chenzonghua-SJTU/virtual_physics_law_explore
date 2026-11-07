@@ -440,7 +440,7 @@ def test_both_operator_enums_are_warmed_before_worker_ready(tmp_path):
     result=symbolic_service._warmup_models(tmp_path,Model,Julia)
     assert result['actual_julia_threads']==4
     assert [r['stage'] for r in result['warmup_stages']]==['algebra','full']
-    assert calls[0]['unary_operators']==['sqrt','abs'] and calls[0]['maxsize']==24
+    assert calls[0]['unary_operators']==['sin','cos','exp','sqrt','log','abs'] and calls[0]['maxsize']==24
     assert calls[1]['unary_operators']==['sin','cos','exp','sqrt','log','abs']
     assert calls[1]['maxsize']==48
     Julia.seval=lambda code:192

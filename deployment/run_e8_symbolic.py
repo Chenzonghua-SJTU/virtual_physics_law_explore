@@ -41,6 +41,8 @@ def plans(project=ROOT, *, repeat='r01'):
         ('model','model'):run_e7.MODEL, ('model','max_tokens_per_call'):4096,
         ('model','max_total_tokens'):None, ('model','thinking'):False,
         ('agent','guidance_profile'):'baseline', ('agent','loop_recovery'):True,
+        ('agent','submission_fit_rmse_threshold'):1e-5,
+        ('agent','submission_time_remaining_seconds'):40,
         ('numerics','symbolic_regression_enabled'):True,
         ('numerics','symbolic_regression_endpoint'):run_e7.SYMBOLIC_ENDPOINT,
     }

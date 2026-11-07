@@ -32,7 +32,9 @@
   "agent": {
     "max_no_action": 3,
     "guidance_profile": "baseline",
-    "loop_recovery": true
+    "loop_recovery": true,
+    "submission_fit_rmse_threshold": 1e-5,
+    "submission_time_remaining_seconds": 40
   },
   "code_execution": {
     "enabled": false,

@@ -77,11 +77,15 @@ def preflight(batches, endpoints=ENDPOINTS, *, opener=None):
     if type(health.get('ready')) is not int or health['ready'] != 4 or type(health.get('busy')) is not int or health['busy'] != 0:
         raise RuntimeError('E7 preflight requires four ready, idle PySR workers')
     if any(batch.get('require_staged_warmup') for batch in batches):
+        from shore_agent.symbolic_regression import EARLY_UNARY_OPERATORS, UNARY_OPERATORS
+        expected_unary = {'algebra': list(EARLY_UNARY_OPERATORS), 'full': list(UNARY_OPERATORS)}
         warmup=health.get('worker_warmup',[])
         if (health.get('actual_julia_threads')!=[4]*4 or len(warmup)!=4 or any(
                 {(stage.get('stage'),stage.get('maxsize')) for stage in worker.get('warmup_stages',[])}
-                !={('algebra',24),('full',48)} for worker in warmup)):
-            raise RuntimeError('E8 requires actual four-thread workers warmed for algebra24 and full48')
+                !={('algebra',24),('full',48)} or any(
+                    stage.get('unary_operators') != expected_unary.get(stage.get('stage'))
+                    for stage in worker.get('warmup_stages',[])) for worker in warmup)):
+            raise RuntimeError('E8 requires actual four-thread workers warmed for the exact algebra24 and full48 operator enums')
     # Network checks take time. Recheck all arms before the first reservation.
     _check_fresh_paths(batches)
 

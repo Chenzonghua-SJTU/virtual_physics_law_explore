@@ -127,6 +127,7 @@ def test_search_adapter_uses_shared_budget_weights_and_exports_two_axis_candidat
     assert all(c[0]["warm_start"] is False and c[0]["precision"] == 64 for c in calls)
     assert set(result["feature_names"]) <= set(calls[0][3]["variable_names"])
     assert 'radius2' in calls[0][3]['variable_names']
+    assert calls[0][0]['unary_operators'] == ['sin', 'cos', 'exp', 'sqrt', 'log', 'abs']
     assert calls[-1][0]['unary_operators'] == ['sin', 'cos', 'exp', 'sqrt', 'log', 'abs']
     assert sum(calls[0][3]["weights"]) == pytest.approx(1)
     assert result["search_axes_completed"] == ["ax", "ay"]
@@ -337,7 +338,7 @@ def test_generic_linear_seed_recovers_coupled_components_without_claiming_pysr_o
         def __init__(self, **kwargs):
             assert kwargs["binary_operators"] == ["+", "-", "*", "/", "^"]
             assert kwargs["constraints"]["^"] == (-1, 1)
-            assert set(kwargs["unary_operators"]) in ({'sqrt', 'abs'}, {"sin", "cos", "exp", "log", "sqrt", "abs"})
+            assert set(kwargs["unary_operators"]) == {"sin", "cos", "exp", "log", "sqrt", "abs"}
         def fit(self, *args, **kwargs): self.equations_ = Rows([])
     records = [physical_probe("a", (1., 0.)), physical_probe("b", (0., 1.)),
                physical_probe("c", (-1., 2.))]
@@ -584,10 +585,33 @@ def test_search_size_includes_larger_generic_expressions_and_retains_full_operat
     result=run_search([physical_probe("p",(1.,2.))],model_factory=EmptySearch,time_budget_seconds=15)
     assert SEARCH_MAXSIZE==48
     assert {o['maxsize'] for o in options} == {24, 48}
+    assert all('exp' in o['unary_operators'] for o in options)
+    assert all('^' in o['binary_operators'] for o in options)
     assert any({"sin","cos","exp","log"}.issubset(o["unary_operators"]) for o in options)
     assert result["search_configuration"]["maxsize"]==48
+    assert result['search_configuration']['early_unary_operators']==['sin','cos','exp','sqrt','log','abs']
     assert "executability only" in result["data_quality"]["trajectory_checks"]
     assert all(c["joint_fit_ready"] for c in result["candidates"])
+
+
+def test_all_elementary_candidates_are_available_from_the_first_compact_stage():
+    options=[]
+    class EarlyOnlySearch:
+        def __init__(self,**kwargs):
+            options.append(kwargs)
+        def fit(self,*args,**kwargs):
+            if len(options)>1:
+                raise RuntimeError('stop_after_first_stage_for_test')
+            assert options[0]['unary_operators']==['sin','cos','exp','sqrt','log','abs']
+            assert '^' in options[0]['binary_operators']
+            self.equations_=Rows([{'loss':.01,'complexity':5,'sympy_format':source}
+                for source in ('exp(-0.23*x)','sin(0.23*x)','cos(0.23*x)','log(x*x+0.4)')])
+    result=run_search([probe()],time_budget_seconds=15,model_factory=EarlyOnlySearch)
+    assert result['backend_error'] is True
+    assert result['search_stages'][0]['stage']=='axis_0_algebra'
+    for function in ('exp','sin','cos','log'):
+        assert any(row['origin']=='pysr' and row['source'].startswith(function+'(')
+                   and row['domain_valid'] is True for row in result['axis_equations']['ax'])
 
 
 def test_axis_frontier_cap_preserves_accuracy_and_simplicity_endpoints():

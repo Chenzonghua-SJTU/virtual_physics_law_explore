@@ -21,6 +21,8 @@ FEATURES = ("t", "x", "y", "vx", "vy")
 PROPERTIES = ("mass", "charge")
 BINARY_OPERATORS = ("+", "-", "*", "/", "^")
 UNARY_OPERATORS = ("sin", "cos", "exp", "sqrt", "log", "abs")
+# Stages differ only in expression-size budget, never operator availability.
+EARLY_UNARY_OPERATORS = UNARY_OPERATORS
 EXPORT_UNARY_OPERATORS = ("sin", "cos", "exp", "sqrt", "log", "abs")
 MAX_ROWS = 20000
 MAX_EQUATIONS_PER_AXIS = 32
@@ -758,9 +760,10 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
         "omitted_incomplete_properties": dataset["omitted_incomplete_properties"],
         "search_configuration": {"maxsize": SEARCH_MAXSIZE, "binary_operators": list(BINARY_OPERATORS),
             "unary_operators": list(UNARY_OPERATORS), "power_exponent_max_complexity": 1,
+            "early_unary_operators": list(EARLY_UNARY_OPERATORS),
             "random_state": random_state, "warm_start": False, "parallelism": "multithreading",
             "linear_seed_max_terms": 3, "finalization_reserve_seconds": final_reserve,
-            "operator_scope": "Plan: algebraic then full elementary operators; actual completed stages are in search_stages and depend on remaining budget.",
+            "operator_scope": "All powers and elementary operators are available from the first stage. Legacy algebra/full labels mean compact size 24 then size 48, not operator priority; actual completed stages depend on remaining budget.",
             "simplicity_preference": "Linear seeds plus parameter/complexity-aware selection within resolution tolerance."},
         "warnings": ["Search loss uses finite-difference acceleration, not independent prediction.",
             "All selected probes are discovery data and cannot serve as independent validation.",
@@ -825,10 +828,10 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
     projected_fraction = .55 if projected is not None else 0.
     schedule = []
     if projected is not None:
-        schedule += [('radial_algebra', None, projected_fraction*.4, ['sqrt', 'abs']),
+        schedule += [('radial_algebra', None, projected_fraction*.4, list(EARLY_UNARY_OPERATORS)),
                      ('radial_full', None, projected_fraction*.6, list(UNARY_OPERATORS))]
     for axis in range(2):
-        schedule.append((f'axis_{axis}_algebra', axis, (1-projected_fraction)*.18, ['sqrt', 'abs']))
+        schedule.append((f'axis_{axis}_algebra', axis, (1-projected_fraction)*.18, list(EARLY_UNARY_OPERATORS)))
     for axis in range(2):
         schedule.append((f'axis_{axis}_full', axis, (1-projected_fraction)*.32, list(UNARY_OPERATORS)))
     for stage_index, (label, axis, fraction, unary) in enumerate(schedule):

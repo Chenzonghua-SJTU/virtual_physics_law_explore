@@ -51,6 +51,8 @@ def test_exactly_one_six_world_plan_preserves_registered_limits(project):
     assert config['model']['max_tokens_per_call']==4096
     assert config['model']['max_total_tokens'] is None
     assert config['model']['thinking'] is config['environment']['noise'] is False
+    assert config['agent']['submission_fit_rmse_threshold']==1e-5
+    assert config['agent']['submission_time_remaining_seconds']==40
     assert not plans[0]['output'].exists()
 
 
@@ -120,3 +122,20 @@ def test_julia_preflight_forces_offline_and_checks_actual_threads(project):
     assert environment['PYTHON_JULIACALL_THREADS']==environment['JULIA_NUM_THREADS']=='4'
     with pytest.raises(RuntimeError,match='exactly four threads'):
         driver.verify_julia_threads(project,run=lambda *a,**k:SimpleNamespace(stdout='E8_JULIA {"actual_threads":192}\n'))
+
+
+def test_staged_preflight_rejects_old_operator_enum_even_when_ready(project):
+    from shore_agent.symbolic_regression import EARLY_UNARY_OPERATORS, UNARY_OPERATORS
+    warmup=[{'warmup_stages':[
+        {'stage':'algebra','maxsize':24,'unary_operators':list(EARLY_UNARY_OPERATORS)},
+        {'stage':'full','maxsize':48,'unary_operators':list(UNARY_OPERATORS)},
+    ]} for _ in range(4)]
+    health={'ready':4,'busy':0,'actual_julia_threads':[4]*4,'worker_warmup':warmup}
+    def opener(url,timeout):
+        return Response(json.dumps(health if url.endswith('/health') else
+                                   {'data':[{'id':driver.run_e7.MODEL}]}).encode())
+    planned=driver.plans(project,repeat='r02')
+    driver.run_e7.preflight(planned,opener=opener)
+    warmup[0]['warmup_stages'][0]['unary_operators']=['sqrt','abs']
+    with pytest.raises(RuntimeError,match='exact.*operator enums'):
+        driver.run_e7.preflight(planned,opener=opener)

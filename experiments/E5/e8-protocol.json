@@ -79,11 +79,25 @@
         "Align complete scientific source and tool schema with the frozen commit, including the previously stale schema; preserve only explicitly exempt preexisting web_jobs.py.",
         "Clarify normal bounded search termination with usable candidates so it is not treated as a failed tool.",
         "Use generic experiment planning to obtain actual same-complete-state delayed-time controls before spending the exploration budget.",
-        "Encourage fitting a returned eligible joint candidate before rejecting or rewriting its formula."
+        "Encourage fitting a returned eligible joint candidate before rejecting or rewriting its formula.",
+        "Enforce the user-requested early-submission fit-error/time gate.",
+        "Keep all supported elementary unary operators available in the first stage and warm the exact operator enums before exploration; only maximum expression complexity differs between stages."
       ],
       "rationale": "R01 W4/W5 discarded complete usable candidates as timeout/complexity failures; W5 misattributed changed initial states to explicit time dependence; W6 lacked informative delayed same-state controls. R01 evidence and scores remain separately reported.",
       "source_gate": "Before launch, compare every scientific runtime/hash path to the frozen commit; every path must match except explicitly preserved preexisting shore_agent/web_jobs.py. Archive hashes and any declared exception.",
-      "selection_policy": "Report the whole R02 batch alongside whole R01; never combine the best world from different batches."
+      "selection_policy": "Report the whole R02 batch alongside whole R01; never combine the best world from different batches.",
+      "prelaunch_user_constraints": {
+        "early_submission": "Submit/finalize allowed only if the submitted fitted law training position RMSE is strictly below 1e-5 OR actual remaining mission time is strictly below 40 seconds. Both explicit submission and automatic finalization obey this gate; model failures cannot bypass it.",
+        "operator_priority": "All supported unary operators sin, cos, exp, sqrt, log, abs are available from the first stage with equal availability; powers remain in the binary operator set from the start. Stage 1 maxsize24 and stage2 maxsize48 differ in complexity budget, not operator family priority.",
+        "execution_note": "3c76e35 was deployed and warmed, but zero R02 Agent missions or searches had started when the early-submission and then equal-trigonometric-priority constraints arrived. R02 will use the subsequent frozen source incorporating all."
+      },
+      "submission_gate_configuration": {
+        "agent.submission_fit_rmse_threshold": 1e-05,
+        "agent.submission_time_remaining_seconds": 40,
+        "fit_metric": "submitted law training position RMSE",
+        "comparison": "strictly below; logical OR",
+        "scope": "R02 SR-enabled configuration; R01 archived configuration/results remain unchanged and baseline web SR-off defaults remain unchanged"
+      }
     }
   }
 }

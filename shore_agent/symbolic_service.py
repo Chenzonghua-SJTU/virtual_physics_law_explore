@@ -533,7 +533,7 @@ def _command_lines(stream):
 
 def _warmup_models(directory, model_factory=None, julia_main=None):
     started = time.monotonic()
-    from .symbolic_regression import BINARY_OPERATORS, UNARY_OPERATORS, SEARCH_MAXSIZE
+    from .symbolic_regression import BINARY_OPERATORS, UNARY_OPERATORS, EARLY_UNARY_OPERATORS, SEARCH_MAXSIZE
     if model_factory is None:
         from pysr import PySRRegressor
         model_factory = PySRRegressor
@@ -546,12 +546,12 @@ def _warmup_models(directory, model_factory=None, julia_main=None):
     # Synthetic-only compilation warmup: no experiment, archive or world input.
     rng = np.random.default_rng(123)
     X = rng.uniform(.2, 1.2, size=(64, 7))
-    # Each operator enum requires Julia compilation. Warm both actual stages,
-    # rather than making the first timed mission compile the algebra-only enum.
+    # Warm both actual complexity budgets. Both stages use the same full
+    # operator enum; their legacy labels do not imply an operator restriction.
     y = (2 * X[:, 1] ** 1.7 + np.sqrt(X[:, 0]) + np.sin(X[:, 3])
          + np.cos(X[:, 4]) + np.exp(X[:, 5]) + np.log(X[:, 6]))
     stages = []
-    for name, unary, maxsize in (("algebra", ["sqrt", "abs"], 24),
+    for name, unary, maxsize in (("algebra", list(EARLY_UNARY_OPERATORS), 24),
                                  ("full", list(UNARY_OPERATORS), SEARCH_MAXSIZE)):
         begin = time.monotonic()
         model = model_factory(binary_operators=list(BINARY_OPERATORS), unary_operators=unary,
