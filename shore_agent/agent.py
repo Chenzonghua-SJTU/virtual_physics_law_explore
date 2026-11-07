@@ -36,6 +36,10 @@ class Agent:
             raise ValueError('repeated_tool_failure_feedback must be boolean')
         self.repeated_tool_failure_feedback = self.ruleset == 'e5' and failure_feedback
         self._failed_tool_counts = {}
+        budget_aware_tools = config.get('budget_aware_tools', False)
+        if type(budget_aware_tools) is not bool:
+            raise ValueError('budget_aware_tools must be boolean')
+        self.budget_aware_tools = self.ruleset == 'e5' and budget_aware_tools
         self.finish_reserve_seconds = 30.0 if self.e4 else 0.0
         self.max_no_action = config.get('max_no_action', 3)
         if isinstance(self.max_no_action, bool) or not isinstance(self.max_no_action, int) or self.max_no_action < 1:
@@ -50,6 +54,29 @@ class Agent:
     def _failure(self, code):
         return {'ok': False, 'data': None, 'error': {'code': code, 'message': code},
                 'budget': self.last_budget}
+
+    def _model_tools(self, budget):
+        """Advertise public resource limits without changing runtime execution."""
+        if not self.budget_aware_tools:
+            return self.runtime.schemas
+        energy = budget.get('energy_remaining')
+        observations = budget.get('observations_remaining')
+        schemas = []
+        for schema in copy.deepcopy(self.runtime.schemas):
+            function = schema['function']
+            if function['name'] == 'insert_probe':
+                if type(energy) in (int, float) and energy == 0:
+                    continue
+                if type(energy) is int and energy > 0:
+                    probes = function['parameters']['properties']['probes']
+                    maximum = probes.get('maxItems')
+                    if type(maximum) is int:
+                        probes['maxItems'] = min(maximum, energy)
+            elif (function['name'] == 'observe_body'
+                  and type(observations) in (int, float) and observations == 0):
+                continue
+            schemas.append(schema)
+        return schemas
 
     def _track_tool_failure(self, name, args, result):
         """Observe actual tool outcomes without changing them or invoking tools."""
@@ -175,8 +202,10 @@ class Agent:
         # a resource/error termination, or repeated replies without tool actions.
         turn = 0
         while True:
+            current_budget = None
             if self.e4:
-                remaining = self.runtime.budget()['wall_seconds_remaining']
+                current_budget = self.runtime.budget()
+                remaining = current_budget['wall_seconds_remaining']
                 if remaining <= self.finish_reserve_seconds:
                     if self.runtime.last_valid_draft is not None:
                         return self._finish('incomplete', 'deadline_reserve')
@@ -184,7 +213,7 @@ class Agent:
                         return self._finish('incomplete', 'wall_time_exhausted_without_saved_draft')
             turn += 1
             try:
-                message = self.client.complete(self.messages, tools=self.runtime.schemas, role='main')
+                message = self.client.complete(self.messages, tools=self._model_tools(current_budget), role='main')
             except ModelError as exc:
                 return self._finish('incomplete', exc.code)
             self.messages.append(copy.deepcopy(message))

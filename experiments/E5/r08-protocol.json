@@ -1,0 +1,22 @@
+{
+  "experiment": "e5-qwen38-budget-tools-20261107-r08",
+  "status": "prepared_before_run",
+  "starting_point": "R07 source155e5bc/config.e5.compact.json",
+  "only_new_behavior": "Use current public resource budget to advertise available observation actions and batch size each model turn; execution validation unchanged",
+  "preserved": [
+    "seed42; Qwen3.8-27B; thinking off",
+    "E3 main prompt",
+    "10 energy / 300 seconds /4096 tokens per request",
+    "No exploration noise; clean independent evaluation",
+    "Same compact diagnostic numerical methods and scientific freedom"
+  ],
+  "workers": 4,
+  "attempts_per_world": 1,
+  "endpoints": [
+    8000,
+    8001,
+    8002,
+    8003
+  ],
+  "primary_outcome": "At least five raw scores>=90 in one six-world batch; no cross-batch selection"
+}
