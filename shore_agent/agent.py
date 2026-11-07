@@ -36,7 +36,7 @@ class Agent:
         if self.guidance_profile not in ('baseline', 'e3', 'concise'):
             raise ValueError('guidance_profile must be baseline, e3 or concise')
         self.e4 = self.ruleset in ('e4', 'e5')
-        self.finish_reserve_seconds = 30.0 if self.e4 else 0.0
+        self.finish_reserve_seconds = 5.0 if self.ruleset=='e4' else 30.0 if self.e4 else 0.0
         self.max_no_action = config.get('max_no_action', 3)
         if isinstance(self.max_no_action, bool) or not isinstance(self.max_no_action, int) or self.max_no_action < 1:
             raise ValueError('max_no_action must be a positive integer')
@@ -348,14 +348,23 @@ class Agent:
             prompt += '\n\n' + (Path(__file__).parent / 'prompts' / filename).read_text(encoding='utf-8')
         if getattr(self.runtime, 'symbolic_enabled', False):
             prompt += '\n\n' + (Path(__file__).parent / 'prompts' / 'symbolic.txt').read_text(encoding='utf-8')
+            if self.ruleset == 'e4':
+                prompt += ('\n\n本场开启观测噪声和符号回归：输入仍是当前会话取得的含噪位置、速度，工具没有真值；仅依据公开噪声尺度做局部多项式平滑。'
+                           '速度差分噪声随dt减小被放大，不要一味缩小采样间隔；兼顾运动变化、噪声尺度和时间覆盖。'
+                           '搜索损失与观测轨迹RMSE均不是隐藏真值误差；比较简单候选与独立验证，不追逐噪声生成复杂项。'
+                           '含噪提交条件是训练与独立验证位置RMSE都<0.1，或余时<60秒；余时<40秒下一次动作必须submit。提前save_draft保留最佳候选，'
+                           '在剩余预算内做有信息的检验，不要机械重复搜索或空等。')
         gate_reader = getattr(self.runtime, 'submission_gate_policy', None)
         gate = gate_reader() if callable(gate_reader) else {}
         if gate.get('enabled'):
-            prompt += (f"\n\n提交硬门槛：所选law的errors.overall.position_rmse必须是有限非负数且严格小于"
-                       f"{gate['fit_rmse_threshold']}，或者剩余时间严格少于{gate['time_remaining_threshold_seconds']}秒。"
-                       '这是OR条件，独立验证仍提供诊断，不增加第三个硬阈值。'
-                       'save_draft可随时保存有效配对，但提前模型失败或退出不能绕过同一提交门槛。'
-                       '不满足时继续使用已有数据改进；零能量仍可拟合，不要原样反复submit或空等。')
+            if gate.get('requires_validation_for_error_branch'):
+                prompt += ('\n\n本场含噪门槛覆盖通用说明：训练与同一law独立验证的位置RMSE都严格<0.1，'
+                           '或余时严格<60秒即可submit；余时严格<40秒下一次动作必须submit。'
+                           '务必提前保存你选择的law/claims/解释，届时可按该草稿直接提交。')
+            else:
+                prompt += (f"\n\n提交硬门槛：所选law的errors.overall.position_rmse有限非负且严格小于"
+                           f"{gate['fit_rmse_threshold']}，或余时严格少于{gate['time_remaining_threshold_seconds']}秒。"
+                           '独立验证仍提供诊断；save_draft不能绕过门槛。不要原样重复submit或空等。')
         if getattr(self.runtime, 'code_enabled', False):
             prompt = prompt.replace('不可访问任意文件、Shell、网络、源码或任意 Python。',
                                     '代码只可通过run_code在隔离环境执行，不可访问宿主文件、网络或仿真源码。')
@@ -376,13 +385,26 @@ class Agent:
             if self.e4:
                 remaining = self.runtime.budget()['wall_seconds_remaining']
                 if remaining <= self.finish_reserve_seconds:
-                    if self.runtime.last_valid_draft is not None:
+                    if self.runtime.last_valid_draft is not None and self.ruleset!='e4':
                         return self._finish('incomplete', 'deadline_reserve')
                     if remaining <= 0:
                         return self._finish('incomplete', 'wall_time_exhausted_without_saved_draft')
+            forced_submit=self.ruleset=='e4' and self.runtime.budget()['wall_seconds_remaining']<40
+            if forced_submit and self.runtime.last_valid_draft is not None:
+                draft=self.runtime.last_valid_draft
+                args={k:draft[k] for k in ('law_id','claims','physical_explanation')}
+                result=self.runtime.execute('submit',args)
+                self._event('mandatory_submit_from_model_selected_draft',arguments=args,result=result)
+                if result.get('ok') and result.get('data',{}).get('status')=='accepted':
+                    self.submission=result['data'];self.session_ended=True
+                    return self._finish('submitted','mandatory_noisy_deadline_submit')
+            tools=self.runtime.schemas
+            if forced_submit:
+                tools=[s for s in tools if s['function']['name']=='submit']
+                self.messages.append({'role':'user','content':'含噪版余时少于40秒，下一动作必须submit，提交你基于现有证据选择的已拟合law；禁止其他动作。'})
             turn += 1
             try:
-                message = self.client.complete(self.messages, tools=self.runtime.schemas, role='main')
+                message = self.client.complete(self.messages, tools=tools, role='main')
             except ModelError as exc:
                 return self._finish('incomplete', exc.code)
             self.messages.append(copy.deepcopy(message))

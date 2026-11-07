@@ -125,6 +125,7 @@ def evaluate_submission(run_dir, submission, law, environment, *, seed, requeste
                            'grid and linearly interpolated for the unchanged candidate integrator. '
                            'These evaluator inputs never return to the exploring Agent.',
         'truth_reference': 'Unmodified v15 DevelopmentSimulator and fixed public validation cases; no noise',
+        'evaluation_noise': False, 'exploration_noise': bool(environment.get('noise')),
         'submission_id': submission['submission_id'], 'law_id': law['law_id'],
         'claims': submission['claims'], 'seed': seed, 'seed_used': False,
         'requested_n_probes': requested_n_probes,

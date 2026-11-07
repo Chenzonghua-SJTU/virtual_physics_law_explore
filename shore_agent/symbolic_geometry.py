@@ -77,3 +77,45 @@ def radial_projection(dataset, *, tolerance=.04):
     projected_weights = weights*r2
     projected_weights /= projected_weights.sum()
     return {'target': scalar, 'weights': projected_weights}, diagnostics
+
+
+def radial_log_rows(dataset,projected,*,deadline):
+    """Generic sign-preserving log-response regression, conditional on collinearity.
+
+    Arbitrary subsets of observed scalar coordinates/properties are tested. No
+    exponent, range, coefficient, world id or physical force family is supplied.
+    Ordinary Cartesian/PySR searches remain available alongside this hypothesis.
+    """
+    import itertools,time
+    if projected is None: return [[],[]],{'enabled':False}
+    response=projected['target']
+    if not (np.all(response>0) or np.all(response<0)):
+        return [[],[]],{'enabled':False,'reason':'response_changes_sign'}
+    sign=1 if response[0]>0 else -1
+    radius=np.linalg.norm(dataset['states'][:,1:3],axis=1)
+    features=[('sqrt(x*x+y*y)',radius),('log(sqrt(x*x+y*y))',np.log(radius))]
+    for name in ('t','mass','charge'):
+        if name not in dataset['feature_names']: continue
+        values=dataset['X'][:,dataset['feature_names'].index(name)]
+        features.append((name,values))
+        if name!='t' and np.all(values>0): features.append((f'log({name})',np.log(values)))
+    # Fit relative log-response with geometric/discretization weights. Multiplying
+    # by response**2 would let unresolved near-zero-radius values dominate again.
+    weights=projected['weights'].copy()
+    weights/=weights.sum(); root=np.sqrt(weights)
+    target=np.log(np.abs(response))
+    rows=[[],[]]; tried=0
+    for size in range(1,min(4,len(features))+1):
+        for subset in itertools.combinations(range(len(features)),size):
+            if time.monotonic()>=deadline: break
+            design=np.column_stack([np.ones(len(response))]+[features[j][1] for j in subset])
+            coef,_,rank,_=np.linalg.lstsq(design*root[:,None],target*root,rcond=None)
+            if rank!=size+1 or not np.isfinite(coef).all(): continue
+            tried+=1
+            body=repr(float(coef[0]))+' + '+' + '.join(f'({float(c)!r})*({features[j][0]})' for c,j in zip(coef[1:],subset))
+            scalar=f'{sign}*exp({body})'
+            for axis,name in enumerate(('x','y')):
+                rows[axis].append({'source':f'({scalar})*{name}','complexity':6+5*size,
+                                  'origin':'transformed_linear_regression','search_representation':'sign_checked_radial_log_response'})
+    return rows,{'enabled':True,'models_fitted':tried,'target':'log(abs(observed_radial_scalar))',
+                 'features':[f[0] for f in features],'scope':'Data-supported sign/collinearity hypothesis; coefficients fitted only to discovery observations.'}

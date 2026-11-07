@@ -63,17 +63,22 @@ class SymbolicSearchToolError(ValueError):
                          'No usable search result; continue with existing observations and tools.')
 
 
+class SubmissionRequiredNowError(ValueError):
+    code = 'submission_required_now'
+
+
 class SubmissionFitGateError(ValueError):
     code = 'submission_fit_gate_not_met'
 
     def __init__(self, details):
         self.details = details
-        super().__init__(
-            f"本次submit未执行，未扣能量、未结束会话。所选{details['law_id']}的训练位置RMSE="
-            f"{details['fit_position_rmse']}；必须严格小于{details['fit_rmse_threshold']}，"
-            f"或者剩余时间严格少于{details['time_remaining_threshold_seconds']}秒（当前"
-            f"{details['wall_seconds_remaining']}秒）。请继续用已有数据拟合/比较候选、检查残差，"
-            '可save_draft保存当前选择；能量为0仍可使用已有数据。不要原样反复submit或等待刷调用。')
+        requirement = ("训练与独立验证的位置RMSE都严格<0.1，或余时严格<60秒"
+                       if details.get('requires_validation_for_error_branch') else
+                       f"训练位置RMSE严格<{details['fit_rmse_threshold']}，或余时严格<{details['time_remaining_threshold_seconds']}秒")
+        super().__init__(f"本次submit未执行、未扣能量、未结束会话。要求{requirement}；"
+                         f"当前训练RMSE={details['fit_position_rmse']}，验证RMSE={details.get('validation_position_rmse')}，"
+                         f"余时={details['wall_seconds_remaining']}秒。请按证据改进并保存草稿，不要原样重复submit。")
+
 
 
 class ToolRuntime:
@@ -120,6 +125,8 @@ class ToolRuntime:
                 continue
             if type(value) not in (int, float) or not math.isfinite(value) or value <= 0:
                 raise ValueError(f'{name} must be a positive finite number')
+        if self.ruleset=='e4':
+            threshold,remaining=.1,60.
         self.submission_fit_rmse_threshold = threshold
         self.submission_time_remaining_seconds = remaining
 
@@ -128,7 +135,10 @@ class ToolRuntime:
                 'fit_error_field': 'selected_law.errors.overall.position_rmse',
                 'fit_rmse_threshold': self.submission_fit_rmse_threshold,
                 'time_remaining_threshold_seconds': self.submission_time_remaining_seconds,
-                'condition': 'finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold',
+                'condition': ('(training_position_rmse < 0.1 AND independent_validation_position_rmse < 0.1) OR remaining_seconds < 60' if self.ruleset=='e4' else 'finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold'),
+                'requires_validation_for_error_branch':self.ruleset=='e4',
+                'validation_rmse_threshold':.1 if self.ruleset=='e4' else None,
+                'force_submit_remaining_seconds':40. if self.ruleset=='e4' else None,
                 'comparison': 'strict', 'independent_validation_is_hard_requirement': False,
                 'save_draft_allowed_before_eligibility': True}
 
@@ -152,9 +162,19 @@ class ToolRuntime:
             known_remaining, time_source = True, 'runtime_monotonic_deadline'
         enabled = self.submission_fit_rmse_threshold is not None
         fit_allowed = bool(enabled and valid_error and error < self.submission_fit_rmse_threshold)
+        validation_ids=[]; validation_errors=[]
+        if self.ruleset=='e4':
+            for rid,record in self.store.records['validation'].items():
+                if record.get('law_id')!=law.get('law_id'): continue
+                value=((record.get('errors') or {}).get('overall') or {}).get('position_rmse')
+                if type(value) in (int,float) and math.isfinite(value) and value>=0:
+                    validation_ids.append(rid);validation_errors.append(value)
+            fit_allowed=fit_allowed and bool(validation_errors) and max(validation_errors)<.1
+        validation_error=max(validation_errors) if validation_errors else None
         time_allowed = bool(known_remaining and remaining < self.submission_time_remaining_seconds)
         return dict(self.submission_gate_policy(), law_id=law.get('law_id'),
                     fit_position_rmse=error if finite_error else None, fit_error_valid=valid_error,
+                    validation_position_rmse=validation_error,validation_ids=validation_ids,
                     wall_seconds_remaining=remaining if known_remaining else None,
                     remaining_time_source=time_source if known_remaining else 'unavailable',
                     fit_condition_met=fit_allowed, time_condition_met=time_allowed,
@@ -231,6 +251,8 @@ class ToolRuntime:
             budget = self.budget()
             if self.session_ended or budget['session_ended'] or budget['wall_seconds_remaining'] <= 0:
                 raise ValueError('Session ended or wall time exhausted')
+            if self.ruleset=='e4' and budget['wall_seconds_remaining']<40 and name!='submit':
+                raise SubmissionRequiredNowError('含噪版剩余时间少于40秒：本操作未执行，下一次动作必须submit，使用已拟合law及基于证据的claims；不得继续搜索、拟合或存草稿。')
             if self.task is None:
                 raise ValueError('Framework must initialize mission first')
             before_files = set(self.files.entries())
@@ -340,8 +362,24 @@ class ToolRuntime:
             record['discovery_probe_ids'] = sorted(self.discovery_probe_ids)
         if self._time_series_bodies():
             record.update(body_context=body_inputs, body_input_protocol='instantaneous_visible_state')
+        if self.symbolic_enabled and record.get('errors'):
+            record['acquired_observation_consistency']=self._acquired_consistency(record)
+            record['discovery_probe_ids']=sorted(self.discovery_probe_ids)
         self.store.add('law', record, rid)
         return preview(record)
+
+    def _acquired_consistency(self,law):
+        from .symbolic_quality import consistency
+        if Expression(law['law_spec'],law['parameter_spec']).uses_bodies:
+            return {'status':'not_checked','reason':'Observed-path check currently requires body-free expressions.'}
+        probes=list(self.store.records['probe'].values())
+        result=consistency(law['law_spec'],law['fitted_parameters'],probes,
+                           deadline=time.monotonic()+min(.5,max(0.,self.budget()['wall_seconds_remaining'])))
+        # Automatically inspected probes are development data from this point;
+        # never relabel the feedback as an independent validation result.
+        self.discovery_probe_ids.update(result['checked_probe_ids'])
+        result['outside_training_probe_ids']=[rid for rid in result['checked_probe_ids'] if rid not in law['train_probe_ids']]
+        return result
 
     def _law(self, law_id):
         law = self.store.get('law', law_id)
@@ -376,7 +414,10 @@ class ToolRuntime:
     def symbolic_regression(self, train_probe_ids, time_budget_seconds):
         if not self.symbolic_enabled:
             raise ValueError('symbolic_regression is disabled')
-        probes = self._probes(train_probe_ids)
+        probes = copy.deepcopy(self._probes(train_probe_ids))
+        for probe in probes:
+            probe['observation_noise']={'position_sigma':self.task.get('position_noise_sigma'),
+                                        'velocity_sigma':self.task.get('velocity_noise_sigma')}
         remaining = self.budget()['wall_seconds_remaining']
         allowed = min(float(time_budget_seconds), 60.0, remaining - 35.0)
         if allowed < 1.0:
@@ -465,7 +506,7 @@ class ToolRuntime:
         public = {key: copy.deepcopy(value) for key, value in result.items() if key in public_keys}
         public['audit_path'] = f'analyses/{rid}.json'
         public['next_step'] = (
-            'For a promising candidate, pass its complete law_spec and parameter_spec '
+            'Candidates are ranked complete, algebraically deduplicated formulas with fitted_parameters and residuals. Test rank 1 first, then alternatives if residuals remain large. Pass its complete law_spec and parameter_spec '
             'plus used_probe_ids as train_probe_ids to fit_law_and_rollout. '
             'Single-axis entries have joint_fit_ready=false: their zero placeholder is not a prediction for the other axis. '
             'Keep useful component structure, combine with evidence for the other axis, and respect the five-parameter fit limit. '
@@ -619,6 +660,8 @@ class ToolRuntime:
         rid = 'draft_' + uuid.uuid4().hex[:12]
         checks = export_submission(self.run_dir / 'drafts' / rid, law, claims,
                                    self._probes(law['train_probe_ids']), physical_explanation)
+        if self.symbolic_enabled:
+            checks['acquired_observation_consistency']=self._acquired_consistency(law)
         budget = self.budget()
         if budget['wall_seconds_remaining'] <= 0 or budget.get('session_ended'):
             raise ValueError('Draft checks did not finish before the exploration deadline')

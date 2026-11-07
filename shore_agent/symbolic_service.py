@@ -48,7 +48,7 @@ def _search_audit(raw):
     returned executable formulas or losing otherwise valid candidates.
     """
     allowed = {"source", "complexity", "loss", "origin", "search_representation", "parameter_count",
-               "domain_valid", "rejection_reason"}
+               "domain_valid", "rejection_reason", "original_source"}
     result = {}
     omitted = dict(raw.get("transport_audit_omitted_rows", {}))
     if "axis_equations" in raw:
@@ -156,7 +156,8 @@ def _public_result(raw, ids):
                       "acceleration_search_mse", "normalized_acceleration_search_loss",
                       "component_sources", "dsl_valid", "selection_role", "parameter_count",
                       "initial_domain_check", "short_rollout_check", "parameter_sharing",
-                      "prediction_accuracy_status", "joint_fit_ready"}
+                      "prediction_accuracy_status", "joint_fit_ready", "rank", "fitted_parameters",
+                      "residuals", "fit_stage", "trajectory_refit_status"}
     for candidate in candidates:
         try:
             Expression(candidate["law_spec"], candidate["parameter_spec"])

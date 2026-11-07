@@ -106,9 +106,14 @@ def test_failure_without_draft_is_honestly_incomplete(runtime):
 def test_model_failure_preserves_prior_model_selected_draft(runtime):
     first = save(runtime)['data']
     result = Agent(FailedClient(), runtime, runtime.run_dir, {}).run()
-    assert result['status'] == 'submitted'
-    assert result['reason'] == 'saved_draft_after_api_timeout'
-    assert result['submission']['draft_id'] == first['draft_id']
+    if runtime.ruleset=='e4':
+        assert result['status']=='incomplete' and result['submission'] is None
+        assert runtime.last_valid_draft['draft_id']==first['draft_id']
+        assert not result['draft_finalization_blocked_by_submission_gate']['allowed']
+    else:
+        assert result['status'] == 'submitted'
+        assert result['reason'] == 'saved_draft_after_api_timeout'
+        assert result['submission']['draft_id'] == first['draft_id']
 
 
 def test_finish_reserve_uses_saved_pair_without_another_model_call(runtime, monkeypatch):
@@ -118,7 +123,8 @@ def test_finish_reserve_uses_saved_pair_without_another_model_call(runtime, monk
     client = FailedClient()
     monkeypatch.setattr(client, 'complete', lambda *a, **k: pytest.fail('reserve must not start another model call'))
     result = Agent(client, runtime, runtime.run_dir, {}).run()
-    assert result['status'] == 'submitted' and result['reason'] == 'deadline_saved_draft'
+    assert result['status'] == 'submitted'
+    assert result['reason'] == ('mandatory_noisy_deadline_submit' if runtime.ruleset=='e4' else 'deadline_saved_draft')
 
 
 def test_watchdog_cannot_be_swallowed_by_tool_exception_handlers():

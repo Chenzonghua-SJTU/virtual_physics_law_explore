@@ -434,7 +434,8 @@ class DeepSeekClient:
         if body['stream']:
             body['stream_options'] = {'include_usage': True}
         if tools:
-            body.update(tools=copy.deepcopy(tools), tool_choice='auto')
+            body.update(tools=copy.deepcopy(tools), tool_choice=({'type':'function','function':{'name':'submit'}}
+                        if len(tools)==1 and tools[0]['function']['name']=='submit' else 'auto'))
         estimate = self._prompt_estimate(body)
         prompt_allowance = estimate['estimated_prompt_tokens']
         for attempt in range(self.max_retries + 1):

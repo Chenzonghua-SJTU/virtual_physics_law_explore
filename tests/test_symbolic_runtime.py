@@ -57,10 +57,14 @@ def test_search_provenance_cannot_be_laundered_through_disjoint_parameter_fit(ru
     assert found['budget']['energy_remaining'] == 10
     assert runtime.store.records['probe'] == before
     law = fit(runtime, ['p2'])['data']['law_id']
-    assert runtime.store.get('law', law)['discovery_probe_ids'] == ['p1']
+    assert runtime.store.get('law', law)['discovery_probe_ids'] == ['p1','p2','p3','p4']
+    assert runtime.store.get('law', law)['acquired_observation_consistency']['outside_training_probe_ids'] == ['p1','p3','p4']
     bad = runtime.execute('validate_law', {'law_id': law, 'test_probe_ids': ['p1']})
     assert not bad['ok'] and 'overlap' in bad['error']['message']
-    good = runtime.execute('validate_law', {'law_id': law, 'test_probe_ids': ['p3']})
+    assert not runtime.execute('validate_law', {'law_id':law,'test_probe_ids':['p3']})['ok']
+    fresh=copy.deepcopy(runtime.store.get('probe','p3')); fresh['probe_id']='fresh'
+    runtime.store.add('probe',fresh,'fresh')
+    good = runtime.execute('validate_law', {'law_id': law, 'test_probe_ids': ['fresh']})
     assert good['ok']
     assert any(path.startswith('analyses/sr_') for path in runtime.files.entries())
 
@@ -77,7 +81,7 @@ def test_later_search_also_excludes_data_from_independent_validation(runtime, mo
     assert len(records) == 1
     record = next(iter(records.values()))
     assert record['status'] == 'unavailable' and record['used_probe_ids'] == ['p1']
-    assert record['discovery_probe_ids'] == ['p1']
+    assert record['discovery_probe_ids'] == ['p1','p2','p3','p4']
     assert 'private process details' not in str(record)
     assert f"analyses/{record['search_id']}.json" in result['error']['message']
     assert (runtime.run_dir/'records/symbolic_search'/f"{record['search_id']}.json").is_file()
@@ -213,7 +217,8 @@ def test_disabled_tool_surface_and_scope_are_unchanged(tmp_path):
     assert rt.schemas == tool_schemas(ruleset='e5') and len(rt.schemas) == 9
     assert not rt.execute('symbolic_regression', {'train_probe_ids': ['p1'], 'time_budget_seconds': 1})['ok']
     assert len(tool_schemas(ruleset='e5', symbolic_enabled=True)) == 10
-    with pytest.raises(ValueError, match='ruleset=e5'):
+    assert len(tool_schemas(ruleset='e4', symbolic_enabled=True)) == 10
+    with pytest.raises(ValueError, match='ruleset=e4 or e5'):
         tool_schemas(ruleset='e3', symbolic_enabled=True)
 
 

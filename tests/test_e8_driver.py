@@ -71,7 +71,7 @@ def test_second_registered_batch_keeps_first_attempts_and_all_limits(project):
     with pytest.raises(ValueError,match='already_exists'):
         driver.run_e7._check_fresh_paths([second])
     with pytest.raises(ValueError,match='explicitly registered'):
-        driver.plans(project,repeat='r03')
+        driver.plans(project,repeat='r99')
 
 
 @pytest.mark.parametrize('opener,message',[
@@ -139,3 +139,16 @@ def test_staged_preflight_rejects_old_operator_enum_even_when_ready(project):
     warmup[0]['warmup_stages'][0]['unary_operators']=['sqrt','abs']
     with pytest.raises(RuntimeError,match='exact.*operator enums'):
         driver.run_e7.preflight(planned,opener=opener)
+
+
+def test_paired_plans_change_only_noise_ruleset_and_keep_budgets(project):
+    clean,noisy=driver.plans(project,repeat='paired')
+    assert clean['config']['environment']['noise'] is False
+    assert noisy['config']['environment']['noise'] is True
+    assert clean['config']['environment']['ruleset']=='e5'
+    assert noisy['config']['environment']['ruleset']=='e4'
+    for plan in (clean,noisy):
+        assert len(plan['planned_runs'])==6
+        assert plan['config']['model']['max_tokens_per_call']==4096
+        assert plan['config']['environment']['wall_seconds']==300
+        assert plan['config']['environment']['energy_budget']==10

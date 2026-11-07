@@ -58,9 +58,9 @@ SYMBOLIC_SCHEMA = tool('symbolic_regression',
     '在当前会话指定训练探针的完整位置和速度观测上，以速度差分估计加速度，搜索基本代数、实数幂、三角、指数、对数候选。简单表达式优先，但不排除复杂运算。'
     '只搜索t,x,y,vx,vy和这些探针共同提供的mass/charge；当前不支持天体集合位置输入。'
     '变量不变化不能证明无依赖；先用控制实验提供可辨识的数据，保留已有属性对照。时间包含在300秒内，建议一次40–50秒，两轴合计；余时不足会拒绝。'
-    '返回至多3个可直接拟合的完整law_spec与parameter_spec，以及未组合的完整单轴候选、来源和数据覆盖诊断；搜索审计保存在audit_path。'
+    '返回去重排名的至多3个完整law_spec、parameter_spec、fitted_parameters和residuals，区分加速度搜索、轨迹拟合及速度积分残差；附单轴候选、来源和覆盖诊断；搜索审计保存在audit_path。'
     '返回候选是待检验假说，训练检查不能代替独立验证；没有合格候选时如实返回空列表。'
-    '候选仍需fit_law_and_rollout按位置轨迹重拟合，再用新探针validate_law；所有搜索用过的探针均不能冒充独立验证。'
+    '候选须fit_law_and_rollout登记并按位置轨迹重拟合，再用新探针validate_law；所有搜索用过的探针均不能冒充独立验证。'
     '预算结束但有候选是正常可用结果；单轴joint_fit_ready=false不能直接当完整力律提交，组合仍须符合5参数上限并验证。'
     '不可用/无好候选时按已有工具继续研究，不要机械重复相同搜索；本工具不投放探针、不自动提交。',
     {'train_probe_ids': IDS,
@@ -78,7 +78,11 @@ def tool_schemas(code_enabled=False, *, ruleset='e3', symbolic_enabled=False):
             '不会自动选择规律、补写claims或检查物理真值。')
         schemas.append(draft)
     if symbolic_enabled:
-        if ruleset != 'e5':
-            raise ValueError('symbolic_regression requires ruleset=e5')
-        schemas.append(copy.deepcopy(SYMBOLIC_SCHEMA))
+        if ruleset not in ('e4', 'e5'):
+            raise ValueError('symbolic_regression requires ruleset=e4 or e5')
+        search = copy.deepcopy(SYMBOLIC_SCHEMA)
+        if ruleset == 'e4':
+            search['function']['description'] += ('本场观测含噪；速度差分会放大噪声，搜索损失不代表真实加速度误差。'
+                                                '候选须在含噪位置轨迹上重拟合并用保留探针验证，不以噪声波动作为新物理项。')
+        schemas.append(search)
     return schemas

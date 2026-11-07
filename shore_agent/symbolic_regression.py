@@ -1,7 +1,7 @@
 """Optional state-space symbolic search using acquired current-session probes.
 
 PySR is imported only by ``run_search``. This module does not import a simulator,
-read experiment archives, fit trajectory parameters, or submit a law. Its soft
+read experiment archives or submit a law. Final candidates may be refitted to acquired trajectories. Its soft
 search timeout is NOT a process deadline: callers must enforce a hard timeout.
 """
 from __future__ import annotations
@@ -65,6 +65,7 @@ def prepare_dataset(probes):
     omitted = [key for key in PROPERTIES if any(key in p for p in properties) and key not in common]
     feature_names = list(FEATURES) + common
     xs, ys, ws, states, row_properties, counts = [], [], [], [], [], []
+    quality_rows, uncertainty_rows = [], []
     for probe, prop in zip(probes, properties):
         try:
             t = np.asarray(probe["times"], dtype=float)
@@ -83,10 +84,13 @@ def prepare_dataset(probes):
                     raise ValueError("acceleration alignment")
         except (KeyError, TypeError, ValueError) as exc:
             raise SymbolicRegressionError("Invalid observation arrays or acceleration time alignment") from exc
-        state = np.column_stack((t[1:-1], r[1:-1], v[1:-1]))
+        from .symbolic_quality import derivatives
+        observed_r, observed_v, a, quality, uncertainty, detail = derivatives(probe,t,r,v)
+        quality_rows.append(detail); uncertainty_rows.append(uncertainty)
+        state = np.column_stack((t[1:-1], observed_r, observed_v))
         x = np.column_stack((state, *[np.full(len(a), prop[key]) for key in common])) if common else state.copy()
         xs.append(x); ys.append(a); states.append(state)
-        ws.append(np.full(len(a), 1.0 / (len(probes) * len(a))))
+        ws.append(quality/(len(probes)*quality.sum()))
         row_properties.extend([prop.copy() for _ in a])
         counts.append(len(a))
     if sum(counts) > MAX_ROWS:
@@ -99,7 +103,8 @@ def prepare_dataset(probes):
             "used_probe_ids": ids, "samples_per_probe": dict(zip(ids, counts)),
             "dropped_constant_features": dropped, "omitted_incomplete_properties": omitted,
             "states": np.concatenate(states), "row_properties": row_properties,
-            "probes": probes}
+            "probes": probes, "local_quality": quality_rows,
+            "derivative_resolution_mse": np.sum(weights[:,None]*np.concatenate(uncertainty_rows),axis=0)}
 
 
 def export_candidate(ax_source, ay_source, feature_names, *, _parameter_limit=5):
@@ -291,6 +296,8 @@ def _all_features(dataset):
 
 def _differencing_tolerance(dataset):
     """Estimate resolution sensitivity from central stencils, not a truth error bar."""
+    if "derivative_resolution_mse" in dataset:
+        return np.asarray(dataset["derivative_resolution_mse"])
     errors = []
     for probe in dataset["probes"]:
         t, v = np.asarray(probe["times"]), np.asarray(probe["v_obs"])
@@ -332,14 +339,18 @@ def _reason(exc):
 
 
 def _prepare_axis(rows, dataset, axis, audit, deadline=float("inf")):
+    from .symbolic_algebra import normalize_polynomial, expression_key
     features = {name: dataset["X"][:, i] for i, name in enumerate(dataset["feature_names"])}
     complete = _all_features(dataset)
     valid, seen = [], set()
     for raw in rows:
-        source = raw["source"]
-        if source in seen: continue
-        seen.add(source)
-        row = dict(raw)
+        source = normalize_polynomial(raw["source"])
+        algebra_key = expression_key(source)
+        if algebra_key in seen: continue
+        seen.add(algebra_key)
+        row = dict(raw, source=source)
+        if source != raw["source"]:
+            row["original_source"] = raw["source"]
         if time.monotonic() >= deadline:
             row.update(domain_valid=None, rejection_reason="not_checked_budget")
             audit.append(row)
@@ -356,26 +367,34 @@ def _prepare_axis(rows, dataset, axis, audit, deadline=float("inf")):
             row["domain_valid"] = False
             row["rejection_reason"] = _reason(exc)
         audit.append(row)
-    # Parameter cost is part of dominance BEFORE two components are combined.
-    frontier = [r for r in valid if not any(
-        o["loss"] <= r["loss"] and o["complexity"] <= r["complexity"] and
-        o["parameter_count"] <= r["parameter_count"] and
-        (o["loss"] < r["loss"] or o["complexity"] < r["complexity"] or
-         o["parameter_count"] < r["parameter_count"])
-        for o in valid)]
-    # The PySR HOF is bounded by maxsize; generic seeds are also finite. Preserve
-    # the best row for every complexity/parameter-cost cell before any cap.
-    cells = {}
-    for row in sorted(frontier, key=lambda r: (r["loss"], r["source"])):
-        cells.setdefault((row["parameter_count"], row["complexity"]), row)
-    ordered = sorted(cells.values(), key=lambda r: (r["parameter_count"], r["complexity"], r["loss"]))
-    if len(ordered) > MAX_EQUATIONS_PER_AXIS:
-        best = min(range(len(ordered)), key=lambda i:(ordered[i]["loss"],ordered[i]["complexity"]))
-        simple = min(range(len(ordered)), key=lambda i:(ordered[i]["complexity"],ordered[i]["parameter_count"],ordered[i]["loss"]))
-        indexes = list(dict.fromkeys([best, simple, *np.linspace(0,len(ordered)-1,MAX_EQUATIONS_PER_AXIS).round().astype(int)]))
-        if len(indexes) < MAX_EQUATIONS_PER_AXIS:
-            indexes.extend(i for i in range(len(ordered)) if i not in indexes)
-        ordered = [ordered[i] for i in indexes[:MAX_EQUATIONS_PER_AXIS]]
+    # Single-axis Pareto deletion is unsafe before joint parameter sharing:
+    # equivalent factorizations can hide the coefficients that two axes share.
+    # Normalize polynomial forms and preserve different supports under a bound.
+    by_loss=sorted(valid,key=lambda r:(r["loss"],r["complexity"]))
+    by_size=sorted(valid,key=lambda r:(r["parameter_count"],r["complexity"],r["loss"]))
+    # Preserve the simplest statistically unresolved expression BEFORE the
+    # bounded accuracy/complexity queues. Otherwise many noise-fitting variants
+    # can crowd an accurate shared-parameter structure out of both queues.
+    resolution=float(_differencing_tolerance(dataset)[axis])
+    near=[r for r in valid if by_loss and r['loss']<=by_loss[0]['loss']+max(resolution,1e-20)]
+    preferred=sorted(near,key=lambda r:(r['complexity'],r['parameter_count'],r['loss']))[:4]
+    # Keep representations that were fitted jointly as scalar hypotheses; a
+    # Cartesian single-axis queue must not discard their matching counterpart.
+    representations={}
+    for row in valid:
+        representation=row.get('search_representation','')
+        if representation.startswith('radial') or representation=='sign_checked_radial_log_response':
+            representations.setdefault(representation,[]).append(row)
+    for group in representations.values():
+        preferred+=sorted(group,key=lambda r:(r['loss'],r['complexity']))[:3]
+    preferred=list({r['source']:r for r in preferred}.values())
+    ordered=list(preferred); retained={r['source'] for r in preferred}
+    for accurate,simple in zip(by_loss,by_size):
+        for row in (accurate,simple):
+            if row['source'] not in retained:
+                retained.add(row['source']); ordered.append(row)
+            if len(ordered)>=MAX_EQUATIONS_PER_AXIS: break
+        if len(ordered)>=MAX_EQUATIONS_PER_AXIS: break
     return ordered
 
 
@@ -616,6 +635,14 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
     resolution = _differencing_tolerance(dataset)
     tolerance = max(1e-10, float(np.mean(resolution/scale)))
     oversized = []
+    def same_scalar(left,right):
+        representation=left.get('search_representation','')
+        if not (representation.startswith('radial') or representation=='sign_checked_radial_log_response'): return False
+        if right.get('search_representation')!=representation: return False
+        nodes=[ast.parse(r['source'],mode='eval').body for r in (left,right)]
+        from .symbolic_algebra import expression_key
+        return all(isinstance(n,ast.BinOp) and isinstance(n.op,ast.Mult) and isinstance(n.right,ast.Name) and n.right.id==axis
+                   for n,axis in zip(nodes,('x','y'))) and expression_key(ast.unparse(nodes[0].left))==expression_key(ast.unparse(nodes[1].left))
     for left, right in itertools.product(*axes):
         if time.monotonic() >= deadline: break
         try:
@@ -626,7 +653,8 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
             if key in seen: continue
             seen.add(key)
             losses = [left["loss"], right["loss"]]
-            candidate.update(complexity=left["complexity"]+right["complexity"],
+            candidate.update(shared_scalar_hypothesis=same_scalar(left,right),
+                complexity=left["complexity"]+right["complexity"],
                 parameter_count=len(candidate["parameter_spec"]),
                 acceleration_search_mse_by_axis=losses, acceleration_search_mse=sum(losses),
                 normalized_acceleration_search_loss=float(np.mean(np.asarray(losses)/scale)),
@@ -656,7 +684,12 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
     sharing_deadline = min(deadline, time.monotonic()+2.0)
     by_loss = sorted(oversized, key=lambda item:(item[1]["normalized_acceleration_search_loss"],item[1]["complexity"]))
     by_complexity = sorted(oversized, key=lambda item:(item[1]["complexity"],item[1]["normalized_acceleration_search_loss"]))
-    sharing_order = [item for item in oversized if item[0] == preferred_key]
+    # An algebraically expanded, accurate low-complexity pair gets an early
+    # sharing opportunity; this operates on arbitrary coefficient structures.
+    cutoff=(by_loss[0][1]['normalized_acceleration_search_loss']+tolerance) if by_loss else 0.
+    parsimonious=[item for item in by_complexity if item[1]['normalized_acceleration_search_loss']<=cutoff]
+    sharing_order = parsimonious[:1] + [item for item in oversized if item[0] == preferred_key]
+    sharing_order=list({key:(key,value) for key,value in sharing_order}.values())
     public_pair_prioritized = bool(sharing_order)
     queued = {item[0] for item in sharing_order}
     for accurate, simple in zip(by_loss, by_complexity):
@@ -664,10 +697,26 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
             if item[0] not in queued:
                 queued.add(item[0])
                 sharing_order.append(item)
+    def operator_family(candidate):
+        return tuple(sorted({node.func.id for formula in candidate['law_spec'].values()
+                    for node in ast.walk(ast.parse(formula,mode='eval'))
+                    if isinstance(node,ast.Call) and isinstance(node.func,ast.Name) and node.func.id!='q'}))
+    families={}
+    for item in oversized: families.setdefault(operator_family(item[1]),[]).append(item)
+    family_choices=[]
+    for items in families.values():
+        best=min(i[1]['normalized_acceleration_search_loss'] for i in items)
+        near=[i for i in items if i[1]['normalized_acceleration_search_loss']<=best+tolerance]
+        family_choices.append(min(near,key=lambda i:(i[1]['complexity'],i[1]['normalized_acceleration_search_loss'])))
+    family_choices.sort(key=lambda i:(int(i[1]['normalized_acceleration_search_loss']/max(tolerance,1e-20)),i[1]['complexity']))
+    paired=[item for item in oversized if item[1].get('shared_scalar_hypothesis')]
+    paired.sort(key=lambda item:(item[1]['normalized_acceleration_search_loss'],item[1]['complexity']))
+    sharing_order=paired[:2]+family_choices+sharing_order
+    sharing_order=list({key:(key,value) for key,value in sharing_order}.values())
     fit_attempts, prefilter_rejections = 0, 0
     for key,candidate in sharing_order:
         if key not in sharing_cache:
-            if time.monotonic() >= sharing_deadline or fit_attempts >= 4: continue
+            if time.monotonic() >= sharing_deadline or fit_attempts >= 6: continue
             try:
                 _sharing_groups(candidate["parameter_spec"], sharing_deadline)
             except SymbolicRegressionError as exc:
@@ -695,10 +744,19 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
         simplest = sorted([i for i in ranked if i[1]["normalized_acceleration_search_loss"] <= threshold],
                           key=lambda i: (i[1]["complexity"], i[1]["parameter_count"], i[1]["normalized_acceleration_search_loss"]))
         ranked = simplest[:1] + ranked[:1] + simplest[1:] + ranked[1:]
-    checked, candidates = set(), []
+    from .symbolic_algebra import candidate_key
+    from .symbolic_quality import consistency
+    # Give distinct operator families a bounded chance; repeated sin/cos
+    # approximations must not crowd out an algebraic or exponential hypothesis.
+    family_ranked={}
+    for item in ranked: family_ranked.setdefault(operator_family(item[1]),item)
+    representatives=sorted(family_ranked.values(),key=lambda i:(i[1]['normalized_acceleration_search_loss'],i[1]['complexity']))
+    ranked=representatives[:6]+ranked
+    checked, equivalent, candidates = set(), set(), []
     for key, candidate in ranked:
-        if key in checked: continue
-        checked.add(key)
+        algebra_key=candidate_key(candidate)
+        if key in checked or algebra_key in equivalent: continue
+        checked.add(key); equivalent.add(algebra_key)
         if len(checked) > 16: break
         if key not in cache:
             if time.monotonic() >= deadline: break
@@ -710,14 +768,29 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
             reject(result["reason"], stage="rollout", ax=candidate["law_spec"]["ax"], ay=candidate["law_spec"]["ay"])
             continue
         candidate["short_rollout_check"] = result
+        candidate['fitted_parameters']={p['name']:p['initial'] for p in candidate['parameter_spec']}
+        candidate['residuals']={'acceleration_weighted_mse':candidate['acceleration_search_mse'],
+                              'acceleration_weighted_mse_by_axis':candidate['acceleration_search_mse_by_axis'],
+                              'short_rollout':result,
+                              'observed_velocity_integral':consistency(candidate['law_spec'],candidate['fitted_parameters'],dataset['probes'],deadline=deadline)}
+        candidate['fit_stage']='weighted_acceleration_discovery_data'
         candidate["joint_fit_ready"] = True
         candidate["prediction_accuracy_status"] = "not_independently_validated"
         candidate["selection_role"] = "simplest_within_resolution_tolerance" if not candidates else "alternative_accuracy_candidate"
         candidates.append(candidate)
-        if len(candidates) == limit: break
+        if len(candidates) == max(limit,8): break
+    def integral_rank(c):
+        check=c['residuals']['observed_velocity_integral']
+        bad=bool(check['domain_error_probe_ids'] or check['denominator_sign_change_probe_ids'] or not check['complete'])
+        residual=check.get('relative_increment_rmse')
+        return (bad,residual if residual is not None else float('inf'),c['complexity'])
+    candidates.sort(key=integral_rank)
+    cache['refinement_candidates']=candidates[:6]
+    candidates=candidates[:limit]
+    for rank,candidate in enumerate(candidates,1): candidate['rank']=rank
     return candidates, {"axis_candidates": axis_candidates, "axis_equations": dict(zip(("ax", "ay"), audits)), "rejection_counts": rejected,
         "rejection_examples": examples, "rejected_candidate_pairs": stages.get("pair", 0),
-        "candidate_selection": {"strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
+        "candidate_selection": {"strategy": "bounded_algebraic_dedup_then_joint_sharing_and_observed_integral_residual",
             "normalized_resolution_tolerance": tolerance, "legal_pairs": len(pool),
             "over_budget_pairs_retained": len(oversized), "sharing_attempts_cached": len(sharing_cache),
             "sharing_fit_attempts_this_selection": fit_attempts,
@@ -749,7 +822,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
         raise SymbolicRegressionError("Invalid search seed")
     started = time.monotonic()
     deadline = started + float(time_budget_seconds)
-    final_reserve = min(5.0, max(2.0, time_budget_seconds*.2))
+    final_reserve = min(9.0, max(2.0, time_budget_seconds*.25))
     dataset = prepare_dataset(probes)
     means = np.sum(dataset["weights"][:, None]*dataset["y"], axis=0)
     axis_rows = [[{"source": repr(float(value)), "complexity": 1, "origin": "constant_initialization"}]
@@ -772,6 +845,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             "Resolution tolerance is a finite-stencil sensitivity heuristic, not a confidence interval.",
             "Short rollout checks certify only acquired initial states; fit and fresh-probe validation remain required."],
         "data_quality": {"samples_per_probe": dataset["samples_per_probe"],
+            "local_derivative_quality": dataset["local_quality"],
             "differencing_tolerance_by_axis": _differencing_tolerance(dataset).tolist(),
             "dropped_constant_features": dataset["dropped_constant_features"],
             "omitted_incomplete_properties": dataset["omitted_incomplete_properties"],
@@ -821,6 +895,12 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
     projected, projection_diagnostics = radial_projection(dataset)
     report['geometric_features'] = {key: value for key, value in ALIASES.items() if key in search_names}
     report['projection_diagnostics'] = projection_diagnostics
+    from .symbolic_geometry import radial_log_rows
+    radial_rows, log_diagnostics=radial_log_rows(dataset,projected,deadline=min(deadline-final_reserve,time.monotonic()+.5))
+    report['projection_diagnostics']['log_response']=log_diagnostics
+    if any(radial_rows):
+        for axis in range(2): axis_rows[axis]+=radial_rows[axis]
+        snapshot('running')
     search_deadline = deadline-final_reserve
     total_search = max(0., search_deadline-time.monotonic())
     # A supported projection changes representation, not the admissible laws.
@@ -839,6 +919,11 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
         stage_budget = min(total_search*fraction, remaining)
         if not needs_search or stage_budget < .15: break
         target = projected['target'] if axis is None else dataset['y'][:, axis]
+        stage_X,stage_names=search_X,search_names
+        if axis is None and label.endswith('algebra'):
+            keep=[i for i,name in enumerate(search_names) if name in ('radius','radius2','mass','charge','property_ratio')]
+            if keep:
+                stage_X=search_X[:,keep]; stage_names=[search_names[i] for i in keep]
         if np.all(target == target[0]): continue
         weights = projected['weights'] if axis is None else dataset['weights']
         options = dict(binary_operators=list(BINARY_OPERATORS), unary_operators=unary,
@@ -850,7 +935,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
         begin = time.monotonic()
         try:
             model = model_factory(**options)
-            model.fit(search_X, target, weights=weights, variable_names=search_names)
+            model.fit(stage_X, target, weights=weights, variable_names=stage_names)
         except Exception as exc:
             # Backend failures do not erase already checked candidates. Input
             # validation and export safety checks remain outside this boundary.
@@ -863,7 +948,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
         elapsed = time.monotonic()-begin
         report['axis_search_seconds'].append(elapsed)
         report['search_stages'].append({'stage': label, 'requested_seconds': stage_budget,
-                                       'elapsed_seconds': elapsed, 'features': search_names, 'unary_operators': unary})
+                                       'elapsed_seconds': elapsed, 'features': stage_names, 'unary_operators': unary})
         for _, row in model.equations_.iterrows():
             try:
                 loss, complexity = float(row['loss']), int(row['complexity'])
@@ -885,4 +970,52 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
     # Only an actual overrun (or the supervisor's kill) is a timeout.
     snapshot("timeout" if time.monotonic() >= deadline else
              "partial" if report.get('backend_error') else "completed")
+    if time.monotonic()<deadline:
+        if cache.get('refinement_candidates') and not report['candidate_selection'].get('selection_incomplete'):
+            report['candidates']=cache['refinement_candidates']
+        _refine_final_candidates(report,dataset,deadline,limit=max_candidates)
+        report['elapsed_seconds']=time.monotonic()-started
+        if progress_callback is not None: progress_callback(report)
     return report
+
+
+def _refine_final_candidates(report,dataset,deadline,limit=3):
+    """Return actual fitted parameters/residuals for at most three complete laws."""
+    from .numerics import fit
+    from .symbolic_algebra import candidate_key
+    from .symbolic_quality import consistency
+    results=[]; seen=set()
+    probes=dataset['probes']
+    sigma=probes[0].get('observation_noise',{}).get('position_sigma')
+    for index,candidate in enumerate(report['candidates']):
+        remaining=deadline-time.monotonic()
+        if remaining>.15:
+            budget=min(2.,remaining/max(1,len(report['candidates'])-index))
+            # Missing initial controls in an offline record cannot be invented.
+            try:
+                fitted=fit(candidate['law_spec'],candidate['parameter_spec'],probes,[],
+                           max_nfev=35,timeout_seconds=budget,position_noise_sigma=sigma)
+            except (ValueError,TypeError,KeyError): fitted={'fit_status':'failed'}
+            candidate['trajectory_refit_status']=fitted.get('fit_status')
+            if fitted.get('errors') and fitted.get('fit_status')!='failed':
+                candidate['fitted_parameters']=fitted['fitted_parameters']
+                candidate['parameter_spec']=[dict(p,initial=fitted['fitted_parameters'][p['name']]) for p in candidate['parameter_spec']]
+                candidate['fit_stage']='position_trajectory_discovery_refit'
+                candidate['residuals']['trajectory_training']=fitted['errors']
+                candidate['residuals']['observed_velocity_integral']=consistency(candidate['law_spec'],candidate['fitted_parameters'],probes,deadline=deadline)
+                # Keep the original search loss explicitly separate from the
+                # updated-parameter acceleration residual.
+                candidate['residuals']['refitted_acceleration_mse_by_axis']=_candidate_loss(candidate,dataset)
+        key=candidate_key(candidate)
+        if key in seen: continue
+        seen.add(key); results.append(candidate)
+    def rank(c):
+        error=c.get('residuals',{}).get('trajectory_training',{}).get('overall',{}).get('position_rmse')
+        return (error is None,error if error is not None else c['normalized_acceleration_search_loss'],c.get('complexity',0))
+    results.sort(key=rank)
+    results=results[:limit]
+    for index,candidate in enumerate(results,1):
+        candidate['rank']=index
+        candidate['selection_role']='ranked_observed_residual_after_algebraic_dedup'
+    report['candidates']=results
+    report['candidate_selection']['final_ranking']='trajectory position RMSE when refitted, otherwise weighted acceleration loss; at most three algebraically distinct complete laws'

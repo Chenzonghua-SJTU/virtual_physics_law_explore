@@ -4,7 +4,7 @@
   "agent_batch_id": "e8-qwen38-pysr-stage-20261107-r01",
   "configuration": "deployment/config.e8.symbolic.json",
   "driver": "deployment/run_e8_symbolic.py",
-  "scope": "Improve generic current-session symbolic search and measure two separately registered complete autonomous six-development-world batches. R02 is a status/strategy/deployment-alignment followup after observing R01 failures, not a blind repeat or best-of selection. No per-world formulas or hidden oracle inputs enter the production tool.",
+  "scope": "E8 registered whole-six-development-world attempts; R03/R04 are the user-authorized paired no-noise/noisy evaluation of one frozen corrected implementation. Earlier batches and failures retained. No per-world answer templates or oracle labels in production.",
   "pre_agent_validation": {
     "maximum_six_world_offline_replays": 1,
     "attempts_per_world": 1,
@@ -97,6 +97,44 @@
         "fit_metric": "submitted law training position RMSE",
         "comparison": "strictly below; logical OR",
         "scope": "R02 SR-enabled configuration; R01 archived configuration/results remain unchanged and baseline web SR-off defaults remain unchanged"
+      }
+    },
+    "r03": {
+      "batch_id": "e8-qwen38-pysr-stage-20261107-r03",
+      "registration": "Registered before paired execution after R02 failure diagnosis. Exactly one attempt per world per arm, same frozen source, no interim tuning.",
+      "observation_noise": false,
+      "ruleset": "e5",
+      "evaluation_noise": false,
+      "inherits": "27B, four model replicas, 300 seconds, 10 energy, 4096 tokens/call, no thinking or total token cap; fit<1e-5 OR time remaining<40 submission gate.",
+      "changes": [
+        "Bounded algebraic dedup before joint parameter sharing; return ranked complete formulas, fitted parameters and labelled residuals.",
+        "Local velocity-derivative reliability weighting; public-noise-conditioned cubic smoothing; generic sign-checked log-response and low-dimensional radial alternatives while retaining all operators and Cartesian search.",
+        "Bounded trajectory refit of final candidates and observed-velocity integral ranking.",
+        "Fit/save reports consistency on all acquired observations; inspected records become discovery data, independent validation requires fresh probes."
+      ],
+      "diagnostic_prechecks": "Existing R02 W4/W5 observations and stored expression pools only; no new Agent/PySR search/environment observations before paired run. These checks do not replace original scores.",
+      "selection_policy": "Retain all twelve attempts, report both complete arms, no best-of or world retries."
+    },
+    "r04": {
+      "batch_id": "e8-qwen38-pysr-stage-20261107-r04",
+      "registration": "Registered before paired execution after R02 failure diagnosis. Exactly one attempt per world per arm, same frozen source, no interim tuning.",
+      "observation_noise": true,
+      "ruleset": "e4",
+      "evaluation_noise": false,
+      "inherits": "27B, four replicas, 300 seconds, 10 energy, 4096 tokens/call, no thinking/total-token cap. Noise-specific gate overrides the old gate as recorded below.",
+      "changes": [
+        "Bounded algebraic dedup before joint parameter sharing; return ranked complete formulas, fitted parameters and labelled residuals.",
+        "Local velocity-derivative reliability weighting; public-noise-conditioned cubic smoothing; generic sign-checked log-response and low-dimensional radial alternatives while retaining all operators and Cartesian search.",
+        "Bounded trajectory refit of final candidates and observed-velocity integral ranking.",
+        "Fit/save reports consistency on all acquired observations; inspected records become discovery data, independent validation requires fresh probes."
+      ],
+      "diagnostic_prechecks": "Existing R02 W4/W5 observations and stored expression pools only; no new Agent/PySR search/environment observations before paired run. These checks do not replace original scores.",
+      "selection_policy": "Retain all twelve attempts, report both complete arms, no best-of or world retries.",
+      "submission_gate": {
+        "training_and_independent_validation_position_rmse_both_below": 0.1,
+        "or_remaining_seconds_below": 60,
+        "next_action_must_submit_when_remaining_below": 40,
+        "comparisons": "strict"
       }
     }
   }

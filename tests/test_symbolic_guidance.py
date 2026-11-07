@@ -42,7 +42,7 @@ class PromptRuntime:
         return None
 
 
-@pytest.mark.parametrize('ruleset,symbolic', [('e3', False), ('e5', False), ('e5', True)])
+@pytest.mark.parametrize('ruleset,symbolic', [('e3', False), ('e4', False), ('e4', True), ('e5', False), ('e5', True)])
 def test_guidance_is_delivered_exactly_when_search_is_available(tmp_path, ruleset, symbolic):
     client = CaptureClient()
     runtime = PromptRuntime(ruleset, symbolic)
@@ -53,6 +53,11 @@ def test_guidance_is_delivered_exactly_when_search_is_available(tmp_path, rulese
     assert system.count(GUIDANCE) == int(symbolic)
     names = {item['function']['name'] for item in client.request['tools']}
     assert ('symbolic_regression' in names) is symbolic
+    assert ('本场开启观测噪声和符号回归' in system) is (symbolic and ruleset == 'e4')
+    if symbolic:
+        description = next(item['function']['description'] for item in client.request['tools']
+                           if item['function']['name'] == 'symbolic_regression')
+        assert ('本场观测含噪' in description) is (ruleset == 'e4')
     assert client.usage['calls'] == 0
 
 
@@ -80,7 +85,7 @@ def test_guidance_keeps_complementary_sampling_and_evidence_boundaries():
     requirements = (
         '属性差异探针', '密采样局部轨迹', '不同绝对t0的同初态对照',
         '长轨迹', '不要统一缩短总时长', 'timeout不是调用失败',
-        '不能原样交拟合', '重命名参数避免意外共享',
+        '不能原样交拟合', '项数不等于参数数',
         '预算充足应尝试替代结构', '不能作独立验证',
         '约6枚付费训练探针', '1–2个相同完整初态', '天体可见不证明力来自天体',
         '免费粗轨迹可仅作定性依据', '先原式拟合再考虑改写',

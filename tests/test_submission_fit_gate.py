@@ -219,3 +219,49 @@ def test_satisfied_fit_or_does_not_gain_validation_or_candidate_adoption_gate(tm
     assert result['status'] == 'submitted' and client.usage['calls'] == 1
     assert result['submission']['submission_gate']['fit_condition_met']
     assert not agent._symbolic_submission_reviewed
+
+
+@pytest.mark.parametrize('training,validation,remaining,allowed',[
+    (.099,.099,100,True),(.1,.01,100,False),(.01,.1,100,False),
+    (.01,None,100,False),(.5,.5,60,False),(.5,None,59.999,True)])
+def test_noisy_gate_requires_both_errors_or_under_one_minute(tmp_path,training,validation,remaining,allowed):
+    rt=make_runtime(tmp_path,error=training)
+    rt.ruleset=rt.environment.ruleset='e4';rt.configure_submission_gate({})
+    rt.environment.remaining=remaining
+    if validation is not None:
+        rt.store.add('validation',{'validation_id':'v','law_id':'selected','errors':{'overall':{'position_rmse':validation}}},'v')
+    report=rt.submission_eligibility(rt.store.get('law','selected'))
+    assert report['allowed'] is allowed
+    assert report['fit_rmse_threshold']==.1 and report['time_remaining_threshold_seconds']==60
+    assert report['validation_position_rmse']==validation
+
+
+def test_noisy_gate_does_not_use_validation_of_another_law(tmp_path):
+    rt=make_runtime(tmp_path,error=.01)
+    rt.ruleset=rt.environment.ruleset='e4';rt.configure_submission_gate({})
+    rt.store.add('validation',{'law_id':'other','errors':{'overall':{'position_rmse':0}}},'v')
+    assert not rt.submission_eligibility(rt.store.get('law','selected'))['allowed']
+
+
+def test_noisy_last_40_seconds_only_submit_executes(tmp_path):
+    rt=make_runtime(tmp_path)
+    rt.ruleset=rt.environment.ruleset='e4';rt.configure_submission_gate({})
+    rt.environment.remaining=40
+    assert rt.execute('list_files',{})['ok']
+    rt.environment.remaining=39.999
+    assert rt.execute('list_files',{})['error']['code']=='submission_required_now'
+    assert rt.execute('save_draft',arguments())['error']['code']=='submission_required_now'
+    assert rt.execute('submit',arguments())['ok']
+
+
+def test_noisy_agent_submits_its_existing_model_selected_draft_as_next_action(tmp_path):
+    rt=make_runtime(tmp_path)
+    rt.ruleset=rt.environment.ruleset='e4';rt.configure_submission_gate({})
+    assert rt.execute('save_draft',arguments())['ok']
+    rt.environment.remaining=39
+    client=Client([])
+    result=Agent(client,rt,tmp_path,{}).run()
+    assert result['status']=='submitted' and result['reason']=='mandatory_noisy_deadline_submit'
+    assert client.usage['calls']==0
+    tools=[json.loads(line) for line in (tmp_path/'tools.jsonl').read_text().splitlines()]
+    assert tools[-1]['tool']=='submit'
