@@ -1,0 +1,842 @@
+{
+  "experiment_id": "e5-qwen38-compact-20261107-r07",
+  "created_at": "2026-11-07T00:17:16.866501+00:00",
+  "status": "completed",
+  "kind": "real_autonomous_v15_baseline",
+  "workers": 4,
+  "experiment_group": "E5",
+  "ruleset": "e5",
+  "model_endpoints": [
+    "http://127.0.0.1:8000/v1",
+    "http://127.0.0.1:8001/v1",
+    "http://127.0.0.1:8002/v1",
+    "http://127.0.0.1:8003/v1"
+  ],
+  "configuration": {
+    "environment": {
+      "world_id": "world_1",
+      "physics_version": "shore_v15",
+      "noise": false,
+      "seed": 42,
+      "wall_seconds": 300,
+      "world_set": "v15",
+      "ruleset": "e5",
+      "energy_budget": 10
+    },
+    "model": {
+      "base_url": "http://127.0.0.1:8000/v1",
+      "model": "qwen3.8-27b",
+      "thinking": false,
+      "reasoning_protocol": "qwen",
+      "reasoning_effort": "low",
+      "timeout_seconds": 600,
+      "max_calls": null,
+      "main_max_calls": null,
+      "max_tokens_per_call": 4096,
+      "max_total_tokens": 5000000,
+      "max_retries": 1,
+      "deployment": "local",
+      "ruleset": "e5",
+      "api_key_env": "LOCAL_LLM_API_KEY",
+      "api_key_required": false,
+      "local_model_endpoints": {
+        "qwen3.8-27b": "http://127.0.0.1:8000/v1"
+      },
+      "sampling_seed": 42
+    },
+    "agent": {
+      "max_no_action": 3,
+      "guidance_profile": "e3",
+      "repeated_tool_failure_feedback": true
+    },
+    "code_execution": {
+      "enabled": false,
+      "image": "shore-code:e2-r04",
+      "timeout_seconds": 90,
+      "memory_mb": 1024
+    },
+    "numerics": {
+      "max_nfev": 80,
+      "diagnostics_enabled": true,
+      "diagnostics_compact": true
+    }
+  },
+  "source_sha256": {
+    "shore_agent/agent.py": "d12bbe2acc13a117fb51882341a43fb9dda648e0899c12ae174fde7820acf8c4",
+    "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+    "shore_agent/prompts/e5.txt": "302f4db64bc731c1ffb0efeb615f78b33bab241754c227bb6d977e09fa55cb6a",
+    "shore_agent/schemas.py": "de1170ee1af7118fc4266e55b13eccc395e387bbf188aa8b0286af51844abf09",
+    "shore_agent/runtime.py": "66815c3cc3c8b92817150ee13e003d785c9d3cf13165e364c47857d56c07040f",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_agent/model.py": "2cd59a541ed37ee38a9736e13e9d52b7a70b0a870b998dae838e33cb591a6496",
+    "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+    "shore_agent/store.py": "3a914623677eb3c4359b95cd2b1f77e800b166ac849f9d557c341c124e9fd611",
+    "shore_agent/diagnostics.py": "852f7b9c0c5919dd02b724bd7e4fcafecca5a08ba737a1d63edb1e4c0eae5c37",
+    "shore_agent/workspace.py": "95a7753a7286d32f374121d7733e4182896f9657177412254e4d660ae341dac0",
+    "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+    "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+    "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+    "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+    "benchmark_v15.py": "a815ef664d59c010691aa6b94db0b1775afae8c12707c2b248f24e57f4636f89",
+    "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2"
+  },
+  "runs": {
+    "world_1": "e5-qwen38-compact-20261107-r07-world_1",
+    "world_2": "e5-qwen38-compact-20261107-r07-world_2",
+    "world_3": "e5-qwen38-compact-20261107-r07-world_3",
+    "world_4": "e5-qwen38-compact-20261107-r07-world_4",
+    "world_5": "e5-qwen38-compact-20261107-r07-world_5",
+    "world_6": "e5-qwen38-compact-20261107-r07-world_6"
+  },
+  "protocol": {
+    "attempts_per_world": 1,
+    "automatic_session_retries": false,
+    "resume_sessions": false,
+    "candidate_answers_supplied": false,
+    "energy_budget": 10,
+    "wall_seconds_per_world": 300,
+    "single_active_world_per_endpoint": true,
+    "diagnostics_enabled": true,
+    "model_sampling_seed": 42,
+    "queue_time_excluded_from_mission_budget": true,
+    "evaluation": "all_fixed_v15_cases_after_accepted_submission",
+    "official_score": false,
+    "official_sdk_compatible": false
+  },
+  "updated_at": "2026-11-07T00:23:14.615852+00:00",
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "world_set": "v15",
+      "run_id": "e5-qwen38-compact-20261107-r07-world_1",
+      "ruleset": "e5",
+      "experiment_group": "E5",
+      "model_endpoint": "http://127.0.0.1:8000/v1",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "running": false,
+      "worker_returncode": 0,
+      "started_at": "2026-11-07T00:17:16.893110+00:00",
+      "finished_at": "2026-11-07T00:18:17.581545+00:00",
+      "session_started_at": "2026-11-07T00:17:17.302353+00:00",
+      "wall_seconds_including_evaluation": 60.688757279887795,
+      "exploration_seconds": 56.05635571666062,
+      "exploration_timing_source": "worker_monotonic",
+      "evaluation_seconds": 3.5217489451169968,
+      "exploration_finished_at": "2026-11-07T00:18:13.358724+00:00",
+      "exploration_deadline_at": "2026-11-07T00:22:17.302351+00:00",
+      "submission_elapsed_seconds": 56.052543479949236,
+      "exploration_deadline_seconds": 300,
+      "exploration_deadline_met": true,
+      "model_elapsed_seconds": 55.16196449846029,
+      "average_output_tokens_per_call": 664.6,
+      "max_call_output_tokens": 1336,
+      "output_limit_tokens": 4096,
+      "output_limit_exceeded_calls": 0,
+      "requests_with_reported_usage": 5,
+      "requests_without_reported_usage": 0,
+      "output_cap_compliant": true,
+      "model_usage": {
+        "calls": 5,
+        "prompt_tokens": 76019,
+        "completion_tokens": 3323,
+        "total_tokens": 79342,
+        "conservative_reserved_tokens": 0,
+        "elapsed_seconds": 55.16196449846029,
+        "roles": {
+          "main": {
+            "calls": 5,
+            "prompt_tokens": 76019,
+            "completion_tokens": 3323,
+            "total_tokens": 79342
+          }
+        },
+        "request_budget": {
+          "method": "reported_prefix_plus_utf8_suffix",
+          "estimated_prompt_tokens": 30003,
+          "reference_prompt_tokens": 21060,
+          "added_message_bytes": 8431,
+          "utf8_upper_bound": 64727,
+          "available_tokens": 4946129,
+          "requested_output_tokens": 4096,
+          "output_token_limit": 4096,
+          "minimum_output_tokens": 64,
+          "status": "admitted",
+          "reported_prompt_tokens": 24148
+        }
+      },
+      "calls": 5,
+      "tokens": 79342,
+      "prompt_tokens": 76019,
+      "completion_tokens": 3323,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 4,
+      "energy_budget": 10,
+      "energy_used": 6,
+      "wall_seconds_remaining": 244.2639683485031,
+      "accepted_submission": true,
+      "law_versions": 1,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "-k*(q('charge')/q('mass'))*x/(x*x+y*y)",
+          "ay": "-k*(q('charge')/q('mass'))*y/(x*x+y*y)"
+        },
+        "fitted_parameters": {
+          "k": 0.07956606558660789
+        }
+      },
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": false
+      },
+      "physical_explanation": "提交的冻结公式（law_1，参数 k=0.0795661）为二维二阶动力学：\nax = -k·(charge/mass)·x/(x²+y²)，ay = -k·(charge/mass)·y/(x²+y²)。\n\n各项含义与作用方向：力（加速度）矢量始终指向坐标原点，即可见天体 N0 的静止位置（第一束光与全部观测中 N0 恒在 [0,0]）。径向分量大小 |a| = k·(charge/mass)/r，其中 r=sqrt(x²+y²)；横向分量为零（诊断横向 RMS 分数 ~1.8e-6）。因此力中心固定在原点/N0，属于中心力，非隐藏物质源。\n\n参数物理意义与单位：k 是唯一待拟合标量，单位 local_length/local_time²（与加速度同量纲，因 x/(x²+y²) 的单位为 1/local_length）。k=0.0795661。charge 与 mass 为探针公开属性，公式中显式以 charge/mass 相乘，对应\"力 ∝ charge、加速度 = F/m ∝ charge/mass\"的力学结构。注意这是 1/r（非平方反比 1/r²）的径向力：力矢量大小 ∝ 1/r，即 |a|∝r^-1。\n\n证据与排除的替代解释：\n1) 阶数=2：差分加速度 a_est 直接存在且由拟合决定速度演化，是二阶系统。\n2) 力中心在原点而非隐藏源：probe_0007 初态 [-4,3] 的加速度方向与 -r/|r| 一致（归一方向约 [0.799,-0.609]），指向原点；N0 全程可见且静止于原点，无需隐藏物质。\n3) charge/mass 比例：同一初态 r0=[3,0],v0=[0,0.5] 下，probe_0003(m=1,c=1) 的 a≈-0.02651，probe_0004(m=2,c=1) a≈-0.01326=1/2，probe_0005(m=1,c=2) a≈-0.05303=2 倍；严格线性 ∝ charge/mass，排除\"力仅依赖 mass\"或\"仅依赖 charge\"等替代。\n4) 1/r 而非 1/r²：probe_0004(m=2,r=3) 与 probe_0006(m=1,r=6) 的 |a| 相等(≈0.01326)，在 1/r 下 (1/2)/3 与 1/6 相等，若 1/r² 则应差 2 倍，故排除平方反比。诊断加速度大小半径幂次 ≈ -0.9996 亦支持 |a|∝r^-1。\n5) 无显式时间依赖：N0 静止，轨迹差异完全由位置与属性解释；固定完整瞬时状态后作用不显含 t。\n\n数值验证：在 6 条训练轨迹上拟合收敛（converged，位置 RMSE ~1.6e-6，速度 RMSE ~1.7e-6，无残差警告）；在未参与拟合的第一束光 probe_0001、probe_0002 上独立验证（validation_42ede11f6f60），位置 RMSE 9.8e-7、速度 RMSE 2.4e-6，无警告，说明公式泛化良好。\n\n适用范围与不可辨识性：拟合与验证覆盖半径约 2–6、初速 ≤0.5 的区域、charge/mass ∈{1,2}；未直接测试近原点（r→0 奇异点行为）与极大半径区域，1/r 结构在这些区域为外推。该结构等价地可理解为\"原点处的可见源对带 charge 的探针施加 ∝1/r 的中心吸引力\"；由于 N0 静止，无法用现有数据区分该源是否由 N0 本身产生或仅是固定在原点的等效势，此为尚待检验的机制假说，公式本身已能高保真预测轨迹。",
+      "evaluation_state": "scored",
+      "evaluation_complete": true,
+      "evaluation_score": {
+        "status": "scored",
+        "total": 96.9999426651349,
+        "maximum": 100,
+        "prediction": 79.9999426651349,
+        "law": 15,
+        "conservation": 2.0,
+        "position_mse": 2.8876876492995654e-06,
+        "reference_variance": 40.292210682464365,
+        "normalized_error": 7.166863273045279e-08,
+        "energy_used": 6.0,
+        "energy_budget": 10,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_e4_10energy",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Local discovery score: P=80/(1+10e), three declarations worth 5 each; C=5*(1-E/10) only when P>=40. Ruleset=e5; this remains a local compatibility evaluation.",
+        "source": "v15_public_catalog_local_agent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 2.887687649299566e-06,
+        "velocity_mse": 4.0552571446571467e-07,
+        "position_rmse": 0.0016993197607570994,
+        "velocity_rmse": 0.0006368090094099758
+      },
+      "evaluation_failures": [],
+      "evaluation_error": null,
+      "n_test_trajectories": 24
+    },
+    {
+      "world_id": "world_2",
+      "world_set": "v15",
+      "run_id": "e5-qwen38-compact-20261107-r07-world_2",
+      "ruleset": "e5",
+      "experiment_group": "E5",
+      "model_endpoint": "http://127.0.0.1:8001/v1",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "running": false,
+      "worker_returncode": 0,
+      "started_at": "2026-11-07T00:17:16.895293+00:00",
+      "finished_at": "2026-11-07T00:18:12.515460+00:00",
+      "session_started_at": "2026-11-07T00:17:17.302433+00:00",
+      "wall_seconds_including_evaluation": 55.62039158307016,
+      "exploration_seconds": 48.75367036834359,
+      "exploration_timing_source": "worker_monotonic",
+      "evaluation_seconds": 1.7172747533768415,
+      "exploration_finished_at": "2026-11-07T00:18:06.056104+00:00",
+      "exploration_deadline_at": "2026-11-07T00:22:17.302432+00:00",
+      "submission_elapsed_seconds": 48.75002350844443,
+      "exploration_deadline_seconds": 300,
+      "exploration_deadline_met": true,
+      "model_elapsed_seconds": 48.20458389632404,
+      "average_output_tokens_per_call": 488.8333333333333,
+      "max_call_output_tokens": 1340,
+      "output_limit_tokens": 4096,
+      "output_limit_exceeded_calls": 0,
+      "requests_with_reported_usage": 6,
+      "requests_without_reported_usage": 0,
+      "output_cap_compliant": true,
+      "model_usage": {
+        "calls": 6,
+        "prompt_tokens": 91207,
+        "completion_tokens": 2933,
+        "total_tokens": 94140,
+        "conservative_reserved_tokens": 0,
+        "elapsed_seconds": 48.20458389632404,
+        "roles": {
+          "main": {
+            "calls": 6,
+            "prompt_tokens": 91207,
+            "completion_tokens": 2933,
+            "total_tokens": 94140
+          }
+        },
+        "request_budget": {
+          "method": "reported_prefix_plus_utf8_suffix",
+          "estimated_prompt_tokens": 31474,
+          "reference_prompt_tokens": 21409,
+          "added_message_bytes": 9553,
+          "utf8_upper_bound": 67130,
+          "available_tokens": 4932281,
+          "requested_output_tokens": 4096,
+          "output_token_limit": 4096,
+          "minimum_output_tokens": 64,
+          "status": "admitted",
+          "reported_prompt_tokens": 25081
+        }
+      },
+      "calls": 6,
+      "tokens": 94140,
+      "prompt_tokens": 91207,
+      "completion_tokens": 2933,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 3,
+      "energy_budget": 10,
+      "energy_used": 7,
+      "wall_seconds_remaining": 251.5521301869303,
+      "accepted_submission": true,
+      "law_versions": 1,
+      "law": {
+        "law_id": "law_1",
+        "law_spec": {
+          "ax": "-k*q('charge')/q('mass')*x",
+          "ay": "-k*q('charge')/q('mass')*y"
+        },
+        "fitted_parameters": {
+          "k": 0.06
+        }
+      },
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": false
+      },
+      "physical_explanation": "物理含义：可见天体 N0 在原点产生一个线性回复（谐振子型）有心力场。探针受到的加速度为 a = -k·(q/m)·r，其中 r=(x,y) 是探针相对原点（N0 位置）的位移矢量，q 是探针电荷（公开控制 p1），m 是探针质量（公开控制 p2），k≈0.06 是唯一自由参数，单位为 加速度/(长度)，即 1/时间² 的倒数量纲形式（local_length 尺度下 k 数值≈0.06 /local_time²）。\n\n各项结构与方向：\n- ax = -k·q/m·x，ay = -k·q/m·y：力严格指向原点（径向内），正比于位移大小（线性，非 1/r²）。这是观测支持的回复力结构。\n- 比例因子 q/m：电荷越大加速度越大（正比于 q），质量越大加速度越小（正比于 1/m），即等效力与质量无关、与电荷成正比，类似\"每单位质量的力 ∝ q\"。\n\n参数：\n- k=0.06：拟合得到，物理意义为回复力强度/质量/电荷归一化的特征常数，量纲为 1/time²。数值上对应谐振频率 ω=√(k·q/m)。\n\n推导的运动性质（由公式）：\n- 每个探针做以 N0 为平衡点的二维简谐振子运动，频率 ω=√(k·q/m)（如 q/m=1 时 ω≈0.245）。\n- 原点为稳定平衡点；能量 E=½m(v²)+½m·k(q/m)r² 守恒。\n- 各向同性，无横向分量、无旋度。\n\n观测支持与独立验证：\n- 观测支持（第一束光 + probe_0003–0006）：不同方向、不同半径（r≈0.7–3.0）下 |a|/r ≈ 0.0598–0.0600，横向分量 RMS 分率≈3.5e-9（诊断 diagnostic_5d553e3f5a36），径向幂次拟合 p≈1.0000，强烈支持线性有心力而非平方反比或更高阶。\n- 性质依赖（probe_0007/0008/0009）：固定 r0=[1.5,0]、v0=[0,0.3]，仅改变属性。m=2→a_x≈-0.045；m=0.5→-0.18；c=2→-0.18。即 a∝1/m 且 a∝q，精确符合 q/m 因子。\n- 独立验证 validation_4849f83d442b：在三个未参与拟合的变性质整轨迹上位置 RMSE≈5.7e-12（相对观测 RMS≈3.8e-12），三条全部吻合，验证通过。\n\n区分观测证据/数学推论/机制假说：\n- 观测支持：加速度是位置的线性、径向向内的函数，且按 q/m 缩放；N0 在 0–1.0 时间窗内位于原点且初速为零。\n- 数学推论：上述律式由拟合（law_1，k=0.06）给出，在训练轨迹位置 RMSE≈1.4e-11。\n- 机制假说（待检验）：把该线性回复力\"归因于\" N0 这一可见源是合理的物理假说，但公式本身只用 r 与公开属性，不要求 N0 实际作为源；任何位于原点、静止、产生同样线性回复场的源都等价。无法由本观测唯一确定力的微观机制。\n\n适用范围与不可辨识性：\n- 适用：r∈[~0.7, 3]、|v|≤0.3、t∈[0,1.5]、q,m∈{0.5,1,2} 区间已检验；线性结构在原点附近外推至 r→0 应为连续（回复力趋零），但远离已测半径区（r>3 或极小 r）未独立验证。\n- 不可辨识：(1) 该回复场究竟由 N0 产生还是某个静止于原点且与 N0 共址的不可见源产生，二者预测完全等价；(2) 力的\"源\"结构与数值律式在本观测下不可唯一区分，故本提交仅承诺律式与方向结构，不断言 N0 的机制唯一性。\n- 无显式时间依赖：固定完整瞬时状态（含 N0 位置）后 a 不再依赖 t；N0 静止故其位置不随 t 变化，不构成 time_dependence。",
+      "evaluation_state": "scored",
+      "evaluation_complete": true,
+      "evaluation_score": {
+        "status": "scored",
+        "total": 96.49999999999987,
+        "maximum": 100,
+        "prediction": 79.99999999999987,
+        "law": 15,
+        "conservation": 1.5000000000000002,
+        "position_mse": 1.5658729146002014e-15,
+        "reference_variance": 9.543695482145655,
+        "normalized_error": 1.640740651804782e-16,
+        "energy_used": 7.0,
+        "energy_budget": 10,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_e4_10energy",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Local discovery score: P=80/(1+10e), three declarations worth 5 each; C=5*(1-E/10) only when P>=40. Ruleset=e5; this remains a local compatibility evaluation.",
+        "source": "v15_public_catalog_local_agent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 1.5658729146002014e-15,
+        "velocity_mse": 1.0003844033470751e-16,
+        "position_rmse": 3.957111212235766e-08,
+        "velocity_rmse": 1.0001921832063452e-08
+      },
+      "evaluation_failures": [],
+      "evaluation_error": null,
+      "n_test_trajectories": 24
+    },
+    {
+      "world_id": "world_3",
+      "world_set": "v15",
+      "run_id": "e5-qwen38-compact-20261107-r07-world_3",
+      "ruleset": "e5",
+      "experiment_group": "E5",
+      "model_endpoint": "http://127.0.0.1:8002/v1",
+      "status": "incomplete",
+      "reason": "model_token_budget_exhausted",
+      "running": false,
+      "worker_returncode": 0,
+      "started_at": "2026-11-07T00:17:16.897738+00:00",
+      "finished_at": "2026-11-07T00:20:56.111981+00:00",
+      "session_started_at": "2026-11-07T00:17:17.302209+00:00",
+      "wall_seconds_including_evaluation": 219.21468756347895,
+      "exploration_seconds": 216.87396543473005,
+      "exploration_timing_source": "worker_monotonic",
+      "evaluation_seconds": null,
+      "exploration_finished_at": "2026-11-07T00:20:54.176190+00:00",
+      "exploration_deadline_at": "2026-11-07T00:22:17.302208+00:00",
+      "submission_elapsed_seconds": null,
+      "exploration_deadline_seconds": 300,
+      "exploration_deadline_met": null,
+      "model_elapsed_seconds": 213.54550990089774,
+      "average_output_tokens_per_call": 108.72222222222223,
+      "max_call_output_tokens": 302,
+      "output_limit_tokens": 4096,
+      "output_limit_exceeded_calls": 0,
+      "requests_with_reported_usage": 108,
+      "requests_without_reported_usage": 0,
+      "output_cap_compliant": true,
+      "model_usage": {
+        "calls": 108,
+        "prompt_tokens": 4982094,
+        "completion_tokens": 11742,
+        "total_tokens": 4993836,
+        "conservative_reserved_tokens": 0,
+        "elapsed_seconds": 213.54550990089774,
+        "roles": {
+          "main": {
+            "calls": 108,
+            "prompt_tokens": 4982094,
+            "completion_tokens": 11742,
+            "total_tokens": 4993836
+          }
+        },
+        "request_budget": {
+          "method": "reported_prefix_plus_utf8_suffix",
+          "estimated_prompt_tokens": 71755,
+          "reference_prompt_tokens": 69619,
+          "added_message_bytes": 1624,
+          "utf8_upper_bound": 223709,
+          "available_tokens": 6164,
+          "requested_output_tokens": 4096,
+          "output_token_limit": 0,
+          "minimum_output_tokens": 64,
+          "status": "blocked"
+        }
+      },
+      "calls": 108,
+      "tokens": 4993836,
+      "prompt_tokens": 4982094,
+      "completion_tokens": 11742,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 0,
+      "energy_budget": 10,
+      "energy_used": 10,
+      "wall_seconds_remaining": 83.45115633681417,
+      "accepted_submission": false,
+      "law_versions": 0,
+      "law": null,
+      "claims": null,
+      "physical_explanation": null,
+      "evaluation_state": "not_applicable",
+      "evaluation_complete": false,
+      "evaluation_score": null,
+      "independent_rmse": null,
+      "evaluation_failures": null,
+      "evaluation_error": null,
+      "n_test_trajectories": null
+    },
+    {
+      "world_id": "world_4",
+      "world_set": "v15",
+      "run_id": "e5-qwen38-compact-20261107-r07-world_4",
+      "ruleset": "e5",
+      "experiment_group": "E5",
+      "model_endpoint": "http://127.0.0.1:8003/v1",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "running": false,
+      "worker_returncode": 0,
+      "started_at": "2026-11-07T00:17:16.899401+00:00",
+      "finished_at": "2026-11-07T00:20:20.236682+00:00",
+      "session_started_at": "2026-11-07T00:17:17.302281+00:00",
+      "wall_seconds_including_evaluation": 183.33750417642295,
+      "exploration_seconds": 177.33273793198168,
+      "exploration_timing_source": "worker_monotonic",
+      "evaluation_seconds": 3.970676824450493,
+      "exploration_finished_at": "2026-11-07T00:20:14.635032+00:00",
+      "exploration_deadline_at": "2026-11-07T00:22:17.302279+00:00",
+      "submission_elapsed_seconds": 177.32517705485225,
+      "exploration_deadline_seconds": 300,
+      "exploration_deadline_met": true,
+      "model_elapsed_seconds": 175.9220370873809,
+      "average_output_tokens_per_call": 579.8333333333334,
+      "max_call_output_tokens": 2345,
+      "output_limit_tokens": 4096,
+      "output_limit_exceeded_calls": 0,
+      "requests_with_reported_usage": 18,
+      "requests_without_reported_usage": 0,
+      "output_cap_compliant": true,
+      "model_usage": {
+        "calls": 18,
+        "prompt_tokens": 494116,
+        "completion_tokens": 10437,
+        "total_tokens": 504553,
+        "conservative_reserved_tokens": 0,
+        "elapsed_seconds": 175.9220370873809,
+        "roles": {
+          "main": {
+            "calls": 18,
+            "prompt_tokens": 494116,
+            "completion_tokens": 10437,
+            "total_tokens": 504553
+          }
+        },
+        "request_budget": {
+          "method": "reported_prefix_plus_utf8_suffix",
+          "estimated_prompt_tokens": 66558,
+          "reference_prompt_tokens": 51874,
+          "added_message_bytes": 14172,
+          "utf8_upper_bound": 154975,
+          "available_tokens": 4556482,
+          "requested_output_tokens": 4096,
+          "output_token_limit": 4096,
+          "minimum_output_tokens": 64,
+          "status": "admitted",
+          "reported_prompt_tokens": 59075
+        }
+      },
+      "calls": 18,
+      "tokens": 504553,
+      "prompt_tokens": 494116,
+      "completion_tokens": 10437,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 6,
+      "energy_budget": 10,
+      "energy_used": 4,
+      "wall_seconds_remaining": 122.9922412764281,
+      "accepted_submission": true,
+      "law_versions": 5,
+      "law": {
+        "law_id": "law_5",
+        "law_spec": {
+          "ax": "-A*x/(q('mass')*sqrt((x*x)+(y*y))*((x*x)+(y*y)+C))",
+          "ay": "-A*y/(q('mass')*sqrt((x*x)+(y*y))*((x*x)+(y*y)+C))"
+        },
+        "fitted_parameters": {
+          "A": 0.47606636907091404,
+          "C": 0.9584220716338735
+        }
+      },
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": false
+      },
+      "physical_explanation": "观测支持的定律：探针加速度为指向坐标原点（可见天体 N0 所在位置）的二维有心力，\n\n  a = -(A/mass) * (x, y) / ( r · sqrt(r² + C) )，  r = sqrt(x²+y²)\n\n冻结参数（law_5，fit_law_and_rollout 收敛）：A = 0.476066，C = 0.958422。\n\n各项含义与状态依赖：\n- 方向：矢量 (x,y) 取负号，故力始终指向原点 (0,0)。该点恰为可见天体 N0 的观测位置（t=0 初态与 8 个第一束光时刻均为 [0,0]，速度为 0）。因此观测支持\"力源在 N0 处\"；但本任务中 N0 静止在原点，\"指向原点\"与\"指向 N0\"在数值上不可区分，源是否必须位于原点是一个未完全可辨识的几何假设。\n- 大小：|a| = (A/mass)/( r·sqrt(r²+C) )。远场 r≫sqrt(C) 时近似 (A/mass)/r²（平方反比）；近场 r≪sqrt(C) 时近似 (A/(mass·sqrt(C)))/r²… 实际近场趋近 A/(mass·r·sqrt(C))，比 1/r² 随 r 减小衰减更慢（有效幂次趋近约 -1），从而避免了 r→0 的奇点。C 是\"软芯/正则化\"参数（local_length² 量级），决定力从近场过渡到平方反比场的特征半径 sqrt(C)≈0.979。\n- 质量依赖：加速度 ∝ 1/mass。这是关键的观测证据而非数学推论：probe_0005 与 probe_0001 采用完全相同初态 (r0=[2,0],v0=[0,0.3])，仅 mass 由 1 增至 2，t=0.25 处加速度由 |a|≈0.096 减半到 |a|≈0.048，比例≈0.50=m1/m2。这说明存在一个不随探针质量变化的\"力\"，a=F/m，质量大的探针加速更小。\n- 无速度依赖：各轨迹横向（垂直于径向）加速度仅为 ~1e-5 量级，残差诊断中加速度无与 vx,vy 的系统性关联；力只依赖位置与质量，不含阻尼、磁力或速度相关项。\n\n参数单位：在 local_length、local_time 单位下，A 使 |a| 的量纲为 local_length/local_time²，故 A 具有 local_length⁵/local_time² 的等效量纲（因分母为 r·sqrt(r²+C) ~ local_length³）；C 单位为 local_length²。\n\n运动性质（由候选公式推导，适用条件为 r≥~1 的探测区域）：力为径向向内且各向同性，故角动量 m·r²·θ̇ 守恒、轨迹平面封闭于二维平面；存在稳定/不稳定圆轨道，r→0 处力有限（无奇点），r→∞ 处平方反比衰减。\n\n实验与验证证据：\n- 拟合 law_5 于 probe_0001(m1,r≈2)、probe_0003(m1,r 从1变化到2.6)、probe_0005(m2,r≈2)，position 相对 RMSE 5.4e-4、velocity 相对 1.4e-3。\n- 独立验证 validation_f7963420bdf8（未参与拟合的三条整轨迹）：probe_0002(r=4) position RMSE 2.4e-4、velocity 5.9e-4；probe_0004(r=6) position RMSE 4.3e-3；probe_0006(斜向 r=3.6，测试各向同性方向) position RMSE 5.3e-3、velocity 3.0e-3；总体 position 相对 7.9e-4、velocity 相对 3.3e-3。\n- 结构比较：纯 r^-2（向量 r^-3）候选 law_2 在 probe_0003（半径大幅变化）上明显恶化（velocity 相对 8.9e-2，validation_0e9afa2cd1fa），r^-1.75 候选 law_3 在 probe_0002 上 velocity 相对 2.0e-2 也劣于 law_5；这支持\"软芯 r²+C 正则化\"结构而非纯幂律。diagnose_dynamics 给出的经验径向幂次 ≈ -1.72（短弧段、半径范围窄）正是介于近场(-1)与远场(-2)之间的过渡，与软芯模型一致。\n- 残差 residual_2654d4b1d16b：各验证轨迹加速度残差量级 ~1e-3，且 a_x 残差符号随轨迹变化（无共同方向偏置），主要归因于稀疏采样下速度中心差分估计的数值偏差，而非系统结构残差；位置/速度残差均小。\n\n适用范围与限制：\n- 已检验区域：半径 r≈1 至 6、初速至约 1.1、时间至 4s、质量 1 与 2、多个方位角。\n- 未检验/不可辨识：(1) charge 控制在所有实验中恒为 1，故力是否与 charge 相关完全无法判断——现有证据只支持\"加速度∝1/mass\"，不能排除力本身含 charge 因子；(2) N0 静止，力源是否必须位于原点、N0 是否真为源（或仅是原点标记）不可区分；(3) 未测 r<1 的近场区与 r>6 的更远场区，软芯结构在极端 r 下未独立确认；(4) 未测质量的其他取值（仅 1 与 2），1/mass 的精确线性关系基于两点。\n- 时间依赖：因 N0 初速为 0 且 8 个观测时刻均静止，固定完整瞬时状态（探针 x,v 与 N0 位置）后作用不再显式依赖 t；不同投放时刻轨迹不同仅因初态不同，故 time_dependence 判 false。\n- 隐藏物质：力可由可见 N0 解释，无需引入位置不可见的源，故 hidden_matter 判 false。",
+      "evaluation_state": "scored",
+      "evaluation_complete": true,
+      "evaluation_score": {
+        "status": "scored",
+        "total": 39.55485640976117,
+        "maximum": 100,
+        "prediction": 24.55485640976117,
+        "law": 15,
+        "conservation": 0.0,
+        "position_mse": 6.921422945159452,
+        "reference_variance": 30.652738105549297,
+        "normalized_error": 0.22580113141365385,
+        "energy_used": 4.0,
+        "energy_budget": 10,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_e4_10energy",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Local discovery score: P=80/(1+10e), three declarations worth 5 each; C=5*(1-E/10) only when P>=40. Ruleset=e5; this remains a local compatibility evaluation.",
+        "source": "v15_public_catalog_local_agent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 6.921422945159452,
+        "velocity_mse": 0.2555734138265704,
+        "position_rmse": 2.63085973498388,
+        "velocity_rmse": 0.5055426923876661
+      },
+      "evaluation_failures": [],
+      "evaluation_error": null,
+      "n_test_trajectories": 24
+    },
+    {
+      "world_id": "world_5",
+      "world_set": "v15",
+      "run_id": "e5-qwen38-compact-20261107-r07-world_5",
+      "ruleset": "e5",
+      "experiment_group": "E5",
+      "model_endpoint": "http://127.0.0.1:8001/v1",
+      "status": "incomplete",
+      "reason": "wall_time_exhausted",
+      "running": false,
+      "worker_returncode": 0,
+      "started_at": "2026-11-07T00:18:17.580608+00:00",
+      "finished_at": "2026-11-07T00:23:14.497151+00:00",
+      "session_started_at": "2026-11-07T00:18:17.981943+00:00",
+      "wall_seconds_including_evaluation": 296.91702473536134,
+      "exploration_seconds": 295.80368699133396,
+      "exploration_timing_source": "worker_monotonic",
+      "evaluation_seconds": null,
+      "exploration_finished_at": "2026-11-07T00:23:13.785655+00:00",
+      "exploration_deadline_at": "2026-11-07T00:23:17.981941+00:00",
+      "submission_elapsed_seconds": null,
+      "exploration_deadline_seconds": 300,
+      "exploration_deadline_met": null,
+      "model_elapsed_seconds": 292.84301981143653,
+      "average_output_tokens_per_call": null,
+      "max_call_output_tokens": 302,
+      "output_limit_tokens": 4096,
+      "output_limit_exceeded_calls": 0,
+      "requests_with_reported_usage": 59,
+      "requests_without_reported_usage": 1,
+      "output_cap_compliant": null,
+      "model_usage": {
+        "calls": 60,
+        "prompt_tokens": 2297168,
+        "completion_tokens": 17420,
+        "total_tokens": 2314588,
+        "conservative_reserved_tokens": 64045,
+        "elapsed_seconds": 292.84301981143653,
+        "roles": {
+          "main": {
+            "calls": 60,
+            "prompt_tokens": 2297168,
+            "completion_tokens": 17420,
+            "total_tokens": 2314588
+          }
+        },
+        "request_budget": {
+          "method": "reported_prefix_plus_utf8_suffix",
+          "estimated_prompt_tokens": 59949,
+          "reference_prompt_tokens": 57431,
+          "added_message_bytes": 2006,
+          "utf8_upper_bound": 164116,
+          "available_tokens": 2685412,
+          "requested_output_tokens": 4096,
+          "output_token_limit": 4096,
+          "minimum_output_tokens": 64,
+          "status": "admitted"
+        }
+      },
+      "calls": 60,
+      "tokens": 2314588,
+      "prompt_tokens": 2297168,
+      "completion_tokens": 17420,
+      "conservative_reserved_tokens": 64045,
+      "energy_remaining": 4,
+      "energy_budget": 10,
+      "energy_used": 6,
+      "wall_seconds_remaining": 4.524960624054074,
+      "accepted_submission": false,
+      "law_versions": 0,
+      "law": null,
+      "claims": null,
+      "physical_explanation": null,
+      "evaluation_state": "not_applicable",
+      "evaluation_complete": false,
+      "evaluation_score": null,
+      "independent_rmse": null,
+      "evaluation_failures": null,
+      "evaluation_error": null,
+      "n_test_trajectories": null
+    },
+    {
+      "world_id": "world_6",
+      "world_set": "v15",
+      "run_id": "e5-qwen38-compact-20261107-r07-world_6",
+      "ruleset": "e5",
+      "experiment_group": "E5",
+      "model_endpoint": "http://127.0.0.1:8000/v1",
+      "status": "submitted",
+      "reason": "submission_accepted_locally",
+      "running": false,
+      "worker_returncode": 0,
+      "started_at": "2026-11-07T00:18:22.649764+00:00",
+      "finished_at": "2026-11-07T00:19:44.358768+00:00",
+      "session_started_at": "2026-11-07T00:18:23.051297+00:00",
+      "wall_seconds_including_evaluation": 81.7094045560807,
+      "exploration_seconds": 70.3307529501617,
+      "exploration_timing_source": "worker_monotonic",
+      "evaluation_seconds": 9.678704326972365,
+      "exploration_finished_at": "2026-11-07T00:19:33.382064+00:00",
+      "exploration_deadline_at": "2026-11-07T00:23:23.051295+00:00",
+      "submission_elapsed_seconds": 70.32571578398347,
+      "exploration_deadline_seconds": 300,
+      "exploration_deadline_met": true,
+      "model_elapsed_seconds": 50.110084630548954,
+      "average_output_tokens_per_call": 228.25,
+      "max_call_output_tokens": 1017,
+      "output_limit_tokens": 4096,
+      "output_limit_exceeded_calls": 0,
+      "requests_with_reported_usage": 12,
+      "requests_without_reported_usage": 0,
+      "output_cap_compliant": true,
+      "model_usage": {
+        "calls": 12,
+        "prompt_tokens": 371678,
+        "completion_tokens": 2739,
+        "total_tokens": 374417,
+        "conservative_reserved_tokens": 0,
+        "elapsed_seconds": 50.110084630548954,
+        "roles": {
+          "main": {
+            "calls": 12,
+            "prompt_tokens": 371678,
+            "completion_tokens": 2739,
+            "total_tokens": 374417
+          }
+        },
+        "request_budget": {
+          "method": "reported_prefix_plus_utf8_suffix",
+          "estimated_prompt_tokens": 56850,
+          "reference_prompt_tokens": 45903,
+          "added_message_bytes": 10435,
+          "utf8_upper_bound": 116160,
+          "available_tokens": 4676547,
+          "requested_output_tokens": 4096,
+          "output_token_limit": 4096,
+          "minimum_output_tokens": 64,
+          "status": "admitted",
+          "reported_prompt_tokens": 49947
+        }
+      },
+      "calls": 12,
+      "tokens": 374417,
+      "prompt_tokens": 371678,
+      "completion_tokens": 2739,
+      "conservative_reserved_tokens": 0,
+      "energy_remaining": 0,
+      "energy_budget": 10,
+      "energy_used": 10,
+      "wall_seconds_remaining": 229.98356605879962,
+      "accepted_submission": true,
+      "law_versions": 2,
+      "law": {
+        "law_id": "law_2",
+        "law_spec": {
+          "ax": "-d*(x*sqrt(x*x+y*y)) + sum_b(-d*(x-bx)*sqrt((x-bx)*(x-bx)+(y-by)*(y-by)))",
+          "ay": "-d*(y*sqrt(x*x+y*y)) + sum_b(-d*(y-by)*sqrt((x-bx)*(x-bx)+(y-by)*(y-by)))"
+        },
+        "fitted_parameters": {
+          "d": 0.0030029213593892722
+        }
+      },
+      "claims": {
+        "dynamics_order": 2,
+        "hidden_matter": false,
+        "time_dependence": false
+      },
+      "physical_explanation": "提交公式为二阶动力学：\\n\\nax = -d*x*sqrt(x^2+y^2) - d*sum_b[(x-bx)*sqrt((x-bx)^2+(y-by)^2)]\\nay = -d*y*sqrt(x^2+y^2) - d*sum_b[(y-by)*sqrt((x-bx)^2+(y-by)^2)]\\n\\n其中 d 是唯一拟合参数，拟合值为 0.0030029213593892722（law_2）。其量纲可由公式推出：因为 x、y、bx、by 是局部长度，sqrt(...) 是长度，位移乘 sqrt(位移) 是长度平方；除以质量后成为局部长度^2/局部时间^2，故 d 的单位约为局部长度^{-1} × 质量^{-1}（若把 d 视为引力耦合常数除以探针质量）。公式本身是加速度方程，因此 dynamics_order 为 2。\\n\\n第一项 -d*x*r 与 -d*y*r 指向原点 N0，并随到原点距离的平方增长；第二项把每个可见天体 N 的当前位置 (bx,by) 作为瞬时源位置，指向该天体，并随探针到该天体距离的平方增长。由于 sum_b 使用同一绝对时间 t 下取得的天体位置，天体运动造成的受力变化是几何状态变化，不是固定完整瞬时状态（探针 x,y,vx,vy 以及可见天体位置与公开属性）后的显式时间依赖；因此 time_dependence 声明为 false。公式不包含探针质量 q('mass')，这与 0.5、1、2、4 质量探针的观测轨迹仍能被同一参数拟合一致；这支持“质量不影响加速度”或“公开质量不进入该力”的观测，但没有同初态仅质量变化的成对控制，不能唯一证明质量独立性。\\n\\n支持证据：diagnostic_2d87a0f93594 显示二阶/高阶空间回归比一阶明显更优，径向标度诊断给出 |a| 随半径的近似幂次约 2.274，接近候选中的 r^2 结构。probe_0003 至 probe_0006 在 t=5 的静止探针显示加速度大体指向原点且随半径增大，而 probe_0007 至 probe_0010 在 t=12 改变速度与质量后，加速度仍不直接正比于质量。law_2 用 probe_0001 至 probe_0010 拟合，收敛后整体训练位置 RMSE 为 0.015909580603583297，速度 RMSE 为 0.06484283072213436；residual_94f706ad7267 显示残差有系统性随轨迹漂移/时间相关，提示结构仍不完善或天体位置插值误差影响。固定 law_2 后，在独立新轨迹 probe_0011、probe_0012 上验证（validation_a2f0ffac048f）得到位置 RMSE 0.03932597736814717、速度 RMSE 0.10254815372310527，相对位置 RMSE 0.015850464843459585，说明该候选可外推，但误差显著高于训练集，不能声称准确解释。\\n\\n该公式的局限：它把所有可见天体都当作同等贡献的源，并假设中心源位于原点；没有为各天体单独赋予质量、耦合强度或有效源权重，也不能识别是否存在不可见物质，因此 hidden_matter 声明为 false 仅代表“提交公式中不含位置不可见源”，不是排除隐藏源的证据。观测支持的是轨迹预测结构；由公式推导的是二阶、非中心、随当前可见天体位置变化的加速度；具体物理机制（如某种与质量无关的几何引力/海岸世界力场、或可见天体作为等效源）仍属尚待检验假说。",
+      "evaluation_state": "scored",
+      "evaluation_complete": true,
+      "evaluation_score": {
+        "status": "scored",
+        "total": 16.21729398167579,
+        "maximum": 100,
+        "prediction": 6.217293981675791,
+        "law": 10,
+        "conservation": 0.0,
+        "position_mse": 20.97881910851792,
+        "reference_variance": 17.677785598384048,
+        "normalized_error": 1.1867334283336723,
+        "energy_used": 10.0,
+        "energy_budget": 10,
+        "claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": true,
+            "correct": false,
+            "points": 0
+          }
+        ],
+        "reason": null,
+        "formula_version": "shore_e4_10energy",
+        "local_only": true,
+        "official_score": false,
+        "source_note": "Local discovery score: P=80/(1+10e), three declarations worth 5 each; C=5*(1-E/10) only when P>=40. Ruleset=e5; this remains a local compatibility evaluation.",
+        "source": "v15_public_catalog_local_agent_evaluation",
+        "energy_source": "result.json:budget.energy_remaining"
+      },
+      "independent_rmse": {
+        "position_mse": 20.97881910851792,
+        "velocity_mse": 1.6383273925193822,
+        "position_rmse": 4.580264087202606,
+        "velocity_rmse": 1.2799716373886503
+      },
+      "evaluation_failures": [],
+      "evaluation_error": null,
+      "n_test_trajectories": 32
+    }
+  ],
+  "finished_at": "2026-11-07T00:23:14.737348+00:00"
+}
