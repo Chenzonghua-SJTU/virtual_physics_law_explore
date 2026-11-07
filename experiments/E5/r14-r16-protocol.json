@@ -1,0 +1,52 @@
+{
+  "status": "pre_registered_before_runs",
+  "r14_original_protocol": "r13-r14-protocol.json",
+  "shared": {
+    "thinking": false,
+    "max_output_tokens_per_request": 4096,
+    "exploration_wall_seconds": 300,
+    "energy": 10,
+    "exploration_noise": false,
+    "independent_evaluation_noise": false,
+    "attempts_per_world": 1,
+    "cross_batch_selection": false
+  },
+  "primary_outcome": "At least five raw scores >=90 in a single six-world batch with timely submissions, complete independent evaluation and complete usage; all failed attempts retained.",
+  "r16": {
+    "batch": "e5-qwen38-harmonic-fit-20261107-r16",
+    "config": "deployment/config.e5.harmonic-fit.json",
+    "model": "qwen3.8-27b",
+    "seed": 43,
+    "temperature": 1.0,
+    "endpoints": [
+      8000,
+      8001
+    ],
+    "workers": 2,
+    "changes_from_r13": [
+      "Optional general affine-position single-frequency harmonic diagnostics, trained only on acquired observations; full independent coefficients and free frequency before any compression.",
+      "Optional fresh diagnosis of the selected training probes when a fitted law has large noise-free residuals. No extra observations, no alteration of fitted law, no automatic submission."
+    ],
+    "interpretation": "Composite engineering experiment. Original E3 main prompt, ordinary fit/evaluator and world physics unchanged; no per-world answer map.",
+    "condition": "Run only after R14/R15 and source review; if target is already achieved, do not claim an unrun feature improved results."
+  },
+  "r14": {
+    "batch": "e5-qwen35-122b-hs-20261107-r14",
+    "science_source": "abd2293 unchanged",
+    "config": "deployment/config.e5.hs-qwen122.json",
+    "note": "Original r13-r14-protocol remains applicable. Launch while optional next-version implementation is being developed locally; do not deploy new science until both batches are audited."
+  },
+  "r15": {
+    "batch": "e5-qwen38-hs-seed44-20261107-r15",
+    "science_source": "abd2293 unchanged",
+    "config": "deployment/config.e5.hs-seed44.json",
+    "endpoints": [
+      8000,
+      8001
+    ],
+    "workers": 2,
+    "only_config_difference_from_r13": "model.sampling_seed 43 -> 44",
+    "attempts_per_world": 1,
+    "interpretation": "Single additional complete-batch repeat, all outcomes retained; no cross-world best selection."
+  }
+}
