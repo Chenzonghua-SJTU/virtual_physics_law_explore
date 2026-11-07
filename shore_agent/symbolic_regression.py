@@ -453,6 +453,28 @@ def _compress_frontier(frontier, limit):
     return selected
 
 
+def _sharing_groups(parameter_spec, deadline=None):
+    """Cheap proposal feasibility only; equality still requires data validation."""
+    values = [float(p["initial"]) for p in parameter_spec]
+    groups = [[i] for i in range(len(values))]
+    while len(groups) > 5:
+        if deadline is not None and time.monotonic() >= deadline:
+            raise SymbolicRegressionError("sharing_time_limit")
+        proposals = []
+        for i, a in enumerate(groups):
+            for j, b in enumerate(groups[:i]):
+                together = [values[index] for index in a+b]
+                lo, hi = min(together), max(together)
+                distance = (hi-lo)/max(abs(lo),abs(hi),1e-12)
+                if distance <= .1 and (lo >= 0 or hi <= 0):
+                    proposals.append((distance,j,i))
+        if not proposals:
+            raise SymbolicRegressionError("sharing_no_supported_proposal")
+        _, j, i = min(proposals)
+        groups[j] += groups.pop(i)
+    return groups
+
+
 def _parameter_sharing(candidate, dataset, deadline):
     """Propose ties by numeric proximity, accept only after joint data fitting.
 
@@ -468,19 +490,7 @@ def _parameter_sharing(candidate, dataset, deadline):
     values = np.asarray([p["initial"] for p in original], dtype=float)
     # Only propose close, same-sign coefficient occurrences. Their closeness is
     # not the acceptance test: distinct true values must fail the data check.
-    groups = [[i] for i in range(len(values))]
-    while len(groups) > 5:
-        proposals = []
-        for i, a in enumerate(groups):
-            for j, b in enumerate(groups[:i]):
-                together = values[a+b]
-                scale = max(float(np.max(np.abs(together))), 1e-12)
-                distance = float(np.ptp(together))/scale
-                if distance <= .1 and (np.all(together >= 0) or np.all(together <= 0)):
-                    proposals.append((distance, j, i))
-        if not proposals: raise SymbolicRegressionError("sharing_no_supported_proposal")
-        _, j, i = min(proposals)
-        groups[j] += groups.pop(i)
+    groups = _sharing_groups(original, stop)
     names = [f"c{i+1}" for i in range(len(groups))]
     mapping = {original[index]["name"]: name for name, group in zip(names, groups) for index in group}
     law = _rename_parameters(candidate["law_spec"], mapping)
@@ -627,15 +637,47 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
                 pool.append((key, candidate))
         except (ValueError, OverflowError) as exc:
             reject(_reason(exc), stage="pair", ax=left["source"], ay=right["source"])
+    # The public first component is the simplest one within that axis's
+    # resolution tolerance. Give their joint interpretation a fit opportunity,
+    # rather than spending every slot on global loss/complexity extremes.
+    axis_candidates = _axis_public_candidates(axes, dataset, resolution)
+    preferred_key = None
+    if all(axis_candidates[axis] for axis in ("ax", "ay")):
+        try:
+            preferred = export_candidate(axis_candidates["ax"][0]["source"], axis_candidates["ay"][0]["source"],
+                                         dataset["feature_names"], _parameter_limit=MAX_INTERNAL_PARAMETERS)
+            preferred_key = (preferred["law_spec"]["ax"], preferred["law_spec"]["ay"],
+                             tuple(p["initial"] for p in preferred["parameter_spec"]))
+        except (ValueError, OverflowError):
+            pass  # Individually readable components need not form a legal pair.
     sharing_cache = cache.setdefault("parameter_sharing", {})
     sharing_deadline = min(deadline, time.monotonic()+2.0)
-    for key,candidate in sorted(oversized, key=lambda item:(item[1]["normalized_acceleration_search_loss"],item[1]["complexity"]))[:4]:
+    by_loss = sorted(oversized, key=lambda item:(item[1]["normalized_acceleration_search_loss"],item[1]["complexity"]))
+    by_complexity = sorted(oversized, key=lambda item:(item[1]["complexity"],item[1]["normalized_acceleration_search_loss"]))
+    sharing_order = [item for item in oversized if item[0] == preferred_key]
+    public_pair_prioritized = bool(sharing_order)
+    queued = {item[0] for item in sharing_order}
+    for accurate, simple in zip(by_loss, by_complexity):
+        for item in (accurate, simple):
+            if item[0] not in queued:
+                queued.add(item[0])
+                sharing_order.append(item)
+    fit_attempts, prefilter_rejections = 0, 0
+    for key,candidate in sharing_order:
         if key not in sharing_cache:
-            if time.monotonic() >= sharing_deadline: break
+            if time.monotonic() >= sharing_deadline or fit_attempts >= 4: continue
             try:
-                sharing_cache[key] = _parameter_sharing(candidate, dataset, sharing_deadline)
-            except (ValueError, OverflowError, ZeroDivisionError) as exc:
-                sharing_cache[key] = {"error": str(exc) if str(exc).startswith("sharing_") else "sharing_fit_failed"}
+                _sharing_groups(candidate["parameter_spec"], sharing_deadline)
+            except SymbolicRegressionError as exc:
+                if str(exc) == "sharing_time_limit": continue
+                sharing_cache[key] = {"error": str(exc), "stage": "proposal_prefilter"}
+                prefilter_rejections += 1
+            else:
+                fit_attempts += 1
+                try:
+                    sharing_cache[key] = _parameter_sharing(candidate, dataset, sharing_deadline)
+                except (ValueError, OverflowError, ZeroDivisionError) as exc:
+                    sharing_cache[key] = {"error": str(exc) if str(exc).startswith("sharing_") else "sharing_fit_failed"}
         shared = sharing_cache[key]
         if "error" in shared:
             reject(shared["error"],stage="sharing",ax=candidate["law_spec"]["ax"],ay=candidate["law_spec"]["ay"])
@@ -643,7 +685,6 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
         new_key = (shared["law_spec"]["ax"],shared["law_spec"]["ay"],tuple(p["initial"] for p in shared["parameter_spec"]))
         pool.append((new_key,shared))
     # Uncompressed components remain available even if no joint sharing is accepted.
-    axis_candidates = _axis_public_candidates(axes, dataset, resolution)
     # Rank by accuracy, then retain the simplest statistically unresolved model.
     # Resolution sensitivity is a heuristic, not a formal noise/confidence bound.
     ranked = sorted(pool, key=lambda item: (item[1]["normalized_acceleration_search_loss"], item[1]["complexity"]))
@@ -677,6 +718,10 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
         "candidate_selection": {"strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
             "normalized_resolution_tolerance": tolerance, "legal_pairs": len(pool),
             "over_budget_pairs_retained": len(oversized), "sharing_attempts_cached": len(sharing_cache),
+            "sharing_fit_attempts_this_selection": fit_attempts,
+            "sharing_proposal_prefilter_rejections_this_selection": prefilter_rejections,
+            "sharing_order": "public_axis_first_pair_then_interleaved_loss_and_complexity; infeasible_proposals_do_not_consume_fit_slots",
+            "sharing_public_axis_pair_prioritized": public_pair_prioritized,
             "sharing_unattempted_pairs": sum(key not in sharing_cache for key,_ in oversized),
             "rejection_stage_counts": stages, "rejected_candidates_total": sum(stages.values()),
             "unchecked_axis_equations": sum(r["domain_valid"] is None for rows in audits for r in rows), "rollout_candidates_considered": len(checked),

@@ -1,0 +1,1788 @@
+{
+  "mode": "A_exact",
+  "status": "evaluating",
+  "world_id": "world_4",
+  "model_calls": 0,
+  "warmup_seconds": 32.481781573966146,
+  "search_started_at": "2026-11-07T06:23:17.741391+00:00",
+  "search_result": {
+    "status": "completed",
+    "backend": "direct_pysr",
+    "target": "diagnostic_exact_acceleration",
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "axis_search_seconds": [
+      30.698571452870965,
+      30.136428823694587
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "c1 * q('charge') * sin(exp(y)) / (q('mass') * sin(sin(y)))",
+          "ay": "(c2 ** x * c3 / exp(y) + (y + c4) * c5 * q('charge')) / (q('mass') + sin(vx * y))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.05752140909308793
+          },
+          {
+            "name": "c2",
+            "initial": 0.2456980202726894
+          },
+          {
+            "name": "c3",
+            "initial": 0.00026459287269600863
+          },
+          {
+            "name": "c4",
+            "initial": 1.8233921466467402
+          },
+          {
+            "name": "c5",
+            "initial": -0.017834526978336943
+          }
+        ],
+        "complexity": 36,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          0.00014783356663548955,
+          8.037282679560079e-06
+        ],
+        "acceleration_search_mse": 0.00015587084931504964,
+        "normalized_acceleration_search_loss": 0.006716206674443556,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.4740571363649965e-05,
+          "velocity_rmse": 0.0007297532200488432,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "simplest_within_resolution_tolerance"
+      },
+      {
+        "law_spec": {
+          "ax": "c1 * q('charge') * sin(exp(y)) / (q('mass') * sin(sin(y)))",
+          "ay": "(c2 ** x * c3 / exp(y) + (y + c4) * q('charge') * c5) / (q('mass') + vx * y)"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.05752140909308793
+          },
+          {
+            "name": "c2",
+            "initial": 0.24924234036515266
+          },
+          {
+            "name": "c3",
+            "initial": 0.0002851314956627695
+          },
+          {
+            "name": "c4",
+            "initial": 1.8239026837743182
+          },
+          {
+            "name": "c5",
+            "initial": -0.017817647732790473
+          }
+        ],
+        "complexity": 35,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          0.00014783356663548955,
+          8.579957839459082e-06
+        ],
+        "acceleration_search_mse": 0.00015641352447494863,
+        "normalized_acceleration_search_loss": 0.006818556181694864,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.4751378789321039e-05,
+          "velocity_rmse": 0.0007303046918761966,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "alternative_accuracy_candidate"
+      },
+      {
+        "law_spec": {
+          "ax": "c1 * q('charge') * sin(exp(y)) / (q('mass') * sin(sin(y)))",
+          "ay": "sin(q('charge') * (c2 ** x * c3 + (y + c4) * c5 / (q('mass') * vx + q('mass'))))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.05752140909308793
+          },
+          {
+            "name": "c2",
+            "initial": 0.21986716895975802
+          },
+          {
+            "name": "c3",
+            "initial": 0.00038930323073628546
+          },
+          {
+            "name": "c4",
+            "initial": 1.6943499916496536
+          },
+          {
+            "name": "c5",
+            "initial": -0.018961838820349092
+          }
+        ],
+        "complexity": 33,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          0.00014783356663548955,
+          1.4590037509235185e-05
+        ],
+        "acceleration_search_mse": 0.00016242360414472473,
+        "normalized_acceleration_search_loss": 0.007952067973274135,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.477332219784915e-05,
+          "velocity_rmse": 0.0007315044947537961,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "alternative_accuracy_candidate"
+      }
+    ],
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy",
+      "mass",
+      "charge"
+    ],
+    "search_configuration": {
+      "maxsize": 48,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "^"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "random_state": 42,
+      "time_budget_seconds": 60,
+      "axis_timeout_seconds": 30.0,
+      "parallelism": "multithreading",
+      "linear_seeds": false,
+      "world_identity_or_formula_passed_to_backend": false
+    },
+    "axis_equations": {
+      "ax": [
+        {
+          "source": "-0.050111382896444005",
+          "loss": 0.011701714763616361,
+          "complexity": 1,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.0627436766822605/y",
+          "loss": 0.0046485705699897285,
+          "complexity": 3,
+          "origin": "pysr"
+        },
+        {
+          "source": "0.044023221943543044/(y - 0.7100460977472658)",
+          "loss": 0.0020764359613507483,
+          "complexity": 5,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(0.04346017373513449/(y - 0.7066895737459178))",
+          "loss": 0.002075226081738223,
+          "complexity": 6,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*0.04297960959844905/(y - 0.7291738181879798)",
+          "loss": 0.0013740546727788179,
+          "complexity": 7,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(charge*0.04310708493265468/(y - 0.7279069532850282))",
+          "loss": 0.0013706154797176284,
+          "complexity": 8,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*0.04311004720683486/(mass*(y - 0.7498989851295025))",
+          "loss": 0.0005197594186483322,
+          "complexity": 9,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(0.043580061551349754/(y - 0.751573296692411))/mass",
+          "loss": 0.0005195201774187163,
+          "complexity": 10,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.062069844064758316*charge*sin(exp(y))/(mass*y)",
+          "loss": 0.0003486970470351181,
+          "complexity": 11,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(exp(y))*(-0.059611986425371896)/(sin(y)*mass)",
+          "loss": 0.00018195656225811958,
+          "complexity": 12,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05752140909308793*charge*sin(exp(y))/(mass*sin(sin(y)))",
+          "loss": 0.0001478335666354895,
+          "complexity": 13,
+          "origin": "pysr"
+        },
+        {
+          "source": "(sin(exp(y)) - 0.09142307563285304)*charge*(-0.06496402671590933)/(sin(y)*mass)",
+          "loss": 8.360091699880042e-05,
+          "complexity": 14,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(exp(y) - 0.3203929333098542)*(-0.12074646544813324)*charge/(mass*(y + 0.3725913855974634))",
+          "loss": 5.4690318157535636e-05,
+          "complexity": 15,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(-0.12104181538670825/(y + 0.3725913855974634))*sin(exp(y) - 0.3203929333098542)/mass",
+          "loss": 5.4444295701213294e-05,
+          "complexity": 16,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*(-0.12255251555625396)*sin(exp(y) - 0.120493771159529)/((y + 0.18551470267995046/y)*mass)",
+          "loss": 4.7985620026766266e-05,
+          "complexity": 17,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*(-0.13471220483448795)*sin(sin(exp(y) - 0.13471220483448795))/((y + 0.1581169401633466/y)*mass)",
+          "loss": 3.941998086906461e-05,
+          "complexity": 18,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(sin(sin(exp(y) - 0.14484907499341187)))*(-0.14484907499341187)/(mass*(y + 0.1423417307913768/y))",
+          "loss": 3.5770742034187626e-05,
+          "complexity": 19,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*(-0.15423626394800127)*sin(sin(sin(sin(exp(y) - 0.15887115345454186))))/((y + 0.1326684844703738/y)*mass)",
+          "loss": 3.422580658729336e-05,
+          "complexity": 20,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(exp(y) - 0.1734496427642016)))))*(-0.1631607267478846)/((y + 0.12537298812870432/y)*mass)",
+          "loss": 3.3784716110531686e-05,
+          "complexity": 21,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(exp(y) - 0.264746639833825)*(charge/y + charge*(-0.21760790748904774)/(y*sin(y)))*(-0.1322435731775214)/mass",
+          "loss": 2.922738878216278e-05,
+          "complexity": 22,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(exp(y) - 0.2753113113553925))*(-0.14777870225271375)*(charge/y + charge*(-0.20737806785239732)/(y*sin(y)))/mass",
+          "loss": 2.405735507307052e-05,
+          "complexity": 23,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(exp(y) - 0.2808228331143017)))*(-0.16087936887662968)*(charge/y + charge*(-0.20098678536742134)/(sin(y)*y))/mass",
+          "loss": 2.3568785929724616e-05,
+          "complexity": 24,
+          "origin": "pysr"
+        },
+        {
+          "source": "(charge/y + charge*(-0.20051159172643732)/(y*sin(y)))*sin(sin(sin(sin(exp(y) - 0.2832412425924174)))*(-0.16089938574890592))/mass",
+          "loss": 2.356760762083188e-05,
+          "complexity": 25,
+          "origin": "pysr"
+        },
+        {
+          "source": "(vy*(-0.8617427145781095) + (charge/y + (charge/(y*y) - 0.6732259453741865)*(-0.20063526678018287))*sin(exp(y) - 0.256558164047498))*(-0.1141630613135912)/mass",
+          "loss": 1.9406206062026465e-05,
+          "complexity": 27,
+          "origin": "pysr"
+        },
+        {
+          "source": "(vy*(-0.857899076222005) + (charge/y + (charge/(y*y) - 0.6770020055322428)*(-0.1950810797646524))*sin(sin(exp(y) - 0.27473551144193775)))*(-0.13255981634336725)/mass",
+          "loss": 1.1394663402572867e-05,
+          "complexity": 28,
+          "origin": "pysr"
+        },
+        {
+          "source": "(vy*(-0.8530124384942861) + (charge/y + (charge/(y*y) - 0.7169525838071039)*(-0.18857693772479223))*sin(sin(sin(exp(y) - 0.28635524862482403))))*(-0.14564068292298285)/mass",
+          "loss": 9.93198305014181e-06,
+          "complexity": 29,
+          "origin": "pysr"
+        },
+        {
+          "source": "(vy*(vx - 0.8652851631605846) + (charge/y + (charge/(y*y) - 0.6036461475234607)*(-0.19034954855554412))*sin(sin(exp(y) - 0.27510619121318025)))*(-0.1321327122213017)/mass",
+          "loss": 9.676909491654044e-06,
+          "complexity": 30,
+          "origin": "pysr"
+        },
+        {
+          "source": "(charge*vy/(-1.1795919389921905) + (charge/y + (charge/(-1.1802211955234212) + charge/(y*y))*(-0.19051386060071598))*sin(sin(exp(y) - 0.2614617813277637)))*(-0.1263743930347675)/mass",
+          "loss": 9.171514355396536e-06,
+          "complexity": 32,
+          "origin": "pysr"
+        },
+        {
+          "source": "((vx - y)*0.02422851350517553 - 0.15249232724862471)*(y*y*vy*(-0.1495254009700152) + (charge*(-0.1927120417841938)/(y*y) + charge/y)*sin(sin(sin(sin(exp(y) - 0.2520374332471184)))))/mass",
+          "loss": 8.484185826754018e-06,
+          "complexity": 38,
+          "origin": "pysr"
+        },
+        {
+          "source": "((vx - y)*0.022316115561505943 - 0.13866844101721576)*(y*(vy + 0.024159404995675343)*(-0.17641429966442432)*y + (charge*(-0.19229685173327787)/(y*y) + charge/y)*sin(sin(sin(exp(y) - 0.23231343704143742))))/mass",
+          "loss": 8.214824698215413e-06,
+          "complexity": 39,
+          "origin": "pysr"
+        },
+        {
+          "source": "((vx - y)*0.025225553773548813 - 0.1487548654674624)*(y*(vy + 0.026628831204322148)*(-0.17895937175931473)*y + (charge*(-0.18757824368954343)/(y*y) + charge/y)*sin(sin(sin(sin(exp(y) - 0.2440952269827093)))))/mass",
+          "loss": 7.013047053263791e-06,
+          "complexity": 40,
+          "origin": "pysr"
+        },
+        {
+          "source": "((vx - y)*0.02055165784932532 - 0.1489202537272713)*((vy + 0.04901405090691827)*y*(charge + y)*(-0.19189437452812647) + (charge*(-0.20228041855244372)/(y*y) + charge/y)*sin(sin(sin(exp(y) - 0.25216689894728705))))/mass",
+          "loss": 6.532490402074886e-06,
+          "complexity": 41,
+          "origin": "pysr"
+        },
+        {
+          "source": "((vx - y)*0.031466710124007105 - 0.12882209462589245)*((vy + 0.059155901467759266)*y*(y + cos(x))*(-0.33993228980839524) + (charge*(-0.182362494686689)/(y*y) + charge/y)*sin(sin(sin(exp(y) - 0.2306186913345595))))/mass",
+          "loss": 5.109763066519254e-06,
+          "complexity": 42,
+          "origin": "pysr"
+        },
+        {
+          "source": "((vx - y)*0.03377441267179893 - 0.13939000604214227)*(y*(y + cos(x))*(vy + 0.06142997622229787)*(-0.33957211538918347) + (charge*(-0.17791326633606358)/(y*y) + charge/y)*sin(sin(sin(sin(exp(y) - 0.23355167590142106)))))/mass",
+          "loss": 3.8510686085521765e-06,
+          "complexity": 43,
+          "origin": "pysr"
+        },
+        {
+          "source": "((vx - y)*0.02274234188133451 - 0.15779887474455537)*((y + cos(x))*(charge + y)*(vy + 0.05466679469202005)*(-0.19943156337761717) + (charge*(-0.19335125865402508)/(y*y) + charge/y)*sin(sin(sin(sin(exp(y) - 0.2510606117446657)))))/mass",
+          "loss": 2.952806394017087e-06,
+          "complexity": 45,
+          "origin": "pysr"
+        },
+        {
+          "source": "((vx - y)*0.026631711662765595 - 0.16499957399569348)*((y + cos(x))*(vy + 0.057237032726802424)*(charge + y)*(-0.20266044071423084) + (charge*(-0.1870926004275892)/(y*y) + charge/y)*sin(sin(sin(sin(sin(exp(y) - 0.2564335461352269))))))/mass",
+          "loss": 2.69779646615622e-06,
+          "complexity": 46,
+          "origin": "pysr"
+        },
+        {
+          "source": "((charge + y)*(y + cos(x))*(-0.20202023959224313)*(vy + 0.058385077256342725) + (charge*(-0.18712989486988257)/(y*y) + charge/y)*sin(sin(sin(sin(sin(exp(y) - 0.25667583004077726))))))*sin((vx - y)*0.026735655538345518 - 0.16610512907236946)/mass",
+          "loss": 2.695699930250378e-06,
+          "complexity": 47,
+          "origin": "pysr"
+        },
+        {
+          "source": "((vy + 0.058385077256342725)*(y + cos(x))*(-0.20202023959224313)*(charge + y) + (charge*(-0.18712989486988257)/(y*y) + charge/y)*sin(sin(sin(sin(sin(exp(y) - 0.25667583004077726))))))*sin(sin((vx - y)*0.026738841650007863) - 0.16610512907236946)/mass",
+          "loss": 2.694533924546565e-06,
+          "complexity": 48,
+          "origin": "pysr"
+        }
+      ],
+      "ay": [
+        {
+          "source": "-0.04175303549860012",
+          "loss": 0.0009079251419687415,
+          "complexity": 1,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*(-0.041024240508214474)",
+          "loss": 0.0008115374465941849,
+          "complexity": 3,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(y)*(-0.05927417584665473)",
+          "loss": 0.0007418456371577384,
+          "complexity": 4,
+          "origin": "pysr"
+        },
+        {
+          "source": "(charge + y)*(-0.021778428695599532)",
+          "loss": 0.00041203089535283806,
+          "complexity": 5,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(y + 0.49540977923200125)*(-0.06278141416078122)",
+          "loss": 0.0003530687242811696,
+          "complexity": 6,
+          "origin": "pysr"
+        },
+        {
+          "source": "(charge + y)*(-0.022452774695568462)/mass",
+          "loss": 0.00025780747560631234,
+          "complexity": 7,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin((charge + y)*(-0.022471143131704487))/mass",
+          "loss": 0.0002577131801936201,
+          "complexity": 8,
+          "origin": "pysr"
+        },
+        {
+          "source": "(y + 1.6512429863707385)*charge*(-0.018046067217940887)/mass",
+          "loss": 0.00014677822050631974,
+          "complexity": 9,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin((y + 1.6512429863707385)*(-0.018046067217940887))/mass",
+          "loss": 0.00014671164457682648,
+          "complexity": 10,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*(y + 1.5073541696121513)*(-0.018719609230405436)/(mass + vx)",
+          "loss": 7.332151182097702e-05,
+          "complexity": 11,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*(y + 1.5087665086897488)*(-0.01877766783125735)/(mass + sin(vx))",
+          "loss": 7.282902303330212e-05,
+          "complexity": 12,
+          "origin": "pysr"
+        },
+        {
+          "source": "(y + 1.590244034274221)*charge*(-0.018773048752644475)/(mass*vx + mass)",
+          "loss": 5.491488671020095e-05,
+          "complexity": 13,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*(y + 1.5582682020774066)*(0.21803276613759245**x*0.0005098559716719486 - 0.022527559057058208)/mass",
+          "loss": 3.14054890185925e-05,
+          "complexity": 15,
+          "origin": "pysr"
+        },
+        {
+          "source": "(y + 1.5582682020774066)*sin(charge*(0.21803276613759245**x*0.0005098559716719486 - 0.022527559057058208)/mass)",
+          "loss": 3.139752940748203e-05,
+          "complexity": 16,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*((y + 1.1080911139909686)/(mass + vx*y) + 0.24233475910101665/y)*(-0.020249656752265446)",
+          "loss": 3.0630403817266345e-05,
+          "complexity": 17,
+          "origin": "pysr"
+        },
+        {
+          "source": "((y + 1.1080911139909686)/(mass + sin(vx*y)) + 0.24233475910101665/y)*charge*(-0.020249656752265446)",
+          "loss": 3.0262672186801557e-05,
+          "complexity": 18,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*(0.21986716895975802**x*0.00038930323073628546 - 0.018961838820349092*(y + 1.6943499916496536)/(mass*vx + mass))",
+          "loss": 1.460169326713965e-05,
+          "complexity": 19,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(charge*(0.21986716895975802**x*0.00038930323073628546 + (y + 1.6943499916496536)*(-0.018961838820349092)/(mass*vx + mass)))",
+          "loss": 1.459003750923518e-05,
+          "complexity": 20,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*(0.215158884736786**x*0.0003926601769658874 + (y + 1.735882033965091)*(-0.01891402987519703)/(mass**0.9084240020732719 + mass*vx))",
+          "loss": 1.3254062958502678e-05,
+          "complexity": 21,
+          "origin": "pysr"
+        },
+        {
+          "source": "(0.24924234036515266**x*0.0002851314956627695/exp(y) + (y + 1.8239026837743182)*charge*(-0.017817647732790473))/(mass + vx*y)",
+          "loss": 8.579957839459078e-06,
+          "complexity": 22,
+          "origin": "pysr"
+        },
+        {
+          "source": "(0.2456980202726894**x*0.00026459287269600863/exp(y) + (y + 1.8233921466467402)*(-0.017834526978336943)*charge)/(mass + sin(vx*y))",
+          "loss": 8.037282679560072e-06,
+          "complexity": 23,
+          "origin": "pysr"
+        },
+        {
+          "source": "(0.22219705808162346**x*0.00020305736772118527/exp(y) + charge*(y + 1.8127412101182432)*(-0.01862197310801939))/(mass + y*(vx + 0.03388666008615656))",
+          "loss": 6.575683865162041e-06,
+          "complexity": 24,
+          "origin": "pysr"
+        },
+        {
+          "source": "(0.22321125390734242**x*0.0002071867374757589/exp(y) + charge*(-0.01851008105407396)*(y + 1.8120537760293025))/(mass + sin(y*(vx + 0.029646186561057573)))",
+          "loss": 6.455970243666418e-06,
+          "complexity": 25,
+          "origin": "pysr"
+        },
+        {
+          "source": "(0.2254537529181145**x*0.00022147999777985154/exp(y) + charge*(y + 1.8159640100614136)*(-0.01920486265522628))/(mass + y*(vx + 0.0308336708890085) + 0.0308336708890085)",
+          "loss": 6.04592103200305e-06,
+          "complexity": 26,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(0.2254537529181145**x*0.00022147999777985154/exp(y) + (y + 1.8159640100614136)*(-0.01920486265522628)*charge)/(mass + y*(vx + 0.029322173108387566) + 0.0308336708890085)",
+          "loss": 6.045826790026819e-06,
+          "complexity": 27,
+          "origin": "pysr"
+        },
+        {
+          "source": "((y + 1.815536807329207)*charge*(-0.019403293479072405) + (0.2201111806687854**mass)**x*0.00021250909942059388/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.478859535701356e-06,
+          "complexity": 28,
+          "origin": "pysr"
+        },
+        {
+          "source": "(charge*sin((y + 1.815536807329207)*(-0.019408165749300748)) + (0.2201111806687854**mass)**x*0.00021250909942059388/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.472608888629067e-06,
+          "complexity": 29,
+          "origin": "pysr"
+        },
+        {
+          "source": "(charge*sin(sin((y + 1.815536807329207)*(-0.019408165749300748))) + (0.2201111806687854**mass)**x*0.00021250909942059388/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.466243167583748e-06,
+          "complexity": 30,
+          "origin": "pysr"
+        },
+        {
+          "source": "(charge*sin(sin(sin((y + 1.815536807329207)*(-0.01940938439048826)))) + (0.2201111806687854**x)**mass*0.00021250909942059388/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.461931651188718e-06,
+          "complexity": 31,
+          "origin": "pysr"
+        },
+        {
+          "source": "(charge*sin(sin(sin(sin((y + 1.815536807329207)*(-0.01941182236172421))))) + 0.00021250909942059388*(0.2201111806687854**x)**mass/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.459165723689396e-06,
+          "complexity": 32,
+          "origin": "pysr"
+        },
+        {
+          "source": "(charge*sin(sin(sin(sin(sin((y + 1.815536807329207)*(-0.01941182236172421)))))) + 0.00021250909942059388*(0.2201111806687854**mass)**x/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.4582853035474455e-06,
+          "complexity": 33,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin(sin(sin(sin(sin((0.24413011670117418**x)**mass*0.0008139437947768979/exp(y) + sin(y*(-0.05886908587895961) - 0.10391387301690105))))/(mass + vx*y))))))*charge*0.3266828352352274",
+          "loss": 5.453289634012301e-06,
+          "complexity": 35,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05894095049435355) + (0.24415239397050456**mass)**x*0.0008214817993376941/exp(y) - 0.10445634725096309)))))/(mass + vx*y))))))*charge*0.32701538547488473",
+          "loss": 5.425695189497347e-06,
+          "complexity": 36,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(sin(sin(0.0008214817993376941*(0.24415239397050456**mass)**x/exp(y) + sin(sin(sin(y*(-0.05894095049435355) - 0.10445634725096309)))))/(mass + vx*y))))))*0.32747854304362023)",
+          "loss": 5.423265680145813e-06,
+          "complexity": 37,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(0.0008214817993376941*(0.24415239397050456**mass)**x/exp(y) + sin(sin(y*(-0.05894095049435355) - 0.10445634725096309)))))/(mass + vx*y))))))*0.32747854304362023))",
+          "loss": 5.417830385201428e-06,
+          "complexity": 38,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin((0.24394439517768024**x)**mass*0.0008272058957767874/exp(y) + sin(y*(-0.05952195809953992)) - 0.10452361077513572))))))/(mass + vx*y))))))*0.32758705891379986)",
+          "loss": 5.407651464717939e-06,
+          "complexity": 39,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin((0.24415405600863066**mass)**x*0.0008225188891712241/exp(y) + sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05996838661694198)))))) - 0.10378591902995031)))))/(mass + vx*y))))))*0.3274761606668443",
+          "loss": 5.394308121701672e-06,
+          "complexity": 41,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(sin((0.24415405600863066**mass)**x*0.0008225188891712241/exp(y) + sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05996838661694198)))))) - 0.10378591902995031)))))/(mass + vx*y))))))*0.3274761606668443)",
+          "loss": 5.3893196611986846e-06,
+          "complexity": 42,
+          "origin": "pysr"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(((0.24415405600863066**mass)**x*0.0008225188891712241/exp(y) + sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05996838661694198))))))) - 0.10378591902995031))))))/(mass + vx*y))))))*0.3274761606668443)",
+          "loss": 5.387107285787783e-06,
+          "complexity": 43,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin((sin(sin((0.24748212029302358**x)**mass*0.0009221695771196279/exp(y))) + sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.06980510349005559)))))))))) - 0.11513340244350571)))))))/(mass + vx*y)))))*charge*0.29450174179758465",
+          "loss": 5.319125341968115e-06,
+          "complexity": 47,
+          "origin": "pysr"
+        }
+      ]
+    },
+    "elapsed_seconds": 60.903251476585865,
+    "search_budget_exceeded": true,
+    "axis_candidates": {
+      "ax": [
+        {
+          "law_spec": {
+            "ax": "((vy + c1) * (y + cos(x)) * c2 * (q('charge') + y) + (q('charge') * c3 / (y * y) + q('charge') / y) * sin(sin(sin(sin(sin(exp(y) - c4)))))) * sin(sin((vx - y) * c5) - c6) / q('mass')",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.058385077256342725
+            },
+            {
+              "name": "c2",
+              "initial": -0.20202023959224313
+            },
+            {
+              "name": "c3",
+              "initial": -0.18712989486988257
+            },
+            {
+              "name": "c4",
+              "initial": 0.25667583004077726
+            },
+            {
+              "name": "c5",
+              "initial": 0.026738841650007863
+            },
+            {
+              "name": "c6",
+              "initial": 0.16610512907236946
+            }
+          ],
+          "component": "ax",
+          "source": "((vy + 0.058385077256342725)*(y + cos(x))*(-0.20202023959224313)*(charge + y) + (charge*(-0.18712989486988257)/(y*y) + charge/y)*sin(sin(sin(sin(sin(exp(y) - 0.25667583004077726))))))*sin(sin((vx - y)*0.026738841650007863) - 0.16610512907236946)/mass",
+          "loss": 2.694533924546575e-06,
+          "complexity": 48,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "((q('charge') + y) * (y + cos(x)) * c1 * (vy + c2) + (q('charge') * c3 / (y * y) + q('charge') / y) * sin(sin(sin(sin(sin(exp(y) - c4)))))) * sin((vx - y) * c5 - c6) / q('mass')",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.20202023959224313
+            },
+            {
+              "name": "c2",
+              "initial": 0.058385077256342725
+            },
+            {
+              "name": "c3",
+              "initial": -0.18712989486988257
+            },
+            {
+              "name": "c4",
+              "initial": 0.25667583004077726
+            },
+            {
+              "name": "c5",
+              "initial": 0.026735655538345518
+            },
+            {
+              "name": "c6",
+              "initial": 0.16610512907236946
+            }
+          ],
+          "component": "ax",
+          "source": "((charge + y)*(y + cos(x))*(-0.20202023959224313)*(vy + 0.058385077256342725) + (charge*(-0.18712989486988257)/(y*y) + charge/y)*sin(sin(sin(sin(sin(exp(y) - 0.25667583004077726))))))*sin((vx - y)*0.026735655538345518 - 0.16610512907236946)/mass",
+          "loss": 2.6956999302503845e-06,
+          "complexity": 47,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "((vx - y) * c1 - c2) * ((y + cos(x)) * (vy + c3) * (q('charge') + y) * c4 + (q('charge') * c5 / (y * y) + q('charge') / y) * sin(sin(sin(sin(sin(exp(y) - c6)))))) / q('mass')",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.026631711662765595
+            },
+            {
+              "name": "c2",
+              "initial": 0.16499957399569348
+            },
+            {
+              "name": "c3",
+              "initial": 0.057237032726802424
+            },
+            {
+              "name": "c4",
+              "initial": -0.20266044071423084
+            },
+            {
+              "name": "c5",
+              "initial": -0.1870926004275892
+            },
+            {
+              "name": "c6",
+              "initial": 0.2564335461352269
+            }
+          ],
+          "component": "ax",
+          "source": "((vx - y)*0.026631711662765595 - 0.16499957399569348)*((y + cos(x))*(vy + 0.057237032726802424)*(charge + y)*(-0.20266044071423084) + (charge*(-0.1870926004275892)/(y*y) + charge/y)*sin(sin(sin(sin(sin(exp(y) - 0.2564335461352269))))))/mass",
+          "loss": 2.6977964661562275e-06,
+          "complexity": 46,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        }
+      ],
+      "ay": [
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "sin(sin(sin(sin(sin(sin(sin(sin((c1 ** x) ** q('mass') * c2 / exp(y) + sin(y * c3 - c4)))) / (q('mass') + vx * y)))))) * q('charge') * c5"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.24413011670117418
+            },
+            {
+              "name": "c2",
+              "initial": 0.0008139437947768979
+            },
+            {
+              "name": "c3",
+              "initial": -0.05886908587895961
+            },
+            {
+              "name": "c4",
+              "initial": 0.10391387301690105
+            },
+            {
+              "name": "c5",
+              "initial": 0.3266828352352274
+            }
+          ],
+          "component": "ay",
+          "source": "sin(sin(sin(sin(sin(sin(sin(sin((0.24413011670117418**x)**mass*0.0008139437947768979/exp(y) + sin(y*(-0.05886908587895961) - 0.10391387301690105))))/(mass + vx*y))))))*charge*0.3266828352352274",
+          "loss": 5.453289634012303e-06,
+          "complexity": 35,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "(q('charge') * sin(sin(sin(sin(sin((y + c1) * c2))))) + c3 * (c4 ** q('mass')) ** x / exp(y)) / (q('mass') + y * (vx + c5) + c6)"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 1.815536807329207
+            },
+            {
+              "name": "c2",
+              "initial": -0.01941182236172421
+            },
+            {
+              "name": "c3",
+              "initial": 0.00021250909942059388
+            },
+            {
+              "name": "c4",
+              "initial": 0.2201111806687854
+            },
+            {
+              "name": "c5",
+              "initial": 0.02878793081424535
+            },
+            {
+              "name": "c6",
+              "initial": 0.040236689986302074
+            }
+          ],
+          "component": "ay",
+          "source": "(charge*sin(sin(sin(sin(sin((y + 1.815536807329207)*(-0.01941182236172421)))))) + 0.00021250909942059388*(0.2201111806687854**mass)**x/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.45828530354745e-06,
+          "complexity": 33,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "(q('charge') * sin(sin(sin(sin((y + c1) * c2)))) + c3 * (c4 ** x) ** q('mass') / exp(y)) / (q('mass') + y * (vx + c5) + c6)"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 1.815536807329207
+            },
+            {
+              "name": "c2",
+              "initial": -0.01941182236172421
+            },
+            {
+              "name": "c3",
+              "initial": 0.00021250909942059388
+            },
+            {
+              "name": "c4",
+              "initial": 0.2201111806687854
+            },
+            {
+              "name": "c5",
+              "initial": 0.02878793081424535
+            },
+            {
+              "name": "c6",
+              "initial": 0.040236689986302074
+            }
+          ],
+          "component": "ay",
+          "source": "(charge*sin(sin(sin(sin((y + 1.815536807329207)*(-0.01941182236172421))))) + 0.00021250909942059388*(0.2201111806687854**x)**mass/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.4591657236894e-06,
+          "complexity": 32,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        }
+      ]
+    },
+    "rejection_counts": {
+      "dsl_export": 8,
+      "sharing_no_supported_proposal": 4
+    },
+    "rejection_examples": [
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05894095049435355) + (0.24415239397050456**mass)**x*0.0008214817993376941/exp(y) - 0.10445634725096309)))))/(mass + vx*y))))))*charge*0.32701538547488473"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "charge*sin(sin(sin(sin(sin(sin(sin(sin(0.0008214817993376941*(0.24415239397050456**mass)**x/exp(y) + sin(sin(sin(y*(-0.05894095049435355) - 0.10445634725096309)))))/(mass + vx*y))))))*0.32747854304362023)"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "charge*sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(0.0008214817993376941*(0.24415239397050456**mass)**x/exp(y) + sin(sin(y*(-0.05894095049435355) - 0.10445634725096309)))))/(mass + vx*y))))))*0.32747854304362023))"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "charge*sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin((0.24394439517768024**x)**mass*0.0008272058957767874/exp(y) + sin(y*(-0.05952195809953992)) - 0.10452361077513572))))))/(mass + vx*y))))))*0.32758705891379986)"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "charge*sin(sin(sin(sin(sin(sin((0.24415405600863066**mass)**x*0.0008225188891712241/exp(y) + sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05996838661694198)))))) - 0.10378591902995031)))))/(mass + vx*y))))))*0.3274761606668443"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "charge*sin(sin(sin(sin(sin(sin(sin((0.24415405600863066**mass)**x*0.0008225188891712241/exp(y) + sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05996838661694198)))))) - 0.10378591902995031)))))/(mass + vx*y))))))*0.3274761606668443)"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "charge*sin(sin(sin(sin(sin(sin(((0.24415405600863066**mass)**x*0.0008225188891712241/exp(y) + sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05996838661694198))))))) - 0.10378591902995031))))))/(mass + vx*y))))))*0.3274761606668443)"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "sin(sin(sin(sin((sin(sin((0.24748212029302358**x)**mass*0.0009221695771196279/exp(y))) + sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.06980510349005559)))))))))) - 0.11513340244350571)))))))/(mass + vx*y)))))*charge*0.29450174179758465"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "((vy + c1) * (y + cos(x)) * c2 * (q('charge') + y) + (q('charge') * c3 / (y * y) + q('charge') / y) * sin(sin(sin(sin(sin(exp(y) - c4)))))) * sin(sin((vx - y) * c5) - c6) / q('mass')",
+        "ay": "sin(sin(sin(sin(sin(sin(sin(sin((c7 ** x) ** q('mass') * c8 / exp(y) + sin(y * c9 - c10)))) / (q('mass') + vx * y)))))) * q('charge') * c11"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "((q('charge') + y) * (y + cos(x)) * c1 * (vy + c2) + (q('charge') * c3 / (y * y) + q('charge') / y) * sin(sin(sin(sin(sin(exp(y) - c4)))))) * sin((vx - y) * c5 - c6) / q('mass')",
+        "ay": "sin(sin(sin(sin(sin(sin(sin(sin((c7 ** x) ** q('mass') * c8 / exp(y) + sin(y * c9 - c10)))) / (q('mass') + vx * y)))))) * q('charge') * c11"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "((vx - y) * c1 - c2) * ((y + cos(x)) * (vy + c3) * (q('charge') + y) * c4 + (q('charge') * c5 / (y * y) + q('charge') / y) * sin(sin(sin(sin(sin(exp(y) - c6)))))) / q('mass')",
+        "ay": "sin(sin(sin(sin(sin(sin(sin(sin((c7 ** x) ** q('mass') * c8 / exp(y) + sin(y * c9 - c10)))) / (q('mass') + vx * y)))))) * q('charge') * c11"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "((vy + c1) * (y + cos(x)) * c2 * (q('charge') + y) + (q('charge') * c3 / (y * y) + q('charge') / y) * sin(sin(sin(sin(sin(exp(y) - c4)))))) * sin(sin((vx - y) * c5) - c6) / q('mass')",
+        "ay": "(q('charge') * sin(sin(sin(sin(sin((y + c7) * c8))))) + c9 * (c10 ** q('mass')) ** x / exp(y)) / (q('mass') + y * (vx + c11) + c12)"
+      }
+    ],
+    "rejected_candidate_pairs": 0,
+    "candidate_selection": {
+      "strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
+      "normalized_resolution_tolerance": 1.8485433737340303e-10,
+      "legal_pairs": 272,
+      "over_budget_pairs_retained": 752,
+      "sharing_attempts_cached": 4,
+      "sharing_unattempted_pairs": 748,
+      "rejection_stage_counts": {
+        "axis": 8,
+        "sharing": 4
+      },
+      "rejected_candidates_total": 12,
+      "unchecked_axis_equations": 0,
+      "rollout_candidates_considered": 3,
+      "axis_frontier_counts": [
+        32,
+        32
+      ],
+      "full_axis_equations_retained": true,
+      "selection_incomplete": false,
+      "stop_reason": null,
+      "retained_checkpoint": false,
+      "independent_validation": false
+    },
+    "packaging_axis_equations": {
+      "ax": [
+        {
+          "source": "-0.050111382896444005",
+          "loss": 0.011701714763616367,
+          "complexity": 1,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.0627436766822605/y",
+          "loss": 0.00464857056998973,
+          "complexity": 3,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "0.044023221943543044/(y - 0.7100460977472658)",
+          "loss": 0.002076435961350749,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(0.04346017373513449/(y - 0.7066895737459178))",
+          "loss": 0.0020752260817382233,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*0.04297960959844905/(y - 0.7291738181879798)",
+          "loss": 0.001374054672778819,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(charge*0.04310708493265468/(y - 0.7279069532850282))",
+          "loss": 0.0013706154797176282,
+          "complexity": 8,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*0.04311004720683486/(mass*(y - 0.7498989851295025))",
+          "loss": 0.0005197594186483324,
+          "complexity": 9,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*sin(0.043580061551349754/(y - 0.751573296692411))/mass",
+          "loss": 0.0005195201774187165,
+          "complexity": 10,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.062069844064758316*charge*sin(exp(y))/(mass*y)",
+          "loss": 0.0003486970470351183,
+          "complexity": 11,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*sin(exp(y))*(-0.059611986425371896)/(sin(y)*mass)",
+          "loss": 0.00018195656225811964,
+          "complexity": 12,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05752140909308793*charge*sin(exp(y))/(mass*sin(sin(y)))",
+          "loss": 0.00014783356663548955,
+          "complexity": 13,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(sin(exp(y)) - 0.09142307563285304)*charge*(-0.06496402671590933)/(sin(y)*mass)",
+          "loss": 8.360091699880049e-05,
+          "complexity": 14,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(exp(y) - 0.3203929333098542)*(-0.12074646544813324)*charge/(mass*(y + 0.3725913855974634))",
+          "loss": 5.469031815753568e-05,
+          "complexity": 15,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*sin(-0.12104181538670825/(y + 0.3725913855974634))*sin(exp(y) - 0.3203929333098542)/mass",
+          "loss": 5.444429570121332e-05,
+          "complexity": 16,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*(-0.12255251555625396)*sin(exp(y) - 0.120493771159529)/((y + 0.18551470267995046/y)*mass)",
+          "loss": 4.7985620026766293e-05,
+          "complexity": 17,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*(-0.13471220483448795)*sin(sin(exp(y) - 0.13471220483448795))/((y + 0.1581169401633466/y)*mass)",
+          "loss": 3.941998086906465e-05,
+          "complexity": 18,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*sin(sin(sin(exp(y) - 0.14484907499341187)))*(-0.14484907499341187)/(mass*(y + 0.1423417307913768/y))",
+          "loss": 3.5770742034187654e-05,
+          "complexity": 19,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*(-0.15423626394800127)*sin(sin(sin(sin(exp(y) - 0.15887115345454186))))/((y + 0.1326684844703738/y)*mass)",
+          "loss": 3.422580658729338e-05,
+          "complexity": 20,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(exp(y) - 0.1734496427642016)))))*(-0.1631607267478846)/((y + 0.12537298812870432/y)*mass)",
+          "loss": 3.3784716110531686e-05,
+          "complexity": 21,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(exp(y) - 0.264746639833825)*(charge/y + charge*(-0.21760790748904774)/(y*sin(y)))*(-0.1322435731775214)/mass",
+          "loss": 2.9227388782162805e-05,
+          "complexity": 22,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(exp(y) - 0.2753113113553925))*(-0.14777870225271375)*(charge/y + charge*(-0.20737806785239732)/(y*sin(y)))/mass",
+          "loss": 2.405735507307053e-05,
+          "complexity": 23,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(exp(y) - 0.2808228331143017)))*(-0.16087936887662968)*(charge/y + charge*(-0.20098678536742134)/(sin(y)*y))/mass",
+          "loss": 2.3568785929724636e-05,
+          "complexity": 24,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(charge/y + charge*(-0.20051159172643732)/(y*sin(y)))*sin(sin(sin(sin(exp(y) - 0.2832412425924174)))*(-0.16089938574890592))/mass",
+          "loss": 2.35676076208319e-05,
+          "complexity": 25,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(vy*(-0.8617427145781095) + (charge/y + (charge/(y*y) - 0.6732259453741865)*(-0.20063526678018287))*sin(exp(y) - 0.256558164047498))*(-0.1141630613135912)/mass",
+          "loss": 1.940620606202648e-05,
+          "complexity": 27,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "(vy*(-0.857899076222005) + (charge/y + (charge/(y*y) - 0.6770020055322428)*(-0.1950810797646524))*sin(sin(exp(y) - 0.27473551144193775)))*(-0.13255981634336725)/mass",
+          "loss": 1.1394663402572876e-05,
+          "complexity": 28,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "(vy*(-0.8530124384942861) + (charge/y + (charge/(y*y) - 0.7169525838071039)*(-0.18857693772479223))*sin(sin(sin(exp(y) - 0.28635524862482403))))*(-0.14564068292298285)/mass",
+          "loss": 9.931983050141819e-06,
+          "complexity": 29,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "(vy*(vx - 0.8652851631605846) + (charge/y + (charge/(y*y) - 0.6036461475234607)*(-0.19034954855554412))*sin(sin(exp(y) - 0.27510619121318025)))*(-0.1321327122213017)/mass",
+          "loss": 9.676909491654049e-06,
+          "complexity": 30,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "(charge*vy/(-1.1795919389921905) + (charge/y + (charge/(-1.1802211955234212) + charge/(y*y))*(-0.19051386060071598))*sin(sin(exp(y) - 0.2614617813277637)))*(-0.1263743930347675)/mass",
+          "loss": 9.171514355396541e-06,
+          "complexity": 32,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "((vx - y)*0.02422851350517553 - 0.15249232724862471)*(y*y*vy*(-0.1495254009700152) + (charge*(-0.1927120417841938)/(y*y) + charge/y)*sin(sin(sin(sin(exp(y) - 0.2520374332471184)))))/mass",
+          "loss": 8.484185826754028e-06,
+          "complexity": 38,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "((vx - y)*0.022316115561505943 - 0.13866844101721576)*(y*(vy + 0.024159404995675343)*(-0.17641429966442432)*y + (charge*(-0.19229685173327787)/(y*y) + charge/y)*sin(sin(sin(exp(y) - 0.23231343704143742))))/mass",
+          "loss": 8.214824698215425e-06,
+          "complexity": 39,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "((vx - y)*0.025225553773548813 - 0.1487548654674624)*(y*(vy + 0.026628831204322148)*(-0.17895937175931473)*y + (charge*(-0.18757824368954343)/(y*y) + charge/y)*sin(sin(sin(sin(exp(y) - 0.2440952269827093)))))/mass",
+          "loss": 7.0130470532638016e-06,
+          "complexity": 40,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "((vx - y)*0.02055165784932532 - 0.1489202537272713)*((vy + 0.04901405090691827)*y*(charge + y)*(-0.19189437452812647) + (charge*(-0.20228041855244372)/(y*y) + charge/y)*sin(sin(sin(exp(y) - 0.25216689894728705))))/mass",
+          "loss": 6.532490402074901e-06,
+          "complexity": 41,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "((vx - y)*0.031466710124007105 - 0.12882209462589245)*((vy + 0.059155901467759266)*y*(y + cos(x))*(-0.33993228980839524) + (charge*(-0.182362494686689)/(y*y) + charge/y)*sin(sin(sin(exp(y) - 0.2306186913345595))))/mass",
+          "loss": 5.1097630665192586e-06,
+          "complexity": 42,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "((vx - y)*0.03377441267179893 - 0.13939000604214227)*(y*(y + cos(x))*(vy + 0.06142997622229787)*(-0.33957211538918347) + (charge*(-0.17791326633606358)/(y*y) + charge/y)*sin(sin(sin(sin(exp(y) - 0.23355167590142106)))))/mass",
+          "loss": 3.851068608552182e-06,
+          "complexity": 43,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "((vx - y)*0.02274234188133451 - 0.15779887474455537)*((y + cos(x))*(charge + y)*(vy + 0.05466679469202005)*(-0.19943156337761717) + (charge*(-0.19335125865402508)/(y*y) + charge/y)*sin(sin(sin(sin(exp(y) - 0.2510606117446657)))))/mass",
+          "loss": 2.952806394017086e-06,
+          "complexity": 45,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "((vx - y)*0.026631711662765595 - 0.16499957399569348)*((y + cos(x))*(vy + 0.057237032726802424)*(charge + y)*(-0.20266044071423084) + (charge*(-0.1870926004275892)/(y*y) + charge/y)*sin(sin(sin(sin(sin(exp(y) - 0.2564335461352269))))))/mass",
+          "loss": 2.6977964661562275e-06,
+          "complexity": 46,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "((charge + y)*(y + cos(x))*(-0.20202023959224313)*(vy + 0.058385077256342725) + (charge*(-0.18712989486988257)/(y*y) + charge/y)*sin(sin(sin(sin(sin(exp(y) - 0.25667583004077726))))))*sin((vx - y)*0.026735655538345518 - 0.16610512907236946)/mass",
+          "loss": 2.6956999302503845e-06,
+          "complexity": 47,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "((vy + 0.058385077256342725)*(y + cos(x))*(-0.20202023959224313)*(charge + y) + (charge*(-0.18712989486988257)/(y*y) + charge/y)*sin(sin(sin(sin(sin(exp(y) - 0.25667583004077726))))))*sin(sin((vx - y)*0.026738841650007863) - 0.16610512907236946)/mass",
+          "loss": 2.694533924546575e-06,
+          "complexity": 48,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        }
+      ],
+      "ay": [
+        {
+          "source": "-0.04175303549860012",
+          "loss": 0.0009079251419687418,
+          "complexity": 1,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*(-0.041024240508214474)",
+          "loss": 0.0008115374465941851,
+          "complexity": 3,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(y)*(-0.05927417584665473)",
+          "loss": 0.0007418456371577387,
+          "complexity": 4,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(charge + y)*(-0.021778428695599532)",
+          "loss": 0.00041203089535283823,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(y + 0.49540977923200125)*(-0.06278141416078122)",
+          "loss": 0.0003530687242811697,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "(charge + y)*(-0.022452774695568462)/mass",
+          "loss": 0.00025780747560631245,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "sin((charge + y)*(-0.022471143131704487))/mass",
+          "loss": 0.00025771318019362024,
+          "complexity": 8,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(y + 1.6512429863707385)*charge*(-0.018046067217940887)/mass",
+          "loss": 0.0001467782205063198,
+          "complexity": 9,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*sin((y + 1.6512429863707385)*(-0.018046067217940887))/mass",
+          "loss": 0.00014671164457682654,
+          "complexity": 10,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*(y + 1.5073541696121513)*(-0.018719609230405436)/(mass + vx)",
+          "loss": 7.332151182097704e-05,
+          "complexity": 11,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*(y + 1.5087665086897488)*(-0.01877766783125735)/(mass + sin(vx))",
+          "loss": 7.282902303330213e-05,
+          "complexity": 12,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "(y + 1.590244034274221)*charge*(-0.018773048752644475)/(mass*vx + mass)",
+          "loss": 5.491488671020098e-05,
+          "complexity": 13,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*(y + 1.5582682020774066)*(0.21803276613759245**x*0.0005098559716719486 - 0.022527559057058208)/mass",
+          "loss": 3.140548901859251e-05,
+          "complexity": 15,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "(y + 1.5582682020774066)*sin(charge*(0.21803276613759245**x*0.0005098559716719486 - 0.022527559057058208)/mass)",
+          "loss": 3.139752940748205e-05,
+          "complexity": 16,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*((y + 1.1080911139909686)/(mass + vx*y) + 0.24233475910101665/y)*(-0.020249656752265446)",
+          "loss": 3.063040381726636e-05,
+          "complexity": 17,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "((y + 1.1080911139909686)/(mass + sin(vx*y)) + 0.24233475910101665/y)*charge*(-0.020249656752265446)",
+          "loss": 3.026267218680157e-05,
+          "complexity": 18,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*(0.21986716895975802**x*0.00038930323073628546 - 0.018961838820349092*(y + 1.6943499916496536)/(mass*vx + mass))",
+          "loss": 1.4601693267139655e-05,
+          "complexity": 19,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(charge*(0.21986716895975802**x*0.00038930323073628546 + (y + 1.6943499916496536)*(-0.018961838820349092)/(mass*vx + mass)))",
+          "loss": 1.4590037509235185e-05,
+          "complexity": 20,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "charge*(0.215158884736786**x*0.0003926601769658874 + (y + 1.735882033965091)*(-0.01891402987519703)/(mass**0.9084240020732719 + mass*vx))",
+          "loss": 1.3254062958502681e-05,
+          "complexity": 21,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.24924234036515266**x*0.0002851314956627695/exp(y) + (y + 1.8239026837743182)*charge*(-0.017817647732790473))/(mass + vx*y)",
+          "loss": 8.579957839459082e-06,
+          "complexity": 22,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.2456980202726894**x*0.00026459287269600863/exp(y) + (y + 1.8233921466467402)*(-0.017834526978336943)*charge)/(mass + sin(vx*y))",
+          "loss": 8.037282679560079e-06,
+          "complexity": 23,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.22219705808162346**x*0.00020305736772118527/exp(y) + charge*(y + 1.8127412101182432)*(-0.01862197310801939))/(mass + y*(vx + 0.03388666008615656))",
+          "loss": 6.575683865162043e-06,
+          "complexity": 24,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.22321125390734242**x*0.0002071867374757589/exp(y) + charge*(-0.01851008105407396)*(y + 1.8120537760293025))/(mass + sin(y*(vx + 0.029646186561057573)))",
+          "loss": 6.455970243666422e-06,
+          "complexity": 25,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.2254537529181145**x*0.00022147999777985154/exp(y) + charge*(y + 1.8159640100614136)*(-0.01920486265522628))/(mass + y*(vx + 0.0308336708890085) + 0.0308336708890085)",
+          "loss": 6.045921032003053e-06,
+          "complexity": 26,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(0.2254537529181145**x*0.00022147999777985154/exp(y) + (y + 1.8159640100614136)*(-0.01920486265522628)*charge)/(mass + y*(vx + 0.029322173108387566) + 0.0308336708890085)",
+          "loss": 6.045826790026824e-06,
+          "complexity": 27,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "((y + 1.815536807329207)*charge*(-0.019403293479072405) + (0.2201111806687854**mass)**x*0.00021250909942059388/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.47885953570136e-06,
+          "complexity": 28,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "(charge*sin((y + 1.815536807329207)*(-0.019408165749300748)) + (0.2201111806687854**mass)**x*0.00021250909942059388/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.472608888629072e-06,
+          "complexity": 29,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "(charge*sin(sin((y + 1.815536807329207)*(-0.019408165749300748))) + (0.2201111806687854**mass)**x*0.00021250909942059388/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.466243167583754e-06,
+          "complexity": 30,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "(charge*sin(sin(sin((y + 1.815536807329207)*(-0.01940938439048826)))) + (0.2201111806687854**x)**mass*0.00021250909942059388/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.461931651188722e-06,
+          "complexity": 31,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "(charge*sin(sin(sin(sin((y + 1.815536807329207)*(-0.01941182236172421))))) + 0.00021250909942059388*(0.2201111806687854**x)**mass/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.4591657236894e-06,
+          "complexity": 32,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "(charge*sin(sin(sin(sin(sin((y + 1.815536807329207)*(-0.01941182236172421)))))) + 0.00021250909942059388*(0.2201111806687854**mass)**x/exp(y))/(mass + y*(vx + 0.02878793081424535) + 0.040236689986302074)",
+          "loss": 5.45828530354745e-06,
+          "complexity": 33,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(sin(sin(sin(sin(sin((0.24413011670117418**x)**mass*0.0008139437947768979/exp(y) + sin(y*(-0.05886908587895961) - 0.10391387301690105))))/(mass + vx*y))))))*charge*0.3266828352352274",
+          "loss": 5.453289634012303e-06,
+          "complexity": 35,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05894095049435355) + (0.24415239397050456**mass)**x*0.0008214817993376941/exp(y) - 0.10445634725096309)))))/(mass + vx*y))))))*charge*0.32701538547488473",
+          "loss": 5.425695189497347e-06,
+          "complexity": 36,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(sin(sin(0.0008214817993376941*(0.24415239397050456**mass)**x/exp(y) + sin(sin(sin(y*(-0.05894095049435355) - 0.10445634725096309)))))/(mass + vx*y))))))*0.32747854304362023)",
+          "loss": 5.423265680145813e-06,
+          "complexity": 37,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(0.0008214817993376941*(0.24415239397050456**mass)**x/exp(y) + sin(sin(y*(-0.05894095049435355) - 0.10445634725096309)))))/(mass + vx*y))))))*0.32747854304362023))",
+          "loss": 5.417830385201428e-06,
+          "complexity": 38,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin((0.24394439517768024**x)**mass*0.0008272058957767874/exp(y) + sin(y*(-0.05952195809953992)) - 0.10452361077513572))))))/(mass + vx*y))))))*0.32758705891379986)",
+          "loss": 5.407651464717939e-06,
+          "complexity": 39,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin((0.24415405600863066**mass)**x*0.0008225188891712241/exp(y) + sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05996838661694198)))))) - 0.10378591902995031)))))/(mass + vx*y))))))*0.3274761606668443",
+          "loss": 5.394308121701672e-06,
+          "complexity": 41,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(sin((0.24415405600863066**mass)**x*0.0008225188891712241/exp(y) + sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05996838661694198)))))) - 0.10378591902995031)))))/(mass + vx*y))))))*0.3274761606668443)",
+          "loss": 5.3893196611986846e-06,
+          "complexity": 42,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "charge*sin(sin(sin(sin(sin(sin(((0.24415405600863066**mass)**x*0.0008225188891712241/exp(y) + sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.05996838661694198))))))) - 0.10378591902995031))))))/(mass + vx*y))))))*0.3274761606668443)",
+          "loss": 5.387107285787783e-06,
+          "complexity": 43,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "sin(sin(sin(sin((sin(sin((0.24748212029302358**x)**mass*0.0009221695771196279/exp(y))) + sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(y*(-0.06980510349005559)))))))))) - 0.11513340244350571)))))))/(mass + vx*y)))))*charge*0.29450174179758465",
+          "loss": 5.319125341968115e-06,
+          "complexity": 47,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        }
+      ]
+    },
+    "packaging_seconds": 1.0792014878243208,
+    "packaging_budget_seconds": 10,
+    "packaging_is_separate_diagnostic": true
+  },
+  "search_seconds": 60.90848273970187,
+  "packaging_seconds": 1.0792014878243208
+}

@@ -1,0 +1,1588 @@
+{
+  "mode": "A_exact",
+  "status": "evaluating",
+  "world_id": "world_5",
+  "model_calls": 0,
+  "warmup_seconds": 32.433876333758235,
+  "search_started_at": "2026-11-07T06:24:48.239499+00:00",
+  "search_result": {
+    "status": "completed",
+    "backend": "direct_pysr",
+    "target": "diagnostic_exact_acceleration",
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "axis_search_seconds": [
+      30.740968285128474,
+      30.109506115317345
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "sin(sin(sin(sin((-x + sin(abs(x))) * c1) - 1 * c2))) - 1 * c3",
+          "ay": "y * c4 / sin(cos(x * c5))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.2389119639216596
+          },
+          {
+            "name": "c2",
+            "initial": -0.6115480342112634
+          },
+          {
+            "name": "c3",
+            "initial": 0.5445561498818722
+          },
+          {
+            "name": "c4",
+            "initial": -0.10154085839810724
+          },
+          {
+            "name": "c5",
+            "initial": -0.37269761087076
+          }
+        ],
+        "complexity": 24,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          0.00023758530157296778,
+          5.9677954985404495e-05
+        ],
+        "acceleration_search_mse": 0.0002972632565583723,
+        "normalized_acceleration_search_loss": 0.004784569069956146,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.4423861733886174e-05,
+          "velocity_rmse": 0.0007199368075399173,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "simplest_within_resolution_tolerance"
+      },
+      {
+        "law_spec": {
+          "ax": "sin(sin(sin((-x + sin(abs(x))) * c1) - 1 * c2)) - 1 * c3",
+          "ay": "y * c4 / sin(cos(x * c5))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.24757618461462913
+          },
+          {
+            "name": "c2",
+            "initial": -0.740672929565514
+          },
+          {
+            "name": "c3",
+            "initial": 0.6522394715438705
+          },
+          {
+            "name": "c4",
+            "initial": -0.10154085839810724
+          },
+          {
+            "name": "c5",
+            "initial": -0.37269761087076
+          }
+        ],
+        "complexity": 23,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          0.00024088247374181947,
+          5.9677954985404495e-05
+        ],
+        "acceleration_search_mse": 0.000300560428727224,
+        "normalized_acceleration_search_loss": 0.004842492454777012,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.4334393863886293e-05,
+          "velocity_rmse": 0.000715477836347033,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "alternative_accuracy_candidate"
+      },
+      {
+        "law_spec": {
+          "ax": "sin(sin((-x + sin(abs(x))) * c1 - 1 * c2)) - 1 * c3",
+          "ay": "y * c4 / sin(cos(x * c5))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.23086747472334543
+          },
+          {
+            "name": "c2",
+            "initial": -0.7331230167375167
+          },
+          {
+            "name": "c3",
+            "initial": 0.6514581249131497
+          },
+          {
+            "name": "c4",
+            "initial": -0.10154085839810724
+          },
+          {
+            "name": "c5",
+            "initial": -0.37269761087076
+          }
+        ],
+        "complexity": 22,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          0.00024826765225294907,
+          5.9677954985404495e-05
+        ],
+        "acceleration_search_mse": 0.0003079456072383536,
+        "normalized_acceleration_search_loss": 0.004972232278772899,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.4467529468430425e-05,
+          "velocity_rmse": 0.0007221693255226057,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "alternative_accuracy_candidate"
+      }
+    ],
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy",
+      "mass",
+      "charge"
+    ],
+    "search_configuration": {
+      "maxsize": 48,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "^"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "random_state": 42,
+      "time_budget_seconds": 60,
+      "axis_timeout_seconds": 30.0,
+      "parallelism": "multithreading",
+      "linear_seeds": false,
+      "world_identity_or_formula_passed_to_backend": false
+    },
+    "axis_equations": {
+      "ax": [
+        {
+          "source": "vx",
+          "loss": 0.011614332194677201,
+          "complexity": 1,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(vx)",
+          "loss": 0.011530489584540225,
+          "complexity": 2,
+          "origin": "pysr"
+        },
+        {
+          "source": "x*(-0.09649400024425624)",
+          "loss": 0.002922716978270471,
+          "complexity": 3,
+          "origin": "pysr"
+        },
+        {
+          "source": "x*(-0.09582501153613067) - 1*(-0.014467330971260642)",
+          "loss": 0.002728949095242116,
+          "complexity": 5,
+          "origin": "pysr"
+        },
+        {
+          "source": "(-x + cos(x))*0.1024739435647216",
+          "loss": 0.0015119625243176949,
+          "complexity": 6,
+          "origin": "pysr"
+        },
+        {
+          "source": "(-x + sin(cos(x)))*0.10292910901708241",
+          "loss": 0.001495489792079555,
+          "complexity": 7,
+          "origin": "pysr"
+        },
+        {
+          "source": "(-x + cos(x - 1*0.4675672295483248))*0.1332478992383717",
+          "loss": 0.0010212127826153953,
+          "complexity": 8,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(1.0192435646279323 - 0.27586415109485957*x)) - 1*0.66084983146749",
+          "loss": 0.0008882102713994307,
+          "complexity": 9,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(0.9283556314984888 - 0.28593301879713084*x))) - 1*0.5650553439378853",
+          "loss": 0.0007438040420521483,
+          "complexity": 10,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin(0.8480523234105628 - 0.2865642099832321*x)))) - 1*0.4938126788533218",
+          "loss": 0.0006879631346360678,
+          "complexity": 11,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin((-x + Abs(sin(x)))*0.2313275391484436 - 1*(-0.9174175130032995)) - 1*0.8237304475279422",
+          "loss": 0.00027676433882238923,
+          "complexity": 12,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin((-x + sin(Abs(x)))*0.23086747472334543 - 1*(-0.7331230167375167))) - 1*0.6514581249131497",
+          "loss": 0.00024826765225294896,
+          "complexity": 13,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin((-x + sin(Abs(x)))*0.24757618461462913) - 1*(-0.740672929565514))) - 1*0.6522394715438705",
+          "loss": 0.0002408824737418193,
+          "complexity": 14,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(Abs(x)))*0.2389119639216596) - 1*(-0.6115480342112634)))) - 1*0.5445561498818722",
+          "loss": 0.00023758530157296764,
+          "complexity": 15,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin((-x + Abs(sin(y + 1.4717994725782413)))*0.3106551295631657 - 1*(-0.6539357125501033)))) - 1*0.5443397106857584",
+          "loss": 0.0001333624557650861,
+          "complexity": 16,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin((-x + Abs(sin(0.7872702411240744*y + 1.8344527404902598)))*0.23903883120442013 - 1*(-0.7259862985344547))) - 1*0.6175427300943052",
+          "loss": 5.398150572945839e-05,
+          "complexity": 17,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin((-x + Abs(sin(0.8169547665707956*y - 1.352955474284488)))*0.2483785488324408 - 1*(-0.6186064408922441)))) - 1*0.5205877094315434",
+          "loss": 4.222377248411347e-05,
+          "complexity": 18,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + Abs(sin(0.8333795047798206*y - 1.3784516047096792)))*0.2519799885241407 - 1*(-0.5407994152546258))))) - 1*0.45237488308807317",
+          "loss": 4.0193271050004205e-05,
+          "complexity": 19,
+          "origin": "pysr"
+        },
+        {
+          "source": "(sin(sin(sin((-x + Abs(sin((y - 1*24.485179560901635)*0.8253015542398298)))*0.23226454472167982 - 1*(-0.6682732302303811)))) - 1*0.5484964162451443)*1.1602480571436764",
+          "loss": 3.743911352400446e-05,
+          "complexity": 20,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin((-x + sin(sin((-x + y - 1*(-3.7420234621282815))*0.7457897809796684) - 1*(-0.9677211155672067)))*0.17730491429274822 - 1*(-0.5421826862370995))) - 1*0.5219337448518944",
+          "loss": 9.732013845528173e-06,
+          "complexity": 21,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin((-x + sin(sin(sin((-x + y - 1*4.833009139135404)*0.7034509397611789) - 1*(-0.8549768015184732))))*0.19087735033107397 - 1*(-0.6051300365350375))) - 1*0.5485695496929687",
+          "loss": 7.984863175107097e-06,
+          "complexity": 22,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin((-x + sin(sin(sin((-x + y - 1*4.82940617069855)*0.7093929386632046) - 1*(-0.833875842483333))))*0.19559262365874447 - 1*(-0.6118123236749701))) - 1*0.5519222233734908)",
+          "loss": 7.148757409981042e-06,
+          "complexity": 23,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin((-x + sin(sin(sin((vy - x + y - 1*4.629645246569156)*0.7417849598369329) - 1*(-0.8239321599288866))))*0.19088328252600895 - 1*(-0.5909374860477897))) - 1*0.5379083158826381)",
+          "loss": 5.923800629413915e-06,
+          "complexity": 25,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (4.628136126134123 - vy))*0.7442982491173378) - 1*(-0.8051725058713483))))*0.19898008183398663 - 1*(-0.6076470325060722))) - 1*0.5475544947342456))",
+          "loss": 4.203976044148423e-06,
+          "complexity": 26,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*(-0.8155619370762472) - 1*(-4.635770397059238)))*0.7426315461061576) - 1*(-0.8140220537254295))))*0.19952501634117628 - 1*(-0.6130129464312709))) - 1*0.5515934453552441))",
+          "loss": 3.7840384440030093e-06,
+          "complexity": 28,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*sin((x - y)*0.7421827826602371) - 1*(-4.639355550745577)))*0.7439972314306659) - 1*(-0.7957881702055848))))*0.19747391899536273 - 1*(-0.6074106845632905))) - 1*0.547738458836488))",
+          "loss": 3.6375185053146833e-06,
+          "complexity": 33,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*sin(-x + (y - 1*4.788233229059135)*0.7484945171074324) - 1*(-4.64151111675342)))*0.7492832344258492) - 1*(-0.805426158797853))))*0.19677973389893044 - 1*(-0.6076044952217572))) - 1*0.547720956437451))",
+          "loss": 3.3675054950489205e-06,
+          "complexity": 35,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*sin(-x + y - (vy*(-3.45464668513179) - 1*(-3.45464668513179))) - 1*(-4.636859318291532)))*0.746974883355712) - 1*(-0.8146212277998418))))*0.19968227795023022 - 1*(-0.6165732132016467))) - 1*0.5535530228604293))",
+          "loss": 2.830685503593539e-06,
+          "complexity": 37,
+          "origin": "pysr"
+        }
+      ],
+      "ay": [
+        {
+          "source": "vy",
+          "loss": 0.02354566306646348,
+          "complexity": 1,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(vy)",
+          "loss": 0.02351177463295161,
+          "complexity": 2,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-0.14635403921101342)",
+          "loss": 0.0016342448648590565,
+          "complexity": 3,
+          "origin": "pysr"
+        },
+        {
+          "source": "0.022233911502087568 + y*(-0.1532735670351257)",
+          "loss": 0.0012250626877023994,
+          "complexity": 5,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin((y - 0.1607543175127723)*(-0.15787301414535718))",
+          "loss": 0.0012005079760331787,
+          "complexity": 6,
+          "origin": "pysr"
+        },
+        {
+          "source": "(vy + y - 1*0.1660542266305308)*(-0.17022453996734765)",
+          "loss": 0.0011399748030009446,
+          "complexity": 7,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-0.11770776785721795)/cos(x*(-0.34795165656633714))",
+          "loss": 6.0563861142993505e-05,
+          "complexity": 8,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-0.10154085839810724)/sin(cos(x*(-0.37269761087076)))",
+          "loss": 5.967795498540447e-05,
+          "complexity": 9,
+          "origin": "pysr"
+        },
+        {
+          "source": "(y/cos(x*(-0.34152574591465934)) - 1*0.04374047286729177)*(-0.11966280957788973)",
+          "loss": 3.3551655116596094e-05,
+          "complexity": 10,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.013601035727952595*y)*y*(-0.11947321109585715)/cos(x*(-0.3362388698212298))",
+          "loss": 2.4235796802652963e-05,
+          "complexity": 13,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(0.002947062791615756/exp(y))*y*(-0.11594192168210644)/cos(x*(-0.3419538112208014))",
+          "loss": 1.920810196616507e-05,
+          "complexity": 14,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(y*y*0.00966655201703632)*y*(-0.11306801698506348)/cos(x*(-0.3418399583066362))",
+          "loss": 1.6720461015154033e-05,
+          "complexity": 15,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(y*exp(y*y*0.01426092520801482)*(-0.11150603224951047)/cos(x*(-0.3515218495134012)))",
+          "loss": 1.5148884604483324e-05,
+          "complexity": 16,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp((vx + y)*y*0.00969606194545394)*y*(-0.11271878972346183)/cos(x*(-0.34118032168547374))",
+          "loss": 1.4029587053087107e-05,
+          "complexity": 17,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*exp(y*(-0.01248574375574339))*(-0.11755850346118643)*exp(-0.025229007598388937/x)/cos(x*(-0.34280417950609415))",
+          "loss": 1.0097589710634408e-05,
+          "complexity": 18,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*exp(-0.05528610186367796/(y + 1.823453778178351) - 0.029143234237474305/x)*(-0.11728409005472211)/cos(x*(-0.33966619612312265))",
+          "loss": 2.4457339481429555e-06,
+          "complexity": 19,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.05565993064252794/(vy + y + 1.3832511524486701))*exp(-0.029013818857484937/x)*y*(-0.11742561934458437)/cos(x*(-0.34265640352868426))",
+          "loss": 2.226473116978462e-06,
+          "complexity": 22,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.029921831585832545/x)*exp(-0.05711529189006406/(y + Abs(vx) + 1.4829843633940312))*(-0.1174203258697383)*y/cos(x*(-0.3402092011988816))",
+          "loss": 1.9512139840276823e-06,
+          "complexity": 23,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.029921831585832545/x)*exp(sin(-0.05711529189006406/(y + Abs(vx) + 1.4829843633940312)))*y*(-0.1174203258697383)/cos(x*(-0.3402092011988816))",
+          "loss": 1.9499222246757585e-06,
+          "complexity": 24,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.029921831585832545/x)*exp(sin(sin(-0.05711529189006406/(y + Abs(vx) + 1.4829843633940312))))*y*(-0.1174203258697383)/cos(x*(-0.3402092011988816))",
+          "loss": 1.9486657161725027e-06,
+          "complexity": 25,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.11806184660393818*y*exp(-0.028071899264141355/x)*exp(-0.06448553982978075/(y + exp(-vx + 0.046525356229624205/exp(x))))/cos(x*(-0.34129910281835507))",
+          "loss": 1.5217626141751938e-06,
+          "complexity": 26,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.11793506808972978*y*exp(-0.028214558257263312/x)*exp(-0.06200862401128846/(y + (-vx + 0.04063990205474672/exp(x))/0.713486036746486 + 1.0449938991690173))/cos(x*(-0.34113995842187395))",
+          "loss": 1.4179994963836336e-06,
+          "complexity": 29,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*exp(-0.02925093671771689/x)*exp(-0.05915787646970593/(y + sin(-vx/0.3781480010488348 + 0.09355280150171193/exp(x)) + 0.7255634786093581))*(-0.11811268381055899)/cos(x*0.3419812008655405)",
+          "loss": 1.0776093638249439e-06,
+          "complexity": 30,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.06667009834709416/(y + (-vx + 0.04830242808816941/exp(x))/exp(exp(y)/x) + 1.317786747363426))*y*(-0.11758444761559146)*exp(-0.026694210664948783/x)/cos(x*(-0.33935472377366027))",
+          "loss": 5.831450307892054e-07,
+          "complexity": 33,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.06667009834709416/(y + 1.317786747363426 + sin(-vx + 0.04830242808816941/exp(x))/exp(exp(y)/x)))*(-0.11758444761559146)*y*exp(-0.026694210664948783/x)/cos(x*(-0.33935472377366027))",
+          "loss": 5.755501131339194e-07,
+          "complexity": 34,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.027175225835487128/x)*y*exp(-0.06716918289740292/(y + (-vx + 0.04586635617046706/exp(x))/exp(exp(y)/x) + 1.3832363643314103 - 0.33897565827181997/(x - y)))*(-0.11768512282503776)/cos(x*(-0.33897565827181997))",
+          "loss": 5.340041042266584e-07,
+          "complexity": 39,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.027175225835487128/x)*y*exp(-0.06716918289740292/(y + (-vx + sin(0.04588245309558012/exp(x)))/exp(exp(y)/x) + 1.3832363643314103 - 0.33897565827181997/(x - y)))*(-0.11768512282503776)/cos(x*(-0.33897565827181997))",
+          "loss": 5.167778399626868e-07,
+          "complexity": 40,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-0.11781057295135458)*exp(-0.06970237244460016/(y + (-vx + 0.04667410703072421/exp(x))/exp(exp(y)/x) + 1.3834494056358848 - 0.43312195038281637/(x + x - y)))*exp(-0.027786799438564356/x)/cos(x*(-0.33809954634088274))",
+          "loss": 4.7039829766457807e-07,
+          "complexity": 41,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.069620089824555/(y + (-vx + 0.04575924060645163/exp(x))/exp(exp(y)/x) + 1.3834198997399298 - 0.5936908228916122/(-vx/0.04677886772419099 + exp(x))))*exp(-0.02707129881211976/x)*y*(-0.1179152194106849)/cos(x*(-0.3377030366748911))",
+          "loss": 3.1495417944280507e-07,
+          "complexity": 42,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.06893193227818678/(y + (-vx + 0.046594425185628625/exp(x))/exp(exp(y)/x) + 1.3834534474513605 - 0.4331098327551099/(-vx/0.046594425185628625 + x + 1.0476970033820139)))*exp(-0.027360960968311372/x)*y*(-0.11784428598469295)/cos(x*(-0.3380503952758414))",
+          "loss": 2.7398680862436593e-07,
+          "complexity": 43,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.027360960968311372/x)*(-0.11784428598469295)*exp(-0.06893193227818678/(y + 1.3834534474513605 + sin(-vx + 0.046594425185628625/exp(x))/exp(exp(y)/x) - 0.4331098327551099/(-vx/0.046594425185628625 + x + 1.0476970033820139)))*y/cos(x*(-0.33822402181406364))",
+          "loss": 2.5325757145775996e-07,
+          "complexity": 44,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.027164540328901823/x)*y*exp(-0.06955767887758607/(y + 1.3834306926310609 + sin(-sin(vx) + 0.04606437712724589/exp(x))/exp(exp(y)/x) - 0.4331296298461003/(-vx/0.04625268422589162 + x + 1.047686131406021)))*(-0.11784010637032569)/cos(x*(-0.3381952978561551))",
+          "loss": 2.3723442322033782e-07,
+          "complexity": 45,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.06988103365372235/(y + 1.3834333490983926 + sin(-sin(sin(vx)) + 0.04526994742075032/exp(x))/exp(exp(y)/x) - 0.43313092988861396/(-vx/0.04625418063365064 + x + 1.0476835377001206)))*exp(-0.02707357156641872/x)*y*(-0.1178934052730319)/cos(x*(-0.33805530594052985))",
+          "loss": 2.2663975974956775e-07,
+          "complexity": 46,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.06988103365372235/(y + 1.3834333490983926 + sin(-sin(sin(vx)) + 0.04526994742075032/exp(x))/exp(exp(y)/x) - 0.43313092988861396/(x - sin(vx)/0.04625418063365064 + 1.0476835377001206)))*exp(-0.02707357156641872/x)*y*(-0.1178934052730319)/cos(x*(-0.33805530594052985))",
+          "loss": 2.2589505122333794e-07,
+          "complexity": 47,
+          "origin": "pysr"
+        },
+        {
+          "source": "exp(-0.0708664488159455/(y + (-vx + 0.04468832602018231/exp(x))/exp(exp(y)/x) + 1.3835840096358363 - 0.3391787362031954/(-vx/(Abs(vy)/2.3387953946566458) + exp(exp(vy)/x))))*y*(-0.1179437819598213)*exp(-0.027531309205440894/x)/cos(x*(-0.3377782151832722))",
+          "loss": 2.0929699091264173e-07,
+          "complexity": 48,
+          "origin": "pysr"
+        }
+      ]
+    },
+    "elapsed_seconds": 60.92710437066853,
+    "search_budget_exceeded": true,
+    "axis_candidates": {
+      "ax": [
+        {
+          "law_spec": {
+            "ax": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy * c1 - 1 * c2)) * c3) - 1 * c4))) * c5 - 1 * c6)) - 1 * c7))",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.8155619370762472
+            },
+            {
+              "name": "c2",
+              "initial": -4.635770397059238
+            },
+            {
+              "name": "c3",
+              "initial": 0.7426315461061576
+            },
+            {
+              "name": "c4",
+              "initial": -0.8140220537254295
+            },
+            {
+              "name": "c5",
+              "initial": 0.19952501634117628
+            },
+            {
+              "name": "c6",
+              "initial": -0.6130129464312709
+            },
+            {
+              "name": "c7",
+              "initial": 0.5515934453552441
+            }
+          ],
+          "component": "ax",
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*(-0.8155619370762472) - 1*(-4.635770397059238)))*0.7426315461061576) - 1*(-0.8140220537254295))))*0.19952501634117628 - 1*(-0.6130129464312709))) - 1*0.5515934453552441))",
+          "loss": 3.7840384440030135e-06,
+          "complexity": 28,
+          "origin": "pysr",
+          "parameter_count": 7,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (c1 - vy)) * c2) - 1 * c3))) * c4 - 1 * c5)) - 1 * c6))",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 4.628136126134123
+            },
+            {
+              "name": "c2",
+              "initial": 0.7442982491173378
+            },
+            {
+              "name": "c3",
+              "initial": -0.8051725058713483
+            },
+            {
+              "name": "c4",
+              "initial": 0.19898008183398663
+            },
+            {
+              "name": "c5",
+              "initial": -0.6076470325060722
+            },
+            {
+              "name": "c6",
+              "initial": 0.5475544947342456
+            }
+          ],
+          "component": "ax",
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (4.628136126134123 - vy))*0.7442982491173378) - 1*(-0.8051725058713483))))*0.19898008183398663 - 1*(-0.6076470325060722))) - 1*0.5475544947342456))",
+          "loss": 4.203976044148422e-06,
+          "complexity": 26,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "sin(sin(sin((-x + sin(sin(sin((vy - x + y - 1 * c1) * c2) - 1 * c3))) * c4 - 1 * c5)) - 1 * c6)",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 4.629645246569156
+            },
+            {
+              "name": "c2",
+              "initial": 0.7417849598369329
+            },
+            {
+              "name": "c3",
+              "initial": -0.8239321599288866
+            },
+            {
+              "name": "c4",
+              "initial": 0.19088328252600895
+            },
+            {
+              "name": "c5",
+              "initial": -0.5909374860477897
+            },
+            {
+              "name": "c6",
+              "initial": 0.5379083158826381
+            }
+          ],
+          "component": "ax",
+          "source": "sin(sin(sin((-x + sin(sin(sin((vy - x + y - 1*4.629645246569156)*0.7417849598369329) - 1*(-0.8239321599288866))))*0.19088328252600895 - 1*(-0.5909374860477897))) - 1*0.5379083158826381)",
+          "loss": 5.9238006294139225e-06,
+          "complexity": 25,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        }
+      ],
+      "ay": [
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "exp(c1 / (y + (-vx + c2 / exp(x)) / exp(exp(y) / x) + c3 - c4 / (-vx / (abs(vy) / c5) + exp(exp(vy) / x)))) * y * c6 * exp(c7 / x) / cos(x * c8)"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.0708664488159455
+            },
+            {
+              "name": "c2",
+              "initial": 0.04468832602018231
+            },
+            {
+              "name": "c3",
+              "initial": 1.3835840096358363
+            },
+            {
+              "name": "c4",
+              "initial": 0.3391787362031954
+            },
+            {
+              "name": "c5",
+              "initial": 2.3387953946566458
+            },
+            {
+              "name": "c6",
+              "initial": -0.1179437819598213
+            },
+            {
+              "name": "c7",
+              "initial": -0.027531309205440894
+            },
+            {
+              "name": "c8",
+              "initial": -0.3377782151832722
+            }
+          ],
+          "component": "ay",
+          "source": "exp(-0.0708664488159455/(y + (-vx + 0.04468832602018231/exp(x))/exp(exp(y)/x) + 1.3835840096358363 - 0.3391787362031954/(-vx/(Abs(vy)/2.3387953946566458) + exp(exp(vy)/x))))*y*(-0.1179437819598213)*exp(-0.027531309205440894/x)/cos(x*(-0.3377782151832722))",
+          "loss": 2.0929699091264305e-07,
+          "complexity": 48,
+          "origin": "pysr",
+          "parameter_count": 8,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "exp(c1 / (y + c2 + sin(-sin(sin(vx)) + c3 / exp(x)) / exp(exp(y) / x) - c4 / (x - sin(vx) / c5 + c6))) * exp(c7 / x) * y * c8 / cos(x * c9)"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.06988103365372235
+            },
+            {
+              "name": "c2",
+              "initial": 1.3834333490983926
+            },
+            {
+              "name": "c3",
+              "initial": 0.04526994742075032
+            },
+            {
+              "name": "c4",
+              "initial": 0.43313092988861396
+            },
+            {
+              "name": "c5",
+              "initial": 0.04625418063365064
+            },
+            {
+              "name": "c6",
+              "initial": 1.0476835377001206
+            },
+            {
+              "name": "c7",
+              "initial": -0.02707357156641872
+            },
+            {
+              "name": "c8",
+              "initial": -0.1178934052730319
+            },
+            {
+              "name": "c9",
+              "initial": -0.33805530594052985
+            }
+          ],
+          "component": "ay",
+          "source": "exp(-0.06988103365372235/(y + 1.3834333490983926 + sin(-sin(sin(vx)) + 0.04526994742075032/exp(x))/exp(exp(y)/x) - 0.43313092988861396/(x - sin(vx)/0.04625418063365064 + 1.0476835377001206)))*exp(-0.02707357156641872/x)*y*(-0.1178934052730319)/cos(x*(-0.33805530594052985))",
+          "loss": 2.2589505122333953e-07,
+          "complexity": 47,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "exp(c1 / (y + c2 + sin(-sin(sin(vx)) + c3 / exp(x)) / exp(exp(y) / x) - c4 / (-vx / c5 + x + c6))) * exp(c7 / x) * y * c8 / cos(x * c9)"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.06988103365372235
+            },
+            {
+              "name": "c2",
+              "initial": 1.3834333490983926
+            },
+            {
+              "name": "c3",
+              "initial": 0.04526994742075032
+            },
+            {
+              "name": "c4",
+              "initial": 0.43313092988861396
+            },
+            {
+              "name": "c5",
+              "initial": 0.04625418063365064
+            },
+            {
+              "name": "c6",
+              "initial": 1.0476835377001206
+            },
+            {
+              "name": "c7",
+              "initial": -0.02707357156641872
+            },
+            {
+              "name": "c8",
+              "initial": -0.1178934052730319
+            },
+            {
+              "name": "c9",
+              "initial": -0.33805530594052985
+            }
+          ],
+          "component": "ay",
+          "source": "exp(-0.06988103365372235/(y + 1.3834333490983926 + sin(-sin(sin(vx)) + 0.04526994742075032/exp(x))/exp(exp(y)/x) - 0.43313092988861396/(-vx/0.04625418063365064 + x + 1.0476835377001206)))*exp(-0.02707357156641872/x)*y*(-0.1178934052730319)/cos(x*(-0.33805530594052985))",
+          "loss": 2.2663975974956854e-07,
+          "complexity": 46,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        }
+      ]
+    },
+    "rejection_counts": {
+      "dsl_export": 3,
+      "sharing_no_supported_proposal": 4
+    },
+    "rejection_examples": [
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*sin((x - y)*0.7421827826602371) - 1*(-4.639355550745577)))*0.7439972314306659) - 1*(-0.7957881702055848))))*0.19747391899536273 - 1*(-0.6074106845632905))) - 1*0.547738458836488))"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*sin(-x + (y - 1*4.788233229059135)*0.7484945171074324) - 1*(-4.64151111675342)))*0.7492832344258492) - 1*(-0.805426158797853))))*0.19677973389893044 - 1*(-0.6076044952217572))) - 1*0.547720956437451))"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*sin(-x + y - (vy*(-3.45464668513179) - 1*(-3.45464668513179))) - 1*(-4.636859318291532)))*0.746974883355712) - 1*(-0.8146212277998418))))*0.19968227795023022 - 1*(-0.6165732132016467))) - 1*0.5535530228604293))"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy * c1 - 1 * c2)) * c3) - 1 * c4))) * c5 - 1 * c6)) - 1 * c7))",
+        "ay": "exp(c8 / (y + (-vx + c9 / exp(x)) / exp(exp(y) / x) + c10 - c11 / (-vx / (abs(vy) / c12) + exp(exp(vy) / x)))) * y * c13 * exp(c14 / x) / cos(x * c15)"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy * c1 - 1 * c2)) * c3) - 1 * c4))) * c5 - 1 * c6)) - 1 * c7))",
+        "ay": "exp(c8 / (y + c9 + sin(-sin(sin(vx)) + c10 / exp(x)) / exp(exp(y) / x) - c11 / (x - sin(vx) / c12 + c13))) * exp(c14 / x) * y * c15 / cos(x * c16)"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy * c1 - 1 * c2)) * c3) - 1 * c4))) * c5 - 1 * c6)) - 1 * c7))",
+        "ay": "exp(c8 / (y + c9 + sin(-sin(sin(vx)) + c10 / exp(x)) / exp(exp(y) / x) - c11 / (-vx / c12 + x + c13))) * exp(c14 / x) * y * c15 / cos(x * c16)"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy * c1 - 1 * c2)) * c3) - 1 * c4))) * c5 - 1 * c6)) - 1 * c7))",
+        "ay": "exp(c8 / x) * y * exp(c9 / (y + c10 + sin(-sin(vx) + c11 / exp(x)) / exp(exp(y) / x) - c12 / (-vx / c13 + x + c14))) * c15 / cos(x * c16)"
+      }
+    ],
+    "rejected_candidate_pairs": 0,
+    "candidate_selection": {
+      "strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
+      "normalized_resolution_tolerance": 3.053615010010541e-10,
+      "legal_pairs": 164,
+      "over_budget_pairs_retained": 636,
+      "sharing_attempts_cached": 4,
+      "sharing_unattempted_pairs": 632,
+      "rejection_stage_counts": {
+        "axis": 3,
+        "sharing": 4
+      },
+      "rejected_candidates_total": 7,
+      "unchecked_axis_equations": 0,
+      "rollout_candidates_considered": 3,
+      "axis_frontier_counts": [
+        25,
+        32
+      ],
+      "full_axis_equations_retained": true,
+      "selection_incomplete": false,
+      "stop_reason": null,
+      "retained_checkpoint": false,
+      "independent_validation": false
+    },
+    "packaging_axis_equations": {
+      "ax": [
+        {
+          "source": "vx",
+          "loss": 0.01161433219467721,
+          "complexity": 1,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(vx)",
+          "loss": 0.011530489584540232,
+          "complexity": 2,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "x*(-0.09649400024425624)",
+          "loss": 0.002922716978270472,
+          "complexity": 3,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "x*(-0.09582501153613067) - 1*(-0.014467330971260642)",
+          "loss": 0.0027289490952421163,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "(-x + cos(x))*0.1024739435647216",
+          "loss": 0.001511962524317696,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(-x + sin(cos(x)))*0.10292910901708241",
+          "loss": 0.0014954897920795552,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(-x + cos(x - 1*0.4675672295483248))*0.1332478992383717",
+          "loss": 0.0010212127826153957,
+          "complexity": 8,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(1.0192435646279323 - 0.27586415109485957*x)) - 1*0.66084983146749",
+          "loss": 0.0008882102713994312,
+          "complexity": 9,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(0.9283556314984888 - 0.28593301879713084*x))) - 1*0.5650553439378853",
+          "loss": 0.0007438040420521486,
+          "complexity": 10,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(sin(0.8480523234105628 - 0.2865642099832321*x)))) - 1*0.4938126788533218",
+          "loss": 0.0006879631346360682,
+          "complexity": 11,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin((-x + Abs(sin(x)))*0.2313275391484436 - 1*(-0.9174175130032995)) - 1*0.8237304475279422",
+          "loss": 0.0002767643388223894,
+          "complexity": 12,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin((-x + sin(Abs(x)))*0.23086747472334543 - 1*(-0.7331230167375167))) - 1*0.6514581249131497",
+          "loss": 0.00024826765225294907,
+          "complexity": 13,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin((-x + sin(Abs(x)))*0.24757618461462913) - 1*(-0.740672929565514))) - 1*0.6522394715438705",
+          "loss": 0.00024088247374181947,
+          "complexity": 14,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(Abs(x)))*0.2389119639216596) - 1*(-0.6115480342112634)))) - 1*0.5445561498818722",
+          "loss": 0.00023758530157296778,
+          "complexity": 15,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin((-x + Abs(sin(y + 1.4717994725782413)))*0.3106551295631657 - 1*(-0.6539357125501033)))) - 1*0.5443397106857584",
+          "loss": 0.0001333624557650862,
+          "complexity": 16,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin((-x + Abs(sin(0.7872702411240744*y + 1.8344527404902598)))*0.23903883120442013 - 1*(-0.7259862985344547))) - 1*0.6175427300943052",
+          "loss": 5.398150572945843e-05,
+          "complexity": 17,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin((-x + Abs(sin(0.8169547665707956*y - 1.352955474284488)))*0.2483785488324408 - 1*(-0.6186064408922441)))) - 1*0.5205877094315434",
+          "loss": 4.2223772484113506e-05,
+          "complexity": 18,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + Abs(sin(0.8333795047798206*y - 1.3784516047096792)))*0.2519799885241407 - 1*(-0.5407994152546258))))) - 1*0.45237488308807317",
+          "loss": 4.019327105000418e-05,
+          "complexity": 19,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "(sin(sin(sin((-x + Abs(sin((y - 1*24.485179560901635)*0.8253015542398298)))*0.23226454472167982 - 1*(-0.6682732302303811)))) - 1*0.5484964162451443)*1.1602480571436764",
+          "loss": 3.743911352400446e-05,
+          "complexity": 20,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin((-x + sin(sin((-x + y - 1*(-3.7420234621282815))*0.7457897809796684) - 1*(-0.9677211155672067)))*0.17730491429274822 - 1*(-0.5421826862370995))) - 1*0.5219337448518944",
+          "loss": 9.732013845528193e-06,
+          "complexity": 21,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin((-x + sin(sin(sin((-x + y - 1*4.833009139135404)*0.7034509397611789) - 1*(-0.8549768015184732))))*0.19087735033107397 - 1*(-0.6051300365350375))) - 1*0.5485695496929687",
+          "loss": 7.984863175107085e-06,
+          "complexity": 22,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin((-x + sin(sin(sin((-x + y - 1*4.82940617069855)*0.7093929386632046) - 1*(-0.833875842483333))))*0.19559262365874447 - 1*(-0.6118123236749701))) - 1*0.5519222233734908)",
+          "loss": 7.148757409981031e-06,
+          "complexity": 23,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin((-x + sin(sin(sin((vy - x + y - 1*4.629645246569156)*0.7417849598369329) - 1*(-0.8239321599288866))))*0.19088328252600895 - 1*(-0.5909374860477897))) - 1*0.5379083158826381)",
+          "loss": 5.9238006294139225e-06,
+          "complexity": 25,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (4.628136126134123 - vy))*0.7442982491173378) - 1*(-0.8051725058713483))))*0.19898008183398663 - 1*(-0.6076470325060722))) - 1*0.5475544947342456))",
+          "loss": 4.203976044148422e-06,
+          "complexity": 26,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*(-0.8155619370762472) - 1*(-4.635770397059238)))*0.7426315461061576) - 1*(-0.8140220537254295))))*0.19952501634117628 - 1*(-0.6130129464312709))) - 1*0.5515934453552441))",
+          "loss": 3.7840384440030135e-06,
+          "complexity": 28,
+          "origin": "pysr",
+          "parameter_count": 7,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*sin((x - y)*0.7421827826602371) - 1*(-4.639355550745577)))*0.7439972314306659) - 1*(-0.7957881702055848))))*0.19747391899536273 - 1*(-0.6074106845632905))) - 1*0.547738458836488))",
+          "loss": 3.6375185053146833e-06,
+          "complexity": 33,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*sin(-x + (y - 1*4.788233229059135)*0.7484945171074324) - 1*(-4.64151111675342)))*0.7492832344258492) - 1*(-0.805426158797853))))*0.19677973389893044 - 1*(-0.6076044952217572))) - 1*0.547720956437451))",
+          "loss": 3.3675054950489205e-06,
+          "complexity": 35,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "sin(sin(sin(sin((-x + sin(sin(sin((-x + y - (vy*sin(-x + y - (vy*(-3.45464668513179) - 1*(-3.45464668513179))) - 1*(-4.636859318291532)))*0.746974883355712) - 1*(-0.8146212277998418))))*0.19968227795023022 - 1*(-0.6165732132016467))) - 1*0.5535530228604293))",
+          "loss": 2.830685503593539e-06,
+          "complexity": 37,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        }
+      ],
+      "ay": [
+        {
+          "source": "vy",
+          "loss": 0.023545663066463482,
+          "complexity": 1,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(vy)",
+          "loss": 0.023511774632951628,
+          "complexity": 2,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-0.14635403921101342)",
+          "loss": 0.001634244864859057,
+          "complexity": 3,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "0.022233911502087568 + y*(-0.1532735670351257)",
+          "loss": 0.0012250626877024,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "sin((y - 0.1607543175127723)*(-0.15787301414535718))",
+          "loss": 0.0012005079760331794,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "(vy + y - 1*0.1660542266305308)*(-0.17022453996734765)",
+          "loss": 0.001139974803000945,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-0.11770776785721795)/cos(x*(-0.34795165656633714))",
+          "loss": 6.056386114299352e-05,
+          "complexity": 8,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-0.10154085839810724)/sin(cos(x*(-0.37269761087076)))",
+          "loss": 5.9677954985404495e-05,
+          "complexity": 9,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "(y/cos(x*(-0.34152574591465934)) - 1*0.04374047286729177)*(-0.11966280957788973)",
+          "loss": 3.3551655116596114e-05,
+          "complexity": 10,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.013601035727952595*y)*y*(-0.11947321109585715)/cos(x*(-0.3362388698212298))",
+          "loss": 2.4235796802652983e-05,
+          "complexity": 13,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(0.002947062791615756/exp(y))*y*(-0.11594192168210644)/cos(x*(-0.3419538112208014))",
+          "loss": 1.920810196616508e-05,
+          "complexity": 14,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(y*y*0.00966655201703632)*y*(-0.11306801698506348)/cos(x*(-0.3418399583066362))",
+          "loss": 1.672046101515404e-05,
+          "complexity": 15,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(y*exp(y*y*0.01426092520801482)*(-0.11150603224951047)/cos(x*(-0.3515218495134012)))",
+          "loss": 1.514888460448334e-05,
+          "complexity": 16,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "exp((vx + y)*y*0.00969606194545394)*y*(-0.11271878972346183)/cos(x*(-0.34118032168547374))",
+          "loss": 1.4029587053087122e-05,
+          "complexity": 17,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "y*exp(y*(-0.01248574375574339))*(-0.11755850346118643)*exp(-0.025229007598388937/x)/cos(x*(-0.34280417950609415))",
+          "loss": 1.0097589710634439e-05,
+          "complexity": 18,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "y*exp(-0.05528610186367796/(y + 1.823453778178351) - 0.029143234237474305/x)*(-0.11728409005472211)/cos(x*(-0.33966619612312265))",
+          "loss": 2.445733948142974e-06,
+          "complexity": 19,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.05565993064252794/(vy + y + 1.3832511524486701))*exp(-0.029013818857484937/x)*y*(-0.11742561934458437)/cos(x*(-0.34265640352868426))",
+          "loss": 2.2264731169784735e-06,
+          "complexity": 22,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.029921831585832545/x)*exp(-0.05711529189006406/(y + Abs(vx) + 1.4829843633940312))*(-0.1174203258697383)*y/cos(x*(-0.3402092011988816))",
+          "loss": 1.951213984027685e-06,
+          "complexity": 23,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.029921831585832545/x)*exp(sin(-0.05711529189006406/(y + Abs(vx) + 1.4829843633940312)))*y*(-0.1174203258697383)/cos(x*(-0.3402092011988816))",
+          "loss": 1.9499222246757628e-06,
+          "complexity": 24,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.029921831585832545/x)*exp(sin(sin(-0.05711529189006406/(y + Abs(vx) + 1.4829843633940312))))*y*(-0.1174203258697383)/cos(x*(-0.3402092011988816))",
+          "loss": 1.9486657161725074e-06,
+          "complexity": 25,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.11806184660393818*y*exp(-0.028071899264141355/x)*exp(-0.06448553982978075/(y + exp(-vx + 0.046525356229624205/exp(x))))/cos(x*(-0.34129910281835507))",
+          "loss": 1.521762614175201e-06,
+          "complexity": 26,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.11793506808972978*y*exp(-0.028214558257263312/x)*exp(-0.06200862401128846/(y + (-vx + 0.04063990205474672/exp(x))/0.713486036746486 + 1.0449938991690173))/cos(x*(-0.34113995842187395))",
+          "loss": 1.4179994963836455e-06,
+          "complexity": 29,
+          "origin": "pysr",
+          "parameter_count": 7,
+          "domain_valid": true
+        },
+        {
+          "source": "y*exp(-0.02925093671771689/x)*exp(-0.05915787646970593/(y + sin(-vx/0.3781480010488348 + 0.09355280150171193/exp(x)) + 0.7255634786093581))*(-0.11811268381055899)/cos(x*0.3419812008655405)",
+          "loss": 1.0776093638249464e-06,
+          "complexity": 30,
+          "origin": "pysr",
+          "parameter_count": 7,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.06667009834709416/(y + (-vx + 0.04830242808816941/exp(x))/exp(exp(y)/x) + 1.317786747363426))*y*(-0.11758444761559146)*exp(-0.026694210664948783/x)/cos(x*(-0.33935472377366027))",
+          "loss": 5.831450307892081e-07,
+          "complexity": 33,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.06667009834709416/(y + 1.317786747363426 + sin(-vx + 0.04830242808816941/exp(x))/exp(exp(y)/x)))*(-0.11758444761559146)*y*exp(-0.026694210664948783/x)/cos(x*(-0.33935472377366027))",
+          "loss": 5.755501131339213e-07,
+          "complexity": 34,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.027175225835487128/x)*y*exp(-0.06716918289740292/(y + (-vx + 0.04586635617046706/exp(x))/exp(exp(y)/x) + 1.3832363643314103 - 0.33897565827181997/(x - y)))*(-0.11768512282503776)/cos(x*(-0.33897565827181997))",
+          "loss": 5.340041042266599e-07,
+          "complexity": 39,
+          "origin": "pysr",
+          "parameter_count": 7,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.027175225835487128/x)*y*exp(-0.06716918289740292/(y + (-vx + sin(0.04588245309558012/exp(x)))/exp(exp(y)/x) + 1.3832363643314103 - 0.33897565827181997/(x - y)))*(-0.11768512282503776)/cos(x*(-0.33897565827181997))",
+          "loss": 5.167778399626899e-07,
+          "complexity": 40,
+          "origin": "pysr",
+          "parameter_count": 7,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-0.11781057295135458)*exp(-0.06970237244460016/(y + (-vx + 0.04667410703072421/exp(x))/exp(exp(y)/x) + 1.3834494056358848 - 0.43312195038281637/(x + x - y)))*exp(-0.027786799438564356/x)/cos(x*(-0.33809954634088274))",
+          "loss": 4.703982976645784e-07,
+          "complexity": 41,
+          "origin": "pysr",
+          "parameter_count": 7,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.069620089824555/(y + (-vx + 0.04575924060645163/exp(x))/exp(exp(y)/x) + 1.3834198997399298 - 0.5936908228916122/(-vx/0.04677886772419099 + exp(x))))*exp(-0.02707129881211976/x)*y*(-0.1179152194106849)/cos(x*(-0.3377030366748911))",
+          "loss": 3.1495417944281275e-07,
+          "complexity": 42,
+          "origin": "pysr",
+          "parameter_count": 8,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.06893193227818678/(y + (-vx + 0.046594425185628625/exp(x))/exp(exp(y)/x) + 1.3834534474513605 - 0.4331098327551099/(-vx/0.046594425185628625 + x + 1.0476970033820139)))*exp(-0.027360960968311372/x)*y*(-0.11784428598469295)/cos(x*(-0.3380503952758414))",
+          "loss": 2.739868086243713e-07,
+          "complexity": 43,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.027360960968311372/x)*(-0.11784428598469295)*exp(-0.06893193227818678/(y + 1.3834534474513605 + sin(-vx + 0.046594425185628625/exp(x))/exp(exp(y)/x) - 0.4331098327551099/(-vx/0.046594425185628625 + x + 1.0476970033820139)))*y/cos(x*(-0.33822402181406364))",
+          "loss": 2.532575714577617e-07,
+          "complexity": 44,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.027164540328901823/x)*y*exp(-0.06955767887758607/(y + 1.3834306926310609 + sin(-sin(vx) + 0.04606437712724589/exp(x))/exp(exp(y)/x) - 0.4331296298461003/(-vx/0.04625268422589162 + x + 1.047686131406021)))*(-0.11784010637032569)/cos(x*(-0.3381952978561551))",
+          "loss": 2.372344232203421e-07,
+          "complexity": 45,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.06988103365372235/(y + 1.3834333490983926 + sin(-sin(sin(vx)) + 0.04526994742075032/exp(x))/exp(exp(y)/x) - 0.43313092988861396/(-vx/0.04625418063365064 + x + 1.0476835377001206)))*exp(-0.02707357156641872/x)*y*(-0.1178934052730319)/cos(x*(-0.33805530594052985))",
+          "loss": 2.2663975974956854e-07,
+          "complexity": 46,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.06988103365372235/(y + 1.3834333490983926 + sin(-sin(sin(vx)) + 0.04526994742075032/exp(x))/exp(exp(y)/x) - 0.43313092988861396/(x - sin(vx)/0.04625418063365064 + 1.0476835377001206)))*exp(-0.02707357156641872/x)*y*(-0.1178934052730319)/cos(x*(-0.33805530594052985))",
+          "loss": 2.2589505122333953e-07,
+          "complexity": 47,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "domain_valid": true
+        },
+        {
+          "source": "exp(-0.0708664488159455/(y + (-vx + 0.04468832602018231/exp(x))/exp(exp(y)/x) + 1.3835840096358363 - 0.3391787362031954/(-vx/(Abs(vy)/2.3387953946566458) + exp(exp(vy)/x))))*y*(-0.1179437819598213)*exp(-0.027531309205440894/x)/cos(x*(-0.3377782151832722))",
+          "loss": 2.0929699091264305e-07,
+          "complexity": 48,
+          "origin": "pysr",
+          "parameter_count": 8,
+          "domain_valid": true
+        }
+      ]
+    },
+    "packaging_seconds": 0.8397840056568384,
+    "packaging_budget_seconds": 10,
+    "packaging_is_separate_diagnostic": true
+  },
+  "search_seconds": 60.932322388514876,
+  "packaging_seconds": 0.8397840056568384
+}

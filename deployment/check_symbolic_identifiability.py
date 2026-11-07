@@ -29,6 +29,22 @@ SEARCH_SECONDS = 60
 THREADS = 4
 WORKERS = 4
 SEED = 42
+RUNTIME_ENV_KEYS = ('PYTHON_JULIAPKG_EXE','JULIA_DEPOT_PATH','PYTHON_JULIAPKG_OFFLINE',
+                    'PYTHON_JULIACALL_THREADS','JULIA_NUM_THREADS','OPENBLAS_NUM_THREADS',
+                    'OMP_NUM_THREADS','MKL_NUM_THREADS')
+
+
+def runtime_environment(source=None):
+    """Fail before reserving jobs rather than discover/download Julia at import."""
+    environment = dict(os.environ if source is None else source)
+    executable = Path(environment.get('PYTHON_JULIAPKG_EXE','')).expanduser()
+    if not executable.is_file() or not os.access(executable,os.X_OK):
+        raise ValueError('Set PYTHON_JULIAPKG_EXE or --julia-exe to an existing executable before starting jobs')
+    environment.update(PYTHON_JULIAPKG_EXE=str(executable.resolve()), PYTHON_JULIAPKG_OFFLINE='yes',
+                       PYTHON_JULIACALL_THREADS=str(THREADS), JULIA_NUM_THREADS=str(THREADS),
+                       OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1', MKL_NUM_THREADS='1',
+                       PYTHONPATH=str(ROOT))
+    return environment
 
 
 def write_json(path, value):
@@ -255,6 +271,11 @@ def worker(dataset_file, mode, output):
     write_json(output/'progress.json', report)
     try:
         report['warmup_seconds'] = _warmup(output)
+        from juliacall import Main as julia
+        report['actual_julia_threads'] = int(julia.seval('Threads.nthreads()'))
+        report['runtime_environment'] = {key:os.environ[key] for key in RUNTIME_ENV_KEYS if key in os.environ}
+        if report['actual_julia_threads'] != THREADS:
+            raise RuntimeError('Julia thread count differs from registered four-thread configuration')
         report.update(status='searching', search_started_at=datetime.now(timezone.utc).isoformat())
         write_json(output/'progress.json', report)
         def checkpoint(result):
@@ -291,8 +312,7 @@ def _stop(process):
 
 def launch_job(dataset_file, mode, output, stop_requested=None):
     output.mkdir()
-    env = dict(os.environ, JULIA_NUM_THREADS=str(THREADS), OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1',
-               MKL_NUM_THREADS='1', PYTHONPATH=str(ROOT))
+    env = runtime_environment()
     started, search_started, evaluation_started = time.monotonic(), None, None
     process = None
     reason = None
@@ -332,6 +352,7 @@ def launch_job(dataset_file, mode, output, stop_requested=None):
 
 
 def run(bundle_file, output, stop_requested=None):
+    environment = runtime_environment()
     bundle = json.loads(Path(bundle_file).read_text())
     datasets = bundle['datasets']
     if len(datasets) != 6 or {d['world_id'] for d in datasets} != {f'world_{i}' for i in range(1,7)}:
@@ -352,6 +373,7 @@ def run(bundle_file, output, stop_requested=None):
     report = {'kind':'isolated_symbolic_identifiability_not_agent_score', 'status':'running',
               'created_at':datetime.now(timezone.utc).isoformat(), 'model_calls':0, 'physical_missions':0,
               'cpu_workers':WORKERS, 'julia_threads_per_worker':THREADS,
+              'runtime_environment':{key:environment[key] for key in RUNTIME_ENV_KEYS if key in environment},
               'dataset_sha256':hashlib.sha256(Path(bundle_file).read_bytes()).hexdigest(),
               'source_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sources if (ROOT/p).is_file()},
               'protocol':{'modes':MODES,'attempts_per_world_per_mode':1,'budget_seconds':SEARCH_SECONDS,
@@ -384,7 +406,10 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--worker', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--mode', choices=MODES)
+    parser.add_argument('--julia-exe', type=Path, help='Existing local Julia executable; never install or resolve online')
     args = parser.parse_args()
+    if args.julia_exe is not None:
+        os.environ['PYTHON_JULIAPKG_EXE'] = str(args.julia_exe)
     if args.worker:
         if args.mode is None: parser.error('--worker requires --mode')
         worker(args.dataset, args.mode, args.output)

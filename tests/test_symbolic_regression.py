@@ -414,6 +414,98 @@ def test_close_but_distinct_true_coefficients_are_not_silently_merged():
         _parameter_sharing(raw,data,time.monotonic()+3)
 
 
+def test_infeasible_low_loss_pairs_do_not_consume_joint_fit_slots(monkeypatch):
+    import time
+    from shore_agent import symbolic_regression as sr
+    data=prepare_dataset(sharing_probes())
+    # Isolate pair scheduling from the already-tested axis scoring. Four nominally
+    # lower-loss, larger search trees have too few compatible coefficient groups.
+    simple="0.8*x+0.3502*y+0.21*vx"
+    left=[{"source":simple+f"+{offset}*sin(0.17*t)","complexity":24+i,
+           "parameter_count":5,"loss":i*1e-12,"origin":"pysr"}
+          for i,offset in enumerate((.0001,.0002,.0003,.0004))]
+    left.append({"source":simple,"complexity":11,"parameter_count":3,"loss":1e-6,"origin":"pysr"})
+    right=[{"source":"0.3498*x+0.65*y-0.45*vy","complexity":11,
+            "parameter_count":3,"loss":0.,"origin":"pysr"}]
+    monkeypatch.setattr(sr,"_prepare_axis",lambda rows,*args:rows)
+    real_share=sr._parameter_sharing
+    fitted=[]
+    def share(candidate,*args):
+        fitted.append(candidate)
+        return real_share(candidate,*args)
+    monkeypatch.setattr(sr,"_parameter_sharing",share)
+    candidates,audit=sr._select_candidates([left,right],data,3,time.monotonic()+3,{})
+    assert len(fitted)==1
+    assert len(fitted[0]["parameter_spec"])==6
+    assert len(candidates)==1
+    assert candidates[0]["parameter_sharing"]["status"]=="data_validated"
+    selection=audit["candidate_selection"]
+    assert selection["sharing_fit_attempts_this_selection"]==1
+    assert selection["sharing_proposal_prefilter_rejections_this_selection"]==4
+    assert selection["sharing_unattempted_pairs"]==0
+
+
+def test_sharing_fit_queue_keeps_simple_candidate_beside_lower_losses(monkeypatch):
+    import time
+    from shore_agent import symbolic_regression as sr
+    data=prepare_dataset(sharing_probes())
+    simple="0.8*x+0.3502*y+0.21*vx"
+    # Added repetitions can be proposed for sharing, so they consume real fit
+    # slots if attempted. Simulate data rejection and verify complexity diversity.
+    left=[{"source":simple+f"+0.35*sin(0.35*t+{offset})","complexity":30+i,
+           "parameter_count":6,"loss":i*1e-12,"origin":"pysr"}
+          for i,offset in enumerate((.35,.3501,.3502,.3503,.3504))]
+    left.append({"source":simple,"complexity":11,"parameter_count":3,"loss":1e-6,"origin":"pysr"})
+    right=[{"source":"0.3498*x+0.65*y-0.45*vy","complexity":11,
+            "parameter_count":3,"loss":0.,"origin":"pysr"}]
+    monkeypatch.setattr(sr,"_prepare_axis",lambda rows,*args:rows)
+    real_share=sr._parameter_sharing
+    sizes=[]
+    def share(candidate,*args):
+        sizes.append(len(candidate["parameter_spec"]))
+        if sizes[-1]>6: raise SymbolicRegressionError("sharing_data_rejected")
+        return real_share(candidate,*args)
+    monkeypatch.setattr(sr,"_parameter_sharing",share)
+    candidates,audit=sr._select_candidates([left,right],data,3,time.monotonic()+3,{})
+    assert sizes[:2]==[9,6]
+    assert len(sizes)==4
+    assert len(candidates)==1
+    assert candidates[0]["parameter_sharing"]["status"]=="data_validated"
+    assert audit["candidate_selection"]["sharing_unattempted_pairs"]==2
+
+
+def test_public_axis_first_pair_gets_fit_before_loss_and_complexity_extremes(monkeypatch):
+    import time
+    from shore_agent import symbolic_regression as sr
+    data=prepare_dataset(sharing_probes())
+    good="0.8*x+0.3502*y+0.21*vx"
+    left=[{"source":good+f"+0.35*sin(0.35*t+{offset})","complexity":30+i,
+           "parameter_count":6,"loss":i*1e-12,"origin":"pysr"}
+          for i,offset in enumerate((.35,.3501,.3502,.3503,.3504))]
+    left.extend([
+        {"source":good,"complexity":11,"parameter_count":3,"loss":1e-6,"origin":"pysr"},
+        {"source":"0.8*x+0.35*y+0.21*vy","complexity":8,"parameter_count":3,"loss":1.,"origin":"pysr"}])
+    right=[{"source":"0.3498*x+0.65*y-0.45*vy","complexity":11,
+            "parameter_count":3,"loss":0.,"origin":"pysr"}]
+    monkeypatch.setattr(sr,"_prepare_axis",lambda rows,*args:rows)
+    monkeypatch.setattr(sr,"_differencing_tolerance",lambda dataset:np.array([1e-5,1e-5]))
+    real_share=sr._parameter_sharing
+    fitted=[]
+    def share(candidate,*args):
+        fitted.append(candidate["law_spec"]["ax"])
+        if len(candidate["parameter_spec"])>6 or "vy" in candidate["law_spec"]["ax"]:
+            raise SymbolicRegressionError("sharing_data_rejected")
+        return real_share(candidate,*args)
+    monkeypatch.setattr(sr,"_parameter_sharing",share)
+    candidates,audit=sr._select_candidates([left,right],data,3,time.monotonic()+3,{})
+    assert audit["axis_candidates"]["ax"][0]["source"]==good
+    assert fitted[0]==export_candidate(good,"0",data["feature_names"])["law_spec"]["ax"]
+    assert len(fitted)==4
+    assert audit["candidate_selection"]["sharing_public_axis_pair_prioritized"] is True
+    assert len(candidates)==1
+    assert candidates[0]["parameter_sharing"]["status"]=="data_validated"
+
+
 def test_full_axis_formulas_survive_even_when_joint_parameter_sharing_fails():
     import time
     from shore_agent.symbolic_regression import _select_candidates, validate_axis_candidate

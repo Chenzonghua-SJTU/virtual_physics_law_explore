@@ -1,0 +1,652 @@
+{
+  "schema_version": 1,
+  "kind": "saved_training_and_axis_candidates_packaging_replay_not_agent_result",
+  "revision": "v2",
+  "previous_report": "symbolic-packaging-replay-world5.json",
+  "created_at_utc": "2026-11-07T06:21:34.141342+00:00",
+  "source_sha256": {
+    "shore_agent/symbolic_regression.py": "d05625d1a97eadae5f11003ba5010022a0882ee0fe57171f2f309a83ac8e9c6c",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265"
+  },
+  "source_run_id": "e7-qwen38-pysr-power-20261107-r01-world_5",
+  "source_search_id": "sr_804ebc9a53aa",
+  "execution_location": "local temporary copy",
+  "same_archived_inputs_as_v1": true,
+  "scope": {
+    "pysr_calls": 0,
+    "model_calls": 0,
+    "new_world_experiments": 0,
+    "independent_heldout_records_read": 0,
+    "truth_formulas_used_for_selection": false,
+    "physical_scores_recomputed": false,
+    "parameter_sharing_fit_and_short_rollout_scope": "Only the archived search training probes; internal sharing holdout remains discovery data."
+  },
+  "selection_budget_seconds": 10,
+  "selection_seconds": 0.3628702920000001,
+  "train_probe_ids": [
+    "probe_0001",
+    "probe_0002",
+    "probe_0003",
+    "probe_0004",
+    "probe_0005",
+    "probe_0006"
+  ],
+  "samples_per_probe": {
+    "probe_0001": 6,
+    "probe_0002": 6,
+    "probe_0003": 9,
+    "probe_0004": 9,
+    "probe_0005": 14,
+    "probe_0006": 14
+  },
+  "feature_names": [
+    "t",
+    "x",
+    "y",
+    "vx",
+    "vy",
+    "mass"
+  ],
+  "source_record_sha256_before": {
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/symbolic_search/sr_804ebc9a53aa.json": "4c31f7bd22fe6a240ebb56e9f436dfd9fd467293acd108f6c326d404480acfd7",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0001.json": "e8111e9ca3664ca78ba58c06798a955b71bd247bb5f7efd17f0a849fd9b3259b",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0002.json": "02ab1b9b1b2fac199f30eee1e2ed7799aeed8408876f6b92b92dcf4808ebc3fd",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0003.json": "02ef358b4e2b4aa8069166bf5c8ab368e002f321ca71f8509ec60e248e332f1d",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0004.json": "7b664454ed3ab7e6442648b793eadf9834f70dfa0d7b36abbd2d03da97aeea9b",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0005.json": "5b3669ef36020ddf9c0cadd2a6df46c8f3b91085a340a8abe28b383d9dca0b92",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0006.json": "20ccd49900f54607f45676b89f22b8cf60e22f7afe23869b9b4c1b6e83389058"
+  },
+  "source_record_sha256_after": {
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/symbolic_search/sr_804ebc9a53aa.json": "4c31f7bd22fe6a240ebb56e9f436dfd9fd467293acd108f6c326d404480acfd7",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0001.json": "e8111e9ca3664ca78ba58c06798a955b71bd247bb5f7efd17f0a849fd9b3259b",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0002.json": "02ab1b9b1b2fac199f30eee1e2ed7799aeed8408876f6b92b92dcf4808ebc3fd",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0003.json": "02ef358b4e2b4aa8069166bf5c8ab368e002f321ca71f8509ec60e248e332f1d",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0004.json": "7b664454ed3ab7e6442648b793eadf9834f70dfa0d7b36abbd2d03da97aeea9b",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0005.json": "5b3669ef36020ddf9c0cadd2a6df46c8f3b91085a340a8abe28b383d9dca0b92",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0006.json": "20ccd49900f54607f45676b89f22b8cf60e22f7afe23869b9b4c1b6e83389058"
+  },
+  "source_records_unchanged": true,
+  "returned_axis_candidates": {
+    "ax": [
+      {
+        "law_spec": {
+          "ax": "x * (x * x * c1 + y * y * c2 - c3)",
+          "ay": "0"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.0019840804566358733
+          },
+          {
+            "name": "c2",
+            "initial": -0.011856841732138022
+          },
+          {
+            "name": "c3",
+            "initial": 0.060080625354343636
+          }
+        ],
+        "component": "ax",
+        "source": "x*(x*x*(-0.0019840804566358733) + y*y*(-0.011856841732138022) - 0.060080625354343636)",
+        "loss": 4.244590757957197e-08,
+        "complexity": 15,
+        "origin": "pysr",
+        "parameter_count": 3,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": true,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      },
+      {
+        "law_spec": {
+          "ax": "sin(x * sin(sin(sin(sin(x * x * c1 + y * y * c2 - c3)))))",
+          "ay": "0"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.0020984220171290638
+          },
+          {
+            "name": "c2",
+            "initial": -0.012210229754279748
+          },
+          {
+            "name": "c3",
+            "initial": 0.06008425271038879
+          }
+        ],
+        "component": "ax",
+        "source": "sin(x*sin(sin(sin(sin(x*x*(-0.0020984220171290638) + y*y*(-0.012210229754279748) - 0.06008425271038879)))))",
+        "loss": 2.6216046192908487e-08,
+        "complexity": 20,
+        "origin": "pysr",
+        "parameter_count": 3,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": true,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      },
+      {
+        "law_spec": {
+          "ax": "sin(x * (x * x * c1 + y * y * c2 - c3))",
+          "ay": "0"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.0020744811842426376
+          },
+          {
+            "name": "c2",
+            "initial": -0.011990499222550743
+          },
+          {
+            "name": "c3",
+            "initial": 0.05997599590850929
+          }
+        ],
+        "component": "ax",
+        "source": "sin(x*(x*x*(-0.0020744811842426376) + y*y*(-0.011990499222550743) - 0.05997599590850929))",
+        "loss": 2.9489099393648033e-08,
+        "complexity": 16,
+        "origin": "pysr",
+        "parameter_count": 3,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": true,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      }
+    ],
+    "ay": [
+      {
+        "law_spec": {
+          "ax": "0",
+          "ay": "y * (x * x * c1 + y * y * c2 - c3)"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.011775693251853363
+          },
+          {
+            "name": "c2",
+            "initial": -0.001977229006556851
+          },
+          {
+            "name": "c3",
+            "initial": 0.10014378860179096
+          }
+        ],
+        "component": "ay",
+        "source": "y*(x*x*(-0.011775693251853363) + y*y*(-0.001977229006556851) - 0.10014378860179096)",
+        "loss": 3.295192805571413e-08,
+        "complexity": 15,
+        "origin": "pysr",
+        "parameter_count": 3,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": true,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      },
+      {
+        "law_spec": {
+          "ax": "0",
+          "ay": "sin(y * (x * x * c1 + y * y * c2 - c3)) * c4 + c5"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.00935933768892023
+          },
+          {
+            "name": "c2",
+            "initial": -0.0016913086150812389
+          },
+          {
+            "name": "c3",
+            "initial": 0.0782301745306944
+          },
+          {
+            "name": "c4",
+            "initial": 1.278991744474493
+          },
+          {
+            "name": "c5",
+            "initial": 8.492312543568355e-05
+          }
+        ],
+        "component": "ay",
+        "source": "sin(y*(x*x*(-0.00935933768892023) + y*y*(-0.0016913086150812389) - 0.0782301745306944))*1.278991744474493 + 8.492312543568355e-5",
+        "loss": 1.732804037696049e-08,
+        "complexity": 20,
+        "origin": "pysr",
+        "parameter_count": 5,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": true,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      },
+      {
+        "law_spec": {
+          "ax": "0",
+          "ay": "sin(y * (x * x * c1 + y * y * c2 - c3))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.012093672764476112
+          },
+          {
+            "name": "c2",
+            "initial": -0.002302795550790585
+          },
+          {
+            "name": "c3",
+            "initial": 0.09982556985463242
+          }
+        ],
+        "component": "ay",
+        "source": "sin(y*(x*x*(-0.012093672764476112) + y*y*(-0.002302795550790585) - 0.09982556985463242))",
+        "loss": 3.191339917195111e-08,
+        "complexity": 16,
+        "origin": "pysr",
+        "parameter_count": 3,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": true,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      }
+    ]
+  },
+  "returned_joint_candidates": [
+    {
+      "law_spec": {
+        "ax": "x * (x * x * c1 + y * y * c2 - c3)",
+        "ay": "y * ((y + exp(abs(x))) * c4 - c5)"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.0019840804566358733
+        },
+        {
+          "name": "c2",
+          "initial": -0.011856841732138022
+        },
+        {
+          "name": "c3",
+          "initial": 0.060080625354343636
+        },
+        {
+          "name": "c4",
+          "initial": -0.006902191310357803
+        },
+        {
+          "name": "c5",
+          "initial": 0.08941999420793907
+        }
+      ],
+      "complexity": 26,
+      "parameter_count": 5,
+      "acceleration_search_mse_by_axis": [
+        4.244590757957197e-08,
+        3.0112708235444503e-06
+      ],
+      "acceleration_search_mse": 3.0537167311240225e-06,
+      "normalized_acceleration_search_loss": 5.3788406522447765e-05,
+      "discovery_probe_ids": [
+        "probe_0001",
+        "probe_0002",
+        "probe_0003",
+        "probe_0004",
+        "probe_0005",
+        "probe_0006"
+      ],
+      "dsl_valid": true,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "initial_domain_check": {
+        "status": "passed",
+        "scope": "All acquired states and controlled initial states"
+      },
+      "short_rollout_check": {
+        "status": "passed",
+        "probe_count": 6,
+        "rhs_calls": 240,
+        "position_rmse": 0.0007006338948163975,
+        "velocity_rmse": 0.0014496623391345158,
+        "scope": "Short acquired-data replay only; not fitted or independently validated."
+      },
+      "joint_fit_ready": true,
+      "prediction_accuracy_status": "not_independently_validated",
+      "selection_role": "simplest_within_resolution_tolerance"
+    },
+    {
+      "law_spec": {
+        "ax": "sin(x * sin(sin(sin(sin(x * x * c1 + y * y * c2 - c3)))))",
+        "ay": "y * ((exp(abs(x)) + abs(y)) * c4 - c5)"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.0020984220171290638
+        },
+        {
+          "name": "c2",
+          "initial": -0.012210229754279748
+        },
+        {
+          "name": "c3",
+          "initial": 0.06008425271038879
+        },
+        {
+          "name": "c4",
+          "initial": -0.006904169962828067
+        },
+        {
+          "name": "c5",
+          "initial": 0.08940860656026217
+        }
+      ],
+      "complexity": 32,
+      "parameter_count": 5,
+      "acceleration_search_mse_by_axis": [
+        2.6216046192908487e-08,
+        2.938033946656315e-06
+      ],
+      "acceleration_search_mse": 2.964249992849224e-06,
+      "normalized_acceleration_search_loss": 5.190898658838494e-05,
+      "discovery_probe_ids": [
+        "probe_0001",
+        "probe_0002",
+        "probe_0003",
+        "probe_0004",
+        "probe_0005",
+        "probe_0006"
+      ],
+      "dsl_valid": true,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "initial_domain_check": {
+        "status": "passed",
+        "scope": "All acquired states and controlled initial states"
+      },
+      "short_rollout_check": {
+        "status": "passed",
+        "probe_count": 6,
+        "rhs_calls": 240,
+        "position_rmse": 0.0007144197795571464,
+        "velocity_rmse": 0.0014856802290714424,
+        "scope": "Short acquired-data replay only; not fitted or independently validated."
+      },
+      "joint_fit_ready": true,
+      "prediction_accuracy_status": "not_independently_validated",
+      "selection_role": "alternative_accuracy_candidate"
+    },
+    {
+      "law_spec": {
+        "ax": "x * (x * x * c1 + y * y * c2 - c3)",
+        "ay": "y * ((exp(abs(x)) + abs(y)) * c4 - c5)"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.0019840804566358733
+        },
+        {
+          "name": "c2",
+          "initial": -0.011856841732138022
+        },
+        {
+          "name": "c3",
+          "initial": 0.060080625354343636
+        },
+        {
+          "name": "c4",
+          "initial": -0.006904169962828067
+        },
+        {
+          "name": "c5",
+          "initial": 0.08940860656026217
+        }
+      ],
+      "complexity": 27,
+      "parameter_count": 5,
+      "acceleration_search_mse_by_axis": [
+        4.244590757957197e-08,
+        2.938033946656315e-06
+      ],
+      "acceleration_search_mse": 2.9804798542358873e-06,
+      "normalized_acceleration_search_loss": 5.251902537773565e-05,
+      "discovery_probe_ids": [
+        "probe_0001",
+        "probe_0002",
+        "probe_0003",
+        "probe_0004",
+        "probe_0005",
+        "probe_0006"
+      ],
+      "dsl_valid": true,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "initial_domain_check": {
+        "status": "passed",
+        "scope": "All acquired states and controlled initial states"
+      },
+      "short_rollout_check": {
+        "status": "passed",
+        "probe_count": 6,
+        "rhs_calls": 240,
+        "position_rmse": 0.0006995003808304213,
+        "velocity_rmse": 0.0014462648679535377,
+        "scope": "Short acquired-data replay only; not fitted or independently validated."
+      },
+      "joint_fit_ready": true,
+      "prediction_accuracy_status": "not_independently_validated",
+      "selection_role": "alternative_accuracy_candidate"
+    }
+  ],
+  "rejection_counts": {
+    "sharing_no_supported_proposal": 14,
+    "sharing_data_rejected": 4
+  },
+  "rejection_examples": [
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "sin(x * sin(sin(sin(sin(x * x * c1 + y * y * c2 - c3)))))",
+      "ay": "sin(y * (x * x * c4 + y * y * c5 - c6)) * c7 + c8"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1",
+      "ay": "sin(y * (x * x * c2 + y * y * c3 - c4)) * c5 + c6"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "sin(x * sin(sin(sin(x * x * c1 + y * c2 * y - c3))))",
+      "ay": "sin(y * (x * x * c4 + y * y * c5 - c6)) * c7 + c8"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1 + x * c2",
+      "ay": "sin(y * (x * x * c3 + y * y * c4 - c5)) * c6"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "sin(x * sin(sin(x * x * c1 + y * y * c2 - c3)))",
+      "ay": "sin(y * (x * x * c4 + y * y * c5 - c6)) * c7 + c8"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "x * c1",
+      "ay": "sin(y * (x * x * c2 + y * y * c3 - c4)) * c5 + c6"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "sin(x * sin(sin(sin(sin(x * x * c1 + y * y * c2 - c3)))))",
+      "ay": "sin(y * (x * x * c4 + sin(y * c5 * y - c6))) * c7"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1 + x * c2",
+      "ay": "sin(y * (x * x * c3 + sin(y * c4 * y - c5))) * c6"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "sin(x * sin(sin(sin(sin(x * x * c1 + y * y * c2 - c3)))))",
+      "ay": "sin(y * (x * x * c4 + y * y * c5 - c6)) * c7"
+    },
+    {
+      "reason": "sharing_data_rejected",
+      "stage": "sharing",
+      "ax": "x * (y * c1 - c2)",
+      "ay": "sin(y * (x * x * c3 + y * y * c4 - c5)) * c6"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "sin(x * sin(sin(sin(x * x * c1 + y * c2 * y - c3))))",
+      "ay": "sin(y * (x * x * c4 + sin(y * c5 * y - c6))) * c7"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1 + x * c2",
+      "ay": "sin(y * (x * x * c3 + y * y * c4 - c5)) * c6 + c7"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "sin(x * sin(sin(sin(x * x * c1 + y * c2 * y - c3))))",
+      "ay": "sin(y * (x * x * c4 + y * y * c5 - c6)) * c7"
+    },
+    {
+      "reason": "sharing_data_rejected",
+      "stage": "sharing",
+      "ax": "(x + c1) * ((exp(y) + abs(x)) * c2 - c3)",
+      "ay": "y * (x * x * c4 + y * c5 - c6)"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "sin(x * sin(x * x * c1 + y * y * c2 - c3))",
+      "ay": "sin(y * (x * x * c4 + y * y * c5 - c6)) * c7 + c8"
+    },
+    {
+      "reason": "sharing_data_rejected",
+      "stage": "sharing",
+      "ax": "x * (exp(y) * c1 - c2)",
+      "ay": "sin(y * (x * x * c3 + y * y * c4 - c5)) * c6"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "sin(x * sin(sin(x * x * c1 + y * y * c2 - c3)))",
+      "ay": "sin(y * (x * x * c4 + sin(y * c5 * y - c6))) * c7"
+    },
+    {
+      "reason": "sharing_data_rejected",
+      "stage": "sharing",
+      "ax": "x * (y * c1 - c2)",
+      "ay": "sin(y * (x * x * c3 + sin(y * c4 * y - c5))) * c6"
+    }
+  ],
+  "candidate_selection": {
+    "strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
+    "normalized_resolution_tolerance": 4.509224588602954e-06,
+    "legal_pairs": 254,
+    "over_budget_pairs_retained": 88,
+    "sharing_attempts_cached": 18,
+    "sharing_fit_attempts_this_selection": 4,
+    "sharing_proposal_prefilter_rejections_this_selection": 14,
+    "sharing_order": "interleaved_loss_and_complexity; infeasible_proposals_do_not_consume_fit_slots",
+    "sharing_unattempted_pairs": 70,
+    "rejection_stage_counts": {
+      "sharing": 18
+    },
+    "rejected_candidates_total": 18,
+    "unchecked_axis_equations": 0,
+    "rollout_candidates_considered": 3,
+    "axis_frontier_counts": [
+      18,
+      19
+    ],
+    "full_axis_equations_retained": true,
+    "selection_incomplete": false,
+    "stop_reason": null,
+    "retained_checkpoint": false,
+    "independent_validation": false
+  },
+  "shared_joint_candidate_count": 0,
+  "joint_parameter_counts": [
+    5,
+    5,
+    5
+  ],
+  "axis_source_provenance": {
+    "ax": [
+      {
+        "index": 0,
+        "source_present_unchanged_in_original": true
+      },
+      {
+        "index": 1,
+        "source_present_unchanged_in_original": true
+      },
+      {
+        "index": 2,
+        "source_present_unchanged_in_original": true
+      }
+    ],
+    "ay": [
+      {
+        "index": 0,
+        "source_present_unchanged_in_original": true
+      },
+      {
+        "index": 1,
+        "source_present_unchanged_in_original": true
+      },
+      {
+        "index": 2,
+        "source_present_unchanged_in_original": true
+      }
+    ]
+  }
+}

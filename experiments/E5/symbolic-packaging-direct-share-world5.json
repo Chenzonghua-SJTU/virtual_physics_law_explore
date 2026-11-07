@@ -1,0 +1,226 @@
+{
+  "kind": "single_existing_public_axis_pair_sharing_diagnostic_not_search",
+  "created_at_utc": "2026-11-07T06:23:40.756823+00:00",
+  "source_sha256": "d05625d1a97eadae5f11003ba5010022a0882ee0fe57171f2f309a83ac8e9c6c",
+  "source_search_id": "sr_804ebc9a53aa",
+  "train_probe_ids": [
+    "probe_0001",
+    "probe_0002",
+    "probe_0003",
+    "probe_0004",
+    "probe_0005",
+    "probe_0006"
+  ],
+  "same_archived_inputs_as_v2": true,
+  "source_record_sha256": {
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/symbolic_search/sr_804ebc9a53aa.json": "4c31f7bd22fe6a240ebb56e9f436dfd9fd467293acd108f6c326d404480acfd7",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0001.json": "e8111e9ca3664ca78ba58c06798a955b71bd247bb5f7efd17f0a849fd9b3259b",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0002.json": "02ab1b9b1b2fac199f30eee1e2ed7799aeed8408876f6b92b92dcf4808ebc3fd",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0003.json": "02ef358b4e2b4aa8069166bf5c8ab368e002f321ca71f8509ec60e248e332f1d",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0004.json": "7b664454ed3ab7e6442648b793eadf9834f70dfa0d7b36abbd2d03da97aeea9b",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0005.json": "5b3669ef36020ddf9c0cadd2a6df46c8f3b91085a340a8abe28b383d9dca0b92",
+    "runs/e7-qwen38-pysr-power-20261107-r01-world_5/records/probe/probe_0006.json": "20ccd49900f54607f45676b89f22b8cf60e22f7afe23869b9b4c1b6e83389058"
+  },
+  "pair_selection_rule": "Pair the first publicly returned ax and ay. No truth formula or heldout selection.",
+  "original_pair": {
+    "law_spec": {
+      "ax": "x * (x * x * c1 + y * y * c2 - c3)",
+      "ay": "y * (x * x * c4 + y * y * c5 - c6)"
+    },
+    "parameter_spec": [
+      {
+        "name": "c1",
+        "initial": -0.0019840804566358733
+      },
+      {
+        "name": "c2",
+        "initial": -0.011856841732138022
+      },
+      {
+        "name": "c3",
+        "initial": 0.060080625354343636
+      },
+      {
+        "name": "c4",
+        "initial": -0.011775693251853363
+      },
+      {
+        "name": "c5",
+        "initial": -0.001977229006556851
+      },
+      {
+        "name": "c6",
+        "initial": 0.10014378860179096
+      }
+    ]
+  },
+  "original_axis_sources": [
+    "x*(x*x*(-0.0019840804566358733) + y*y*(-0.011856841732138022) - 0.060080625354343636)",
+    "y*(x*x*(-0.011775693251853363) + y*y*(-0.001977229006556851) - 0.10014378860179096)"
+  ],
+  "original_mse_by_axis": [
+    4.244590757957197e-08,
+    3.295192805571413e-08
+  ],
+  "budget_seconds": 1,
+  "pysr_calls": 0,
+  "model_calls": 0,
+  "new_world_experiments": 0,
+  "independent_heldout_records_read": 0,
+  "status": "accepted",
+  "shared_candidate": {
+    "law_spec": {
+      "ax": "x * (x * x * c1 + y * y * c2 - c3)",
+      "ay": "y * (x * x * c4 + y * y * c1 - c5)"
+    },
+    "parameter_spec": [
+      {
+        "name": "c1",
+        "initial": -0.0019818432389121054
+      },
+      {
+        "name": "c2",
+        "initial": -0.011854777074482944
+      },
+      {
+        "name": "c3",
+        "initial": 0.0600943543992948
+      },
+      {
+        "name": "c4",
+        "initial": -0.0117830293169722
+      },
+      {
+        "name": "c5",
+        "initial": 0.10010675747606589
+      }
+    ],
+    "parameter_count": 5,
+    "acceleration_search_mse_by_axis": [
+      4.254518855834692e-08,
+      3.315669377985872e-08
+    ],
+    "acceleration_search_mse": 7.570188233820564e-08,
+    "normalized_acceleration_search_loss": 2.1738540667739125e-06,
+    "parameter_sharing": {
+      "status": "data_validated",
+      "proposal": "close coefficients proposed, never assumed equal",
+      "uncompressed_law_spec": {
+        "ax": "x * (x * x * c1 + y * y * c2 - c3)",
+        "ay": "y * (x * x * c4 + y * y * c5 - c6)"
+      },
+      "uncompressed_parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.0019840804566358733
+        },
+        {
+          "name": "c2",
+          "initial": -0.011856841732138022
+        },
+        {
+          "name": "c3",
+          "initial": 0.060080625354343636
+        },
+        {
+          "name": "c4",
+          "initial": -0.011775693251853363
+        },
+        {
+          "name": "c5",
+          "initial": -0.001977229006556851
+        },
+        {
+          "name": "c6",
+          "initial": 0.10014378860179096
+        }
+      ],
+      "groups": [
+        {
+          "shared_parameter": "c1",
+          "original_parameters": [
+            "c1",
+            "c5"
+          ]
+        },
+        {
+          "shared_parameter": "c2",
+          "original_parameters": [
+            "c2"
+          ]
+        },
+        {
+          "shared_parameter": "c3",
+          "original_parameters": [
+            "c3"
+          ]
+        },
+        {
+          "shared_parameter": "c4",
+          "original_parameters": [
+            "c4"
+          ]
+        },
+        {
+          "shared_parameter": "c5",
+          "original_parameters": [
+            "c6"
+          ]
+        }
+      ],
+      "original_loss_by_axis": [
+        4.2445907579572046e-08,
+        3.295192805571418e-08
+      ],
+      "shared_loss_by_axis": [
+        4.254518855834692e-08,
+        3.315669377985872e-08
+      ],
+      "acceptance_tolerance_by_axis": [
+        3.508025100700311e-07,
+        4.0488620346607756e-07
+      ],
+      "fit_evaluations": 24,
+      "heldout_discovery_probe_ids": [
+        "probe_0006"
+      ],
+      "split_checks": [
+        {
+          "split": "fit",
+          "original_mse_by_axis": [
+            3.313551323563651e-09,
+            1.8664554060149774e-08
+          ],
+          "shared_mse_by_axis": [
+            1.7348598536083927e-09,
+            7.958806517712769e-09
+          ],
+          "maximum_accepted_mse_by_axis": [
+            3.1167015381402265e-07,
+            3.9059882947051315e-07
+          ],
+          "passed": true
+        },
+        {
+          "split": "heldout_discovery_probes",
+          "original_mse_by_axis": [
+            2.3810768885961357e-07,
+            1.04388798033536e-07
+          ],
+          "shared_mse_by_axis": [
+            3.1596424373475245e-07,
+            3.7696853503347464e-07
+          ],
+          "maximum_accepted_mse_by_axis": [
+            5.464642913500726e-07,
+            4.763230734438994e-07
+          ],
+          "passed": true
+        }
+      ],
+      "independent_validation": false,
+      "limitation": "Ties are supported only by the supplied discovery data and resolution heuristic."
+    }
+  },
+  "sharing_seconds": 0.2230741249999999
+}

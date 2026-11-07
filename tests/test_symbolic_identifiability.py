@@ -107,3 +107,19 @@ def test_raw_backend_metrics_survive_production_export_rejection():
     assert raw_pair['export_status']=='rejected'
     assert raw_pair['heldout']['status']=='finite'
     assert raw_pair['heldout']['nrmse'] is not None
+
+
+def test_runtime_requires_existing_local_julia_and_sets_both_thread_controls(tmp_path):
+    with pytest.raises(ValueError,match='existing executable'):
+        diagnostic.runtime_environment({})
+    julia=tmp_path/'julia'
+    julia.write_text('placeholder')
+    with pytest.raises(ValueError,match='existing executable'):
+        diagnostic.runtime_environment({'PYTHON_JULIAPKG_EXE':str(julia)})
+    julia.chmod(0o700)
+    environment=diagnostic.runtime_environment({'PYTHON_JULIAPKG_EXE':str(julia),
+                                                'PYTHON_JULIACALL_THREADS':'192',
+                                                'PYTHON_JULIAPKG_OFFLINE':'no'})
+    assert environment['PYTHON_JULIAPKG_OFFLINE']=='yes'
+    assert environment['PYTHON_JULIACALL_THREADS']==environment['JULIA_NUM_THREADS']=='4'
+    assert environment['OPENBLAS_NUM_THREADS']==environment['OMP_NUM_THREADS']=='1'

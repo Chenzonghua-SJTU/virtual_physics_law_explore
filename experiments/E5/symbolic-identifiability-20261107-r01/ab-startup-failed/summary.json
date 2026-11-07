@@ -1,0 +1,112 @@
+{
+  "kind": "isolated_symbolic_identifiability_not_agent_score",
+  "status": "interrupted",
+  "created_at": "2026-11-07T06:17:46.288090+00:00",
+  "model_calls": 0,
+  "physical_missions": 0,
+  "cpu_workers": 4,
+  "julia_threads_per_worker": 4,
+  "dataset_sha256": "04ac54e7cef7a4e8d7610f1e9404478a70d60009e9a0ba4e0b0336365b973b49",
+  "source_sha256": {
+    "deployment/check_symbolic_identifiability.py": "c01f55dde4020fa2baaa4a63a3943e5c51c07538d1e4b86382b80045d4c28b36",
+    "deployment/check_symbolic_trajectory_data.py": "cca5233a082a8c126ebfa32a4ba6816fcf38859ffc72f679ac0bb5eb74d9d8f5",
+    "shore_agent/symbolic_regression.py": "f107a842943fafcba00b369fed274532e557532b84e4be2fed489178e6f61141",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_v15/vendor/development_worlds/worlds.py": "576f3700e583682e63b56177d73046a6e8c728c33251aaeb8424630f7ab873e6",
+    "experiments/E5/symbolic-identifiability-protocol.json": "8ffe8976852d16af570f31cc942e5de5de2bb82ed6db45c6a0544068453deb9a"
+  },
+  "protocol": {
+    "modes": [
+      "A_exact",
+      "B_velocity_difference"
+    ],
+    "attempts_per_world_per_mode": 1,
+    "budget_seconds": 60,
+    "pysr_seed": 42,
+    "holdout_used_for_selection": false,
+    "automatic_retries": false
+  },
+  "results": [
+    {
+      "mode": "A_exact",
+      "status": "interrupted",
+      "world_id": "world_1",
+      "model_calls": 0,
+      "reason": "study_interrupted",
+      "total_seconds": 173.57101469114423
+    },
+    {
+      "mode": "A_exact",
+      "world_id": "world_3",
+      "status": "not_started",
+      "reason": "study_interrupted"
+    },
+    {
+      "mode": "B_velocity_difference",
+      "status": "interrupted",
+      "world_id": "world_1",
+      "model_calls": 0,
+      "reason": "study_interrupted",
+      "total_seconds": 173.57791356928647
+    },
+    {
+      "mode": "B_velocity_difference",
+      "world_id": "world_4",
+      "status": "not_started",
+      "reason": "study_interrupted"
+    },
+    {
+      "mode": "B_velocity_difference",
+      "world_id": "world_3",
+      "status": "not_started",
+      "reason": "study_interrupted"
+    },
+    {
+      "mode": "A_exact",
+      "world_id": "world_4",
+      "status": "not_started",
+      "reason": "study_interrupted"
+    },
+    {
+      "mode": "A_exact",
+      "world_id": "world_5",
+      "status": "not_started",
+      "reason": "study_interrupted"
+    },
+    {
+      "mode": "B_velocity_difference",
+      "world_id": "world_5",
+      "status": "not_started",
+      "reason": "study_interrupted"
+    },
+    {
+      "mode": "B_velocity_difference",
+      "status": "interrupted",
+      "world_id": "world_2",
+      "model_calls": 0,
+      "reason": "study_interrupted",
+      "total_seconds": 173.60440789721906
+    },
+    {
+      "mode": "B_velocity_difference",
+      "world_id": "world_6",
+      "status": "not_started",
+      "reason": "study_interrupted"
+    },
+    {
+      "mode": "A_exact",
+      "world_id": "world_6",
+      "status": "not_started",
+      "reason": "study_interrupted"
+    },
+    {
+      "mode": "A_exact",
+      "status": "interrupted",
+      "world_id": "world_2",
+      "model_calls": 0,
+      "reason": "study_interrupted",
+      "total_seconds": 173.62690024264157
+    }
+  ],
+  "total_seconds": 173.62988040037453
+}

@@ -1,0 +1,1258 @@
+{
+  "mode": "B_velocity_difference",
+  "status": "evaluating",
+  "world_id": "world_3",
+  "model_calls": 0,
+  "warmup_seconds": 31.6050882935524,
+  "search_started_at": "2026-11-07T06:23:14.657800+00:00",
+  "search_result": {
+    "status": "completed",
+    "backend": "direct_pysr",
+    "target": "observed_velocity_finite_difference",
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "axis_search_seconds": [
+      30.740775872021914,
+      30.1309321988374
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "c1 * x + y * c2",
+          "ay": "-c3 * x + y * c4"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.05999968000060868
+          },
+          {
+            "name": "c2",
+            "initial": 0.0346406466481191
+          },
+          {
+            "name": "c3",
+            "initial": -0.03464064664811904
+          },
+          {
+            "name": "c4",
+            "initial": -0.09999925333499719
+          }
+        ],
+        "complexity": 14,
+        "parameter_count": 4,
+        "acceleration_search_mse_by_axis": [
+          9.189154101194036e-30,
+          1.3728480869330025e-29
+        ],
+        "acceleration_search_mse": 2.291763497052406e-29,
+        "normalized_acceleration_search_loss": 4.867235101810481e-28,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.435975924249049e-09,
+          "velocity_rmse": 7.177631733538713e-08,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "simplest_within_resolution_tolerance"
+      },
+      {
+        "law_spec": {
+          "ax": "-x - x - c1 * x + x + x + y * c2",
+          "ay": "y * (-c3 * x / y - 1 * c4 - c5 / sin(cos(t)))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.05999968000060868
+          },
+          {
+            "name": "c2",
+            "initial": 0.03464064664811911
+          },
+          {
+            "name": "c3",
+            "initial": -0.0346406466481191
+          },
+          {
+            "name": "c4",
+            "initial": 0.09999925333499712
+          },
+          {
+            "name": "c5",
+            "initial": 7.817478828446751e-18
+          }
+        ],
+        "complexity": 30,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          9.155094899470925e-30,
+          1.3659261322033127e-29
+        ],
+        "acceleration_search_mse": 2.2814356221504053e-29,
+        "normalized_acceleration_search_loss": 4.8463655813437865e-28,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.435975924249049e-09,
+          "velocity_rmse": 7.177631733054901e-08,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "alternative_accuracy_candidate"
+      },
+      {
+        "law_spec": {
+          "ax": "c1 * x + y * c2",
+          "ay": "y * (-c3 * x / y - c4)"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.05999968000060868
+          },
+          {
+            "name": "c2",
+            "initial": 0.0346406466481191
+          },
+          {
+            "name": "c3",
+            "initial": -0.034640646648119104
+          },
+          {
+            "name": "c4",
+            "initial": 0.09999925333499722
+          }
+        ],
+        "complexity": 16,
+        "parameter_count": 4,
+        "acceleration_search_mse_by_axis": [
+          9.189154101194036e-30,
+          1.3723354453026315e-29
+        ],
+        "acceleration_search_mse": 2.291250855422035e-29,
+        "normalized_acceleration_search_loss": 4.866444053150227e-28,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.435975924249049e-09,
+          "velocity_rmse": 7.177631732541981e-08,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "alternative_accuracy_candidate"
+      }
+    ],
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy",
+      "mass",
+      "charge"
+    ],
+    "search_configuration": {
+      "maxsize": 48,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "^"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "random_state": 42,
+      "time_budget_seconds": 60,
+      "axis_timeout_seconds": 30.0,
+      "parallelism": "multithreading",
+      "linear_seeds": false,
+      "world_identity_or_formula_passed_to_backend": false
+    },
+    "axis_equations": {
+      "ax": [
+        {
+          "source": "vx",
+          "loss": 0.0066484250661876625,
+          "complexity": 1,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(vx)",
+          "loss": 0.006542954400246383,
+          "complexity": 2,
+          "origin": "pysr"
+        },
+        {
+          "source": "x*(-0.07231392644024175)",
+          "loss": 0.0022537352059587884,
+          "complexity": 3,
+          "origin": "pysr"
+        },
+        {
+          "source": "(-x + y)*0.048311633979386634",
+          "loss": 0.00048000769248208335,
+          "complexity": 5,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin((-x + y)*0.04853531865861815)",
+          "loss": 0.0004761804566261876,
+          "complexity": 6,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*0.0346406466481191",
+          "loss": 9.189154101194029e-30,
+          "complexity": 7,
+          "origin": "pysr"
+        },
+        {
+          "source": "-x - (-0.9400003199993914)*x + y*0.03464064664811908",
+          "loss": 9.172274294883707e-30,
+          "complexity": 9,
+          "origin": "pysr"
+        },
+        {
+          "source": "-x - 0.059999680000608645*x + x + y*0.03464064664811911",
+          "loss": 9.148534533416431e-30,
+          "complexity": 11,
+          "origin": "pysr"
+        },
+        {
+          "source": "-x - 0.05999968000060868*x + x + y*0.03464064664811911 - 1.1189361733597451e-16",
+          "loss": 9.141266822779071e-30,
+          "complexity": 13,
+          "origin": "pysr"
+        },
+        {
+          "source": "-x - x - 0.05999968000060868*x + x + x + y*0.03464064664811911",
+          "loss": 9.08153624547606e-30,
+          "complexity": 15,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx + vx - x + x - 2.030167997521776e-16 + 0.03464064664811929)",
+          "loss": 9.052378802951685e-30,
+          "complexity": 17,
+          "origin": "pysr"
+        },
+        {
+          "source": "-vx - vx + vx + vx - x - 0.05999968000060868*x + x + y*0.03464064664811911",
+          "loss": 8.999135867785991e-30,
+          "complexity": 19,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx + vx + vx - x + x - 2.0675216945168266e-16 + 0.034640646648119285)",
+          "loss": 8.898592293803854e-30,
+          "complexity": 21,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx + vx + vx - x + x - 2.030167997521776e-16 - 3.735369699505066e-18 + 0.034640646648119285)",
+          "loss": 8.897619632309369e-30,
+          "complexity": 23,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx + vx + vx + vx - x + x - 2.0675216945168266e-16 + 0.034640646648119285)",
+          "loss": 8.681594323032516e-30,
+          "complexity": 25,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx + vx + vx + vx - x + x - 2.0675216945168266e-16 - 3.735369699505066e-18 + 0.034640646648119285)",
+          "loss": 8.678401492296586e-30,
+          "complexity": 27,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx + vx + vx + vx - x + x - 2.030167997521776e-16 - 2.030167997521776e-16 + 1.9529961614256467e-16 + 0.034640646648119285)",
+          "loss": 8.649841723344363e-30,
+          "complexity": 29,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx - x + x - 2.0675216945168266e-16 - 2.0675216945168266e-16 + 0.034640646648119285)",
+          "loss": 8.574534853253285e-30,
+          "complexity": 31,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx - x + x - 2.030167997521776e-16 - 2.030167997521776e-16 + 1.9529961614256467e-16 + 0.034640646648119285)",
+          "loss": 8.505551285964857e-30,
+          "complexity": 33,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx + vx - x + x - (vx - 2.030167997521776e-16) - 2.030167997521776e-16 - 2.030167997521776e-16 + 0.034640646648119285)",
+          "loss": 8.499880325058298e-30,
+          "complexity": 37,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx + vx - x + x - (vx - 4.060335995043552e-16) - 2.030167997521776e-16 - 2.030167997521776e-16 - 2.030167997521776e-16 + 0.034640646648119285)",
+          "loss": 8.448440775857023e-30,
+          "complexity": 39,
+          "origin": "pysr"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx - vx + vx + vx + vx + vx + vx + vx - x + x - (vx - 4.060335995043552e-16) - 2.030167997521776e-16 - 2.030167997521776e-16 - 2.030167997521776e-16 - 2.030167997521776e-16 + 0.034640646648119285)",
+          "loss": 8.415275660361569e-30,
+          "complexity": 45,
+          "origin": "pysr"
+        }
+      ],
+      "ay": [
+        {
+          "source": "vy",
+          "loss": 0.014526121891600585,
+          "complexity": 1,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(vy)",
+          "loss": 0.014441328179892347,
+          "complexity": 2,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-0.11527721476295934)",
+          "loss": 0.00279820964529663,
+          "complexity": 3,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(y*(-0.1166219994431078))",
+          "loss": 0.002786121129370546,
+          "complexity": 4,
+          "origin": "pysr"
+        },
+        {
+          "source": "(-vy + y)*(-0.10858723514106151)",
+          "loss": 0.0020287172792374858,
+          "complexity": 5,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-0.10646157106939722)/exp(vy)",
+          "loss": 0.0019227592734302689,
+          "complexity": 6,
+          "origin": "pysr"
+        },
+        {
+          "source": "-(-0.03464064664811904)*x + y*(-0.09999925333499719)",
+          "loss": 1.3728480869330025e-29,
+          "complexity": 7,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-(-0.034640646648119104)*x/y - 0.09999925333499722)",
+          "loss": 1.3723354453026312e-29,
+          "complexity": 9,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(x*(-2.5490742864776337e-17 - (-1)*0.034640646648119014/y) - 1*0.09999925333499723)",
+          "loss": 1.3716435011827152e-29,
+          "complexity": 11,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-x + x - (-0.03464064664811904)*x/y - 1*0.09999925333499723)",
+          "loss": 1.3674926168510287e-29,
+          "complexity": 13,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-(-0.0346406466481191)*x/y - 1*0.09999925333499712 - 7.817478828446751e-18/cos(t))",
+          "loss": 1.3642084251488258e-29,
+          "complexity": 14,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-(-0.0346406466481191)*x/y - 1*0.09999925333499712 - 7.817478828446751e-18/sin(cos(t)))",
+          "loss": 1.3641370531807688e-29,
+          "complexity": 15,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-(-0.034640646648119014)*x/y - 1*0.09999925333499723 + 5.355971840436706e-18/cos(-x - 0.034640646648119014))",
+          "loss": 1.3474784673762437e-29,
+          "complexity": 16,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-1*0.09999925333499723 + (t*7.443760004881208e-19/(cos(x) - 1*(-0.034640646648119014)) - (-0.034640646648119014)*x)/y)",
+          "loss": 1.3042966341013832e-29,
+          "complexity": 18,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/y) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.279526257906925e-29,
+          "complexity": 20,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y - 1*(-0.8950049864848695))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2676485711899275e-29,
+          "complexity": 22,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y - cos(-t + y))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2662609739387412e-29,
+          "complexity": 25,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y - cos(-t + vx - x))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.266031115447241e-29,
+          "complexity": 27,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(-y + y/((-0.2779885278989895/cos(0.282619292570909/(vx*vy)))))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2433101635268097e-29,
+          "complexity": 31,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y/cos(cos(-1.0974911628860184)/cos(-vy + 1.0/vy)) - 0.034640646648119014)) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2312278888044436e-29,
+          "complexity": 33,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y/cos(cos(-1.0974911628860184)/cos(-vy + 1.0/vy)) - 0.034640646648119014 - 0.034640646648119014)) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2308596173517346e-29,
+          "complexity": 35,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(((vx + y)/cos(-0.2779885278989895/cos(-(-1)*(-0.2779885278989895)*0.2779885278989895/y - 1.8976230927418642/vy))))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2110081698347086e-29,
+          "complexity": 36,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/((-0.2779885278989895/(vy*cos(-0.2779885278989895/cos(-(-1)*0.2779885278989895/(0.14649301484697128*vy) + 0.009629702367179669/(vx*y))))))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2092233019707777e-29,
+          "complexity": 38,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(((vx + y)/cos(-0.2779885278989895/cos(-0.2779885278989895/(0.14649301484697128*vy) - (-1)*(-0.034640646648119014)*0.2779885278989895/(vx*y)))))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2034587185643785e-29,
+          "complexity": 40,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/((charge*(mass + y/cos(-0.13010306060599688/cos(-mass + (charge - 0.034640646648119014)*cos(cos(1.0/vy) - 0.45583058565515866/vy))) - 0.034640646648119014)))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.1872534468419697e-29,
+          "complexity": 46,
+          "origin": "pysr"
+        }
+      ]
+    },
+    "elapsed_seconds": 60.911197220906615,
+    "search_budget_exceeded": true,
+    "axis_candidates": {
+      "ax": [
+        {
+          "law_spec": {
+            "ax": "c1 * x + y * c2",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.05999968000060868
+            },
+            {
+              "name": "c2",
+              "initial": 0.0346406466481191
+            }
+          ],
+          "component": "ax",
+          "source": "-0.05999968000060868*x + y*0.0346406466481191",
+          "loss": 9.189154101194036e-30,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "-x - x - c1 * x + x + x + y * c2",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.05999968000060868
+            },
+            {
+              "name": "c2",
+              "initial": 0.03464064664811911
+            }
+          ],
+          "component": "ax",
+          "source": "-x - x - 0.05999968000060868*x + x + x + y*0.03464064664811911",
+          "loss": 9.155094899470925e-30,
+          "complexity": 15,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "-x - c1 * x + x + y * c2",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.059999680000608645
+            },
+            {
+              "name": "c2",
+              "initial": 0.03464064664811911
+            }
+          ],
+          "component": "ax",
+          "source": "-x - 0.059999680000608645*x + x + y*0.03464064664811911",
+          "loss": 9.174913253579211e-30,
+          "complexity": 11,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        }
+      ],
+      "ay": [
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "-c1 * x + y * c2"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.03464064664811904
+            },
+            {
+              "name": "c2",
+              "initial": -0.09999925333499719
+            }
+          ],
+          "component": "ay",
+          "source": "-(-0.03464064664811904)*x + y*(-0.09999925333499719)",
+          "loss": 1.3728480869330025e-29,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "y * (t * c1 / (cos(c2 / vx) / ((vx + y) / cos(c3 / cos(c4 / (c5 * vy) - -1 * c6 * c7 / (vx * y))))) - c8 * x / y - 1 * c9)"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 7.443760004881208e-19
+            },
+            {
+              "name": "c2",
+              "initial": -0.2779885278989895
+            },
+            {
+              "name": "c3",
+              "initial": -0.2779885278989895
+            },
+            {
+              "name": "c4",
+              "initial": -0.2779885278989895
+            },
+            {
+              "name": "c5",
+              "initial": 0.14649301484697128
+            },
+            {
+              "name": "c6",
+              "initial": -0.034640646648119014
+            },
+            {
+              "name": "c7",
+              "initial": 0.2779885278989895
+            },
+            {
+              "name": "c8",
+              "initial": -0.034640646648119014
+            },
+            {
+              "name": "c9",
+              "initial": 0.09999925333499723
+            }
+          ],
+          "component": "ay",
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(((vx + y)/cos(-0.2779885278989895/cos(-0.2779885278989895/(0.14649301484697128*vy) - (-1)*(-0.034640646648119014)*0.2779885278989895/(vx*y)))))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2030949876657406e-29,
+          "complexity": 40,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": false,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "y * (-c1 * x / y - c2)"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.034640646648119104
+            },
+            {
+              "name": "c2",
+              "initial": 0.09999925333499722
+            }
+          ],
+          "component": "ay",
+          "source": "y*(-(-0.034640646648119104)*x/y - 0.09999925333499722)",
+          "loss": 1.3723354453026315e-29,
+          "complexity": 9,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        }
+      ]
+    },
+    "rejection_counts": {
+      "dsl_export": 4,
+      "sharing_no_supported_proposal": 4
+    },
+    "rejection_examples": [
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx + vx - x + x - (vx - 2.030167997521776e-16) - 2.030167997521776e-16 - 2.030167997521776e-16 + 0.034640646648119285)"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx + vx - x + x - (vx - 4.060335995043552e-16) - 2.030167997521776e-16 - 2.030167997521776e-16 - 2.030167997521776e-16 + 0.034640646648119285)"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx - vx + vx + vx + vx + vx + vx + vx - x + x - (vx - 4.060335995043552e-16) - 2.030167997521776e-16 - 2.030167997521776e-16 - 2.030167997521776e-16 - 2.030167997521776e-16 + 0.034640646648119285)"
+      },
+      {
+        "reason": "dsl_export",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/((charge*(mass + y/cos(-0.13010306060599688/cos(-mass + (charge - 0.034640646648119014)*cos(cos(1.0/vy) - 0.45583058565515866/vy))) - 0.034640646648119014)))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "-x - x - c1 * x + x + x + y * c2",
+        "ay": "y * (t * c3 / (cos(c4 / vx) / ((vx + y) / cos(c5 / cos(c6 / (c7 * vy) - -1 * c8 * c9 / (vx * y))))) - c10 * x / y - 1 * c11)"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "-x - c1 * x + x + y * c2",
+        "ay": "y * (t * c3 / (cos(c4 / vx) / ((vx + y) / cos(c5 / cos(c6 / (c7 * vy) - -1 * c8 * c9 / (vx * y))))) - c10 * x / y - 1 * c11)"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "-x - x - c1 * x + x + x + y * c2",
+        "ay": "y * (t * c3 / (cos(c4 / vx) / (c5 / (vy * cos(c6 / cos(--1 * c7 / (c8 * vy) + c9 / (vx * y)))))) - c10 * x / y - 1 * c11)"
+      },
+      {
+        "reason": "sharing_no_supported_proposal",
+        "stage": "sharing",
+        "ax": "c1 * x + y * c2",
+        "ay": "y * (t * c3 / (cos(c4 / vx) / ((vx + y) / cos(c5 / cos(c6 / (c7 * vy) - -1 * c8 * c9 / (vx * y))))) - c10 * x / y - 1 * c11)"
+      }
+    ],
+    "rejected_candidate_pairs": 0,
+    "candidate_selection": {
+      "strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
+      "normalized_resolution_tolerance": 1e-10,
+      "legal_pairs": 115,
+      "over_budget_pairs_retained": 69,
+      "sharing_attempts_cached": 4,
+      "sharing_unattempted_pairs": 65,
+      "rejection_stage_counts": {
+        "axis": 4,
+        "sharing": 4
+      },
+      "rejected_candidates_total": 8,
+      "unchecked_axis_equations": 0,
+      "rollout_candidates_considered": 3,
+      "axis_frontier_counts": [
+        8,
+        23
+      ],
+      "full_axis_equations_retained": true,
+      "selection_incomplete": false,
+      "stop_reason": null,
+      "retained_checkpoint": false,
+      "independent_validation": false
+    },
+    "packaging_axis_equations": {
+      "ax": [
+        {
+          "source": "vx",
+          "loss": 0.006648425066187666,
+          "complexity": 1,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(vx)",
+          "loss": 0.0065429544002463865,
+          "complexity": 2,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "x*(-0.07231392644024175)",
+          "loss": 0.0022537352059587893,
+          "complexity": 3,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(-x + y)*0.048311633979386634",
+          "loss": 0.00048000769248208346,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "sin((-x + y)*0.04853531865861815)",
+          "loss": 0.0004761804566261878,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*0.0346406466481191",
+          "loss": 9.189154101194036e-30,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "-x - (-0.9400003199993914)*x + y*0.03464064664811908",
+          "loss": 9.200260297206668e-30,
+          "complexity": 9,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "-x - 0.059999680000608645*x + x + y*0.03464064664811911",
+          "loss": 9.174913253579211e-30,
+          "complexity": 11,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "-x - 0.05999968000060868*x + x + y*0.03464064664811911 - 1.1189361733597451e-16",
+          "loss": 9.207922890355197e-30,
+          "complexity": 13,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "-x - x - 0.05999968000060868*x + x + x + y*0.03464064664811911",
+          "loss": 9.155094899470925e-30,
+          "complexity": 15,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx + vx - x + x - 2.030167997521776e-16 + 0.03464064664811929)",
+          "loss": 9.195913580318296e-30,
+          "complexity": 17,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "-vx - vx + vx + vx - x - 0.05999968000060868*x + x + y*0.03464064664811911",
+          "loss": 9.20316691335364e-30,
+          "complexity": 19,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx + vx + vx - x + x - 2.0675216945168266e-16 + 0.034640646648119285)",
+          "loss": 9.192273539287119e-30,
+          "complexity": 21,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx + vx + vx - x + x - 2.030167997521776e-16 - 3.735369699505066e-18 + 0.034640646648119285)",
+          "loss": 9.192273539287119e-30,
+          "complexity": 23,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx + vx + vx + vx - x + x - 2.0675216945168266e-16 + 0.034640646648119285)",
+          "loss": 9.171620448354848e-30,
+          "complexity": 25,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx + vx + vx + vx - x + x - 2.0675216945168266e-16 - 3.735369699505066e-18 + 0.034640646648119285)",
+          "loss": 9.171620448354848e-30,
+          "complexity": 27,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx + vx + vx + vx - x + x - 2.030167997521776e-16 - 2.030167997521776e-16 + 1.9529961614256467e-16 + 0.034640646648119285)",
+          "loss": 9.171620448354848e-30,
+          "complexity": 29,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx - x + x - 2.0675216945168266e-16 - 2.0675216945168266e-16 + 0.034640646648119285)",
+          "loss": 9.273179315093262e-30,
+          "complexity": 31,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx - x + x - 2.030167997521776e-16 - 2.030167997521776e-16 + 1.9529961614256467e-16 + 0.034640646648119285)",
+          "loss": 9.171620448354848e-30,
+          "complexity": 33,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx + vx - x + x - (vx - 2.030167997521776e-16) - 2.030167997521776e-16 - 2.030167997521776e-16 + 0.034640646648119285)",
+          "loss": 8.499880325058298e-30,
+          "complexity": 37,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx + vx + vx + vx + vx + vx - x + x - (vx - 4.060335995043552e-16) - 2.030167997521776e-16 - 2.030167997521776e-16 - 2.030167997521776e-16 + 0.034640646648119285)",
+          "loss": 8.448440775857023e-30,
+          "complexity": 39,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        },
+        {
+          "source": "-0.05999968000060868*x + y*(-vx - vx - vx - vx - vx + vx + vx + vx + vx + vx + vx - x + x - (vx - 4.060335995043552e-16) - 2.030167997521776e-16 - 2.030167997521776e-16 - 2.030167997521776e-16 - 2.030167997521776e-16 + 0.034640646648119285)",
+          "loss": 8.415275660361569e-30,
+          "complexity": 45,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        }
+      ],
+      "ay": [
+        {
+          "source": "vy",
+          "loss": 0.014526121891600595,
+          "complexity": 1,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(vy)",
+          "loss": 0.01444132817989235,
+          "complexity": 2,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-0.11527721476295934)",
+          "loss": 0.0027982096452966307,
+          "complexity": 3,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(y*(-0.1166219994431078))",
+          "loss": 0.0027861211293705476,
+          "complexity": 4,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(-vy + y)*(-0.10858723514106151)",
+          "loss": 0.0020287172792374866,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-0.10646157106939722)/exp(vy)",
+          "loss": 0.0019227592734302698,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "-(-0.03464064664811904)*x + y*(-0.09999925333499719)",
+          "loss": 1.3728480869330025e-29,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-(-0.034640646648119104)*x/y - 0.09999925333499722)",
+          "loss": 1.3723354453026315e-29,
+          "complexity": 9,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(x*(-2.5490742864776337e-17 - (-1)*0.034640646648119014/y) - 1*0.09999925333499723)",
+          "loss": 1.3716435011827155e-29,
+          "complexity": 11,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-x + x - (-0.03464064664811904)*x/y - 1*0.09999925333499723)",
+          "loss": 1.3741124683900029e-29,
+          "complexity": 13,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-(-0.0346406466481191)*x/y - 1*0.09999925333499712 - 7.817478828446751e-18/cos(t))",
+          "loss": 1.366058878175037e-29,
+          "complexity": 14,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-(-0.0346406466481191)*x/y - 1*0.09999925333499712 - 7.817478828446751e-18/sin(cos(t)))",
+          "loss": 1.3659261322033127e-29,
+          "complexity": 15,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-(-0.034640646648119014)*x/y - 1*0.09999925333499723 + 5.355971840436706e-18/cos(-x - 0.034640646648119014))",
+          "loss": 1.3478865692539706e-29,
+          "complexity": 16,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-1*0.09999925333499723 + (t*7.443760004881208e-19/(cos(x) - 1*(-0.034640646648119014)) - (-0.034640646648119014)*x)/y)",
+          "loss": 1.3042966341013838e-29,
+          "complexity": 18,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/y) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2801107016330113e-29,
+          "complexity": 20,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y - 1*(-0.8950049864848695))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2681427038237865e-29,
+          "complexity": 22,
+          "origin": "pysr",
+          "parameter_count": 5,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y - cos(-t + y))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.266260973938742e-29,
+          "complexity": 25,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y - cos(-t + vx - x))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2660311154472417e-29,
+          "complexity": 27,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(-y + y/((-0.2779885278989895/cos(0.282619292570909/(vx*vy)))))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2433101635268105e-29,
+          "complexity": 31,
+          "origin": "pysr",
+          "parameter_count": 6,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y/cos(cos(-1.0974911628860184)/cos(-vy + 1.0/vy)) - 0.034640646648119014)) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2311142542879924e-29,
+          "complexity": 33,
+          "origin": "pysr",
+          "parameter_count": 7,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(y/cos(cos(-1.0974911628860184)/cos(-vy + 1.0/vy)) - 0.034640646648119014 - 0.034640646648119014)) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2307887935558773e-29,
+          "complexity": 35,
+          "origin": "pysr",
+          "parameter_count": 8,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(((vx + y)/cos(-0.2779885278989895/cos(-(-1)*(-0.2779885278989895)*0.2779885278989895/y - 1.8976230927418642/vy))))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2105585592126515e-29,
+          "complexity": 36,
+          "origin": "pysr",
+          "parameter_count": 8,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/((-0.2779885278989895/(vy*cos(-0.2779885278989895/cos(-(-1)*0.2779885278989895/(0.14649301484697128*vy) + 0.009629702367179669/(vx*y))))))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2089073883425597e-29,
+          "complexity": 38,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/(((vx + y)/cos(-0.2779885278989895/cos(-0.2779885278989895/(0.14649301484697128*vy) - (-1)*(-0.034640646648119014)*0.2779885278989895/(vx*y)))))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.2030949876657406e-29,
+          "complexity": 40,
+          "origin": "pysr",
+          "parameter_count": 9,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(t*7.443760004881208e-19/(cos(-0.2779885278989895/vx)/((charge*(mass + y/cos(-0.13010306060599688/cos(-mass + (charge - 0.034640646648119014)*cos(cos(1.0/vy) - 0.45583058565515866/vy))) - 0.034640646648119014)))) - (-0.034640646648119014)*x/y - 1*0.09999925333499723)",
+          "loss": 1.1872534468419697e-29,
+          "complexity": 46,
+          "origin": "pysr",
+          "domain_valid": false,
+          "rejection_reason": "dsl_export"
+        }
+      ]
+    },
+    "packaging_seconds": 0.1956031210720539,
+    "packaging_budget_seconds": 10,
+    "packaging_is_separate_diagnostic": true
+  },
+  "search_seconds": 60.91623502224684,
+  "packaging_seconds": 0.1956031210720539
+}

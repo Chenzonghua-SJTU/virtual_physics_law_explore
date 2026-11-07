@@ -1,0 +1,2049 @@
+{
+  "mode": "A_exact",
+  "status": "completed",
+  "world_id": "world_3",
+  "model_calls": 0,
+  "warmup_seconds": 31.823381738737226,
+  "search_started_at": "2026-11-07T06:23:14.456109+00:00",
+  "search_result": {
+    "status": "completed",
+    "backend": "direct_pysr",
+    "target": "diagnostic_exact_acceleration",
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "axis_search_seconds": [
+      30.65309413895011,
+      30.069199414923787
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "x * c1 + y * c2",
+          "ay": "x * c3 + y * c4"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.06
+          },
+          {
+            "name": "c2",
+            "initial": 0.03464101615137754
+          },
+          {
+            "name": "c3",
+            "initial": 0.03464101615137754
+          },
+          {
+            "name": "c4",
+            "initial": -0.1
+          }
+        ],
+        "complexity": 14,
+        "parameter_count": 4,
+        "acceleration_search_mse_by_axis": [
+          0.0,
+          0.0
+        ],
+        "acceleration_search_mse": 0.0,
+        "normalized_acceleration_search_loss": 0.0,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 1.6118160874146764e-15,
+          "velocity_rmse": 8.346838759659381e-15,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "simplest_within_resolution_tolerance"
+      },
+      {
+        "law_spec": {
+          "ax": "x * c1 + y * c2",
+          "ay": "(y - sin(x)) * c3"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.06
+          },
+          {
+            "name": "c2",
+            "initial": 0.03464101615137754
+          },
+          {
+            "name": "c3",
+            "initial": -0.08804899605908047
+          }
+        ],
+        "complexity": 13,
+        "parameter_count": 3,
+        "acceleration_search_mse_by_axis": [
+          0.0,
+          0.0017099173330969199
+        ],
+        "acceleration_search_mse": 0.0017099173330969199,
+        "normalized_acceleration_search_loss": 0.02638501713458062,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 3.346754759945751e-05,
+          "velocity_rmse": 0.0016733175825252924,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "alternative_accuracy_candidate"
+      },
+      {
+        "law_spec": {
+          "ax": "x * c1 + y * c2",
+          "ay": "(vx + y) * c3"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.06
+          },
+          {
+            "name": "c2",
+            "initial": 0.03464101615137754
+          },
+          {
+            "name": "c3",
+            "initial": -0.10834479700454828
+          }
+        ],
+        "complexity": 12,
+        "parameter_count": 3,
+        "acceleration_search_mse_by_axis": [
+          0.0,
+          0.0021577153913741403
+        ],
+        "acceleration_search_mse": 0.0021577153913741403,
+        "normalized_acceleration_search_loss": 0.03329480114096726,
+        "discovery_probe_ids": [
+          "diagnostic_train_0001",
+          "diagnostic_train_0002",
+          "diagnostic_train_0003",
+          "diagnostic_train_0004",
+          "diagnostic_train_0005",
+          "diagnostic_train_0006",
+          "diagnostic_train_0007",
+          "diagnostic_train_0008",
+          "diagnostic_train_0009",
+          "diagnostic_train_0010",
+          "diagnostic_train_0011",
+          "diagnostic_train_0012",
+          "diagnostic_train_0013",
+          "diagnostic_train_0014",
+          "diagnostic_train_0015",
+          "diagnostic_train_0016",
+          "diagnostic_train_0017",
+          "diagnostic_train_0018",
+          "diagnostic_train_0019",
+          "diagnostic_train_0020",
+          "diagnostic_train_0021",
+          "diagnostic_train_0022",
+          "diagnostic_train_0023",
+          "diagnostic_train_0024"
+        ],
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 24,
+          "rhs_calls": 432,
+          "position_rmse": 4.12295854367969e-05,
+          "velocity_rmse": 0.002058455850156057,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "joint_fit_ready": true,
+        "prediction_accuracy_status": "not_independently_validated",
+        "selection_role": "alternative_accuracy_candidate"
+      }
+    ],
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy",
+      "mass",
+      "charge"
+    ],
+    "search_configuration": {
+      "maxsize": 48,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "^"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "random_state": 42,
+      "time_budget_seconds": 60,
+      "axis_timeout_seconds": 30.0,
+      "parallelism": "multithreading",
+      "linear_seeds": false,
+      "world_identity_or_formula_passed_to_backend": false
+    },
+    "axis_equations": {
+      "ax": [
+        {
+          "source": "vx",
+          "loss": 0.006648424136773003,
+          "complexity": 1,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(vx)",
+          "loss": 0.00654295507258723,
+          "complexity": 2,
+          "origin": "pysr"
+        },
+        {
+          "source": "x*(-0.07228142426104141)",
+          "loss": 0.002253785752912397,
+          "complexity": 3,
+          "origin": "pysr"
+        },
+        {
+          "source": "(x - 0.3117239949787569)*(-0.07129954612593925)",
+          "loss": 0.001766819585004884,
+          "complexity": 5,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin((x - 0.31208830749814204)*(-0.07142079803961375))",
+          "loss": 0.0017655960285911615,
+          "complexity": 6,
+          "origin": "pysr"
+        },
+        {
+          "source": "x*(-0.06) + y*0.03464101615137754",
+          "loss": 0.0,
+          "complexity": 7,
+          "origin": "pysr"
+        }
+      ],
+      "ay": [
+        {
+          "source": "vy",
+          "loss": 0.014526246322451846,
+          "complexity": 1,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(vy)",
+          "loss": 0.014441456187308592,
+          "complexity": 2,
+          "origin": "pysr"
+        },
+        {
+          "source": "y*(-0.11531294364717237)",
+          "loss": 0.0027982708631839846,
+          "complexity": 3,
+          "origin": "pysr"
+        },
+        {
+          "source": "sin(y*(-0.11676370408346351))",
+          "loss": 0.0027861675902000975,
+          "complexity": 4,
+          "origin": "pysr"
+        },
+        {
+          "source": "(vx + y)*(-0.10834479700454828)",
+          "loss": 0.0021577153913741394,
+          "complexity": 5,
+          "origin": "pysr"
+        },
+        {
+          "source": "(y - sin(x))*(-0.08804899605908047)",
+          "loss": 0.001709917333096919,
+          "complexity": 6,
+          "origin": "pysr"
+        },
+        {
+          "source": "x*0.03464101615137754 + y*(-0.1)",
+          "loss": 0.0,
+          "complexity": 7,
+          "origin": "pysr"
+        }
+      ]
+    },
+    "elapsed_seconds": 60.72848539985716,
+    "search_budget_exceeded": true,
+    "axis_candidates": {
+      "ax": [
+        {
+          "law_spec": {
+            "ax": "x * c1 + y * c2",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.06
+            },
+            {
+              "name": "c2",
+              "initial": 0.03464101615137754
+            }
+          ],
+          "component": "ax",
+          "source": "x*(-0.06) + y*0.03464101615137754",
+          "loss": 0.0,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "sin((x - c1) * c2)",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.31208830749814204
+            },
+            {
+              "name": "c2",
+              "initial": -0.07142079803961375
+            }
+          ],
+          "component": "ax",
+          "source": "sin((x - 0.31208830749814204)*(-0.07142079803961375))",
+          "loss": 0.001765596028591162,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "(x - c1) * c2",
+            "ay": "0"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.3117239949787569
+            },
+            {
+              "name": "c2",
+              "initial": -0.07129954612593925
+            }
+          ],
+          "component": "ax",
+          "source": "(x - 0.3117239949787569)*(-0.07129954612593925)",
+          "loss": 0.0017668195850048844,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        }
+      ],
+      "ay": [
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "x * c1 + y * c2"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.03464101615137754
+            },
+            {
+              "name": "c2",
+              "initial": -0.1
+            }
+          ],
+          "component": "ay",
+          "source": "x*0.03464101615137754 + y*(-0.1)",
+          "loss": 0.0,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "(y - sin(x)) * c1"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.08804899605908047
+            }
+          ],
+          "component": "ay",
+          "source": "(y - sin(x))*(-0.08804899605908047)",
+          "loss": 0.0017099173330969199,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        },
+        {
+          "law_spec": {
+            "ax": "0",
+            "ay": "(vx + y) * c1"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.10834479700454828
+            }
+          ],
+          "component": "ay",
+          "source": "(vx + y)*(-0.10834479700454828)",
+          "loss": 0.0021577153913741403,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "joint_fit_ready": false,
+          "parameter_budget_compatible": true,
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "This component on all acquired and controlled initial states"
+          },
+          "prediction_accuracy_status": "not_independently_validated"
+        }
+      ]
+    },
+    "rejection_counts": {},
+    "rejection_examples": [],
+    "rejected_candidate_pairs": 0,
+    "candidate_selection": {
+      "strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
+      "normalized_resolution_tolerance": 1e-10,
+      "legal_pairs": 42,
+      "over_budget_pairs_retained": 0,
+      "sharing_attempts_cached": 0,
+      "sharing_unattempted_pairs": 0,
+      "rejection_stage_counts": {},
+      "rejected_candidates_total": 0,
+      "unchecked_axis_equations": 0,
+      "rollout_candidates_considered": 3,
+      "axis_frontier_counts": [
+        6,
+        7
+      ],
+      "full_axis_equations_retained": true,
+      "selection_incomplete": false,
+      "stop_reason": null,
+      "retained_checkpoint": false,
+      "independent_validation": false
+    },
+    "packaging_axis_equations": {
+      "ax": [
+        {
+          "source": "vx",
+          "loss": 0.006648424136773006,
+          "complexity": 1,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(vx)",
+          "loss": 0.006542955072587233,
+          "complexity": 2,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "x*(-0.07228142426104141)",
+          "loss": 0.0022537857529123977,
+          "complexity": 3,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(x - 0.3117239949787569)*(-0.07129954612593925)",
+          "loss": 0.0017668195850048844,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "sin((x - 0.31208830749814204)*(-0.07142079803961375))",
+          "loss": 0.001765596028591162,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "x*(-0.06) + y*0.03464101615137754",
+          "loss": 0.0,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        }
+      ],
+      "ay": [
+        {
+          "source": "vy",
+          "loss": 0.014526246322451855,
+          "complexity": 1,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(vy)",
+          "loss": 0.014441456187308598,
+          "complexity": 2,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-0.11531294364717237)",
+          "loss": 0.0027982708631839855,
+          "complexity": 3,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(y*(-0.11676370408346351))",
+          "loss": 0.0027861675902000993,
+          "complexity": 4,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(vx + y)*(-0.10834479700454828)",
+          "loss": 0.0021577153913741403,
+          "complexity": 5,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(y - sin(x))*(-0.08804899605908047)",
+          "loss": 0.0017099173330969199,
+          "complexity": 6,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "x*0.03464101615137754 + y*(-0.1)",
+          "loss": 0.0,
+          "complexity": 7,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        }
+      ]
+    },
+    "packaging_seconds": 0.07236773520708084,
+    "packaging_budget_seconds": 10,
+    "packaging_is_separate_diagnostic": true
+  },
+  "search_seconds": 60.73333427682519,
+  "packaging_seconds": 0.07236773520708084,
+  "diagnostics": {
+    "axes": {
+      "ax": {
+        "all_candidates": [
+          {
+            "source": "vx",
+            "loss": 0.006648424136773003,
+            "complexity": 1,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006648424136773004
+              ],
+              "nrmse_by_axis": [
+                0.6306762587010339
+              ],
+              "nrmse": 0.6306762587010339,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.015057697059233434
+              ],
+              "nrmse_by_axis": [
+                0.8296139143890885
+              ],
+              "nrmse": 0.8296139143890885,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 0,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "sin(vx)",
+            "loss": 0.00654295507258723,
+            "complexity": 2,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006542955072587231
+              ],
+              "nrmse_by_axis": [
+                0.6256538091110616
+              ],
+              "nrmse": 0.6256538091110616,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.014899990070553046
+              ],
+              "nrmse_by_axis": [
+                0.825257992782025
+              ],
+              "nrmse": 0.825257992782025,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 0,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "x*(-0.07228142426104141)",
+            "loss": 0.002253785752912397,
+            "complexity": 3,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.002253785752912397
+              ],
+              "nrmse_by_axis": [
+                0.3672006476236287
+              ],
+              "nrmse": 0.3672006476236287,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.004287613093287742
+              ],
+              "nrmse_by_axis": [
+                0.4426949256932293
+              ],
+              "nrmse": 0.4426949256932293,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "(x - 0.3117239949787569)*(-0.07129954612593925)",
+            "loss": 0.001766819585004884,
+            "complexity": 5,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.001766819585004884
+              ],
+              "nrmse_by_axis": [
+                0.32511965561551914
+              ],
+              "nrmse": 0.32511965561551914,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.004932745090570276
+              ],
+              "nrmse_by_axis": [
+                0.47483321022182023
+              ],
+              "nrmse": 0.47483321022182023,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 2,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "sin((x - 0.31208830749814204)*(-0.07142079803961375))",
+            "loss": 0.0017655960285911615,
+            "complexity": 6,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0017655960285911617
+              ],
+              "nrmse_by_axis": [
+                0.32500706032324705
+              ],
+              "nrmse": 0.32500706032324705,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.004860686483522853
+              ],
+              "nrmse_by_axis": [
+                0.47135221756686135
+              ],
+              "nrmse": 0.47135221756686135,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 2,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "x*(-0.06) + y*0.03464101615137754",
+            "loss": 0.0,
+            "complexity": 7,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0
+              ],
+              "nrmse_by_axis": [
+                0.0
+              ],
+              "nrmse": 0.0,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0
+              ],
+              "nrmse_by_axis": [
+                0.0
+              ],
+              "nrmse": 0.0,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 2,
+              "within_five_parameter_limit": true
+            }
+          }
+        ],
+        "raw_pysr_frontier": [
+          {
+            "source": "vx",
+            "loss": 0.006648424136773003,
+            "complexity": 1,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006648424136773004
+              ],
+              "nrmse_by_axis": [
+                0.6306762587010339
+              ],
+              "nrmse": 0.6306762587010339,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.015057697059233434
+              ],
+              "nrmse_by_axis": [
+                0.8296139143890885
+              ],
+              "nrmse": 0.8296139143890885,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 0,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "sin(vx)",
+            "loss": 0.00654295507258723,
+            "complexity": 2,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006542955072587231
+              ],
+              "nrmse_by_axis": [
+                0.6256538091110616
+              ],
+              "nrmse": 0.6256538091110616,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.014899990070553046
+              ],
+              "nrmse_by_axis": [
+                0.825257992782025
+              ],
+              "nrmse": 0.825257992782025,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 0,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "x*(-0.07228142426104141)",
+            "loss": 0.002253785752912397,
+            "complexity": 3,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.002253785752912397
+              ],
+              "nrmse_by_axis": [
+                0.3672006476236287
+              ],
+              "nrmse": 0.3672006476236287,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.004287613093287742
+              ],
+              "nrmse_by_axis": [
+                0.4426949256932293
+              ],
+              "nrmse": 0.4426949256932293,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "(x - 0.3117239949787569)*(-0.07129954612593925)",
+            "loss": 0.001766819585004884,
+            "complexity": 5,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.001766819585004884
+              ],
+              "nrmse_by_axis": [
+                0.32511965561551914
+              ],
+              "nrmse": 0.32511965561551914,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.004932745090570276
+              ],
+              "nrmse_by_axis": [
+                0.47483321022182023
+              ],
+              "nrmse": 0.47483321022182023,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 2,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "sin((x - 0.31208830749814204)*(-0.07142079803961375))",
+            "loss": 0.0017655960285911615,
+            "complexity": 6,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0017655960285911617
+              ],
+              "nrmse_by_axis": [
+                0.32500706032324705
+              ],
+              "nrmse": 0.32500706032324705,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.004860686483522853
+              ],
+              "nrmse_by_axis": [
+                0.47135221756686135
+              ],
+              "nrmse": 0.47135221756686135,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 2,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "x*(-0.06) + y*0.03464101615137754",
+            "loss": 0.0,
+            "complexity": 7,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0
+              ],
+              "nrmse_by_axis": [
+                0.0
+              ],
+              "nrmse": 0.0,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0
+              ],
+              "nrmse_by_axis": [
+                0.0
+              ],
+              "nrmse": 0.0,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 2,
+              "within_five_parameter_limit": true
+            }
+          }
+        ],
+        "lowest_training_loss_raw_pysr": {
+          "source": "x*(-0.06) + y*0.03464101615137754",
+          "loss": 0.0,
+          "complexity": 7,
+          "origin": "pysr",
+          "training_exact_acceleration": {
+            "status": "finite",
+            "mse_by_axis": [
+              0.0
+            ],
+            "nrmse_by_axis": [
+              0.0
+            ],
+            "nrmse": 0.0,
+            "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+          },
+          "heldout_exact_acceleration": {
+            "status": "finite",
+            "mse_by_axis": [
+              0.0
+            ],
+            "nrmse_by_axis": [
+              0.0
+            ],
+            "nrmse": 0.0,
+            "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+          },
+          "retained_as_axis_candidate": true,
+          "export": {
+            "status": "exportable_component",
+            "parameter_count": 2,
+            "within_five_parameter_limit": true
+          }
+        },
+        "selection_uses_holdout": false
+      },
+      "ay": {
+        "all_candidates": [
+          {
+            "source": "vy",
+            "loss": 0.014526246322451846,
+            "complexity": 1,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.014526246322451855
+              ],
+              "nrmse_by_axis": [
+                0.669549720189715
+              ],
+              "nrmse": 0.669549720189715,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.022230188614965948
+              ],
+              "nrmse_by_axis": [
+                0.7827009743148535
+              ],
+              "nrmse": 0.7827009743148535,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 0,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "sin(vy)",
+            "loss": 0.014441456187308592,
+            "complexity": 2,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.014441456187308594
+              ],
+              "nrmse_by_axis": [
+                0.6675927694234964
+              ],
+              "nrmse": 0.6675927694234964,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.02208601055689999
+              ],
+              "nrmse_by_axis": [
+                0.780158668467381
+              ],
+              "nrmse": 0.780158668467381,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 0,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "y*(-0.11531294364717237)",
+            "loss": 0.0027982708631839846,
+            "complexity": 3,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.002798270863183985
+              ],
+              "nrmse_by_axis": [
+                0.29386712624116507
+              ],
+              "nrmse": 0.29386712624116507,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006651489549441867
+              ],
+              "nrmse_by_axis": [
+                0.4281379814928564
+              ],
+              "nrmse": 0.4281379814928564,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "sin(y*(-0.11676370408346351))",
+            "loss": 0.0027861675902000975,
+            "complexity": 4,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.002786167590200099
+              ],
+              "nrmse_by_axis": [
+                0.29323091042377447
+              ],
+              "nrmse": 0.29323091042377447,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006660739132725297
+              ],
+              "nrmse_by_axis": [
+                0.42843556311816766
+              ],
+              "nrmse": 0.42843556311816766,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "(vx + y)*(-0.10834479700454828)",
+            "loss": 0.0021577153913741394,
+            "complexity": 5,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.00215771539137414
+              ],
+              "nrmse_by_axis": [
+                0.25804961205538424
+              ],
+              "nrmse": 0.25804961205538424,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0048009101660770595
+              ],
+              "nrmse_by_axis": [
+                0.3637358357600871
+              ],
+              "nrmse": 0.3637358357600871,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "(y - sin(x))*(-0.08804899605908047)",
+            "loss": 0.001709917333096919,
+            "complexity": 6,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0017099173330969194
+              ],
+              "nrmse_by_axis": [
+                0.22971729205517175
+              ],
+              "nrmse": 0.22971729205517175,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006660428737112025
+              ],
+              "nrmse_by_axis": [
+                0.4284255802869801
+              ],
+              "nrmse": 0.4284255802869801,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "x*0.03464101615137754 + y*(-0.1)",
+            "loss": 0.0,
+            "complexity": 7,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0
+              ],
+              "nrmse_by_axis": [
+                0.0
+              ],
+              "nrmse": 0.0,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0
+              ],
+              "nrmse_by_axis": [
+                0.0
+              ],
+              "nrmse": 0.0,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 2,
+              "within_five_parameter_limit": true
+            }
+          }
+        ],
+        "raw_pysr_frontier": [
+          {
+            "source": "vy",
+            "loss": 0.014526246322451846,
+            "complexity": 1,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.014526246322451855
+              ],
+              "nrmse_by_axis": [
+                0.669549720189715
+              ],
+              "nrmse": 0.669549720189715,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.022230188614965948
+              ],
+              "nrmse_by_axis": [
+                0.7827009743148535
+              ],
+              "nrmse": 0.7827009743148535,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 0,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "sin(vy)",
+            "loss": 0.014441456187308592,
+            "complexity": 2,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.014441456187308594
+              ],
+              "nrmse_by_axis": [
+                0.6675927694234964
+              ],
+              "nrmse": 0.6675927694234964,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.02208601055689999
+              ],
+              "nrmse_by_axis": [
+                0.780158668467381
+              ],
+              "nrmse": 0.780158668467381,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 0,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "y*(-0.11531294364717237)",
+            "loss": 0.0027982708631839846,
+            "complexity": 3,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.002798270863183985
+              ],
+              "nrmse_by_axis": [
+                0.29386712624116507
+              ],
+              "nrmse": 0.29386712624116507,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006651489549441867
+              ],
+              "nrmse_by_axis": [
+                0.4281379814928564
+              ],
+              "nrmse": 0.4281379814928564,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "sin(y*(-0.11676370408346351))",
+            "loss": 0.0027861675902000975,
+            "complexity": 4,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.002786167590200099
+              ],
+              "nrmse_by_axis": [
+                0.29323091042377447
+              ],
+              "nrmse": 0.29323091042377447,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006660739132725297
+              ],
+              "nrmse_by_axis": [
+                0.42843556311816766
+              ],
+              "nrmse": 0.42843556311816766,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": false,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "(vx + y)*(-0.10834479700454828)",
+            "loss": 0.0021577153913741394,
+            "complexity": 5,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.00215771539137414
+              ],
+              "nrmse_by_axis": [
+                0.25804961205538424
+              ],
+              "nrmse": 0.25804961205538424,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0048009101660770595
+              ],
+              "nrmse_by_axis": [
+                0.3637358357600871
+              ],
+              "nrmse": 0.3637358357600871,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "(y - sin(x))*(-0.08804899605908047)",
+            "loss": 0.001709917333096919,
+            "complexity": 6,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0017099173330969194
+              ],
+              "nrmse_by_axis": [
+                0.22971729205517175
+              ],
+              "nrmse": 0.22971729205517175,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.006660428737112025
+              ],
+              "nrmse_by_axis": [
+                0.4284255802869801
+              ],
+              "nrmse": 0.4284255802869801,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 1,
+              "within_five_parameter_limit": true
+            }
+          },
+          {
+            "source": "x*0.03464101615137754 + y*(-0.1)",
+            "loss": 0.0,
+            "complexity": 7,
+            "origin": "pysr",
+            "training_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0
+              ],
+              "nrmse_by_axis": [
+                0.0
+              ],
+              "nrmse": 0.0,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "heldout_exact_acceleration": {
+              "status": "finite",
+              "mse_by_axis": [
+                0.0
+              ],
+              "nrmse_by_axis": [
+                0.0
+              ],
+              "nrmse": 0.0,
+              "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+            },
+            "retained_as_axis_candidate": true,
+            "export": {
+              "status": "exportable_component",
+              "parameter_count": 2,
+              "within_five_parameter_limit": true
+            }
+          }
+        ],
+        "lowest_training_loss_raw_pysr": {
+          "source": "x*0.03464101615137754 + y*(-0.1)",
+          "loss": 0.0,
+          "complexity": 7,
+          "origin": "pysr",
+          "training_exact_acceleration": {
+            "status": "finite",
+            "mse_by_axis": [
+              0.0
+            ],
+            "nrmse_by_axis": [
+              0.0
+            ],
+            "nrmse": 0.0,
+            "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+          },
+          "heldout_exact_acceleration": {
+            "status": "finite",
+            "mse_by_axis": [
+              0.0
+            ],
+            "nrmse_by_axis": [
+              0.0
+            ],
+            "nrmse": 0.0,
+            "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+          },
+          "retained_as_axis_candidate": true,
+          "export": {
+            "status": "exportable_component",
+            "parameter_count": 2,
+            "within_five_parameter_limit": true
+          }
+        },
+        "selection_uses_holdout": false
+      }
+    },
+    "raw_training_best_pair": {
+      "raw_sources": {
+        "ax": "x*(-0.06) + y*0.03464101615137754",
+        "ay": "x*0.03464101615137754 + y*(-0.1)"
+      },
+      "training": {
+        "status": "finite",
+        "mse_by_axis": [
+          0.0,
+          0.0
+        ],
+        "nrmse_by_axis": [
+          0.0,
+          0.0
+        ],
+        "nrmse": 0.0,
+        "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+      },
+      "heldout": {
+        "status": "finite",
+        "mse_by_axis": [
+          0.0,
+          0.0
+        ],
+        "nrmse_by_axis": [
+          0.0,
+          0.0
+        ],
+        "nrmse": 0.0,
+        "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+      },
+      "export_status": "exportable",
+      "law_spec": {
+        "ax": "x * c1 + y * c2",
+        "ay": "x * c3 + y * c4"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.06
+        },
+        {
+          "name": "c2",
+          "initial": 0.03464101615137754
+        },
+        {
+          "name": "c3",
+          "initial": 0.03464101615137754
+        },
+        {
+          "name": "c4",
+          "initial": -0.1
+        }
+      ],
+      "parameter_count": 4,
+      "within_five_parameter_limit": true
+    },
+    "production_pairs": [
+      {
+        "candidate": {
+          "law_spec": {
+            "ax": "x * c1 + y * c2",
+            "ay": "x * c3 + y * c4"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.06
+            },
+            {
+              "name": "c2",
+              "initial": 0.03464101615137754
+            },
+            {
+              "name": "c3",
+              "initial": 0.03464101615137754
+            },
+            {
+              "name": "c4",
+              "initial": -0.1
+            }
+          ],
+          "complexity": 14,
+          "parameter_count": 4,
+          "acceleration_search_mse_by_axis": [
+            0.0,
+            0.0
+          ],
+          "acceleration_search_mse": 0.0,
+          "normalized_acceleration_search_loss": 0.0,
+          "discovery_probe_ids": [
+            "diagnostic_train_0001",
+            "diagnostic_train_0002",
+            "diagnostic_train_0003",
+            "diagnostic_train_0004",
+            "diagnostic_train_0005",
+            "diagnostic_train_0006",
+            "diagnostic_train_0007",
+            "diagnostic_train_0008",
+            "diagnostic_train_0009",
+            "diagnostic_train_0010",
+            "diagnostic_train_0011",
+            "diagnostic_train_0012",
+            "diagnostic_train_0013",
+            "diagnostic_train_0014",
+            "diagnostic_train_0015",
+            "diagnostic_train_0016",
+            "diagnostic_train_0017",
+            "diagnostic_train_0018",
+            "diagnostic_train_0019",
+            "diagnostic_train_0020",
+            "diagnostic_train_0021",
+            "diagnostic_train_0022",
+            "diagnostic_train_0023",
+            "diagnostic_train_0024"
+          ],
+          "dsl_valid": true,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "All acquired states and controlled initial states"
+          },
+          "short_rollout_check": {
+            "status": "passed",
+            "probe_count": 24,
+            "rhs_calls": 432,
+            "position_rmse": 1.6118160874146764e-15,
+            "velocity_rmse": 8.346838759659381e-15,
+            "scope": "Short acquired-data replay only; not fitted or independently validated."
+          },
+          "joint_fit_ready": true,
+          "prediction_accuracy_status": "not_independently_validated",
+          "selection_role": "simplest_within_resolution_tolerance"
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            0.0,
+            0.0
+          ],
+          "nrmse_by_axis": [
+            0.0,
+            0.0
+          ],
+          "nrmse": 0.0,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            0.0,
+            0.0
+          ],
+          "nrmse_by_axis": [
+            0.0,
+            0.0
+          ],
+          "nrmse": 0.0,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        }
+      },
+      {
+        "candidate": {
+          "law_spec": {
+            "ax": "x * c1 + y * c2",
+            "ay": "(y - sin(x)) * c3"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.06
+            },
+            {
+              "name": "c2",
+              "initial": 0.03464101615137754
+            },
+            {
+              "name": "c3",
+              "initial": -0.08804899605908047
+            }
+          ],
+          "complexity": 13,
+          "parameter_count": 3,
+          "acceleration_search_mse_by_axis": [
+            0.0,
+            0.0017099173330969199
+          ],
+          "acceleration_search_mse": 0.0017099173330969199,
+          "normalized_acceleration_search_loss": 0.02638501713458062,
+          "discovery_probe_ids": [
+            "diagnostic_train_0001",
+            "diagnostic_train_0002",
+            "diagnostic_train_0003",
+            "diagnostic_train_0004",
+            "diagnostic_train_0005",
+            "diagnostic_train_0006",
+            "diagnostic_train_0007",
+            "diagnostic_train_0008",
+            "diagnostic_train_0009",
+            "diagnostic_train_0010",
+            "diagnostic_train_0011",
+            "diagnostic_train_0012",
+            "diagnostic_train_0013",
+            "diagnostic_train_0014",
+            "diagnostic_train_0015",
+            "diagnostic_train_0016",
+            "diagnostic_train_0017",
+            "diagnostic_train_0018",
+            "diagnostic_train_0019",
+            "diagnostic_train_0020",
+            "diagnostic_train_0021",
+            "diagnostic_train_0022",
+            "diagnostic_train_0023",
+            "diagnostic_train_0024"
+          ],
+          "dsl_valid": true,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "All acquired states and controlled initial states"
+          },
+          "short_rollout_check": {
+            "status": "passed",
+            "probe_count": 24,
+            "rhs_calls": 432,
+            "position_rmse": 3.346754759945751e-05,
+            "velocity_rmse": 0.0016733175825252924,
+            "scope": "Short acquired-data replay only; not fitted or independently validated."
+          },
+          "joint_fit_ready": true,
+          "prediction_accuracy_status": "not_independently_validated",
+          "selection_role": "alternative_accuracy_candidate"
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            0.0,
+            0.001709917333096931
+          ],
+          "nrmse_by_axis": [
+            0.0,
+            0.22971729205517288
+          ],
+          "nrmse": 0.1865806047873298,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            0.0,
+            0.006660428737112025
+          ],
+          "nrmse_by_axis": [
+            0.0,
+            0.4284255802869801
+          ],
+          "nrmse": 0.33839219130339293,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        }
+      },
+      {
+        "candidate": {
+          "law_spec": {
+            "ax": "x * c1 + y * c2",
+            "ay": "(vx + y) * c3"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.06
+            },
+            {
+              "name": "c2",
+              "initial": 0.03464101615137754
+            },
+            {
+              "name": "c3",
+              "initial": -0.10834479700454828
+            }
+          ],
+          "complexity": 12,
+          "parameter_count": 3,
+          "acceleration_search_mse_by_axis": [
+            0.0,
+            0.0021577153913741403
+          ],
+          "acceleration_search_mse": 0.0021577153913741403,
+          "normalized_acceleration_search_loss": 0.03329480114096726,
+          "discovery_probe_ids": [
+            "diagnostic_train_0001",
+            "diagnostic_train_0002",
+            "diagnostic_train_0003",
+            "diagnostic_train_0004",
+            "diagnostic_train_0005",
+            "diagnostic_train_0006",
+            "diagnostic_train_0007",
+            "diagnostic_train_0008",
+            "diagnostic_train_0009",
+            "diagnostic_train_0010",
+            "diagnostic_train_0011",
+            "diagnostic_train_0012",
+            "diagnostic_train_0013",
+            "diagnostic_train_0014",
+            "diagnostic_train_0015",
+            "diagnostic_train_0016",
+            "diagnostic_train_0017",
+            "diagnostic_train_0018",
+            "diagnostic_train_0019",
+            "diagnostic_train_0020",
+            "diagnostic_train_0021",
+            "diagnostic_train_0022",
+            "diagnostic_train_0023",
+            "diagnostic_train_0024"
+          ],
+          "dsl_valid": true,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "All acquired states and controlled initial states"
+          },
+          "short_rollout_check": {
+            "status": "passed",
+            "probe_count": 24,
+            "rhs_calls": 432,
+            "position_rmse": 4.12295854367969e-05,
+            "velocity_rmse": 0.002058455850156057,
+            "scope": "Short acquired-data replay only; not fitted or independently validated."
+          },
+          "joint_fit_ready": true,
+          "prediction_accuracy_status": "not_independently_validated",
+          "selection_role": "alternative_accuracy_candidate"
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            0.0,
+            0.0021577153913741455
+          ],
+          "nrmse_by_axis": [
+            0.0,
+            0.258049612055385
+          ],
+          "nrmse": 0.20959263558994823,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            0.0,
+            0.00480091016607706
+          ],
+          "nrmse_by_axis": [
+            0.0,
+            0.3637358357600871
+          ],
+          "nrmse": 0.2872969593365046,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        }
+      }
+    ],
+    "velocity_difference_label_error": {
+      "training": {
+        "status": "finite",
+        "mse_by_axis": [
+          8.197571287250646e-13,
+          2.161785122051775e-12
+        ],
+        "nrmse_by_axis": [
+          7.003090277278881e-06,
+          8.167937248533095e-06
+        ],
+        "nrmse": 7.791111562396777e-06,
+        "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+      },
+      "heldout": {
+        "status": "finite",
+        "mse_by_axis": [
+          9.35127735098635e-13,
+          2.3820179552764296e-12
+        ],
+        "nrmse_by_axis": [
+          6.537808850853518e-06,
+          8.102085390921457e-06
+        ],
+        "nrmse": 7.551817966838204e-06,
+        "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+      }
+    },
+    "heldout_used_for_search_or_selection": false
+  },
+  "evaluation_seconds": 0.011656463146209717,
+  "total_seconds": 92.64880677498877
+}
