@@ -115,8 +115,11 @@ def _partial_preparation_summary(batch):
 
 
 def run_study(project=ROOT, *, opener=None, stop_requested=None, planned_batches=None,
-              extra_source_paths=()):
+              extra_source_paths=(), model_endpoints=None):
     project = Path(project).resolve()
+    endpoints=tuple(ENDPOINTS if model_endpoints is None else model_endpoints)
+    if not endpoints or len(set(endpoints))!=len(endpoints) or not set(endpoints)<=set(ENDPOINTS):
+        raise ValueError('model_endpoints_must_be_unique_existing_replicas')
     deadline = time.monotonic() + 3600
     def checkpoint():
         if stop_requested is not None and stop_requested():
@@ -139,7 +142,7 @@ def run_study(project=ROOT, *, opener=None, stop_requested=None, planned_batches
         if not path.is_relative_to(project):
             raise ValueError('source_path_outside_project')
         source_hashes[str(path.relative_to(project))] = hashlib.sha256(path.read_bytes()).hexdigest()
-    preflight(planned, opener=opener)
+    preflight(planned, endpoints=endpoints, opener=opener)
     checkpoint()
     batches, attempts = [], {}
     active = {}
@@ -154,8 +157,8 @@ def run_study(project=ROOT, *, opener=None, stop_requested=None, planned_batches
             batches.append(batch)
             preparation_error = None
             try:
-                manifest, runs = prepare(batch['output'], batch['config'], workers=4,
-                                         project=project, model_endpoints=ENDPOINTS)
+                manifest, runs = prepare(batch['output'], batch['config'], workers=len(endpoints),
+                                         project=project, model_endpoints=endpoints)
                 batch.update(manifest=manifest, runs=runs)
                 if source_hashes:
                     manifest['source_sha256'].update(source_hashes)
@@ -196,10 +199,10 @@ def run_study(project=ROOT, *, opener=None, stop_requested=None, planned_batches
         pending = [attempts[batch['runs'][world].name] for world in V15_WORLD_IDS for batch in batches]
         while pending or active:
             checkpoint()
-            while pending and len(active) < len(ENDPOINTS):
+            while pending and len(active) < len(endpoints):
                 checkpoint()
                 occupied = {item['endpoint'] for item in active.values()}
-                endpoint = next(p for p in ENDPOINTS if p not in occupied)
+                endpoint = next(p for p in endpoints if p not in occupied)
                 # Keep this attempt in both the all-reserved registry and pending
                 # until launch has returned and its process is registered as active.
                 dispatching = pending[0]

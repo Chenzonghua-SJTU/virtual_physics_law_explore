@@ -152,3 +152,14 @@ def test_paired_plans_change_only_noise_ruleset_and_keep_budgets(project):
         assert plan['config']['model']['max_tokens_per_call']==4096
         assert plan['config']['environment']['wall_seconds']==300
         assert plan['config']['environment']['energy_budget']==10
+
+
+def test_r06_uses_only_user_allocated_three_model_replicas(project,monkeypatch):
+    calls=[]
+    monkeypatch.setattr(driver,'verify_julia_threads',lambda p:{'actual_threads':4})
+    monkeypatch.setattr(driver.run_e7,'run_study',lambda *a,**kw:calls.append(kw))
+    opener=Opener()
+    driver.run_study(project,repeat='r06',opener=opener)
+    assert len(opener.calls)==4
+    assert not any(':8000/' in url for url in opener.calls)
+    assert calls[0]['model_endpoints']==tuple(f'http://127.0.0.1:{p}/v1' for p in (8001,8002,8003))

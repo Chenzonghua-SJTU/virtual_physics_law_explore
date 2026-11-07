@@ -163,7 +163,7 @@
       "evaluation_noise": false,
       "ruleset": "e5",
       "scientific_implementation": "Frozen commit recorded by launcher and source hashes; changes below.",
-      "inherits": "27B, four replicas, 10 energy, 300 seconds, 4096 output tokens/call, no thinking or total-token cap; unchanged clean submission gate.",
+      "inherits": "27B, three exclusively allocated replicas, 10 energy, 300 seconds, 4096 output tokens/call, no thinking or total-token cap; unchanged clean submission gate.",
       "changes": [
         "Bound checkpoint selection by search deadline; preserve refit pool; checkpoint after every trajectory refinement.",
         "Compare constrained/unconstrained parameter fits on identical discovery splits; retain matching scalar components through per-axis pruning; fit opportunities across observed operator families.",
@@ -176,7 +176,14 @@
         "Final formula compared with public reference only after completion; no truth injected into exploration"
       ],
       "selection_policy": "One attempt per world, retain all six results; no replacing failed worlds with retries. Diagnose the complete round before registering the next frozen implementation.",
-      "preceding_audit": "experiments/E5/e8-r05-diagnosis.json"
+      "preceding_audit": "experiments/E5/e8-r05-diagnosis.json",
+      "model_endpoints": [
+        "http://127.0.0.1:8001/v1",
+        "http://127.0.0.1:8002/v1",
+        "http://127.0.0.1:8003/v1"
+      ],
+      "parallelism": 3,
+      "resource_allocation": "User authorized official_test to retain 8000, this R06 batch to use only 8001-8003 after verified release. Separate CPU PySR services."
     }
   }
 }

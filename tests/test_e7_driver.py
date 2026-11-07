@@ -346,3 +346,18 @@ def test_predeclared_single_batch_reuses_cleanup_and_records_extra_sources(proje
     assert len(manifest['source_sha256']['deployment/generic_basis.py'])==64
     for directory in assert_terminal(project,6):
         assert benchmark.read_json(directory/'web.json')['experiment_group']=='E8'
+
+
+def test_explicit_replica_subset_is_used_in_dispatch_and_manifest(project,monkeypatch):
+    endpoints=driver.ENDPOINTS[1:];calls=[]
+    def launch(directory,key,root):
+        calls.append(benchmark.read_json(directory/'config.json')['model']['base_url'])
+        return fake_launch(directory,key,root)
+    monkeypatch.setattr(driver,'launch',launch)
+    driver.run_study(project,opener=Opener(),model_endpoints=endpoints)
+    assert len(calls)==24
+    assert set(calls)==set(endpoints)
+    assert_terminal(project,24)
+    for p in (project/'experiments/E5').glob('e7-*'):
+        manifest=benchmark.read_json(p/'manifest.json')
+        assert manifest['workers']==3

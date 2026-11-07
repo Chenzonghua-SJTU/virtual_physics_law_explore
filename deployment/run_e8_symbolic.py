@@ -95,12 +95,12 @@ def verify_julia_threads(project, *, run=subprocess.run):
     return dict(metadata,environment=fixed,searches_started=0,model_calls=0)
 
 
-def idle_workloads(opener=None):
+def idle_workloads(opener=None, *, endpoints=None):
     opener = opener or urlopen
     bootstrap = run_e7._remote_json('http://127.0.0.1:8765/api/bootstrap',opener)
     if bootstrap.get('active_run_id'):
         raise RuntimeError('E8 waits for the existing user exploration to finish')
-    for endpoint in run_e7.ENDPOINTS:
+    for endpoint in (run_e7.ENDPOINTS if endpoints is None else endpoints):
         url = endpoint.removesuffix('/v1')+'/metrics'
         try:
             with opener(url,timeout=5) as response:
@@ -125,12 +125,16 @@ def idle_workloads(opener=None):
 def run_study(project=ROOT, *, repeat='r01', opener=None, stop_requested=None):
     project = Path(project).resolve()
     planned = plans(project, repeat=repeat)
+    registrations=[plan['protocol_metadata']['repeat_registration'] for plan in planned]
+    endpoints=tuple(registrations[0].get('model_endpoints',run_e7.ENDPOINTS))
+    if any(tuple(r.get('model_endpoints',run_e7.ENDPOINTS))!=endpoints for r in registrations):
+        raise ValueError('registered_batches_must_share_endpoint_allocation')
     run_e7._check_fresh_paths(planned)
-    idle_workloads(opener)
+    idle_workloads(opener,endpoints=endpoints)
     runtime=verify_julia_threads(project)
     for plan in planned: plan['symbolic_runtime_preflight']=runtime
     return run_e7.run_study(project,opener=opener,stop_requested=stop_requested,
-                            planned_batches=planned,extra_source_paths=source_paths(project))
+                            planned_batches=planned,extra_source_paths=source_paths(project),model_endpoints=endpoints)
 
 
 def main(argv=None):
