@@ -27,6 +27,9 @@ class Agent:
         self.submission = None
         self.session_ended = False
         self.ruleset = getattr(tool_runtime, 'ruleset', 'e3')
+        self.guidance_profile = config.get('guidance_profile', 'baseline')
+        if self.guidance_profile not in ('baseline', 'e3', 'concise'):
+            raise ValueError('guidance_profile must be baseline, e3 or concise')
         self.e4 = self.ruleset in ('e4', 'e5')
         self.finish_reserve_seconds = 30.0 if self.e4 else 0.0
         self.max_no_action = config.get('max_no_action', 3)
@@ -96,8 +99,9 @@ class Agent:
                        '未明确给出claims的候选不会自动成为草稿。剩余时间少时优先save_draft或submit，'
                        '不要等待长篇说明。系统在最后30秒优先封存已保存配对；没有草稿时仍由你决定提交，'
                        '截止时没有有效配对会如实记为未完成。')
-        elif self.ruleset == 'e5':
-            prompt += '\n\n' + (Path(__file__).parent / 'prompts' / 'e5.txt').read_text(encoding='utf-8')
+        elif self.ruleset == 'e5' and self.guidance_profile != 'e3':
+            filename = 'e5_concise.txt' if self.guidance_profile == 'concise' else 'e5.txt'
+            prompt += '\n\n' + (Path(__file__).parent / 'prompts' / filename).read_text(encoding='utf-8')
         if getattr(self.runtime, 'code_enabled', False):
             prompt = prompt.replace('不可访问任意文件、Shell、网络、源码或任意 Python。',
                                     '代码只可通过run_code在隔离环境执行，不可访问宿主文件、网络或仿真源码。')

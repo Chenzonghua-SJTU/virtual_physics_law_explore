@@ -117,6 +117,11 @@ class DeepSeekClient:
         self.thinking = config.get('thinking', True)
         if not isinstance(self.thinking, bool):
             raise ValueError('thinking must be boolean')
+        self.sampling_seed = config.get('sampling_seed')
+        if self.sampling_seed is not None and (
+                type(self.sampling_seed) is not int or not 0 <= self.sampling_seed < 2**32
+                or self.deployment != 'local' or self.reasoning_protocol != 'qwen'):
+            raise ValueError('sampling_seed requires a local Qwen integer in [0, 2**32)')
         self.thinking_budget = (None if config.get('thinking_budget') is None
                                 else _positive(config, 'thinking_budget', None, integer=True))
         self.usage = {'calls': 0, 'prompt_tokens': 0, 'completion_tokens': 0, 'total_tokens': 0,
@@ -420,6 +425,8 @@ class DeepSeekClient:
         body = {'model': self.model, 'messages': copy.deepcopy(messages),
                 'stream': self.reasoning_protocol == 'qwen',
                 **self._reasoning_parameters()}
+        if self.sampling_seed is not None:
+            body['seed'] = self.sampling_seed
         if body['stream']:
             body['stream_options'] = {'include_usage': True}
         if tools:

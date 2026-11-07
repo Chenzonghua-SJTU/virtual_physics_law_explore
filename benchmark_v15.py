@@ -93,9 +93,9 @@ def configuration(project=PROJECT, model='qwen3.8-27b', config_path=None, *, thi
 
 
 def _hashes(project):
-    paths = ['shore_agent/agent.py', 'shore_agent/prompts/main.txt', 'shore_agent/prompts/e5.txt', 'shore_agent/schemas.py',
+    paths = ['shore_agent/agent.py', 'shore_agent/prompts/main.txt', 'shore_agent/prompts/e5.txt', 'shore_agent/prompts/e5_concise.txt', 'shore_agent/schemas.py',
              'shore_agent/runtime.py', 'shore_agent/numerics.py', 'shore_agent/expressions.py',
-             'shore_agent/model.py', 'shore_agent/web_worker.py', 'shore_agent/store.py',
+             'shore_agent/model.py', 'shore_agent/web_worker.py', 'shore_agent/store.py', 'shore_agent/workspace.py',
              'shore_agent/submission.py', 'shore_rules.py', 'shore_v15/simulator.py',
              'shore_v15/evaluation.py', 'benchmark_v15.py', 'shore_v15/vendor/SOURCE.json']
     return {path: hashlib.sha256((project / path).read_bytes()).hexdigest()

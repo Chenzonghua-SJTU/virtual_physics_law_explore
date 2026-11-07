@@ -1,0 +1,54 @@
+{
+  "study": "E6 prompt-only alignment, then E7 PySR additive comparison",
+  "registered_at": "2026-11-07T02:58:29.703912+00:00",
+  "baseline_commit": "210e40a",
+  "phase1": {
+    "profiles": [
+      "baseline",
+      "e3",
+      "concise"
+    ],
+    "round1_sampling_seed": 42,
+    "round2_sampling_seed": 43,
+    "round2_profiles": "baseline and best non-baseline profile from round1",
+    "max_six_world_batches": 5,
+    "selection": "number of complete worlds with raw score>=90, then complete worlds, then mean raw score treating incomplete as0; use both repeats to decide default; no cross-batch best-of-world aggregation"
+  },
+  "controls": {
+    "energy": 10,
+    "exploration_seconds": 300,
+    "output_per_call": 4096,
+    "thinking": false,
+    "observation_noise": false,
+    "evaluation_noise": false,
+    "physics_seed": 42,
+    "tools": 9,
+    "no_new_tools_phase1": true,
+    "model": "qwen3.8-27b",
+    "temperature": "checkpoint default 1.0",
+    "same_inference_implementation": true
+  },
+  "phase2": {
+    "baseline": "freeze phase1 selected configuration",
+    "only_new_capability": "optional symbolic_regression plus necessary provenance and hard timeout",
+    "inputs": [
+      "train_probe_ids",
+      "time_budget_seconds"
+    ],
+    "initial_search_budget_seconds": 30,
+    "body_positions": "state-only first; evaluate observed-body alternative only if generic export works, no force templates/world-id branching",
+    "max_full_six_world_batches": 4,
+    "no_historical_truth_or_evaluation_in_search": true,
+    "report": [
+      "raw_scores",
+      "completion",
+      "exploration_seconds",
+      "evaluation_seconds",
+      "end_to_end_seconds",
+      "mean_output_tokens_per_model_call",
+      "max_output_tokens",
+      "PySR_search_elapsed",
+      "tool_use_and_failure"
+    ]
+  }
+}
