@@ -1,0 +1,33 @@
+{
+  "experiment": "e5-qwen38-strict-20261107-r09",
+  "status": "prepared_before_run",
+  "starting_point": "072899f R08",
+  "changes": [
+    "Set function.strict=true for supplied tools with tool_choice=auto; installed vLLM Qwen XML grammar verified",
+    "If an unadvertised tool or repeated identical failure occurs, request required tool choice for one subsequent call, then return to auto; do not select the tool or its parameters",
+    "Add optional acquired-observation-only log-radius linear/quadratic curve comparison with whole-probe CV; no family template or automatic law",
+    "Tool documentation recommends updating diagnostics after acquiring development data and independent public property controls"
+  ],
+  "preserved": [
+    "E3 main prompt byte-identical",
+    "Qwen3.8-27B BF16; seed42; thinking off",
+    "10 energy;300s exploration;4096 output tokens per request",
+    "No exploration noise; clean independent evaluation",
+    "Same world dynamics, fit objective, scoring and final submission choice"
+  ],
+  "workers": 4,
+  "endpoints": [
+    8000,
+    8001,
+    8002,
+    8003
+  ],
+  "attempts_per_world": 1,
+  "primary_outcome": "At least five raw scores >=90 in one full six-world batch; do not combine best worlds",
+  "limitations": [
+    "Multiple operational and diagnostic changes from R08; not an isolated causal effect estimate",
+    "Single fixed-six-world development batch does not establish stable success probability",
+    "Auto strict grammar constrains standard tool tags but free-text fallback can still be parsed as a tool; one-call required recovery addresses this observed protocol gap"
+  ],
+  "protocol_smoke": "deployment/strict-tools-protocol-smoke.json; synthetic tool only, no world data, 26 output tokens, separate from physics experiments"
+}

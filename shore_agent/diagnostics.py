@@ -361,4 +361,155 @@ def summarize(diagnostics):
             return float(f'{value:.6g}')
         return value
 
+    if 'radial_curvature' in diagnostics:
+        curvature = diagnostics['radial_curvature']
+        result['radial_curvature_summary'] = {
+            'status': curvature['status'], 'reason': curvature.get('reason'),
+            'geometry_screen_satisfied': curvature['geometry_screen_satisfied'],
+            'geometry_screen_reasons': curvature['geometry_screen_reasons'],
+            'observed_radius_range': curvature.get('observed_radius_range'),
+            'unidentified_property_controls': curvature['unidentified_property_controls'],
+            'conditional_on_fixed_property_values': curvature['conditional_on_fixed_property_values'],
+            'models': [{key: model.get(key) for key in (
+                'log_radius_degree', 'training_log_magnitude_rmse', 'quadratic_log_radius_coefficient',
+                'local_acceleration_magnitude_power_range', 'local_vector_factor_power_range',
+                'unidentified_property_controls')}
+                | {'whole_probe_cv_status': model['cross_validation']['status'],
+                   'whole_probe_cv_log_rmse': model['cross_validation']['log_magnitude_rmse'],
+                   'rank': model['design']['rank'], 'columns': model['design']['n_columns'],
+                   'coefficient_identifiability': model['design']['coefficient_identifiability']}
+                for model in curvature['models']],
+            'cv_ratio_linear_over_quadratic': curvature['cv_ratio_linear_over_quadratic'],
+            'quadratic_cv_reduction_fraction': curvature['quadratic_cv_reduction_fraction'],
+            'cv_ratio_reason': curvature.get('cv_ratio_reason'),
+            'meaning': curvature['meaning'],
+            'slope_meaning': curvature.get('slope_meaning'),
+        }
     return compact(result)
+
+
+def diagnose_radial_curvature(probes, public_task):
+    """Compare empirical log-radius curvature without selecting a force family."""
+    if not isinstance(public_task, dict):
+        raise ValueError('public_task must be a mapping')
+    rows, names = _prepare(probes, public_task)
+    radial = _radial(rows, names, public_task)
+    output = {'method_version': 'radial_log_curvature_v1', 'status': 'unavailable',
+              'reference_point': [0., 0.],
+              'meaning': 'Conditional curvature of measured radial projections around the coordinate origin, not an identified force center, submission law or official verdict.',
+              'method': 'log(abs(midpoint radial acceleration)) regressed on complete degree-1/degree-2 log-radius polynomials and varied positive public log-properties',
+              'probe_ids': [row['id'] for row in rows],
+              'unidentified_property_controls': sorted(radial.get('unvaried_controls', []) + radial.get('unusable_controls', [])),
+              'conditional_on_fixed_property_values': radial.get('conditional_on_fixed_property_values', {}),
+              'geometry_screen_satisfied': radial['usable_for_power_interpretation'],
+              'geometry_screen_reasons': radial['power_interpretation_reasons'],
+              'models': [], 'cv_ratio_linear_over_quadratic': None,
+              'quadratic_cv_reduction_fraction': None,
+              'limitations': ['Finite differences and position midpoints have sampling bias even without noise; apparent curvature should be checked with finer readouts.',
+                             'Whole-probe CV compares development-data approximations, not integrated trajectories or final validation.',
+                             'Constant, missing or confounded properties are not identified; no zero property effect is inferred.',
+                             'Time, velocity, unvaried properties and inadequate radius coverage may confound curvature; no force family is selected.']}
+    if radial.get('design', {}).get('coefficient_identifiability') == 'not_unique_or_unstable':
+        output['unidentified_property_controls'] = list(names)
+    noise = [public_task.get(key) for key in ('position_noise_sigma', 'velocity_noise_sigma')]
+    if any(not _number(value) or value != 0 for value in noise):
+        output['reason'] = 'requires_both_explicitly_noise_free_position_and_velocity_readouts'
+        return output
+    if not radial['usable_for_power_interpretation']:
+        output['reason'] = 'radial_geometry_or_design_screen_not_satisfied'
+        return output
+    varied = [name for name in names if name not in output['unidentified_property_controls']]
+    groups = []
+    for row in rows:
+        midpoint = .5*(row['r'][:-1]+row['r'][1:])
+        radius = np.linalg.norm(midpoint, axis=1)
+        acceleration = np.diff(row['v'], axis=0) / np.diff(row['t'])[:, None]
+        valid = radius > 0
+        ar = np.zeros(len(radius))
+        ar[valid] = np.sum(acceleration[valid]*midpoint[valid], axis=1)/radius[valid]
+        valid &= np.abs(ar) > 0
+        if np.any(valid):
+            groups.append({'id': row['id'], 'log_radius': np.log(radius[valid]),
+                           'target': np.log(np.abs(ar[valid]))[:, None],
+                           'log_properties': [math.log(row['properties'][name]) for name in varied]})
+    output['used_probe_ids'] = [group['id'] for group in groups]
+    if len(groups) < 2:
+        output['reason'] = 'requires_at_least_two_radially_informative_probe_trajectories'
+        return output
+    low = min(float(np.min(g['log_radius'])) for g in groups)
+    high = max(float(np.max(g['log_radius'])) for g in groups)
+    output['observed_radius_range'] = [math.exp(low), math.exp(high)]
+    output['varied_positive_property_controls'] = varied
+
+    def features(group, center, degree):
+        z = group['log_radius']-center
+        return np.column_stack([z**power for power in range(degree+1)] +
+                               [np.full(len(z), value) for value in group['log_properties']])
+
+    def fit(selected, degree):
+        center = float(np.mean([np.mean(group['log_radius']) for group in selected]))
+        xs = [features(group, center, degree) for group in selected]
+        ys = [group['target'] for group in selected]
+        beta, design, stable = _solve(xs, ys)
+        return center, beta, design, stable, [x@beta-y for x, y in zip(xs, ys)]
+
+    def error(residuals):
+        return math.sqrt(float(np.mean([np.mean(values**2) for values in residuals])))
+
+    for degree in (1, 2):
+        center, beta, design, stable, residuals = fit(groups, degree)
+        model = {'log_radius_degree': degree, 'design': design,
+                 'feature_names': ['1', 'centered_log_radius'] + (['centered_log_radius^2'] if degree == 2 else []) +
+                                  [f'log({name})' for name in varied],
+                 'log_radius_center': center, 'training_log_magnitude_rmse': error(residuals),
+                 'diagnostic_coefficients': None, 'local_acceleration_magnitude_power_range': None,
+                 'local_vector_factor_power_range': None,
+                 'unidentified_property_controls': (list(output['unidentified_property_controls'])
+                                                    if stable else list(names)),
+                 'cross_validation': {'split_unit': 'whole_probe_trajectory', 'folds': [],
+                                      'status': 'unavailable', 'log_magnitude_rmse': None}}
+        if stable:
+            q = float(beta[2, 0]) if degree == 2 else 0.
+            slopes = [float(beta[1, 0])+2*q*(value-center) for value in (low, high)]
+            model.update(diagnostic_coefficients=[float(value) for value in beta[:, 0]],
+                         quadratic_log_radius_coefficient=q,
+                         local_slopes_at_radius_endpoints=slopes,
+                         local_acceleration_magnitude_power_range=[min(slopes), max(slopes)],
+                         local_vector_factor_power_range=[min(slopes)-1, max(slopes)-1])
+        folds, cv_residuals = min(5, len(groups)), []
+        for fold in range(folds):
+            train = [group for i, group in enumerate(groups) if i % folds != fold]
+            held = [group for i, group in enumerate(groups) if i % folds == fold]
+            fold_center, fold_beta, fold_design, fold_stable, _ = fit(train, degree)
+            model['cross_validation']['folds'].append({'held_out_probe_ids': [g['id'] for g in held],
+                'training_rank': fold_design['rank'], 'training_condition_number': fold_design['condition_number'],
+                'usable': fold_stable})
+            if fold_stable:
+                cv_residuals.extend(features(group, fold_center, degree)@fold_beta-group['target'] for group in held)
+        if all(fold['usable'] for fold in model['cross_validation']['folds']):
+            model['cross_validation'].update(status='available', log_magnitude_rmse=error(cv_residuals))
+        else:
+            model['cross_validation']['reason'] = 'at_least_one_training_fold_rank_deficient_or_unstable'
+        output['models'].append(model)
+    output['status'] = 'descriptive_comparison'
+    linear, quadratic = [model['cross_validation']['log_magnitude_rmse'] for model in output['models']]
+    if _number(linear) and _number(quadratic) and linear > 1e-12:
+        output['quadratic_cv_reduction_fraction'] = 1-quadratic/linear
+        if quadratic > 1e-12:
+            output['cv_ratio_linear_over_quadratic'] = linear/quadratic
+        else:
+            output['cv_ratio_reason'] = 'quadratic_cv_residual_at_numerical_precision'
+    else:
+        output['cv_ratio_reason'] = 'cv_unavailable_or_linear_residual_at_numerical_precision'
+    output['slope_meaning'] = 'For z=log(radius)-center, amplitude power is p(z)=linear_coefficient+2*quadratic_coefficient*z; the factor multiplying the displacement vector has power p(z)-1. Ranges apply only over observed radii.'
+    def require_finite(value):
+        if isinstance(value, dict):
+            for item in value.values():
+                require_finite(item)
+        elif isinstance(value, list):
+            for item in value:
+                require_finite(item)
+        elif isinstance(value, float) and not math.isfinite(value):
+            raise ValueError('Radial curvature diagnostics produced nonfinite values')
+    require_finite(output)
+    return output

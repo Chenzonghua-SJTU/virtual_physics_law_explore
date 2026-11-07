@@ -179,6 +179,31 @@ def test_compact_option_requires_boolean(tmp_path, flag):
         ToolRuntime(Environment(), tmp_path, config={'diagnostics_compact': flag})
 
 
+def test_curvature_extension_uses_same_acquired_selection_without_new_observations(tmp_path, monkeypatch):
+    rt = runtime(tmp_path)
+    rt.diagnostics_curvature = True
+    observed = []
+    def curvature(probes, task):
+        observed.append((copy.deepcopy(probes), copy.deepcopy(task)))
+        return {'status': 'synthetic_curvature_comparison', 'models': []}
+    monkeypatch.setitem(sys.modules, 'shore_agent.diagnostics', SimpleNamespace(
+        diagnose=lambda *args: {'method_version': 'synthetic'}, diagnose_radial_curvature=curvature))
+    reply = rt.execute('diagnose_dynamics', {'probe_ids': ['selected']})
+    assert reply['ok']
+    saved = rt.store.get('diagnostic', reply['data']['diagnostic_id'])
+    assert saved['diagnostics']['radial_curvature']['status'] == 'synthetic_curvature_comparison'
+    assert observed == [([rt.store.get('probe', 'selected')], rt.task)]
+    assert set(rt.environment.requests) == {'budget'}
+    assert not rt.store.records['law'] and not rt.store.records['submission']
+    assert ToolRuntime(Environment(), tmp_path / 'default').diagnostics_curvature is False
+
+
+@pytest.mark.parametrize('flag', [None, 0, 1, 'true', [], {}])
+def test_curvature_flag_requires_boolean(tmp_path, flag):
+    with pytest.raises(ValueError, match='diagnostics_curvature must be boolean'):
+        ToolRuntime(Environment(), tmp_path, config={'diagnostics_curvature': flag})
+
+
 @pytest.mark.parametrize('flag', [None, 0, 1, 'true', 'false', [], {}])
 def test_diagnostic_switch_requires_an_actual_boolean(tmp_path, flag):
     with pytest.raises(ValueError, match='numerics.diagnostics_enabled must be boolean'):

@@ -51,6 +51,9 @@ class ToolRuntime:
         self.diagnostics_compact = self.config.get('diagnostics_compact', False)
         if type(self.diagnostics_compact) is not bool:
             raise ValueError('numerics.diagnostics_compact must be boolean')
+        self.diagnostics_curvature = self.config.get('diagnostics_curvature', False)
+        if type(self.diagnostics_curvature) is not bool:
+            raise ValueError('numerics.diagnostics_curvature must be boolean')
         self.code_config = code_config or {}
         self.code_enabled = self.code_config.get('enabled', False)
         if type(self.code_enabled) is not bool:
@@ -58,7 +61,8 @@ class ToolRuntime:
         self.ruleset = getattr(environment, 'ruleset', 'e3')
         self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset,
                                     diagnostics_enabled=self.diagnostics_enabled,
-                                    diagnostics_compact=self.diagnostics_compact)
+                                    diagnostics_compact=self.diagnostics_compact,
+                                    diagnostics_curvature=self.diagnostics_curvature)
         self.last_valid_draft = None
         self.exploration_started_monotonic = None
         self.exploration_deadline_monotonic = None
@@ -402,6 +406,9 @@ class ToolRuntime:
         probes = self._probes(probe_ids)
         from .diagnostics import diagnose
         diagnostics = diagnose(probes, copy.deepcopy(self.task))
+        if self.diagnostics_curvature:
+            from .diagnostics import diagnose_radial_curvature
+            diagnostics['radial_curvature'] = diagnose_radial_curvature(probes, copy.deepcopy(self.task))
         # Validate before creating an immutable archive entry. A diagnostic is
         # intentionally a different record type from fitted laws and residuals.
         json.dumps(diagnostics, allow_nan=False)

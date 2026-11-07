@@ -40,6 +40,12 @@ class Agent:
         if type(budget_aware_tools) is not bool:
             raise ValueError('budget_aware_tools must be boolean')
         self.budget_aware_tools = self.ruleset == 'e5' and budget_aware_tools
+        strict_tool_recovery = config.get('strict_tool_recovery', False)
+        if type(strict_tool_recovery) is not bool:
+            raise ValueError('strict_tool_recovery must be boolean')
+        self.strict_tool_recovery = self.ruleset == 'e5' and strict_tool_recovery
+        if self.strict_tool_recovery and getattr(client, 'strict_tools', False) is not True:
+            raise ValueError('strict_tool_recovery requires client.strict_tools=true')
         self.finish_reserve_seconds = 30.0 if self.e4 else 0.0
         self.max_no_action = config.get('max_no_action', 3)
         if isinstance(self.max_no_action, bool) or not isinstance(self.max_no_action, int) or self.max_no_action < 1:
@@ -80,7 +86,7 @@ class Agent:
 
     def _track_tool_failure(self, name, args, result):
         """Observe actual tool outcomes without changing them or invoking tools."""
-        if not self.repeated_tool_failure_feedback or args is None:
+        if not (self.repeated_tool_failure_feedback or self.strict_tool_recovery) or args is None:
             return None, None
         key = (name, json.dumps(args, sort_keys=True, ensure_ascii=False, allow_nan=False))
         if result.get('ok') is True:
@@ -198,6 +204,7 @@ class Agent:
             return self._finish('incomplete', 'session_already_ended')
         no_action = 0
         length_recoveries = 0
+        pending_strict_recovery = []
         # A turn cap would impose another model-call cap. Continue until submit,
         # a resource/error termination, or repeated replies without tool actions.
         turn = 0
@@ -212,8 +219,22 @@ class Agent:
                     if remaining <= 0:
                         return self._finish('incomplete', 'wall_time_exhausted_without_saved_draft')
             turn += 1
+            model_tools = self._model_tools(current_budget)
+            advertised_names = {tool['function']['name'] for tool in model_tools}
             try:
-                message = self.client.complete(self.messages, tools=self._model_tools(current_budget), role='main')
+                if pending_strict_recovery:
+                    # Consume the override for this request only. No tool or
+                    # parameters are selected here; the model retains that choice.
+                    triggers, pending_strict_recovery = pending_strict_recovery, []
+                    self._event('strict_tool_recovery_requested', turn=turn,
+                                tool_choice='required', triggers=triggers,
+                                advertised_tool_names=sorted(advertised_names),
+                                budget=copy.deepcopy(current_budget))
+                    message = self.client.complete(self.messages, tools=model_tools, role='main',
+                                                   tool_choice_override='required')
+                else:
+                    # Preserve the original signature for default clients/fakes.
+                    message = self.client.complete(self.messages, tools=model_tools, role='main')
             except ModelError as exc:
                 return self._finish('incomplete', exc.code)
             self.messages.append(copy.deepcopy(message))
@@ -255,8 +276,12 @@ class Agent:
                 continue
             no_action = 0
             pending_failure_feedback = {}
+            unadvertised_calls = []
             for call in calls:
                 name = call['function']['name']
+                if self.strict_tool_recovery and name not in advertised_names:
+                    unadvertised_calls.append({'reason': 'unadvertised_tool', 'tool': name,
+                                               'tool_call_id': call['id']})
                 args = None
                 print(f'工具调用：{name}', flush=True)
                 if self.session_ended:
@@ -306,5 +331,13 @@ class Agent:
                 return self._finish('submitted', 'submission_accepted_locally')
             if self.session_ended:
                 return self._finish('incomplete', 'session_ended_without_accepted_submission')
-            if pending_failure_feedback:
+            if pending_failure_feedback and self.repeated_tool_failure_feedback:
                 self._append_failure_feedback(pending_failure_feedback, turn)
+            if self.strict_tool_recovery:
+                pending_strict_recovery = unadvertised_calls + [
+                    {'reason': 'repeated_tool_failure', **copy.deepcopy(notice)}
+                    for notice in pending_failure_feedback.values()]
+                if pending_strict_recovery:
+                    self._event('strict_tool_recovery_scheduled', turn=turn, next_turn=turn + 1,
+                                tool_choice='required', triggers=pending_strict_recovery,
+                                budget=copy.deepcopy(self.last_budget))

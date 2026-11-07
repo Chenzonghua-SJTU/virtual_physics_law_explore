@@ -273,3 +273,109 @@ def test_summary_preserves_unavailable_cv_and_radial_diagnostics_without_invente
     assert radial['exp_log_rmse_multiplicative_factor'] is None
     assert radial['vector_factor_power'] is None
     json.dumps(summary, allow_nan=False)
+
+
+def curved_radial_probes(curvature=-.17, *, confounded=False, perturb=False):
+    probes = []
+    for radius in np.geomspace(.5, 5., 6):
+        for mass, charge in ((.7, .8), (.7, 1.7), (1.3, .8), (1.3, 1.7)):
+            if confounded:
+                mass, charge = math.exp(math.log(radius)**2), 1.
+            z = math.log(radius)
+            log_magnitude = -.6-.4*z+curvature*z*z-.7*math.log(mass)+1.3*math.log(charge)
+            if perturb:
+                log_magnitude += .003*math.sin(3*z)
+            magnitude = math.exp(log_magnitude)
+            t = np.array([0., .1, .25])
+            probes.append(observed(f'p{len(probes):03}', t, np.array([[radius, 0.]]*3),
+                np.column_stack([-magnitude*t, np.zeros(3)]), {'mass': mass, 'charge': charge}))
+    return probes
+
+
+def test_radial_curvature_comparison_recovers_local_power_range_with_whole_probe_cv():
+    from shore_agent.diagnostics import diagnose_radial_curvature
+    probes = curved_radial_probes()
+    before = copy.deepcopy(probes)
+    result = diagnose_radial_curvature(probes, TASK)
+    assert result['status'] == 'descriptive_comparison'
+    linear, quadratic = result['models']
+    assert [m['log_radius_degree'] for m in result['models']] == [1, 2]
+    assert quadratic['quadratic_log_radius_coefficient'] == pytest.approx(-.17, abs=1e-12)
+    expected = sorted([-.4-2*.17*math.log(r) for r in (.5, 5.)])
+    np.testing.assert_allclose(quadratic['local_acceleration_magnitude_power_range'], expected, atol=1e-12)
+    np.testing.assert_allclose(quadratic['local_vector_factor_power_range'], np.array(expected)-1, atol=1e-12)
+    assert linear['cross_validation']['log_magnitude_rmse'] > .05
+    assert quadratic['cross_validation']['log_magnitude_rmse'] < 1e-12
+    assert result['quadratic_cv_reduction_fraction'] == pytest.approx(1.)
+    assert result['cv_ratio_linear_over_quadratic'] is None
+    assert result['cv_ratio_reason'] == 'quadratic_cv_residual_at_numerical_precision'
+    for model in result['models']:
+        ids = [pid for fold in model['cross_validation']['folds'] for pid in fold['held_out_probe_ids']]
+        assert sorted(ids) == sorted(p['probe_id'] for p in probes)
+        assert len(set(ids)) == len(ids)
+    assert probes == before
+    json.dumps(result, allow_nan=False)
+
+
+def test_curvature_cv_ratio_reports_improvement_without_choosing_a_force_law():
+    from shore_agent.diagnostics import diagnose_radial_curvature
+    result = diagnose_radial_curvature(curved_radial_probes(perturb=True), TASK)
+    assert result['cv_ratio_linear_over_quadratic'] > 10
+    assert 0 < result['quadratic_cv_reduction_fraction'] < 1
+    assert 'law_id' not in result and 'chosen_model' not in result and 'passed' not in result
+
+
+def test_exact_power_law_does_not_claim_curvature_from_roundoff_cv_ratios():
+    from shore_agent.diagnostics import diagnose_radial_curvature
+    result = diagnose_radial_curvature(curved_radial_probes(curvature=0.), TASK)
+    assert abs(result['models'][1]['quadratic_log_radius_coefficient']) < 1e-12
+    assert result['cv_ratio_linear_over_quadratic'] is None
+    assert result['quadratic_cv_reduction_fraction'] is None
+
+
+def test_curvature_confounded_with_property_is_not_reported_as_unique():
+    from shore_agent.diagnostics import diagnose_radial_curvature
+    result = diagnose_radial_curvature(curved_radial_probes(confounded=True), TASK)
+    assert result['status'] == 'descriptive_comparison'
+    quadratic = result['models'][1]
+    assert quadratic['design']['full_column_rank'] is False
+    assert quadratic['diagnostic_coefficients'] is None
+    assert 'mass' in quadratic['unidentified_property_controls']
+    assert quadratic['local_acceleration_magnitude_power_range'] is None
+    assert quadratic['cross_validation']['status'] == 'unavailable'
+    assert result['cv_ratio_linear_over_quadratic'] is None
+    assert 'charge' in result['unidentified_property_controls']
+
+
+@pytest.mark.parametrize('mode', ['noise', 'missing_noise', 'transverse', 'narrow_span'])
+def test_curvature_respects_observation_and_radial_coverage_limits(mode):
+    from shore_agent.diagnostics import diagnose_radial_curvature
+    probes, task = curved_radial_probes(), copy.deepcopy(TASK)
+    if mode == 'noise':
+        task['position_noise_sigma'] = .01
+    elif mode == 'missing_noise':
+        task.pop('position_noise_sigma')
+    elif mode == 'transverse':
+        for p in probes:
+            p['v_obs'] = [[v[0], v[0]] for v in p['v_obs']]
+    else:
+        for p in probes:
+            p['r_obs'] = [[1+.0001*r[0], r[1]] for r in p['r_obs']]
+    result = diagnose_radial_curvature(probes, task)
+    assert result['status'] == 'unavailable' and result['models'] == []
+    assert result['cv_ratio_linear_over_quadratic'] is None
+    json.dumps(result, allow_nan=False)
+
+
+def test_curvature_is_opt_in_and_summary_preserves_full_evidence():
+    from shore_agent.diagnostics import diagnose_radial_curvature, summarize
+    probes = curved_radial_probes()
+    full = diagnose(probes, TASK)
+    assert 'radial_curvature' not in full and 'radial_curvature_summary' not in summarize(full)
+    full['radial_curvature'] = diagnose_radial_curvature(probes, TASK)
+    before = copy.deepcopy(full)
+    small = summarize(full)
+    assert full == before
+    assert small['radial_curvature_summary']['status'] == 'descriptive_comparison'
+    assert len(small['radial_curvature_summary']['models']) == 2
+    json.dumps(small, allow_nan=False)

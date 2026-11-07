@@ -62,7 +62,8 @@ DYNAMICS_DIAGNOSTIC_SCHEMA = tool('diagnose_dynamics',
     {'probe_ids': IDS})
 
 
-def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False, diagnostics_compact=False):
+def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False, diagnostics_compact=False,
+                 diagnostics_curvature=False):
     import copy
     schemas = copy.deepcopy(SCHEMAS + ([CODE_SCHEMA] if code_enabled else []))
     if ruleset in ('e4', 'e5'):
@@ -89,4 +90,9 @@ def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False,
                 '例如E的三次平方根幂写成E*sqrt(E)，倒数写成1/(E*sqrt(E))，E须换为合法状态表达式。'
                 '除法后多个因子作分母时必须加括号，a/b*c等于(a/b)*c。'
                 '无噪声观测下，converged只表示优化停止；residual_scale_check有警告且时间仍充足时应继续比较结构或初值，不能声称已准确解释。')
+        if diagnostics_curvature is True:
+            schemas[-1]['function']['description'] += (
+                '补充实验后将新旧开发轨迹一起重新诊断；初始少量轨迹中CV不可用或病态的回归不能固化为动力学结构。'
+                '另比较log半径的一次/二次回归；曲率只描述已测区间中单一全局幂次遗漏的变化，不自动提供动力学公式。'
+                '公开属性未变化意味着作用未知，不能当作零作用；有预算时用相同初态、只改变一个属性的成对实验辨识，避免和距离变化混淆。')
     return schemas
