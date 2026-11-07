@@ -1,0 +1,330 @@
+{
+  "kind": "offline_power_repair_acceptance_not_agent_result",
+  "created_at": "2026-11-07T05:20:54.992378+00:00",
+  "scope": "Same acquired probes as three original searches; no mission or model calls. Original held-out probes were never sent to search or training-only refit. Five seconds per candidate refit are diagnostic time outside search; these results must not replace Agent scores. All nine candidates and old alternatives retained, no best-world stitching.",
+  "synthetic": {
+    "report": "experiments/E5/e7-power-synthetic-smoke.json",
+    "generation": {
+      "ax": ".09*x**1.7",
+      "ay": "0",
+      "description": "Synthetic generator only; no true acceleration labels passed to search"
+    },
+    "search_seconds": 12.28689930960536,
+    "first_candidate": {
+      "law_spec": {
+        "ax": "(x * c1) ** c2",
+        "ay": "c3"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.24258288839428752
+        },
+        {
+          "name": "c2",
+          "initial": 1.7000266423263963
+        },
+        {
+          "name": "c3",
+          "initial": 0.0
+        }
+      ],
+      "component_sources": [
+        "pysr",
+        "constant_initialization"
+      ],
+      "heldout_position_rmse": 5.401107144943046e-06
+    },
+    "actual_operator_configuration": {
+      "maxsize": 20,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "^"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "power_exponent_max_complexity": 1,
+      "random_state": 741,
+      "warm_start": false,
+      "parallelism": "multithreading",
+      "linear_seed_max_terms": 3,
+      "finalization_reserve_seconds": 5.0,
+      "operator_scope": "All listed operators are enabled in each PySR search; no staged exclusion.",
+      "simplicity_preference": "Linear seeds plus parameter/complexity-aware selection within resolution tolerance."
+    }
+  },
+  "replays": [
+    {
+      "run_id": "e7-qwen38-pysr-on-20261107-r01-world_4",
+      "source_search_id": "sr_a24a5b07d712",
+      "report": "experiments/E5/e7-power-replays/sr_a24a5b07d712.json",
+      "status": "completed",
+      "search_seconds": 23.176526622846723,
+      "offline_diagnostic_total_seconds": 31.343211742118,
+      "requested_search_seconds": 30,
+      "source_records_unchanged": true,
+      "all_axis_equations_retained": true,
+      "axis_equation_count": {
+        "ax": 46,
+        "ay": 44
+      },
+      "source_sha256": {
+        "shore_agent/symbolic_regression.py": "a900d508ef285d1db7522db938d8febee4159eded820618e4d6eba89dc60bfa9",
+        "shore_agent/symbolic_service.py": "dfb4cdb2608600bb2aa9bd48ae629cb28499aa2154f757b8bbf2fe9ae25af380",
+        "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+        "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+        "deployment/replay_symbolic.py": "f6e175ddcc109a5176fe67c8c74230cb790d4b2234478d21ee9ec5ec2a16b277"
+      },
+      "candidates": [
+        {
+          "rank": 0,
+          "law_spec": {
+            "ax": "c1 * y + c2 * vx + c3 * vy",
+            "ay": "c4 * y + c5 * vy"
+          },
+          "parameter_count": 5,
+          "component_sources": [
+            "linear_least_squares",
+            "linear_least_squares"
+          ],
+          "initial_domain_pass": true,
+          "initial_training_rollout_complete": true,
+          "initial_heldout_rollout_complete": true,
+          "initial_heldout_position_rmse": 0.0771471093868916,
+          "fit_status": "not_converged",
+          "refitted_training_position_rmse": 0.11920351567663189,
+          "refitted_heldout_position_rmse": 0.33243560306280734
+        },
+        {
+          "rank": 1,
+          "law_spec": {
+            "ax": "sin(vx)",
+            "ay": "c1 * y + c2 * vx + c3 * vy"
+          },
+          "parameter_count": 3,
+          "component_sources": [
+            "pysr",
+            "linear_least_squares"
+          ],
+          "initial_domain_pass": true,
+          "initial_training_rollout_complete": true,
+          "initial_heldout_rollout_complete": true,
+          "initial_heldout_position_rmse": 0.0673036684264056,
+          "fit_status": "converged",
+          "refitted_training_position_rmse": 0.12082034162033309,
+          "refitted_heldout_position_rmse": 0.06769280215510698
+        },
+        {
+          "rank": 2,
+          "law_spec": {
+            "ax": "sin(vx)",
+            "ay": "c1 * y + c2 * vy"
+          },
+          "parameter_count": 2,
+          "component_sources": [
+            "pysr",
+            "linear_least_squares"
+          ],
+          "initial_domain_pass": true,
+          "initial_training_rollout_complete": true,
+          "initial_heldout_rollout_complete": true,
+          "initial_heldout_position_rmse": 0.06712085259253756,
+          "fit_status": "converged",
+          "refitted_training_position_rmse": 0.12082034143830934,
+          "refitted_heldout_position_rmse": 0.06704971685875787
+        }
+      ],
+      "rejection_counts": {
+        "observed_domain": 34,
+        "parameter_budget": 1
+      }
+    },
+    {
+      "run_id": "e7-qwen38-pysr-on-20261107-r02-world_3",
+      "source_search_id": "sr_d5c61f47a008",
+      "report": "experiments/E5/e7-power-replays/sr_d5c61f47a008.json",
+      "status": "completed",
+      "search_seconds": 23.226019077003002,
+      "offline_diagnostic_total_seconds": 36.59522121027112,
+      "requested_search_seconds": 30,
+      "source_records_unchanged": true,
+      "all_axis_equations_retained": true,
+      "axis_equation_count": {
+        "ax": 38,
+        "ay": 41
+      },
+      "source_sha256": {
+        "shore_agent/symbolic_regression.py": "a900d508ef285d1db7522db938d8febee4159eded820618e4d6eba89dc60bfa9",
+        "shore_agent/symbolic_service.py": "dfb4cdb2608600bb2aa9bd48ae629cb28499aa2154f757b8bbf2fe9ae25af380",
+        "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+        "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+        "deployment/replay_symbolic.py": "f6e175ddcc109a5176fe67c8c74230cb790d4b2234478d21ee9ec5ec2a16b277"
+      },
+      "candidates": [
+        {
+          "rank": 0,
+          "law_spec": {
+            "ax": "x * c1 - c2 * y",
+            "ay": "x * c3 + y * c4"
+          },
+          "parameter_count": 4,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_pass": true,
+          "initial_training_rollout_complete": true,
+          "initial_heldout_rollout_complete": true,
+          "initial_heldout_position_rmse": 0.00023827698988410374,
+          "fit_status": "converged",
+          "refitted_training_position_rmse": 1.1156741123853239e-08,
+          "refitted_heldout_position_rmse": 1.144747352986462e-09
+        },
+        {
+          "rank": 1,
+          "law_spec": {
+            "ax": "x * c1 - c2 * y",
+            "ay": "x * c3 + y * c4 - c5"
+          },
+          "parameter_count": 5,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_pass": true,
+          "initial_training_rollout_complete": true,
+          "initial_heldout_rollout_complete": true,
+          "initial_heldout_position_rmse": 0.00022208892226597508,
+          "fit_status": "converged",
+          "refitted_training_position_rmse": 1.1154847099317987e-08,
+          "refitted_heldout_position_rmse": 1.1429595425220038e-09
+        },
+        {
+          "rank": 2,
+          "law_spec": {
+            "ax": "(x - c1 * (y - 1 * c2)) * c3",
+            "ay": "x * c4 + y * c5"
+          },
+          "parameter_count": 5,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_pass": true,
+          "initial_training_rollout_complete": true,
+          "initial_heldout_rollout_complete": true,
+          "initial_heldout_position_rmse": 0.0002376017112163516,
+          "fit_status": "converged",
+          "refitted_training_position_rmse": 1.1156432901807944e-08,
+          "refitted_heldout_position_rmse": 1.1445005572981592e-09
+        }
+      ],
+      "rejection_counts": {
+        "observed_domain": 3,
+        "parameter_budget": 53
+      }
+    },
+    {
+      "run_id": "e7-qwen38-pysr-on-20261107-r02-world_4",
+      "source_search_id": "sr_f26d116dcfb6",
+      "report": "experiments/E5/e7-power-replays/sr_f26d116dcfb6.json",
+      "status": "completed",
+      "search_seconds": 33.17572155594826,
+      "offline_diagnostic_total_seconds": 35.66308658383787,
+      "requested_search_seconds": 40,
+      "source_records_unchanged": true,
+      "all_axis_equations_retained": true,
+      "axis_equation_count": {
+        "ax": 82,
+        "ay": 81
+      },
+      "source_sha256": {
+        "shore_agent/symbolic_regression.py": "a900d508ef285d1db7522db938d8febee4159eded820618e4d6eba89dc60bfa9",
+        "shore_agent/symbolic_service.py": "dfb4cdb2608600bb2aa9bd48ae629cb28499aa2154f757b8bbf2fe9ae25af380",
+        "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+        "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+        "deployment/replay_symbolic.py": "f6e175ddcc109a5176fe67c8c74230cb790d4b2234478d21ee9ec5ec2a16b277"
+      },
+      "candidates": [
+        {
+          "rank": 0,
+          "law_spec": {
+            "ax": "c1 * x + c2 * y + c3 * q('charge')",
+            "ay": "c4 * vx + c5 * vy"
+          },
+          "parameter_count": 5,
+          "component_sources": [
+            "linear_least_squares",
+            "linear_least_squares"
+          ],
+          "initial_domain_pass": true,
+          "initial_training_rollout_complete": true,
+          "initial_heldout_rollout_complete": true,
+          "initial_heldout_position_rmse": 0.026008483026128154,
+          "fit_status": "converged",
+          "refitted_training_position_rmse": 0.007398466786693811,
+          "refitted_heldout_position_rmse": 0.026232155553958126
+        },
+        {
+          "rank": 1,
+          "law_spec": {
+            "ax": "c1 * x + c2 * y + c3 * q('charge')",
+            "ay": "c4 * vx"
+          },
+          "parameter_count": 4,
+          "component_sources": [
+            "linear_least_squares",
+            "linear_least_squares"
+          ],
+          "initial_domain_pass": true,
+          "initial_training_rollout_complete": true,
+          "initial_heldout_rollout_complete": true,
+          "initial_heldout_position_rmse": 0.02598172071570525,
+          "fit_status": "converged",
+          "refitted_training_position_rmse": 0.007441090067848898,
+          "refitted_heldout_position_rmse": 0.026153015044464236
+        },
+        {
+          "rank": 2,
+          "law_spec": {
+            "ax": "c1 * x + c2 * vy",
+            "ay": "c3 * vx + c4 * vy + c5 * q('mass')"
+          },
+          "parameter_count": 5,
+          "component_sources": [
+            "linear_least_squares",
+            "linear_least_squares"
+          ],
+          "initial_domain_pass": true,
+          "initial_training_rollout_complete": true,
+          "initial_heldout_rollout_complete": true,
+          "initial_heldout_position_rmse": 0.009161334303319323,
+          "fit_status": "converged",
+          "refitted_training_position_rmse": 0.012802882452464952,
+          "refitted_heldout_position_rmse": 0.009017118382312804
+        }
+      ],
+      "rejection_counts": {
+        "observed_domain": 29,
+        "parameter_budget": 1
+      }
+    }
+  ],
+  "checks": {
+    "three_replays_completed": true,
+    "all_source_records_unchanged": true,
+    "nine_candidates_domain_safe": true,
+    "all_axis_equations_retained": true,
+    "all_source_hashes_match_current": true
+  },
+  "interpretation": "Fix returns callable and fittable formulas, including a successful actual-PySR linear structure on world03. Domain safety is improved on both world04 recordings but held-out prediction is not uniformly improved; no claim of physics discovery or hidden-world generalization."
+}

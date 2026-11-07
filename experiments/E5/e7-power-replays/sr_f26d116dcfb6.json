@@ -1,0 +1,3777 @@
+{
+  "kind": "offline_symbolic_replay_not_agent_result",
+  "source_run_id": "e7-qwen38-pysr-on-20261107-r02-world_4",
+  "source_search_id": "sr_f26d116dcfb6",
+  "created_at": "2026-11-07T05:18:59.004959+00:00",
+  "train_probe_ids": [
+    "probe_0001",
+    "probe_0003",
+    "probe_0004",
+    "probe_0005",
+    "probe_0006",
+    "probe_0007"
+  ],
+  "heldout_probe_ids": [
+    "probe_0002",
+    "probe_0008",
+    "probe_0009",
+    "probe_0010",
+    "probe_0011",
+    "probe_0012"
+  ],
+  "source_record_sha256": {
+    "symbolic_search/sr_f26d116dcfb6": "ad7adde8c68949a96e38bf1c057c2ef70c6492eb005787e9e140698e63b8a277",
+    "probe/probe_0001": "a2929c23655e9cf831253b13e4a471152f309db0b874c3bae1ddc2e88e1503e3",
+    "probe/probe_0003": "4895386e47cbb05e14519068422453a62d6edc644c0cdc198d4649bcd3158f0c",
+    "probe/probe_0004": "9499f119f1a1cfd14b40277e675d51540c36e384d5f1f5dd8398d645acea46b2",
+    "probe/probe_0005": "cf4b22a4b8b0f8bc88a43922b7c3e498f5e35b306212b818f8213df700665e0f",
+    "probe/probe_0006": "b528c404830e731c129b3b9cccfbf31e70044d52501a7fa4c76e9be4f1d12ac3",
+    "probe/probe_0007": "d851500f61d4a7484eddb293a939eb1585d001eac3fabee954c5e6a94b5094fe",
+    "probe/probe_0002": "9e877efc6c5ea15d74dde97346b7728765e4aa4f2887689ff70d39d11e306dc5",
+    "probe/probe_0008": "8711eccd23a66aa705c9a633eb3fd7f227f414a760f924eab0b02c802c8c6049",
+    "probe/probe_0009": "b2899f2c4a528a2dbdca50218289cb01d0b93b3202efbb937b45b0b88e54e5ae",
+    "probe/probe_0010": "ef1c573a58474f81023a63526845d034f98c7de0cf4f82e54fa4ba866d23fe60",
+    "probe/probe_0011": "110c94877f5463cb4b2d1f51273970bf2281202691f282be305ca76a7e4fe123",
+    "probe/probe_0012": "185fdbc57bcbfe220a15527c398c159eafdb4a8d95ff6856a380466e0b3428c0"
+  },
+  "source_sha256": {
+    "shore_agent/symbolic_regression.py": "a900d508ef285d1db7522db938d8febee4159eded820618e4d6eba89dc60bfa9",
+    "shore_agent/symbolic_service.py": "dfb4cdb2608600bb2aa9bd48ae629cb28499aa2154f757b8bbf2fe9ae25af380",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "deployment/replay_symbolic.py": "f6e175ddcc109a5176fe67c8c74230cb790d4b2234478d21ee9ec5ec2a16b277"
+  },
+  "scope": "No mission, new observations, energy use, model calls, hidden truth, or independent scoring. Held-out records were not sent to search or fit; diagnostic selection must not be credited to the Agent.",
+  "request": {
+    "time_budget_seconds": 40,
+    "random_state": 42,
+    "endpoint": "http://127.0.0.1:8890",
+    "per_candidate_refit_seconds": 5,
+    "per_probe_rollout_seconds": 1
+  },
+  "old_search": {
+    "status": "timeout",
+    "backend": "pysr",
+    "target": "velocity_difference_acceleration",
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy",
+      "mass",
+      "charge"
+    ],
+    "samples_per_probe": {
+      "probe_0001": 6,
+      "probe_0003": 9,
+      "probe_0004": 9,
+      "probe_0005": 9,
+      "probe_0006": 9,
+      "probe_0007": 9
+    },
+    "dropped_constant_features": [],
+    "omitted_incomplete_properties": [],
+    "search_configuration": {
+      "maxsize": 20,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "random_state": 42,
+      "warm_start": false,
+      "parallelism": "multithreading"
+    },
+    "warnings": [
+      "Search loss is against velocity-difference acceleration, not independent trajectory prediction.",
+      "All selected probes were used for structure discovery and cannot serve as independent validation.",
+      "Constant or absent properties do not establish absence of physical dependence.",
+      "This version searches state and public probe properties only; body-set expressions are not supported.",
+      "State-only dependence on t does not establish explicit physical time dependence; it may substitute for unmodeled body motion.",
+      "A fixed seed with multithreaded search does not guarantee bitwise reproducibility."
+    ],
+    "axis_search_seconds": [
+      18.04518379829824,
+      17.985971931368113
+    ],
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "rejected_candidate_pairs": 0,
+    "elapsed_seconds": 36.2738127168268,
+    "search_elapsed_seconds": 36.25787881575525,
+    "service_elapsed_seconds": 36.2738127168268,
+    "requested_time_budget_seconds": 40,
+    "worker_search_budget_seconds": 37.99925888516009,
+    "cleanup_reserve_seconds": 2.0,
+    "service_budget_exceeded": false,
+    "worker_reap_pending": false,
+    "cleanup_pending": false,
+    "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing",
+    "used_probe_ids": [
+      "probe_0001",
+      "probe_0003",
+      "probe_0004",
+      "probe_0005",
+      "probe_0006",
+      "probe_0007"
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "vx * vy * (c1 - vx * vx * (cos(t) - 1 * c2 + y / q('mass'))) / y",
+          "ay": "vx * cos(sin(sin(x * sin(x) * c3)) * x * c4) * c5"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.9996337676633533
+          },
+          {
+            "name": "c2",
+            "initial": 3.0158127759452533
+          },
+          {
+            "name": "c3",
+            "initial": 4.493573705096584
+          },
+          {
+            "name": "c4",
+            "initial": 0.67266554888452
+          },
+          {
+            "name": "c5",
+            "initial": 0.32518505141649606
+          }
+        ],
+        "complexity": 37,
+        "acceleration_search_mse_by_axis": [
+          3.0563640001061775e-08,
+          1.829408263909543e-07
+        ],
+        "acceleration_search_mse": 2.1350446639201609e-07,
+        "normalized_acceleration_search_loss": 4.758300746608015e-05,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "selection_role": "lowest_search_loss",
+        "discovery_probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "c1",
+          "ay": "c2"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.10050769357429414
+          },
+          {
+            "name": "c2",
+            "initial": -0.026684713072009418
+          }
+        ],
+        "complexity": 2,
+        "acceleration_search_mse_by_axis": [
+          0.008852845465928672,
+          0.0012433924567099679
+        ],
+        "acceleration_search_mse": 0.01009623792263864,
+        "normalized_acceleration_search_loss": 0.5514544527766498,
+        "dsl_valid": true,
+        "component_sources": [
+          "constant_initialization",
+          "constant_initialization"
+        ],
+        "selection_role": "lowest_complexity",
+        "discovery_probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "vx * vy * (c1 - vx * vx * (y - c2)) / y",
+          "ay": "vx * cos(x * sin(x * c3) - 1 * c4) * c5"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.9978532790625495
+          },
+          {
+            "name": "c2",
+            "initial": 2.3305479336553416
+          },
+          {
+            "name": "c3",
+            "initial": 0.3293264481031935
+          },
+          {
+            "name": "c4",
+            "initial": 0.09538499839834286
+          },
+          {
+            "name": "c5",
+            "initial": 0.3262071458437071
+          }
+        ],
+        "complexity": 28,
+        "acceleration_search_mse_by_axis": [
+          1.9240281087983256e-07,
+          3.7780965904392633e-07
+        ],
+        "acceleration_search_mse": 5.702124699237589e-07,
+        "normalized_acceleration_search_loss": 0.00010167881442411568,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "selection_role": "middle_complexity",
+        "discovery_probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ]
+      }
+    ],
+    "tool_client_wall_seconds": 36.27658165991306,
+    "search_id": "sr_f26d116dcfb6",
+    "discovery_probe_ids": [
+      "probe_0001",
+      "probe_0003",
+      "probe_0004",
+      "probe_0005",
+      "probe_0006",
+      "probe_0007"
+    ],
+    "effective_time_budget_seconds": 40.0,
+    "wall_seconds": 36.27944787591696,
+    "body_positions_included": false
+  },
+  "status": "completed",
+  "new_search": {
+    "status": "timeout",
+    "backend": "pysr_with_linear_seeds",
+    "target": "velocity_difference_acceleration",
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy",
+      "mass",
+      "charge"
+    ],
+    "samples_per_probe": {
+      "probe_0001": 6,
+      "probe_0003": 9,
+      "probe_0004": 9,
+      "probe_0005": 9,
+      "probe_0006": 9,
+      "probe_0007": 9
+    },
+    "dropped_constant_features": [],
+    "omitted_incomplete_properties": [],
+    "search_configuration": {
+      "maxsize": 20,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "^"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "power_exponent_max_complexity": 1,
+      "random_state": 42,
+      "warm_start": false,
+      "parallelism": "multithreading",
+      "linear_seed_max_terms": 3,
+      "finalization_reserve_seconds": 5.0,
+      "operator_scope": "All listed operators are enabled in each PySR search; no staged exclusion.",
+      "simplicity_preference": "Linear seeds plus parameter/complexity-aware selection within resolution tolerance."
+    },
+    "warnings": [
+      "Search loss uses finite-difference acceleration, not independent prediction.",
+      "All selected probes are discovery data and cannot serve as independent validation.",
+      "Constant/absent properties do not establish absence of physical dependence.",
+      "Body positions are not included; explicit t may substitute for unobserved body motion.",
+      "Resolution tolerance is a finite-stencil sensitivity heuristic, not a confidence interval.",
+      "Short rollout checks certify only acquired initial states; fit and fresh-probe validation remain required."
+    ],
+    "axis_search_seconds": [
+      17.221833243966103,
+      15.702962294220924
+    ],
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "rejected_candidate_pairs": 1,
+    "elapsed_seconds": 33.16603066213429,
+    "search_elapsed_seconds": 33.150850389152765,
+    "service_elapsed_seconds": 33.16603066213429,
+    "requested_time_budget_seconds": 40.0,
+    "worker_search_budget_seconds": 37.99822176620364,
+    "cleanup_reserve_seconds": 2.0,
+    "service_budget_exceeded": false,
+    "worker_reap_pending": false,
+    "cleanup_pending": false,
+    "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing",
+    "axis_equations": {
+      "ax": [
+        {
+          "source": "-0.10050769357429414",
+          "complexity": 1,
+          "origin": "constant_initialization",
+          "parameter_count": 1,
+          "loss": 0.008852845465928676,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.16376528827126166*t)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.011195736091126191,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.026704520911856187*x)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.014468756120468712,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.017519764422642047*y)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.018746690081141514,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.43093201946983667*vx)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.015158895866309498,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.40609584012881517*vy)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.006815085898399319,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.09622274777844311*mass)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.01085317689227323,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.11028606924675123*charge)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.008312001997391067,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.14666069728016626*t) + (-0.0054206934938379565*x)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.01109554060420017,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.20834917063062683*t) + (0.05482747175699616*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.009734209484839095,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.1648149434253182*t) + (-0.0056091260098265205*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.011195411753606277,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.025723093020486747*t) + (-0.3681931152727628*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.006729410430129881,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.07753865078015376*t) + (-0.05831496295259019*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.010371176906390969,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.002498175110952371*t) + (-0.10906473919250793*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.008311501667671816,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.026391438410919628*x) + (-0.008625436211662757*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.014418968315316284,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.022795182864559043*x) + (0.3533089805714783*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.012013430669284734,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.04798831324188187*x) + (-0.792563564872121*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0033234649294260252,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0018692825622379622*x) + (-0.1000602786276256*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.010844082661704264,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.011459577691375813*x) + (-0.13378678016895956*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.007969181869880517,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.2971479088537755*y) + (1.9890608936661125*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0049615608077755195,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0068144182119395155*y) + (-0.4044357160632155*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.006783828401883563,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.06448137628249133*y) + (-0.12816602632858268*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.008929081019438833,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.07762637053159842*y) + (-0.1487350846498148*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0055230507429848315,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.22366383718322314*vx) + (-0.37144024581442725*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.005880975596593798,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.020414266555834108*vx) + (-0.09414330070086378*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.01084844229262832,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.1679709085731533*vx) + (-0.12856457750441616*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.00802764578279946,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.43791968783542157*vy) + (0.010940540910532781*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.006784902984578463,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.2954973164156481*vy) + (-0.03807441635621189*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.006447050809286934,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.09477847105712445*mass) + (-0.20055127977734596*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.007581245446571676,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.22193231734322458*t) + (0.0033830205947464535*x) + (0.05840395725497639*y)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.009701403089086402,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.12778670244356874*t) + (-0.007416032637110981*x) + (0.06721327202057119*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.011062545465939204,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.040633645162450924*t) + (0.04904331617874489*x) + (-0.7411866187356527*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0031113653164609634,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0788014129252919*t) + (0.0029192552164334176*x) + (-0.0636906775977211*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.010349124812011442,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.007635651294898841*t) + (0.011563756272779835*x) + (-0.13026743915337252*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.007964536051651155,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.07651931339380176*t) + (0.26492793890454375*y) + (1.6174370570700018*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0042271223609064365,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.029486351485402008*t) + (0.002333365119057328*y) + (-0.36321644376554413*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.006727579272871151,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.09774450891049553*t) + (0.0694107883735289*y) + (-0.0828217919269301*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.008174384791227196,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.025503797669441365*t) + (0.0789142394252044*y) + (-0.13690445399113593*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.005471672486783312,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.09152053466500124*t) + (0.4066419396208219*vx) + (-0.477943311573299*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0054216112036917395,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.08530071250112131*t) + (-0.05890451336671925*vx) + (-0.06052033489842573*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.010336587444877688,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.01980851848987612*t) + (-0.18288496046724956*vx) + (-0.12050335239940692*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.007998430726447047,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.05734980550345358*t) + (-0.4276890044207608*vy) + (0.036474673953297024*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.006523445047851122,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.012090354528691182*t) + (-0.29772109279342474*vy) + (-0.04344182478712779*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.006435437480671669,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.028386605001774402*t) + (0.10188666157789396*mass) + (-0.1934430892565764*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.007520754992464852,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.016529078585853296*x) + (0.2775910939841764*y) + (1.830227051317267*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.003351882244476569,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.048701344583163046*x) + (-0.012884946146810633*y) + (-0.7951668492382784*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0032124821038294333,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.02868142566580151*x) + (0.10548345382441393*y) + (-0.20735928648020402*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.007566059323394613,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.048669981758064765*x) + (0.1470782322433737*y) + (-0.2829450833720023*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0015718006520614926,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.04550159848751919*x) + (0.16944074569030104*vx) + (-0.7462831294485677*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0027967450196143442,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0017336525078640703*x) + (0.0031135360592479586*vx) + (-0.09946468544376443*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.010844020404284912,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.04888703931306746*x) + (-0.777518707222281*vx) + (-0.29515027578225683*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.005533263566325257,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.04812045320950209*x) + (-0.7855254602509353*vy) + (-0.002785436025976156*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.003321534948330374,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.05049309215435582*x) + (-0.6603211017977945*vy) + (-0.05246985510928828*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0026340333281392606,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.00859656389525383*x) + (0.08554584654848915*mass) + (-0.2093876939387838*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.007395259042105893,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.20985002957725832*y) + (1.3969527662368846*vx) + (-0.24076851278397424*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0019434229923762847,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.27514457420941446*y) + (1.5467886368534491*vx) + (-0.07496630600854211*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.002284243426084408,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.24516092351472524*y) + (1.2919632341039886*vx) + (-0.09112562599412033*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0016910399195841856,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0907075455904376*y) + (-0.8147920060790191*vy) + (0.1481003324742278*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00599043235732396,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.09887462488144534*y) + (0.11178318128765008*vy) + (-0.18657635388358446*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.005465135158960894,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0742313651160244*y) + (0.07588330445115042*mass) + (-0.21932332274950694*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.005059954186770243,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.7652662218848294*vx) + (-0.8132732094890615*vy) + (0.1807451559565633*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0031203836108042345,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.5194101285014411*vx) + (-0.5839908632156335*vy) + (0.08894764648352364*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.005505606050759285,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.18311678499808737*vx) + (0.09827487285146547*mass) + (-0.22380786102258782*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.007244291140182138,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.365050952141128*vy) + (0.1417924722492455*mass) + (-0.15611781497254582*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.004914840185023292,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.10050769356459707",
+          "complexity": 1,
+          "loss": 0.008852845465928674,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "vx*x",
+          "complexity": 3,
+          "loss": 0.006115446490745866,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(vx*x)",
+          "complexity": 4,
+          "loss": 0.006069764959949302,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "vx*vy/y",
+          "complexity": 5,
+          "loss": 3.190300875444758e-05,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*(vy + 0.008554240429131084)/y",
+          "complexity": 7,
+          "loss": 1.6225674991690984e-05,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*sin(vy + 0.013177930697908097)/y",
+          "complexity": 8,
+          "loss": 1.5162456172790793e-05,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "0.7248156355090108**vx*vx*vy/y",
+          "complexity": 9,
+          "loss": 3.3402870879273023e-06,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*sin(0.6510432716330177**vx*vy)/y",
+          "complexity": 10,
+          "loss": 1.679293497321891e-06,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/((y*(0.1441476289028067**vx)**vx))",
+          "complexity": 11,
+          "loss": 4.979944845010163e-07,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy*sin(vx/((0.11838880828472449**vx)**vx))/y",
+          "complexity": 12,
+          "loss": 4.960158333529238e-07,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/((y*((0.0008877533869728138**vx)**vx)**vy))",
+          "complexity": 13,
+          "loss": 3.486749839096674e-07,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*(vx*vx*(vy + Abs(vy)) + vy)/y",
+          "complexity": 14,
+          "loss": 2.0964826312945527e-07,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*(vx*(vx*0.6944785189106125 + y*0.10513599036604805) + vy)/y",
+          "complexity": 15,
+          "loss": 3.7515556447482524e-08,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "(vx*(vx*0.7575921098356044 + y*0.1157959632779289) + vy)*sin(vx)/y",
+          "complexity": 16,
+          "loss": 3.5083725853860026e-08,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "(vx*(vx*0.8202985901127591 + y*0.12637534832985248) + vy)*sin(sin(vx))/y",
+          "complexity": 17,
+          "loss": 3.421712039730385e-08,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*(vx**2*(y*(sqrt(mass) - 1.3313944220591651) + 0.6533843664744349) + vy)/y",
+          "complexity": 18,
+          "loss": 2.4821636403480364e-08,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*(vy + (vx + y*0.1331030021389717)*0.8384128282264856*(vx + y*0.1584795090572368))/y",
+          "complexity": 19,
+          "loss": 2.0324671135019182e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*(vx*vx*(vy*(mass + 0.1473587198335882)**t + Abs(vy)) + vy)/y",
+          "complexity": 20,
+          "loss": 1.341733189812344e-08,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        }
+      ],
+      "ay": [
+        {
+          "source": "-0.026684713072009418",
+          "complexity": 1,
+          "origin": "constant_initialization",
+          "parameter_count": 1,
+          "loss": 0.0012433924567099683,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.05082892788378315*t)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.0012080223473142876,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0018890266299068832*x)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.0019330195500397826,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.05011713471136383*y)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.0002537830706427482,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.3044063038111895*vx)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 6.143614378758384e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.030599242266217803*vy)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.0018865429091439252,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.02906822610776687*mass)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.0012161248205247114,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.03015253490670101*charge)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.001159937927308093,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.08277120357817729*t) + (0.01012297143644775*x)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0008585969398090075,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.014039624659928359*t) + (-0.04524201071604902*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.00021285966340540735,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.012165649429391271*t) + (0.3366291497924883*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 3.984107731286507e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.08793577626506556*t) + (0.09897326015888429*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0008852957109892299,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.028319284567850826*t) + (-0.015223242541262026*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0011518301313508013,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.022533521351978916*t) + (-0.019136146690178005*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0011192309667898545,
+          "domain_valid": true
+        },
+        {
+          "source": "(-7.076130362822394e-05*x) + (-0.05009328704344564*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0002537519588626951,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0015371237235584404*x) + (0.30964057700365766*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 4.713349830058123e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.004126850559571414*x) + (-0.06383430385453086*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0018607206872869324,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.015496981716124437*x) + (-0.06088264871364903*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0005910812490903886,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.016174138487165996*x) + (-0.06332162396385783*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.00047701546081770606,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.01149988286610502*y) + (0.24410535936681632*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 4.616300963801585e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.04962720201330775*y) + (-0.01850909607790221*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.00022872737310718926,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.04614481195257406*y) + (-0.0062086553785806915*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0002307445279725852,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.04512697887564603*y) + (-0.007800750403557775*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.00021740858085710898,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.3145258350689519*vx) + (0.01813496474201851*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 3.932016569571273e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.3196209293372298*vx) + (0.0034891428099800186*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 5.551532702022568e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.33249207211053666*vx) + (0.006029082120355396*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 4.5753278515960634e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.18721968328929842*vy) + (-0.07488273850788031*mass)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0004725507159444588,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.19641167233665702*vy) + (-0.07815030246163496*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0003359990906957835,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0037810500661161405*mass) + (-0.026551534843733272*charge)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.001158774931427733,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.029816778059337246*t) + (0.003929460235246642*x) + (-0.04108783631697089*y)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00016859929415685387,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.011252530524513025*t) + (0.00018287986198094498*x) + (0.33483334457525143*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.976027881132782e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.08990010163304557*t) + (0.006460996828456854*x) + (0.049834865150571624*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0008225024009354766,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.03522573420651768*t) + (0.01596633951400893*x) + (-0.04462474353761996*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0004921757782329707,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.029900513728109666*t) + (0.016582092305791402*x) + (-0.04954020568186226*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00040577489824299905,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.009693249777504664*t) + (-0.007418348379062746*y) + (0.2911816138656243*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.437739918574338e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.01580488961599647*t) + (-0.044723926480930126*y) + (0.003584720752536081*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00021256680366481742,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.015108079156975004*t) + (-0.045382887329913746*y) + (0.0008000685926032874*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00021271410375952058,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.009517909439978255*t) + (-0.04464635165068197*y) + (-0.0033856090710159413*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0002102528699269806,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.006489813440140824*t) + (0.3275009969033716*vx) + (0.010582724907448951*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.701031102555879e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.015725173944425793*t) + (0.33424333488074043*vx) + (-0.0027092460459614315*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.812000713355796e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.00962315183268053*t) + (0.3397374491886231*vx) + (0.00211286833674687*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.885822860653818e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.03747244592445889*t) + (0.1939044266403991*vy) + (-0.05819869901945866*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0003609255766023453,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.032450286741340366*t) + (0.2023802467846792*vy) + (-0.06374427803714192*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00025233950285209766,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.023038647386905243*t) + (0.001987977084425966*mass) + (-0.020782507693191125*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0011189299259217339,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0013125919102803581*x) + (-0.00994685516069755*y) + (0.2567185256399972*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.601218516505649e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0069208757262450744*x) + (-0.05048987571953769*y) + (-0.07403531692919299*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0001566046422655664,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.005918276742314463*x) + (-0.03768422687809241*y) + (-0.022549810632318357*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0001727092809638111,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0074449561512702584*x) + (-0.03450305738665607*y) + (-0.02833060308596925*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00012495229556933393,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0004978417662648326*x) + (0.31511910037255625*vx) + (0.022236193038677392*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.895095337227928e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.00278415200168177*x) + (0.2918368934799099*vx) + (-0.005056712784760521*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 4.411100290079102e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.00042258014197968017*x) + (0.3272231337801336*vx) + (0.004589113387963413*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 4.5566900923184556e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.00778459699865747*x) + (0.13098640466906533*vy) + (-0.07710323294916069*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0003819124693494903,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.007965964807863145*x) + (0.13885581050626017*vy) + (-0.08042137665432258*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00024109572197462858,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.016908435693444065*x) + (-0.021940542589886525*mass) + (-0.04393172795691415*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0004392625563271291,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.006360563774033936*y) + (0.2789633951986906*vx) + (0.014174298674550868*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.570274080815095e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.01069456448936678*y) + (0.26029245017325303*vx) + (0.0027437542918216087*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 4.257661506522776e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.008829549413703088*y) + (0.2799120749857267*vx) + (0.004680706255155451*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.75340457383618e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.05025528439607435*y) + (-0.02158130907639478*vy) + (0.0011087822401622234*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00022868290276347911,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.03590670612129938*y) + (0.04850616920576048*vy) + (-0.024221243963233954*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00020650330980567775,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.04547570469182542*y) + (0.007794528738518087*mass) + (-0.015051384181948357*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0002125225207255822,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.26898730663807274*vx) + (0.055284769739797616*vy) + (-0.0151972529216362*mass)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 1.980379440543078e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.2925919033713383*vx) + (0.033898715163312276*vy) + (-0.006596774532444989*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.725548263891084e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.33405782799785955*vx) + (-0.010159495325722285*mass) + (0.015875176708254734*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 3.738150038480693e-05,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.21163637375364694*vy) + (-0.03103717053256426*mass) + (-0.05231160288202379*charge)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0002625855171550136,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.026684713072014653",
+          "complexity": 1,
+          "loss": 0.0012433924567099685,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "vx*0.3044063037476275",
+          "complexity": 3,
+          "loss": 6.143614378758384e-05,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "log(1.3558198188132375**vx)",
+          "complexity": 4,
+          "loss": 6.143614378758385e-05,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "vx*vy/x",
+          "complexity": 5,
+          "loss": 2.0573840715628253e-06,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*(vy/x)**0.9843276159212413",
+          "complexity": 7,
+          "loss": 1.4098988360248236e-06,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/(x*cos(vy))",
+          "complexity": 8,
+          "loss": 7.795131161215527e-07,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/(x*(cos(vy)**1.5579426372056713))",
+          "complexity": 10,
+          "loss": 5.826872893920099e-07,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/(x*cos(vy/cos(t)))",
+          "complexity": 11,
+          "loss": 2.8479489951980483e-07,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/(x*cos(vy/((0.13740967794172185/vx))))",
+          "complexity": 12,
+          "loss": 1.2208806559579771e-08,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*sin(vy)/(x*cos(vy/((0.12806316949047722/vx))))",
+          "complexity": 13,
+          "loss": 1.1657756495147023e-08,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/(x*cos(vy/((0.1214262333336142/(-vx - 0.023606809887383087)))))",
+          "complexity": 14,
+          "loss": 6.427332365211551e-09,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "sin(vx*vy/x)/cos(vy/(-1*(-0.12344282915345291) + 0.16244808229368538/vx))",
+          "complexity": 15,
+          "loss": 6.273341835548696e-09,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/(x*cos(vy/(-0.20438170609818182 - 0.18501506313150504/vx) - 1*(-0.01569169746733565)))",
+          "complexity": 16,
+          "loss": 3.770875523895265e-09,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "sin(vx*vy/(x*cos(vy/(mass*(-0.11868124914323239) - 0.16089768614898642/vx))))",
+          "complexity": 17,
+          "loss": 2.5954728264315597e-09,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/(x*cos(-vy/(mass*(-0.16860942004962878) - 0.17615146582767208/vx) - 0.013406987222974332))",
+          "complexity": 18,
+          "loss": 3.6608609061374064e-10,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/(x*cos(-sin(vy/(mass*(-0.21310123158927796) - 0.18379722026656187/vx)) - 0.02008638895153413))",
+          "complexity": 19,
+          "loss": 3.6090173517472426e-10,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx*vy/(x*cos(vy/(mass*mass*(-0.14048143527329768) - 0.16942087648483575/vx) - 1*(-0.011261976637787312)))",
+          "complexity": 20,
+          "loss": 1.9119393449138312e-10,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        }
+      ]
+    },
+    "rejection_counts": {
+      "observed_domain": 29,
+      "parameter_budget": 1
+    },
+    "rejection_examples": [
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*vy/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*(vy + 0.008554240429131084)/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*sin(vy + 0.013177930697908097)/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "0.7248156355090108**vx*vx*vy/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*sin(0.6510432716330177**vx*vy)/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*vy/((y*(0.1441476289028067**vx)**vx))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vy*sin(vx/((0.11838880828472449**vx)**vx))/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*vy/((y*((0.0008877533869728138**vx)**vx)**vy))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*(vx*vx*(vy + Abs(vy)) + vy)/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*(vx*(vx*0.6944785189106125 + y*0.10513599036604805) + vy)/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "(vx*(vx*0.7575921098356044 + y*0.1157959632779289) + vy)*sin(vx)/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "(vx*(vx*0.8202985901127591 + y*0.12637534832985248) + vy)*sin(sin(vx))/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*(vx**2*(y*(sqrt(mass) - 1.3313944220591651) + 0.6533843664744349) + vy)/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*(vy + (vx + y*0.1331030021389717)*0.8384128282264856*(vx + y*0.1584795090572368))/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx*(vx*vx*(vy*(mass + 0.1473587198335882)**t + Abs(vy)) + vy)/y"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vx*vy/x"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vx*(vy/x)**0.9843276159212413"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vx*vy/(x*cos(vy))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vx*vy/(x*(cos(vy)**1.5579426372056713))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vx*vy/(x*cos(vy/cos(t)))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vx*vy/(x*cos(vy/((0.13740967794172185/vx))))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vx*sin(vy)/(x*cos(vy/((0.12806316949047722/vx))))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vx*vy/(x*cos(vy/((0.1214262333336142/(-vx - 0.023606809887383087)))))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "sin(vx*vy/x)/cos(vy/(-1*(-0.12344282915345291) + 0.16244808229368538/vx))"
+      }
+    ],
+    "candidate_selection": {
+      "strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
+      "normalized_resolution_tolerance": 1.9017196276433327e-07,
+      "legal_pairs": 19,
+      "rejection_stage_counts": {
+        "axis": 29,
+        "pair": 1
+      },
+      "rejected_candidates_total": 30,
+      "unchecked_axis_equations": 0,
+      "rollout_candidates_considered": 3,
+      "axis_frontier_counts": [
+        5,
+        4
+      ],
+      "full_axis_equations_retained": true,
+      "selection_incomplete": false,
+      "stop_reason": null,
+      "retained_checkpoint": false,
+      "independent_validation": false
+    },
+    "used_probe_ids": [
+      "probe_0001",
+      "probe_0003",
+      "probe_0004",
+      "probe_0005",
+      "probe_0006",
+      "probe_0007"
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "c1 * x + c2 * y + c3 * q('charge')",
+          "ay": "c4 * vx + c5 * vy"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.048669981758064765
+          },
+          {
+            "name": "c2",
+            "initial": 0.1470782322433737
+          },
+          {
+            "name": "c3",
+            "initial": -0.2829450833720023
+          },
+          {
+            "name": "c4",
+            "initial": 0.3145258350689519
+          },
+          {
+            "name": "c5",
+            "initial": 0.01813496474201851
+          }
+        ],
+        "complexity": 18,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          0.0015718006520614926,
+          3.932016569571273e-05
+        ],
+        "acceleration_search_mse": 0.0016111208177572054,
+        "normalized_acceleration_search_loss": 0.051516066262794605,
+        "dsl_valid": true,
+        "component_sources": [
+          "linear_least_squares",
+          "linear_least_squares"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 6,
+          "rhs_calls": 252,
+          "position_rmse": 0.0014801292911205443,
+          "velocity_rmse": 0.01043171654656565,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "selection_role": "simplest_within_resolution_tolerance",
+        "discovery_probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "c1 * x + c2 * y + c3 * q('charge')",
+          "ay": "c4 * vx"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.048669981758064765
+          },
+          {
+            "name": "c2",
+            "initial": 0.1470782322433737
+          },
+          {
+            "name": "c3",
+            "initial": -0.2829450833720023
+          },
+          {
+            "name": "c4",
+            "initial": 0.3044063038111895
+          }
+        ],
+        "complexity": 14,
+        "parameter_count": 4,
+        "acceleration_search_mse_by_axis": [
+          0.0015718006520614926,
+          6.143614378758384e-05
+        ],
+        "acceleration_search_mse": 0.0016332367958490765,
+        "normalized_acceleration_search_loss": 0.05717097765599154,
+        "dsl_valid": true,
+        "component_sources": [
+          "linear_least_squares",
+          "linear_least_squares"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 6,
+          "rhs_calls": 252,
+          "position_rmse": 0.0014803044763232393,
+          "velocity_rmse": 0.01044295521073031,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "selection_role": "alternative_accuracy_candidate",
+        "discovery_probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "c1 * x + c2 * vy",
+          "ay": "c3 * vx + c4 * vy + c5 * q('mass')"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.04798831324188187
+          },
+          {
+            "name": "c2",
+            "initial": -0.792563564872121
+          },
+          {
+            "name": "c3",
+            "initial": 0.26898730663807274
+          },
+          {
+            "name": "c4",
+            "initial": 0.055284769739797616
+          },
+          {
+            "name": "c5",
+            "initial": -0.0151972529216362
+          }
+        ],
+        "complexity": 18,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          0.0033234649294260252,
+          1.980379440543078e-05
+        ],
+        "acceleration_search_mse": 0.003343268723831456,
+        "normalized_acceleration_search_loss": 0.09273259353045882,
+        "dsl_valid": true,
+        "component_sources": [
+          "linear_least_squares",
+          "linear_least_squares"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 6,
+          "rhs_calls": 252,
+          "position_rmse": 0.0012446145528088653,
+          "velocity_rmse": 0.01148522286137572,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "selection_role": "alternative_accuracy_candidate",
+        "discovery_probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ]
+      }
+    ],
+    "tool_client_wall_seconds": 33.175684751942754
+  },
+  "search_client_seconds": 33.17572155594826,
+  "old_candidate_diagnostics": [
+    {
+      "index": 0,
+      "law_spec": {
+        "ax": "vx * vy * (c1 - vx * vx * (cos(t) - 1 * c2 + y / q('mass'))) / y",
+        "ay": "vx * cos(sin(sin(x * sin(x) * c3)) * x * c4) * c5"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.9996337676633533
+        },
+        {
+          "name": "c2",
+          "initial": 3.0158127759452533
+        },
+        {
+          "name": "c3",
+          "initial": 4.493573705096584
+        },
+        {
+          "name": "c4",
+          "initial": 0.67266554888452
+        },
+        {
+          "name": "c5",
+          "initial": 0.32518505141649606
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "selection_role": "lowest_search_loss",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ],
+        "initial_domain_failures": [
+          {
+            "probe_id": "probe_0001",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0003",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0004",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0006",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0007",
+            "code": "invalid_expression"
+          }
+        ],
+        "all_rollouts_completed": false,
+        "acceleration_mse_by_axis": [
+          3.056364000106177e-08,
+          1.8294082639095436e-07
+        ],
+        "trajectory_errors": null,
+        "failures": [
+          {
+            "probe_id": "probe_0001",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0003",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0004",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0006",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0007",
+            "stage": "rollout",
+            "code": "expression_domain"
+          }
+        ]
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [
+          {
+            "probe_id": "probe_0008",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0009",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0012",
+            "code": "invalid_expression"
+          }
+        ],
+        "all_rollouts_completed": false,
+        "acceleration_mse_by_axis": [
+          0.0019876817586075117,
+          0.002625211832168304
+        ],
+        "trajectory_errors": null,
+        "failures": [
+          {
+            "probe_id": "probe_0008",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0009",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0012",
+            "stage": "rollout",
+            "code": "expression_domain"
+          }
+        ]
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": 0.9996337676633533,
+          "c2": 3.0158127759452533,
+          "c3": 4.493573705096584,
+          "c4": 0.67266554888452,
+          "c5": 0.32518505141649606
+        },
+        "fit_status": "failed",
+        "converged": false,
+        "message": "expression domain/evaluation error: ZeroDivisionError Invalid candidate evaluations: 6; last failure: expression domain/evaluation error: ZeroDivisionError",
+        "errors": null,
+        "objective_calls": 6,
+        "invalid_evaluations": 6,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "coarse_fit_not_converged"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.002964155748486519
+    },
+    {
+      "index": 1,
+      "law_spec": {
+        "ax": "c1",
+        "ay": "c2"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.10050769357429414
+        },
+        {
+          "name": "c2",
+          "initial": -0.026684713072009418
+        }
+      ],
+      "parameter_count": 2,
+      "component_sources": [
+        "constant_initialization",
+        "constant_initialization"
+      ],
+      "selection_role": "lowest_complexity",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.008852845465928676,
+          0.0012433924567099683
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.0005591325442878417,
+            "velocity_mse": 0.0034390587076536445,
+            "position_rmse": 0.023645983681966833,
+            "velocity_rmse": 0.05864348819479998
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 2.1066307378525357e-05,
+              "position_rmse": 0.004589804721175549,
+              "velocity_mse": 0.00010872077396774898,
+              "velocity_rmse": 0.010426925432156354
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 11,
+              "position_mse": 0.0012752416191296446,
+              "position_rmse": 0.035710525326990705,
+              "velocity_mse": 0.007891855501332078,
+              "velocity_rmse": 0.08883611597392177
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 11,
+              "position_mse": 0.00042975667194752334,
+              "position_rmse": 0.020730573362729824,
+              "velocity_mse": 0.0026106086083936032,
+              "velocity_rmse": 0.051094115203158215
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 11,
+              "position_mse": 0.0009129672233037987,
+              "position_rmse": 0.030215347479448235,
+              "velocity_mse": 0.005665112263947249,
+              "velocity_rmse": 0.07526694004639255
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 11,
+              "position_mse": 0.0005233143070636409,
+              "position_rmse": 0.022876064064074504,
+              "velocity_mse": 0.0031989547970392206,
+              "velocity_rmse": 0.056559303364161234
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 11,
+              "position_mse": 0.00019244913690391756,
+              "position_rmse": 0.013872603825667249,
+              "velocity_mse": 0.0011591003012419697,
+              "velocity_rmse": 0.03404556213725909
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0073038138859474475,
+          0.001517939880899416
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 9.576026946213807e-05,
+            "velocity_mse": 0.001029609312276114,
+            "position_rmse": 0.009785717626323482,
+            "velocity_rmse": 0.03208752580483752
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.000422316284070999,
+              "position_rmse": 0.020550335376119753,
+              "velocity_mse": 0.002461851370179414,
+              "velocity_rmse": 0.049617047173117976
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 11,
+              "position_mse": 8.09152993580556e-05,
+              "position_rmse": 0.008995293177993456,
+              "velocity_mse": 0.001983566941738787,
+              "velocity_rmse": 0.044537253414852464
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 11,
+              "position_mse": 1.1648862199994046e-05,
+              "position_rmse": 0.003413042953142261,
+              "velocity_mse": 0.000282730482235591,
+              "velocity_rmse": 0.016814591349051305
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 11,
+              "position_mse": 2.629228870628785e-05,
+              "position_rmse": 0.005127600677342947,
+              "velocity_mse": 0.0006396408102044574,
+              "velocity_rmse": 0.025291121173337837
+            },
+            {
+              "probe_id": "probe_0011",
+              "n_samples": 11,
+              "position_mse": 2.390971902840295e-05,
+              "position_rmse": 0.004889756540810897,
+              "velocity_mse": 0.0005822295705337669,
+              "velocity_rmse": 0.02412943369691396
+            },
+            {
+              "probe_id": "probe_0012",
+              "n_samples": 11,
+              "position_mse": 9.47916340908907e-06,
+              "position_rmse": 0.003078825004622554,
+              "velocity_mse": 0.00022763669876466684,
+              "velocity_rmse": 0.015087633968408263
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": -0.10053575535351054,
+          "c2": -0.023281856930182757
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`ftol` termination condition is satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 0.0005584973617431421,
+            "velocity_mse": 0.0034407588566377607,
+            "position_rmse": 0.023632548777970226,
+            "velocity_rmse": 0.05865798203686998
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 1.530977576106437e-05,
+              "position_rmse": 0.003912770854658418,
+              "velocity_mse": 7.751969668752668e-05,
+              "velocity_rmse": 0.008804527056436744
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 11,
+              "position_mse": 0.0012737197430632704,
+              "position_rmse": 0.035689210457269444,
+              "velocity_mse": 0.007902525985513857,
+              "velocity_rmse": 0.0888961528161588
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 11,
+              "position_mse": 0.00042035771702767286,
+              "position_rmse": 0.020502627076247396,
+              "velocity_mse": 0.002553738689038637,
+              "velocity_rmse": 0.05053452967069781
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 11,
+              "position_mse": 0.0009413631057349347,
+              "position_rmse": 0.030681641183856752,
+              "velocity_mse": 0.005837924557444287,
+              "velocity_rmse": 0.07640631228795358
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 11,
+              "position_mse": 0.000516581480248452,
+              "position_rmse": 0.022728428899694144,
+              "velocity_mse": 0.003165458173752718,
+              "velocity_rmse": 0.0562624046211386
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 11,
+              "position_mse": 0.00018365234862345868,
+              "position_rmse": 0.013551839307764045,
+              "velocity_mse": 0.001107386037389537,
+              "velocity_rmse": 0.03327741031675297
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 9,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.243210319429636,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0073040704461988125,
+          0.0015330643039915364
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 9.601302952002534e-05,
+            "velocity_mse": 0.0010315740670428814,
+            "position_rmse": 0.009798623858482647,
+            "velocity_rmse": 0.03211812676733936
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.00042375200866930833,
+              "position_rmse": 0.020585237639369345,
+              "velocity_mse": 0.002470185372116912,
+              "velocity_rmse": 0.04970095946877597
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 11,
+              "position_mse": 8.036284671690754e-05,
+              "position_rmse": 0.008964532710460013,
+              "velocity_mse": 0.0019709142641462243,
+              "velocity_rmse": 0.044394980168327866
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 11,
+              "position_mse": 1.1053149949356496e-05,
+              "position_rmse": 0.003324627791100305,
+              "velocity_mse": 0.00026829604601993093,
+              "velocity_rmse": 0.016379744992518378
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 11,
+              "position_mse": 2.8412335763734807e-05,
+              "position_rmse": 0.005330322294546063,
+              "velocity_mse": 0.000691237766420336,
+              "velocity_rmse": 0.026291400997671008
+            },
+            {
+              "probe_id": "probe_0011",
+              "n_samples": 11,
+              "position_mse": 2.3570217504432406e-05,
+              "position_rmse": 0.004854916838055252,
+              "velocity_mse": 0.0005739863567871287,
+              "velocity_rmse": 0.02395801237137857
+            },
+            {
+              "probe_id": "probe_0012",
+              "n_samples": 11,
+              "position_mse": 8.92761851641246e-06,
+              "position_rmse": 0.002987912066378872,
+              "velocity_mse": 0.0002148245967667553,
+              "velocity_rmse": 0.014656895877598207
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 2,
+      "law_spec": {
+        "ax": "vx * vy * (c1 - vx * vx * (y - c2)) / y",
+        "ay": "vx * cos(x * sin(x * c3) - 1 * c4) * c5"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.9978532790625495
+        },
+        {
+          "name": "c2",
+          "initial": 2.3305479336553416
+        },
+        {
+          "name": "c3",
+          "initial": 0.3293264481031935
+        },
+        {
+          "name": "c4",
+          "initial": 0.09538499839834286
+        },
+        {
+          "name": "c5",
+          "initial": 0.3262071458437071
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "selection_role": "middle_complexity",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ],
+        "initial_domain_failures": [
+          {
+            "probe_id": "probe_0001",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0003",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0004",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0006",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0007",
+            "code": "invalid_expression"
+          }
+        ],
+        "all_rollouts_completed": false,
+        "acceleration_mse_by_axis": [
+          1.924028108798325e-07,
+          3.7780965904392644e-07
+        ],
+        "trajectory_errors": null,
+        "failures": [
+          {
+            "probe_id": "probe_0001",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0003",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0004",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0006",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0007",
+            "stage": "rollout",
+            "code": "expression_domain"
+          }
+        ]
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [
+          {
+            "probe_id": "probe_0008",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0009",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0012",
+            "code": "invalid_expression"
+          }
+        ],
+        "all_rollouts_completed": false,
+        "acceleration_mse_by_axis": [
+          0.001987804482933709,
+          0.0026160305987599068
+        ],
+        "trajectory_errors": null,
+        "failures": [
+          {
+            "probe_id": "probe_0008",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0009",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0012",
+            "stage": "rollout",
+            "code": "expression_domain"
+          }
+        ]
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": 0.9978532790625495,
+          "c2": 2.3305479336553416,
+          "c3": 0.3293264481031935,
+          "c4": 0.09538499839834286,
+          "c5": 0.3262071458437071
+        },
+        "fit_status": "failed",
+        "converged": false,
+        "message": "expression domain/evaluation error: ZeroDivisionError Invalid candidate evaluations: 6; last failure: expression domain/evaluation error: ZeroDivisionError",
+        "errors": null,
+        "objective_calls": 6,
+        "invalid_evaluations": 6,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "coarse_fit_not_converged"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.002782946452498436
+    }
+  ],
+  "new_candidate_diagnostics": [
+    {
+      "index": 0,
+      "law_spec": {
+        "ax": "c1 * x + c2 * y + c3 * q('charge')",
+        "ay": "c4 * vx + c5 * vy"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.048669981758064765
+        },
+        {
+          "name": "c2",
+          "initial": 0.1470782322433737
+        },
+        {
+          "name": "c3",
+          "initial": -0.2829450833720023
+        },
+        {
+          "name": "c4",
+          "initial": 0.3145258350689519
+        },
+        {
+          "name": "c5",
+          "initial": 0.01813496474201851
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "linear_least_squares",
+        "linear_least_squares"
+      ],
+      "selection_role": "simplest_within_resolution_tolerance",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0015718006520614926,
+          3.932016569571273e-05
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 5.5993656418683844e-05,
+            "velocity_mse": 0.00035502847006328546,
+            "position_rmse": 0.007482890913188822,
+            "velocity_rmse": 0.018842199183303564
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.00024210477171066348,
+              "position_rmse": 0.015559716312023927,
+              "velocity_mse": 0.0012966002000594516,
+              "velocity_rmse": 0.036008335147010774
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 11,
+              "position_mse": 4.518538440399247e-05,
+              "position_rmse": 0.0067220074683082935,
+              "velocity_mse": 0.0003951501335248268,
+              "velocity_rmse": 0.019878383574245338
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 11,
+              "position_mse": 5.066110201378728e-06,
+              "position_rmse": 0.0022508021239946276,
+              "velocity_mse": 1.5074855167790885e-05,
+              "velocity_rmse": 0.0038826350804306714
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 11,
+              "position_mse": 6.952775747129765e-07,
+              "position_rmse": 0.0008338330616574138,
+              "velocity_mse": 7.610078682949271e-06,
+              "velocity_rmse": 0.002758637106063295
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 11,
+              "position_mse": 2.5308441025277925e-05,
+              "position_rmse": 0.005030749549051108,
+              "velocity_mse": 0.0002451326638319457,
+              "velocity_rmse": 0.015656713059641406
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 11,
+              "position_mse": 1.7601953596077417e-05,
+              "position_rmse": 0.0041954682213165935,
+              "velocity_mse": 0.00017060288911274846,
+              "velocity_rmse": 0.01306150409075266
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.025932245979207874,
+          0.0025904270044962
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.0006764411893203963,
+            "velocity_mse": 0.004746137376984586,
+            "position_rmse": 0.026008483026128154,
+            "velocity_rmse": 0.06889221564868259
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.0037792968734066457,
+              "position_rmse": 0.0614759861523721,
+              "velocity_mse": 0.02164150403361254,
+              "velocity_rmse": 0.14711051639367098
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 11,
+              "position_mse": 1.064636613068793e-06,
+              "position_rmse": 0.0010318122954630813,
+              "velocity_mse": 3.3364246666825326e-05,
+              "velocity_rmse": 0.005776179244693271
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 11,
+              "position_mse": 2.5930950740249563e-05,
+              "position_rmse": 0.005092244175238415,
+              "velocity_mse": 0.0006225756824298137,
+              "velocity_rmse": 0.02495146653865888
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 11,
+              "position_mse": 4.540319723010441e-05,
+              "position_rmse": 0.006738189462318822,
+              "velocity_mse": 0.001080639542634075,
+              "velocity_rmse": 0.03287308234154618
+            },
+            {
+              "probe_id": "probe_0011",
+              "n_samples": 11,
+              "position_mse": 0.00019400908267146283,
+              "position_rmse": 0.013928714322271918,
+              "velocity_mse": 0.004797754759898013,
+              "velocity_rmse": 0.06926582678275062
+            },
+            {
+              "probe_id": "probe_0012",
+              "n_samples": 11,
+              "position_mse": 1.2942395260846123e-05,
+              "position_rmse": 0.0035975540664243146,
+              "velocity_mse": 0.0003009859966662451,
+              "velocity_rmse": 0.017348947998833967
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": 0.05178967624370395,
+          "c2": 0.14925644728711487,
+          "c3": -0.28934628484796115,
+          "c4": 0.3201194810016833,
+          "c5": 0.012851900156695024
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`ftol` termination condition is satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 5.4737310793811444e-05,
+            "velocity_mse": 0.0003541865889800184,
+            "position_rmse": 0.007398466786693811,
+            "velocity_rmse": 0.018819845615201482
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.00024348981845530597,
+              "position_rmse": 0.015604160293181622,
+              "velocity_mse": 0.001307624190000589,
+              "velocity_rmse": 0.03616108668168849
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 11,
+              "position_mse": 3.436100229907396e-05,
+              "position_rmse": 0.005861825850285384,
+              "velocity_mse": 0.00031507798807533036,
+              "velocity_rmse": 0.017750436278450465
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 11,
+              "position_mse": 6.054204367703069e-07,
+              "position_rmse": 0.0007780876793590211,
+              "velocity_mse": 1.8496733216562996e-05,
+              "velocity_rmse": 0.004300782860894397
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 11,
+              "position_mse": 2.1183781884492915e-07,
+              "position_rmse": 0.0004602584261531006,
+              "velocity_mse": 1.1185773835123398e-05,
+              "velocity_rmse": 0.0033445139908697343
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 11,
+              "position_mse": 2.5914091171795617e-05,
+              "position_rmse": 0.005090588489732362,
+              "velocity_mse": 0.0002528091450067088,
+              "velocity_rmse": 0.015899973113395784
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 11,
+              "position_mse": 2.3841694581077896e-05,
+              "position_rmse": 0.004882795775073733,
+              "velocity_mse": 0.00021992570374579617,
+              "velocity_rmse": 0.014829892236486284
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 24,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.6425558924674988,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.026895087591466513,
+          0.0026093324224705436
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.0006881259850070562,
+            "velocity_mse": 0.004861138342104592,
+            "position_rmse": 0.026232155553958126,
+            "velocity_rmse": 0.06972186416114096
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.0038336113517275098,
+              "position_rmse": 0.061916163897059305,
+              "velocity_mse": 0.021942494036825556,
+              "velocity_rmse": 0.14812999033560204
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 11,
+              "position_mse": 7.543144508810573e-07,
+              "position_rmse": 0.0008685127810694886,
+              "velocity_mse": 2.558244871524616e-05,
+              "velocity_rmse": 0.005057909520270816
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 11,
+              "position_mse": 2.4158057208100637e-05,
+              "position_rmse": 0.004915084659301469,
+              "velocity_mse": 0.0005798855500317672,
+              "velocity_rmse": 0.02408081290222087
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 11,
+              "position_mse": 4.470449434071897e-05,
+              "position_rmse": 0.006686141962351605,
+              "velocity_mse": 0.0010630171631725324,
+              "velocity_rmse": 0.0326039439818641
+            },
+            {
+              "probe_id": "probe_0011",
+              "n_samples": 11,
+              "position_mse": 0.00021181954522518634,
+              "position_rmse": 0.014554021616899789,
+              "velocity_mse": 0.00523617481414972,
+              "velocity_rmse": 0.07236141799432706
+            },
+            {
+              "probe_id": "probe_0012",
+              "n_samples": 11,
+              "position_mse": 1.3708147089940562e-05,
+              "position_rmse": 0.003702451497311013,
+              "velocity_mse": 0.0003196760397327274,
+              "velocity_rmse": 0.01787948656233527
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 1,
+      "law_spec": {
+        "ax": "c1 * x + c2 * y + c3 * q('charge')",
+        "ay": "c4 * vx"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.048669981758064765
+        },
+        {
+          "name": "c2",
+          "initial": 0.1470782322433737
+        },
+        {
+          "name": "c3",
+          "initial": -0.2829450833720023
+        },
+        {
+          "name": "c4",
+          "initial": 0.3044063038111895
+        }
+      ],
+      "parameter_count": 4,
+      "component_sources": [
+        "linear_least_squares",
+        "linear_least_squares"
+      ],
+      "selection_role": "alternative_accuracy_candidate",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0015718006520614926,
+          6.143614378758384e-05
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 5.6677174237318136e-05,
+            "velocity_mse": 0.00036069068806842997,
+            "position_rmse": 0.007528424419313655,
+            "velocity_rmse": 0.018991858467997016
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.00024619381374810717,
+              "position_rmse": 0.01569056448149993,
+              "velocity_mse": 0.001327622926277959,
+              "velocity_rmse": 0.0364365602970143
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 11,
+              "position_mse": 4.243175833020559e-05,
+              "position_rmse": 0.006513966405363601,
+              "velocity_mse": 0.00037392036100437746,
+              "velocity_rmse": 0.019337020478977042
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 11,
+              "position_mse": 4.88486315978119e-06,
+              "position_rmse": 0.0022101726538397834,
+              "velocity_mse": 1.5835942089005575e-05,
+              "velocity_rmse": 0.003979439921522321
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 11,
+              "position_mse": 2.3853311217162248e-06,
+              "position_rmse": 0.0015444517220412637,
+              "velocity_mse": 1.845782973831469e-05,
+              "velocity_rmse": 0.004296257643381585
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 11,
+              "position_mse": 2.7744342158440006e-05,
+              "position_rmse": 0.005267289830495376,
+              "velocity_mse": 0.000265414308121974,
+              "velocity_rmse": 0.0162915409989962
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 11,
+              "position_mse": 1.642293690565864e-05,
+              "position_rmse": 0.004052522289347542,
+              "velocity_mse": 0.00016289276117894888,
+              "velocity_rmse": 0.012762944847446018
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.025932245979207874,
+          0.0024837471586357644
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.0006750498113489073,
+            "velocity_mse": 0.004735071770910447,
+            "position_rmse": 0.02598172071570525,
+            "velocity_rmse": 0.06881185777836875
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.0037726677685481864,
+              "position_rmse": 0.06142204627451113,
+              "velocity_mse": 0.02161688788323095,
+              "velocity_rmse": 0.14702682708686518
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 11,
+              "position_mse": 1.1256473879858309e-06,
+              "position_rmse": 0.0010609653095110278,
+              "velocity_mse": 3.520412979160095e-05,
+              "velocity_rmse": 0.005933306817585027
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 11,
+              "position_mse": 2.599028609145271e-05,
+              "position_rmse": 0.005098066897506613,
+              "velocity_mse": 0.0006245165150773009,
+              "velocity_rmse": 0.02499032843076099
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 11,
+              "position_mse": 4.4084669155281885e-05,
+              "position_rmse": 0.006639628691070148,
+              "velocity_mse": 0.0010498162983859213,
+              "velocity_rmse": 0.03240086879060377
+            },
+            {
+              "probe_id": "probe_0011",
+              "n_samples": 11,
+              "position_mse": 0.00019337408633528767,
+              "position_rmse": 0.013905901133521971,
+              "velocity_mse": 0.004779077342691665,
+              "velocity_rmse": 0.06913087112637642
+            },
+            {
+              "probe_id": "probe_0012",
+              "n_samples": 11,
+              "position_mse": 1.3056410575249363e-05,
+              "position_rmse": 0.003613365546862006,
+              "velocity_mse": 0.000304928456285241,
+              "velocity_rmse": 0.017462200785847155
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": 0.051811788655696765,
+          "c2": 0.14897381695674908,
+          "c3": -0.2889894433333411,
+          "c4": 0.3146106818197497
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`ftol` termination condition is satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 5.536982139783953e-05,
+            "velocity_mse": 0.0003599725456393939,
+            "position_rmse": 0.007441090067848898,
+            "velocity_rmse": 0.018972942461289284
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.0002444090343092564,
+              "position_rmse": 0.015633586738469724,
+              "velocity_mse": 0.001319314527210077,
+              "velocity_rmse": 0.036322369515356195
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 11,
+              "position_mse": 3.398322439676035e-05,
+              "position_rmse": 0.005829513221252728,
+              "velocity_mse": 0.00031092981638322913,
+              "velocity_rmse": 0.017633202102375765
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 11,
+              "position_mse": 4.79103740510247e-07,
+              "position_rmse": 0.0006921732012366898,
+              "velocity_mse": 1.9439103067401403e-05,
+              "velocity_rmse": 0.004408979821614225
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 11,
+              "position_mse": 6.035181155972252e-07,
+              "position_rmse": 0.0007768642838985618,
+              "velocity_mse": 1.4174641979264404e-05,
+              "velocity_rmse": 0.003764922572811346
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 11,
+              "position_mse": 2.9043645321701705e-05,
+              "position_rmse": 0.005389215649953313,
+              "velocity_mse": 0.0002771458185953143,
+              "velocity_rmse": 0.016647697095854258
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 11,
+              "position_mse": 2.3700402503211306e-05,
+              "position_rmse": 0.004868305917176047,
+              "velocity_mse": 0.00021883136660107722,
+              "velocity_rmse": 0.014792949895172268
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 20,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.5670767687261105,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.02679065724605693,
+          0.002543590053161748
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.0006839801959159726,
+            "velocity_mse": 0.00483294003643482,
+            "position_rmse": 0.026153015044464236,
+            "velocity_rmse": 0.06951935008639552
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.0038105223652137583,
+              "position_rmse": 0.061729428680441865,
+              "velocity_mse": 0.021816600946515507,
+              "velocity_rmse": 0.14770443780237447
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 11,
+              "position_mse": 8.400781664058699e-07,
+              "position_rmse": 0.0009165577812696098,
+              "velocity_mse": 2.8059593499785227e-05,
+              "velocity_rmse": 0.005297130685549038
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 11,
+              "position_mse": 2.3956616612061485e-05,
+              "position_rmse": 0.004894549684297983,
+              "velocity_mse": 0.0005754188568248553,
+              "velocity_rmse": 0.023987889795162375
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 11,
+              "position_mse": 4.377826164915961e-05,
+              "position_rmse": 0.006616514312624103,
+              "velocity_mse": 0.0010412893820069434,
+              "velocity_rmse": 0.03226901582024068
+            },
+            {
+              "probe_id": "probe_0011",
+              "n_samples": 11,
+              "position_mse": 0.0002111482875592764,
+              "position_rmse": 0.014530942418139176,
+              "velocity_mse": 0.005217341485374462,
+              "velocity_rmse": 0.07223116699441082
+            },
+            {
+              "probe_id": "probe_0012",
+              "n_samples": 11,
+              "position_mse": 1.3635566295173681e-05,
+              "position_rmse": 0.0036926367672942976,
+              "velocity_mse": 0.00031892995438736576,
+              "velocity_rmse": 0.017858610091139954
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 2,
+      "law_spec": {
+        "ax": "c1 * x + c2 * vy",
+        "ay": "c3 * vx + c4 * vy + c5 * q('mass')"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.04798831324188187
+        },
+        {
+          "name": "c2",
+          "initial": -0.792563564872121
+        },
+        {
+          "name": "c3",
+          "initial": 0.26898730663807274
+        },
+        {
+          "name": "c4",
+          "initial": 0.055284769739797616
+        },
+        {
+          "name": "c5",
+          "initial": -0.0151972529216362
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "linear_least_squares",
+        "linear_least_squares"
+      ],
+      "selection_role": "alternative_accuracy_candidate",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0033234649294260257,
+          1.9803794405430777e-05
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.00016453036053612415,
+            "velocity_mse": 0.0010276323972128456,
+            "position_rmse": 0.012826938860699546,
+            "velocity_rmse": 0.032056705963227815
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 8.071758325923448e-05,
+              "position_rmse": 0.008984296481040375,
+              "velocity_mse": 0.00045738779045296276,
+              "velocity_rmse": 0.021386626439271875
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 11,
+              "position_mse": 0.0002200927893323614,
+              "position_rmse": 0.014835524572200385,
+              "velocity_mse": 0.0014728330739496088,
+              "velocity_rmse": 0.03837750739625502
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 11,
+              "position_mse": 2.3374102326255884e-05,
+              "position_rmse": 0.0048346770653535775,
+              "velocity_mse": 0.00014048385996416837,
+              "velocity_rmse": 0.011852588745255965
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 11,
+              "position_mse": 1.1310574752909967e-05,
+              "position_rmse": 0.003363119794611837,
+              "velocity_mse": 0.0001303321238723294,
+              "velocity_rmse": 0.011416309555733384
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 11,
+              "position_mse": 0.0001566562349535748,
+              "position_rmse": 0.012516238850132847,
+              "velocity_mse": 0.00098975547780379,
+              "velocity_rmse": 0.0314603794923677
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 11,
+              "position_mse": 0.0004950308785924084,
+              "position_rmse": 0.022249289395223578,
+              "velocity_mse": 0.0029750020572342144,
+              "velocity_rmse": 0.054543579431810436
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.013024332937724072,
+          0.002318857976729959
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 8.393004621717535e-05,
+            "velocity_mse": 0.0014437387540594579,
+            "position_rmse": 0.009161334303319323,
+            "velocity_rmse": 0.037996562397925655
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.00019952828048417848,
+              "position_rmse": 0.014125447974637068,
+              "velocity_mse": 0.0012172055284105942,
+              "velocity_rmse": 0.03488847271536251
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 11,
+              "position_mse": 0.00017217093344360545,
+              "position_rmse": 0.013121392206759367,
+              "velocity_mse": 0.004234026615163365,
+              "velocity_rmse": 0.06506939845398423
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 11,
+              "position_mse": 4.841147529003663e-05,
+              "position_rmse": 0.006957835531976639,
+              "velocity_mse": 0.0011820151278688175,
+              "velocity_rmse": 0.034380446882913224
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 11,
+              "position_mse": 5.949725646777174e-05,
+              "position_rmse": 0.007713446471440101,
+              "velocity_mse": 0.0014399428400514946,
+              "velocity_rmse": 0.037946578766095564
+            },
+            {
+              "probe_id": "probe_0011",
+              "n_samples": 11,
+              "position_mse": 1.0879016982402252e-05,
+              "position_rmse": 0.003298335486635987,
+              "velocity_mse": 0.00026562307433027955,
+              "velocity_rmse": 0.016297946936049326
+            },
+            {
+              "probe_id": "probe_0012",
+              "n_samples": 11,
+              "position_mse": 1.309331463505754e-05,
+              "position_rmse": 0.0036184685483029336,
+              "velocity_mse": 0.00032361933853219683,
+              "velocity_rmse": 0.017989422962735542
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": 0.0484188046063391,
+          "c2": -0.803294729826255,
+          "c3": 0.2206236698505877,
+          "c4": 0.08006339306755557,
+          "c5": -0.026500526420283062
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`ftol` termination condition is satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 0.000163913799091635,
+            "velocity_mse": 0.0010196413374967117,
+            "position_rmse": 0.012802882452464952,
+            "velocity_rmse": 0.03193182327235186
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 8.828110817822925e-05,
+              "position_rmse": 0.009395802689404948,
+              "velocity_mse": 0.0004975073696014513,
+              "velocity_rmse": 0.0223048732254064
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 11,
+              "position_mse": 0.0002029099160555022,
+              "position_rmse": 0.014244645171274089,
+              "velocity_mse": 0.0013706749360199771,
+              "velocity_rmse": 0.03702262735166127
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 11,
+              "position_mse": 2.3096889327152184e-05,
+              "position_rmse": 0.004805922318052195,
+              "velocity_mse": 0.00014300892147655836,
+              "velocity_rmse": 0.011958633762957973
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 11,
+              "position_mse": 1.11488537119159e-05,
+              "position_rmse": 0.0033389899239015235,
+              "velocity_mse": 0.00012699967226558257,
+              "velocity_rmse": 0.01126941312871183
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 11,
+              "position_mse": 0.00014204163257242218,
+              "position_rmse": 0.011918122023725978,
+              "velocity_mse": 0.000887130241323776,
+              "velocity_rmse": 0.029784731681245277
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 11,
+              "position_mse": 0.0005160043947045883,
+              "position_rmse": 0.022715730116036073,
+              "velocity_mse": 0.003092526884292925,
+              "velocity_rmse": 0.05561049257373041
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 24,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.6861238516867161,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0002",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.012938439685463585,
+          0.0021117680333591106
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 8.130842392064349e-05,
+            "velocity_mse": 0.001426937601871663,
+            "position_rmse": 0.009017118382312804,
+            "velocity_rmse": 0.037774827621998
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.0001864725193461607,
+              "position_rmse": 0.013655494108459083,
+              "velocity_mse": 0.0011507737966608275,
+              "velocity_rmse": 0.03392305700642009
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 11,
+              "position_mse": 0.0001735314429624565,
+              "position_rmse": 0.013173133376780806,
+              "velocity_mse": 0.004279881277376745,
+              "velocity_rmse": 0.06542080156476796
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 11,
+              "position_mse": 5.029665674442644e-05,
+              "position_rmse": 0.007092013588849534,
+              "velocity_mse": 0.0012350846097595955,
+              "velocity_rmse": 0.035143770568332525
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 11,
+              "position_mse": 5.366294922380007e-05,
+              "position_rmse": 0.007325499929957004,
+              "velocity_mse": 0.0013042945940505161,
+              "velocity_rmse": 0.03611501895403789
+            },
+            {
+              "probe_id": "probe_0011",
+              "n_samples": 11,
+              "position_mse": 1.0811504503179569e-05,
+              "position_rmse": 0.0032880852335636875,
+              "velocity_mse": 0.0002661092904747773,
+              "velocity_rmse": 0.016312856600693128
+            },
+            {
+              "probe_id": "probe_0012",
+              "n_samples": 11,
+              "position_mse": 1.307547074383765e-05,
+              "position_rmse": 0.0036160020386937905,
+              "velocity_mse": 0.0003254820429075173,
+              "velocity_rmse": 0.018041120888334997
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    }
+  ],
+  "offline_total_seconds": 35.66308658383787,
+  "source_records_unchanged": true
+}

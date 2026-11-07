@@ -1,0 +1,3193 @@
+{
+  "kind": "offline_symbolic_replay_not_agent_result",
+  "source_run_id": "e7-qwen38-pysr-on-20261107-r02-world_3",
+  "source_search_id": "sr_d5c61f47a008",
+  "created_at": "2026-11-07T05:18:59.001704+00:00",
+  "train_probe_ids": [
+    "probe_0003",
+    "probe_0004",
+    "probe_0006",
+    "probe_0007",
+    "probe_0008"
+  ],
+  "heldout_probe_ids": [
+    "probe_0001",
+    "probe_0002",
+    "probe_0005",
+    "probe_0009",
+    "probe_0010"
+  ],
+  "source_record_sha256": {
+    "symbolic_search/sr_d5c61f47a008": "fece0022e03b227e9206a4513b9c368e27a5f5968f5f737ae0d67f024e4d918b",
+    "probe/probe_0003": "8434cafa889dc0b373c6a217e6584b8d45dfbeaad19b8711f879eb14e88b1bed",
+    "probe/probe_0004": "8a73b275b1c364f05d2994331143c3e99184e22ca3169549d007da5788bec594",
+    "probe/probe_0006": "07bccd64fd077855cb9ae7d5da2be32b5fb8de40638d8a55c335c790733a00d3",
+    "probe/probe_0007": "bf55c0f64af81f657de88bed542663f07898dd79bd72677fe8b21325c952aa30",
+    "probe/probe_0008": "0315f18c4a9d19938c7b62f68eb2f3cafbeb05c893ffb5db6a0952872f567b29",
+    "probe/probe_0001": "ea9df627cc3b2709e83409fea6a2badfde33e7666a724303eee34a3869b4063f",
+    "probe/probe_0002": "84a0ceabb2e8101e14d773f963ec469ba8143b86910951303bb2ff51b4ee934c",
+    "probe/probe_0005": "5b5ddc5c6e261a5a020cc7da0eb4b624d26a280c7020d3ae3611361b9784d692",
+    "probe/probe_0009": "d4c058905e8366976c2d607182f80d283c71ce24b0f796642ff2b25e54a9318f",
+    "probe/probe_0010": "2704ad9402619bd475538f92d538f689cfd17e0e387b2ebd4e16b67d4f209cbd"
+  },
+  "source_sha256": {
+    "shore_agent/symbolic_regression.py": "a900d508ef285d1db7522db938d8febee4159eded820618e4d6eba89dc60bfa9",
+    "shore_agent/symbolic_service.py": "dfb4cdb2608600bb2aa9bd48ae629cb28499aa2154f757b8bbf2fe9ae25af380",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "deployment/replay_symbolic.py": "f6e175ddcc109a5176fe67c8c74230cb790d4b2234478d21ee9ec5ec2a16b277"
+  },
+  "scope": "No mission, new observations, energy use, model calls, hidden truth, or independent scoring. Held-out records were not sent to search or fit; diagnostic selection must not be credited to the Agent.",
+  "request": {
+    "time_budget_seconds": 30,
+    "random_state": 42,
+    "endpoint": "http://127.0.0.1:8890",
+    "per_candidate_refit_seconds": 5,
+    "per_probe_rollout_seconds": 1
+  },
+  "old_search": {
+    "status": "timeout",
+    "backend": "pysr",
+    "target": "velocity_difference_acceleration",
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy"
+    ],
+    "samples_per_probe": {
+      "probe_0003": 19,
+      "probe_0004": 19,
+      "probe_0006": 19,
+      "probe_0007": 38,
+      "probe_0008": 38
+    },
+    "dropped_constant_features": [
+      "mass"
+    ],
+    "omitted_incomplete_properties": [],
+    "search_configuration": {
+      "maxsize": 20,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "random_state": 42,
+      "warm_start": false,
+      "parallelism": "multithreading"
+    },
+    "warnings": [
+      "Search loss is against velocity-difference acceleration, not independent trajectory prediction.",
+      "All selected probes were used for structure discovery and cannot serve as independent validation.",
+      "Constant or absent properties do not establish absence of physical dependence.",
+      "This version searches state and public probe properties only; body-set expressions are not supported.",
+      "State-only dependence on t does not establish explicit physical time dependence; it may substitute for unmodeled body motion.",
+      "A fixed seed with multithreaded search does not guarantee bitwise reproducibility."
+    ],
+    "axis_search_seconds": [
+      13.046477360650897,
+      12.990827048197389
+    ],
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "rejected_candidate_pairs": 38,
+    "elapsed_seconds": 26.236553011462092,
+    "search_elapsed_seconds": 26.227647369727492,
+    "service_elapsed_seconds": 26.236553011462092,
+    "requested_time_budget_seconds": 30,
+    "worker_search_budget_seconds": 27.99906099960208,
+    "cleanup_reserve_seconds": 2.0,
+    "service_budget_exceeded": false,
+    "worker_reap_pending": false,
+    "cleanup_pending": false,
+    "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing",
+    "used_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "(x - c1 * (-y + cos((x + y * cos(x)) * c2) * c3)) * c4",
+          "ay": "c5"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.5762429830089749
+          },
+          {
+            "name": "c2",
+            "initial": 0.889085564267521
+          },
+          {
+            "name": "c3",
+            "initial": 0.010255946350889772
+          },
+          {
+            "name": "c4",
+            "initial": -0.05988972555382605
+          },
+          {
+            "name": "c5",
+            "initial": -0.0663041592336303
+          }
+        ],
+        "complexity": 20,
+        "acceleration_search_mse_by_axis": [
+          6.852574469010601e-09,
+          0.025043542664778092
+        ],
+        "acceleration_search_mse": 0.025043549517352562,
+        "normalized_acceleration_search_loss": 0.4253352642726886,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "constant_initialization"
+        ],
+        "selection_role": "lowest_search_loss",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "c1",
+          "ay": "c2"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.036972085707608154
+          },
+          {
+            "name": "c2",
+            "initial": -0.0663041592336303
+          }
+        ],
+        "complexity": 2,
+        "acceleration_search_mse_by_axis": [
+          0.012922622693291568,
+          0.025043542664778092
+        ],
+        "acceleration_search_mse": 0.03796616535806966,
+        "normalized_acceleration_search_loss": 0.8775051637245992,
+        "dsl_valid": true,
+        "component_sources": [
+          "constant_initialization",
+          "constant_initialization"
+        ],
+        "selection_role": "lowest_complexity",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "(x - (-c1 * y + c2 * abs(cos(x)))) * c3",
+          "ay": "c4"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.5759178619331823
+          },
+          {
+            "name": "c2",
+            "initial": 0.0040871501221811275
+          },
+          {
+            "name": "c3",
+            "initial": -0.0598992354178202
+          },
+          {
+            "name": "c4",
+            "initial": -0.0663041592336303
+          }
+        ],
+        "complexity": 14,
+        "acceleration_search_mse_by_axis": [
+          3.2062229882288467e-08,
+          0.025043542664778092
+        ],
+        "acceleration_search_mse": 0.025043574727007974,
+        "normalized_acceleration_search_loss": 0.4253361463733015,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "constant_initialization"
+        ],
+        "selection_role": "middle_complexity",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      }
+    ],
+    "tool_client_wall_seconds": 26.239976400509477,
+    "search_id": "sr_d5c61f47a008",
+    "discovery_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "effective_time_budget_seconds": 30.0,
+    "wall_seconds": 26.243194775655866,
+    "body_positions_included": false
+  },
+  "status": "completed",
+  "new_search": {
+    "status": "timeout",
+    "backend": "pysr_with_linear_seeds",
+    "target": "velocity_difference_acceleration",
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy"
+    ],
+    "samples_per_probe": {
+      "probe_0003": 19,
+      "probe_0004": 19,
+      "probe_0006": 19,
+      "probe_0007": 38,
+      "probe_0008": 38
+    },
+    "dropped_constant_features": [
+      "mass"
+    ],
+    "omitted_incomplete_properties": [],
+    "search_configuration": {
+      "maxsize": 20,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "^"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "power_exponent_max_complexity": 1,
+      "random_state": 42,
+      "warm_start": false,
+      "parallelism": "multithreading",
+      "linear_seed_max_terms": 3,
+      "finalization_reserve_seconds": 5.0,
+      "operator_scope": "All listed operators are enabled in each PySR search; no staged exclusion.",
+      "simplicity_preference": "Linear seeds plus parameter/complexity-aware selection within resolution tolerance."
+    },
+    "warnings": [
+      "Search loss uses finite-difference acceleration, not independent prediction.",
+      "All selected probes are discovery data and cannot serve as independent validation.",
+      "Constant/absent properties do not establish absence of physical dependence.",
+      "Body positions are not included; explicit t may substitute for unobserved body motion.",
+      "Resolution tolerance is a finite-stencil sensitivity heuristic, not a confidence interval.",
+      "Short rollout checks certify only acquired initial states; fit and fresh-probe validation remain required."
+    ],
+    "axis_search_seconds": [
+      12.08795827254653,
+      10.879157561808825
+    ],
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "rejected_candidate_pairs": 53,
+    "elapsed_seconds": 23.219014724716544,
+    "search_elapsed_seconds": 23.198200445622206,
+    "service_elapsed_seconds": 23.219014724716544,
+    "requested_time_budget_seconds": 30.0,
+    "worker_search_budget_seconds": 27.998268952593207,
+    "cleanup_reserve_seconds": 2.0,
+    "service_budget_exceeded": false,
+    "worker_reap_pending": false,
+    "cleanup_pending": false,
+    "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing",
+    "axis_equations": {
+      "ax": [
+        {
+          "source": "0.036972085707608154",
+          "complexity": 1,
+          "origin": "constant_initialization",
+          "parameter_count": 1,
+          "loss": 0.012922622693291568,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0005379614880969906*t)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.014274847482601494,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.06053768470929803*x)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.00304273513599208,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.035813325408666365*y)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.011019566797486134,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.16762559083581527*vx)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.0125240684761833,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.005832724193464841*vy)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.014285632911225523,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0005289334554765316*t) + (-0.06069168989336535*x)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.003028587182555488,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0010808088175990212*t) + (0.03613702122163183*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.010960456985274099,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0004577056640294302*t) + (0.169796824461566*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.012513716080560164,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0006824819719267049*t) + (0.010124805180993917*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.014264082538636765,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.05993381724652106*x) + (0.03455249966008993*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 5.3571983603405145e-08,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.05896384500163458*x) + (0.03389224754836313*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0029781619001526738,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.06223066843827578*x) + (-0.0501027791500416*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0027619236439293017,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.03271590759853157*y) + (0.1377830518358281*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.009851203678426726,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.039640053223327185*y) + (0.06088815282370999*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.010629189199877924,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.2038055930912634*vx) + (0.06635457169121584*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.012098357758545031,
+          "domain_valid": true
+        },
+        {
+          "source": "(3.4679153287716538e-06*t) + (-0.059932788992456146*x) + (0.03455355991145321*y)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 5.296667360589755e-08,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0007175013902333617*t) + (-0.05902068750343423*x) + (0.03716696080964966*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.002952730966393285,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0014211728662435385*t) + (-0.06296888610487267*x) + (-0.05970397570078678*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.002670098089219676,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.00022980827466785334*t) + (0.032811194754883775*y) + (0.13660598436974442*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.009848616598170922,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.002266069364834465*t) + (0.04136495610884676*y) + (0.07753499295082325*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.010398527715898635,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.000319505660487085*t) + (0.20330439285176607*vx) + (0.06821508447578492*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.012093647860559456,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.05992464264490095*x) + (0.034548214899393755*y) + (0.00019918537639289756*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 5.138845575096442e-08,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.05993575461602868*x) + (0.03454897020147166*y) + (-5.5509731917297914e-05*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 5.325904076077917e-08,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.06230251838685217*x) + (-0.0012336930574339859*vx) + (-0.05053371676879751*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0027618588588567334,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.03881773017443876*y) + (0.19663198497351558*vx) + (0.11813762367741895*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.008594754405366436,
+          "domain_valid": true
+        },
+        {
+          "source": "0.03697208570740633",
+          "complexity": 1,
+          "loss": 0.012922622693291568,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "x*(-0.06053768470977228)",
+          "complexity": 3,
+          "loss": 0.00304273513599208,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(x - y)*(-0.0483942867428582)",
+          "complexity": 5,
+          "loss": 0.0008800468780072368,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "x*(-0.05993381724651433) - (-0.034552499660093126)*y",
+          "complexity": 7,
+          "loss": 5.357198360340445e-08,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "(x - 0.5762842706801675*(y - 1*(-0.002371056824800785)))*(-0.05992634478835938)",
+          "complexity": 9,
+          "loss": 4.7868723990325304e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(x - 0.5765299745609103*y)*0.99974371656778**t*(-0.05999460641074113)",
+          "complexity": 11,
+          "loss": 2.4176635948795447e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(x - 0.5762991595193516*y)*(-0.05997953513649712)/(t + vy)**0.0012106714110291447",
+          "complexity": 13,
+          "loss": 2.0189209080922378e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "(x - 0.5764292948390838*y)*(-0.06006605700689669)/(t + exp(vy))**0.0018354659736675206",
+          "complexity": 14,
+          "loss": 1.8396491055168694e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(x - (-(-0.5755492609958675)*y + cos(x + Abs(y))*(-0.00525530927182438)))*(-0.05991657509054457)",
+          "complexity": 15,
+          "loss": 1.4356280797754125e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(x - 0.576198277859299*y)*(-0.06004407931135217)/(t + exp(vy - y))**0.0016043890338726613",
+          "complexity": 16,
+          "loss": 1.3937640593673207e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(x - (-(-0.5761344162827484)*y + cos(x + y*cos(x))*(-0.005401599493945218)))*(-0.05989298680902213)",
+          "complexity": 17,
+          "loss": 8.898647552821356e-09,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(x - (-(-0.5762404140402391)*y + cos((x + y*cos(x))*0.8911927513522422)*(-0.005899663221156155)))*(-0.05988973853611607)",
+          "complexity": 19,
+          "loss": 6.854403808687507e-09,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        }
+      ],
+      "ay": [
+        {
+          "source": "-0.0663041592336303",
+          "complexity": 1,
+          "origin": "constant_initialization",
+          "parameter_count": 1,
+          "loss": 0.025043542664778096,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0008837802039718096*t)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.029400082538027464,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.036312254301155575*x)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.025393236572051864,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.10054522131331167*y)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.003665884695664724,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.16973059851945818*vx)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.027629675139500105,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.10770741386188688*vy)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.02810141074440824,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0015299414831058903*t) + (0.03675771472208069*x)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.025274866697399312,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0006294335601521214*t) + (-0.10073373292114052*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.00364583713154612,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0019328237033286128*t) + (-0.17889939879247652*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.027445066180703262,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0026599638295735193*t) + (0.1244357387848105*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.027774052051621534,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.034567753745804654*x) + (-0.09981802061101216*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 1.5151192862791907e-07,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.03177736409649315*x) + (-0.09765773520179515*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.024857112747791482,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.04120313458771005*x) + (0.14474249849672036*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.023049637192914266,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.09875467249282747*y) + (-0.0796493389235775*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.003275448034102601,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.1027444595350501*y) + (-0.03499270379981864*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.003536948666714249,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.13244859933006073*vx) + (0.06837564770002742*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.027177636259506456,
+          "domain_valid": true
+        },
+        {
+          "source": "(-8.093048261264487e-06*t) + (0.03456535411692575*x) + (-0.09982049491174867*y)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 1.48215337111694e-07,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0020734235240319377*t) + (0.03194162660803729*x) + (-0.10712094684547217*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.024644742899943735,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.004107755555707238*t) + (0.04333687763425444*x) + (0.1724937801384867*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.022282489594665014,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.00013764193581210067*t) + (-0.0988117440176771*y) + (-0.07894434322728523*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.003274519965413075,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.001311656731745168*t) + (-0.10374287578678015*y) + (-0.04462830465734524*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0034596683189730055,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0029045701608310507*t) + (-0.13700492317742669*vx) + (0.0852892445034943*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.026788395662376382,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.034553147598767806*x) + (-0.09981119918733217*y) + (-0.00031710705441437314*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 1.4597771853821497e-07,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.034573411640719164*x) + (-0.09980771317823324*y) + (0.00016211064987385374*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 1.4884292074224068e-07,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.041430236884654165*x) + (0.0038994394932563674*vx) + (0.14610460000128916*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.023048989953315772,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.10226959320916643*y) + (-0.11354893722340949*vx) + (-0.06805251638787131*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0028585240537047055,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.0663041592407492",
+          "complexity": 1,
+          "loss": 0.025043542664778096,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "y*(-0.10054522131557062)",
+          "complexity": 3,
+          "loss": 0.0036658846956647245,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(y*(-0.1017821411861726))",
+          "complexity": 4,
+          "loss": 0.0036554575421282767,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(vx + y)*(-0.09791291867975772)",
+          "complexity": 5,
+          "loss": 0.003296450572090332,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "(y - sin(x))*(-0.09755257678218383)",
+          "complexity": 6,
+          "loss": 0.0022025400365729758,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": true
+        },
+        {
+          "source": "x*0.034567753745799186 + y*(-0.09981802061100023)",
+          "complexity": 7,
+          "loss": 1.5151192862791406e-07,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": true
+        },
+        {
+          "source": "x*0.034553838254785606 + y*(-0.09978470562757859) - 0.00015248658360115207",
+          "complexity": 9,
+          "loss": 1.3173343206596765e-07,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(x*(-0.3462323231437826) + y)*(-0.09988665139207223)/t**0.0012515337269905823",
+          "complexity": 11,
+          "loss": 6.039033855557918e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "(0.0001502522233305627*sqrt(t) - 0.10007275123522809)*(-0.34621155325527025*x + y)",
+          "complexity": 12,
+          "loss": 5.1805985624039354e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "-0.10017369754222072*(x*(-0.3462119716996135) + y)/(t + 1.7591960956760868)**0.002424001934643379",
+          "complexity": 13,
+          "loss": 4.8880671664971444e-08,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.3463566308748998*x + y)*(0.0001540831478820589*sqrt(t) + 0.0001540831478820589*vy - 0.10005727589637022)",
+          "complexity": 14,
+          "loss": 3.802476022435359e-08,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.3464528526430299*x + y)*(-0.0002783646697185702*cos(sqrt(t) + vy) - 0.0997468586016346)",
+          "complexity": 15,
+          "loss": 3.182456724704422e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.3463771239007571*x + y)*(-0.0002753465394151012*cos(sqrt(t) - vx + vy) - 0.09973873020013359)",
+          "complexity": 17,
+          "loss": 2.59731521679868e-08,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.34655663685683746*x + y)*(0.0002393517983214805*log(sqrt(t) - 2*vx + vy) - 0.09978997302987334)",
+          "complexity": 19,
+          "loss": 2.2104545647385838e-08,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "(-0.3466115768060924*x + y)*(0.00013580355781423498*sqrt(t) - 8.614039593172706e-5*y*sin(sqrt(t)) - 0.09992932157892274)",
+          "complexity": 20,
+          "loss": 1.9615678360783796e-08,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": true
+        }
+      ]
+    },
+    "rejection_counts": {
+      "observed_domain": 3,
+      "parameter_budget": 53
+    },
+    "rejection_examples": [
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "(x - 0.5762991595193516*y)*(-0.05997953513649712)/(t + vy)**0.0012106714110291447"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "(x*(-0.3462323231437826) + y)*(-0.09988665139207223)/t**0.0012515337269905823"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "(-0.34655663685683746*x + y)*(0.0002393517983214805*log(sqrt(t) - 2*vx + vy) - 0.09978997302987334)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "x*(-0.05993381724651433) - (-0.034552499660093126)*y",
+        "ay": "-0.10017369754222072*(x*(-0.3462119716996135) + y)/(t + 1.7591960956760868)**0.002424001934643379"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "x*(-0.05993381724651433) - (-0.034552499660093126)*y",
+        "ay": "(-0.3463566308748998*x + y)*(0.0001540831478820589*sqrt(t) + 0.0001540831478820589*vy - 0.10005727589637022)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "x*(-0.05993381724651433) - (-0.034552499660093126)*y",
+        "ay": "(-0.3466115768060924*x + y)*(0.00013580355781423498*sqrt(t) - 8.614039593172706e-5*y*sin(sqrt(t)) - 0.09992932157892274)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5762842706801675*(y - 1*(-0.002371056824800785)))*(-0.05992634478835938)",
+        "ay": "x*0.034553838254785606 + y*(-0.09978470562757859) - 0.00015248658360115207"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5762842706801675*(y - 1*(-0.002371056824800785)))*(-0.05992634478835938)",
+        "ay": "(0.0001502522233305627*sqrt(t) - 0.10007275123522809)*(-0.34621155325527025*x + y)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5762842706801675*(y - 1*(-0.002371056824800785)))*(-0.05992634478835938)",
+        "ay": "(-0.3464528526430299*x + y)*(-0.0002783646697185702*cos(sqrt(t) + vy) - 0.0997468586016346)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5762842706801675*(y - 1*(-0.002371056824800785)))*(-0.05992634478835938)",
+        "ay": "(-0.3463771239007571*x + y)*(-0.0002753465394151012*cos(sqrt(t) - vx + vy) - 0.09973873020013359)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5762842706801675*(y - 1*(-0.002371056824800785)))*(-0.05992634478835938)",
+        "ay": "-0.10017369754222072*(x*(-0.3462119716996135) + y)/(t + 1.7591960956760868)**0.002424001934643379"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5762842706801675*(y - 1*(-0.002371056824800785)))*(-0.05992634478835938)",
+        "ay": "(-0.3463566308748998*x + y)*(0.0001540831478820589*sqrt(t) + 0.0001540831478820589*vy - 0.10005727589637022)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5762842706801675*(y - 1*(-0.002371056824800785)))*(-0.05992634478835938)",
+        "ay": "(-0.3466115768060924*x + y)*(0.00013580355781423498*sqrt(t) - 8.614039593172706e-5*y*sin(sqrt(t)) - 0.09992932157892274)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5765299745609103*y)*0.99974371656778**t*(-0.05999460641074113)",
+        "ay": "x*0.034553838254785606 + y*(-0.09978470562757859) - 0.00015248658360115207"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5765299745609103*y)*0.99974371656778**t*(-0.05999460641074113)",
+        "ay": "(0.0001502522233305627*sqrt(t) - 0.10007275123522809)*(-0.34621155325527025*x + y)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5765299745609103*y)*0.99974371656778**t*(-0.05999460641074113)",
+        "ay": "(-0.3464528526430299*x + y)*(-0.0002783646697185702*cos(sqrt(t) + vy) - 0.0997468586016346)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5765299745609103*y)*0.99974371656778**t*(-0.05999460641074113)",
+        "ay": "(-0.3463771239007571*x + y)*(-0.0002753465394151012*cos(sqrt(t) - vx + vy) - 0.09973873020013359)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5765299745609103*y)*0.99974371656778**t*(-0.05999460641074113)",
+        "ay": "-0.10017369754222072*(x*(-0.3462119716996135) + y)/(t + 1.7591960956760868)**0.002424001934643379"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5765299745609103*y)*0.99974371656778**t*(-0.05999460641074113)",
+        "ay": "(-0.3463566308748998*x + y)*(0.0001540831478820589*sqrt(t) + 0.0001540831478820589*vy - 0.10005727589637022)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5765299745609103*y)*0.99974371656778**t*(-0.05999460641074113)",
+        "ay": "(-0.3466115768060924*x + y)*(0.00013580355781423498*sqrt(t) - 8.614039593172706e-5*y*sin(sqrt(t)) - 0.09992932157892274)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5764292948390838*y)*(-0.06006605700689669)/(t + exp(vy))**0.0018354659736675206",
+        "ay": "x*0.034553838254785606 + y*(-0.09978470562757859) - 0.00015248658360115207"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5764292948390838*y)*(-0.06006605700689669)/(t + exp(vy))**0.0018354659736675206",
+        "ay": "(0.0001502522233305627*sqrt(t) - 0.10007275123522809)*(-0.34621155325527025*x + y)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5764292948390838*y)*(-0.06006605700689669)/(t + exp(vy))**0.0018354659736675206",
+        "ay": "(-0.3464528526430299*x + y)*(-0.0002783646697185702*cos(sqrt(t) + vy) - 0.0997468586016346)"
+      },
+      {
+        "reason": "parameter_budget",
+        "stage": "pair",
+        "ax": "(x - 0.5764292948390838*y)*(-0.06006605700689669)/(t + exp(vy))**0.0018354659736675206",
+        "ay": "(-0.3463771239007571*x + y)*(-0.0002753465394151012*cos(sqrt(t) - vx + vy) - 0.09973873020013359)"
+      }
+    ],
+    "candidate_selection": {
+      "strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
+      "normalized_resolution_tolerance": 6.965678180070326e-06,
+      "legal_pairs": 90,
+      "rejection_stage_counts": {
+        "axis": 3,
+        "pair": 53
+      },
+      "rejected_candidates_total": 56,
+      "unchecked_axis_equations": 0,
+      "rollout_candidates_considered": 3,
+      "axis_frontier_counts": [
+        11,
+        13
+      ],
+      "full_axis_equations_retained": true,
+      "selection_incomplete": false,
+      "stop_reason": null,
+      "retained_checkpoint": false,
+      "independent_validation": false
+    },
+    "used_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "x * c1 - c2 * y",
+          "ay": "x * c3 + y * c4"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.05993381724651433
+          },
+          {
+            "name": "c2",
+            "initial": -0.034552499660093126
+          },
+          {
+            "name": "c3",
+            "initial": 0.034567753745799186
+          },
+          {
+            "name": "c4",
+            "initial": -0.09981802061100023
+          }
+        ],
+        "complexity": 14,
+        "parameter_count": 4,
+        "acceleration_search_mse_by_axis": [
+          5.357198360340445e-08,
+          1.5151192862791406e-07
+        ],
+        "acceleration_search_mse": 2.0508391223131851e-07,
+        "normalized_acceleration_search_loss": 4.447766439533184e-06,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 5,
+          "rhs_calls": 234,
+          "position_rmse": 0.00014820559088553852,
+          "velocity_rmse": 0.00029679395064389856,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "selection_role": "simplest_within_resolution_tolerance",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "x * c1 - c2 * y",
+          "ay": "x * c3 + y * c4 - c5"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.05993381724651433
+          },
+          {
+            "name": "c2",
+            "initial": -0.034552499660093126
+          },
+          {
+            "name": "c3",
+            "initial": 0.034553838254785606
+          },
+          {
+            "name": "c4",
+            "initial": -0.09978470562757859
+          },
+          {
+            "name": "c5",
+            "initial": 0.00015248658360115207
+          }
+        ],
+        "complexity": 16,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          5.357198360340445e-08,
+          1.3173343206596765e-07
+        ],
+        "acceleration_search_mse": 1.853054156693721e-07,
+        "normalized_acceleration_search_loss": 4.1118520111195605e-06,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 5,
+          "rhs_calls": 234,
+          "position_rmse": 0.0002106427283213733,
+          "velocity_rmse": 0.00041799989938701864,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "selection_role": "alternative_accuracy_candidate",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "(x - c1 * (y - 1 * c2)) * c3",
+          "ay": "x * c4 + y * c5"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.5762842706801675
+          },
+          {
+            "name": "c2",
+            "initial": -0.002371056824800785
+          },
+          {
+            "name": "c3",
+            "initial": -0.05992634478835938
+          },
+          {
+            "name": "c4",
+            "initial": 0.034567753745799186
+          },
+          {
+            "name": "c5",
+            "initial": -0.09981802061100023
+          }
+        ],
+        "complexity": 16,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          4.7868723990325304e-08,
+          1.5151192862791406e-07
+        ],
+        "acceleration_search_mse": 1.9938065261823935e-07,
+        "normalized_acceleration_search_loss": 4.24820604420915e-06,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 5,
+          "rhs_calls": 234,
+          "position_rmse": 0.00016996598559389247,
+          "velocity_rmse": 0.0003389780191848307,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "selection_role": "alternative_accuracy_candidate",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      }
+    ],
+    "tool_client_wall_seconds": 23.226002357900143
+  },
+  "search_client_seconds": 23.226019077003002,
+  "old_candidate_diagnostics": [
+    {
+      "index": 0,
+      "law_spec": {
+        "ax": "(x - c1 * (-y + cos((x + y * cos(x)) * c2) * c3)) * c4",
+        "ay": "c5"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.5762429830089749
+        },
+        {
+          "name": "c2",
+          "initial": 0.889085564267521
+        },
+        {
+          "name": "c3",
+          "initial": 0.010255946350889772
+        },
+        {
+          "name": "c4",
+          "initial": -0.05988972555382605
+        },
+        {
+          "name": "c5",
+          "initial": -0.0663041592336303
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "pysr",
+        "constant_initialization"
+      ],
+      "selection_role": "lowest_search_loss",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          6.852574469010605e-09,
+          0.025043542664778096
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 26.124084502464115,
+            "velocity_mse": 0.35272946182855847,
+            "position_rmse": 5.111172517384256,
+            "velocity_rmse": 0.5939103146339172
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.01162143479772663,
+              "position_rmse": 0.10780275876677103,
+              "velocity_mse": 0.01803242349204247,
+              "velocity_rmse": 0.13428485950412455
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.04372292113369871,
+              "position_rmse": 0.20910026574277402,
+              "velocity_mse": 0.06611634987274642,
+              "velocity_rmse": 0.25713099749494694
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.002178552896954763,
+              "position_rmse": 0.046674970776153284,
+              "velocity_mse": 0.0038835297820738043,
+              "velocity_rmse": 0.06231797318650378
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 30.37256748436157,
+              "position_rmse": 5.511131234543555,
+              "velocity_mse": 0.5597408262378483,
+              "velocity_rmse": 0.7481582895603365
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 100.19033211913063,
+              "position_rmse": 10.00951208197136,
+              "velocity_mse": 1.1158741797580816,
+              "velocity_rmse": 1.0563494591081501
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          1.807960438505394e-08,
+          0.02022291955683863
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.007456450787364208,
+            "velocity_mse": 0.013315665267618118,
+            "position_rmse": 0.0863507428304135,
+            "velocity_rmse": 0.11539352350811599
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.0004862489467270396,
+              "position_rmse": 0.022051053188613,
+              "velocity_mse": 0.0026681909232146193,
+              "velocity_rmse": 0.0516545343916158
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.002265946029886486,
+              "position_rmse": 0.04760195405533775,
+              "velocity_mse": 0.013100623262276281,
+              "velocity_rmse": 0.11445795412410743
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.008519325523346607,
+              "position_rmse": 0.09230019243396304,
+              "velocity_mse": 0.011737384365826185,
+              "velocity_rmse": 0.10833920973417789
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 0.005242197255908564,
+              "position_rmse": 0.07240301966015343,
+              "velocity_mse": 0.006693056151299559,
+              "velocity_rmse": 0.08181110041613888
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 0.020768536180952337,
+              "position_rmse": 0.14411292856975857,
+              "velocity_mse": 0.03237907163547395,
+              "velocity_rmse": 0.1799418562632773
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": 0.5501141860597009,
+          "c2": 5.310787449266952,
+          "c3": 2.7282904413005835,
+          "c4": -0.033606768410024135,
+          "c5": 0.004159003599999917
+        },
+        "fit_status": "not_converged",
+        "converged": false,
+        "message": "numerical wall-time budget exhausted Returning the best finite iterate; optimization did not converge.",
+        "errors": {
+          "overall": {
+            "position_mse": 2.9092413642562627,
+            "velocity_mse": 0.14890338564529831,
+            "position_rmse": 1.705649836354538,
+            "velocity_rmse": 0.38588001457097815
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0029284746745514246,
+              "position_rmse": 0.054115382975189454,
+              "velocity_mse": 0.004633237412685062,
+              "velocity_rmse": 0.0680678882637405
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.1110368936330963,
+              "position_rmse": 0.3332219885198099,
+              "velocity_mse": 0.16961689818511388,
+              "velocity_rmse": 0.4118457213388454
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.022526454045645454,
+              "position_rmse": 0.15008815424824656,
+              "velocity_mse": 0.034172927131897464,
+              "velocity_rmse": 0.1848592089453416
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 3.5205709529594413,
+              "position_rmse": 1.8763184572346565,
+              "velocity_mse": 0.16298690581020175,
+              "velocity_rmse": 0.40371636802364325
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 10.889144045968578,
+              "position_rmse": 3.29987030744673,
+              "velocity_mse": 0.37310695968659346,
+              "velocity_rmse": 0.6108248191475142
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 35,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "coarse_fit_not_converged"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 5.001281637698412,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.013115028701692497,
+          0.03230353752227123
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.017363364517482834,
+            "velocity_mse": 0.031134153788598462,
+            "position_rmse": 0.13177011997218047,
+            "velocity_rmse": 0.1764487284981064
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 9.222569873400881e-05,
+              "position_rmse": 0.00960342119944808,
+              "velocity_mse": 0.00046338141729774504,
+              "velocity_rmse": 0.0215262959493208
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.005489459960607334,
+              "position_rmse": 0.07409088986243406,
+              "velocity_mse": 0.03104736121771791,
+              "velocity_rmse": 0.17620261410580124
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.0011948073162432642,
+              "position_rmse": 0.03456598495983102,
+              "velocity_mse": 0.0012614844051394183,
+              "velocity_rmse": 0.035517381732602674
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 0.02707824599227235,
+              "position_rmse": 0.16455468997349285,
+              "velocity_mse": 0.039883139331790315,
+              "velocity_rmse": 0.1997076346357102
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 0.05296208361955721,
+              "position_rmse": 0.23013492481489464,
+              "velocity_mse": 0.0830154025710469,
+              "velocity_rmse": 0.2881239361300045
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 1,
+      "law_spec": {
+        "ax": "c1",
+        "ay": "c2"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.036972085707608154
+        },
+        {
+          "name": "c2",
+          "initial": -0.0663041592336303
+        }
+      ],
+      "parameter_count": 2,
+      "component_sources": [
+        "constant_initialization",
+        "constant_initialization"
+      ],
+      "selection_role": "lowest_complexity",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.012922622693291568,
+          0.025043542664778096
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 28.491288748494334,
+            "velocity_mse": 0.360034755508004,
+            "position_rmse": 5.337723180204677,
+            "velocity_rmse": 0.600028962224328
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.025105118889080742,
+              "position_rmse": 0.1584459494246563,
+              "velocity_mse": 0.039042654751884384,
+              "velocity_rmse": 0.1975921424345725
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.04712005328563697,
+              "position_rmse": 0.2170715395569787,
+              "velocity_mse": 0.07104885255566758,
+              "velocity_rmse": 0.26654990631337233
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.020325831236014478,
+              "position_rmse": 0.14256868953600743,
+              "velocity_mse": 0.032524762033507904,
+              "velocity_rmse": 0.1803462282209082
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 68.31020932750353,
+              "position_rmse": 8.264999051875538,
+              "velocity_mse": 0.8042732924487416,
+              "velocity_rmse": 0.896812852522053
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 74.0536834115574,
+              "position_rmse": 8.605444986260583,
+              "velocity_mse": 0.8532842157502184,
+              "velocity_rmse": 0.9237338446491058
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.01038284090615296,
+          0.02022291955683863
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.013355122540621722,
+            "velocity_mse": 0.023135638704098026,
+            "position_rmse": 0.11556436535810562,
+            "velocity_rmse": 0.15210403907884243
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.0011132285524963397,
+              "position_rmse": 0.03336507983650481,
+              "velocity_mse": 0.006235618430321021,
+              "velocity_rmse": 0.07896593208669812
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.002475094182553586,
+              "position_rmse": 0.049750318416604995,
+              "velocity_mse": 0.014347163490194324,
+              "velocity_rmse": 0.11977964555881072
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.020791509996102926,
+              "position_rmse": 0.14419261422175175,
+              "velocity_mse": 0.030234276750071915,
+              "velocity_rmse": 0.17388006426865593
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 0.006852965303855571,
+              "position_rmse": 0.08278263890367092,
+              "velocity_mse": 0.010013934988659233,
+              "velocity_rmse": 0.10006965068720503
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 0.03554281466810019,
+              "position_rmse": 0.1885280209096255,
+              "velocity_mse": 0.05484719986124363,
+              "velocity_rmse": 0.23419479042293753
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": -0.012935008569850116,
+          "c2": 0.006027814808906493
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "Both `ftol` and `xtol` termination conditions are satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 5.293664305006396,
+            "velocity_mse": 0.19723180804540336,
+            "position_rmse": 2.300796450146426,
+            "velocity_rmse": 0.44410787883734215
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.006534043658073293,
+              "position_rmse": 0.0808334315619057,
+              "velocity_mse": 0.009976883081696544,
+              "velocity_rmse": 0.09988434853217266
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.08721620783784381,
+              "position_rmse": 0.29532390326189956,
+              "velocity_mse": 0.13326656006614918,
+              "velocity_rmse": 0.36505692715814775
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.045701136416709885,
+              "position_rmse": 0.21377824121437122,
+              "velocity_mse": 0.07335076048037174,
+              "velocity_rmse": 0.27083345524578706
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 11.183373647189345,
+              "position_rmse": 3.3441551469974216,
+              "velocity_mse": 0.27246646143074005,
+              "velocity_rmse": 0.5219832003338231
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 15.145496489930006,
+              "position_rmse": 3.891721532937577,
+              "velocity_mse": 0.49709837516805927,
+              "velocity_rmse": 0.7050520372058074
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 12,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.28483375906944275,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.010960609977934892,
+          0.03275911228202213
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.020366058127072532,
+            "velocity_mse": 0.03502492750752053,
+            "position_rmse": 0.14270969878418402,
+            "velocity_rmse": 0.18714947904688523
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.000276516587151563,
+              "position_rmse": 0.016628787903860073,
+              "velocity_mse": 0.001514362268181825,
+              "velocity_rmse": 0.038914807826607924
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.004484828329401071,
+              "position_rmse": 0.06696886089370993,
+              "velocity_mse": 0.02602087720550933,
+              "velocity_rmse": 0.16130987944174197
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.0048024523854036175,
+              "position_rmse": 0.0692997286098843,
+              "velocity_mse": 0.0066570235725969765,
+              "velocity_rmse": 0.08159058507326061
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 0.019490176965143862,
+              "position_rmse": 0.1396072239002834,
+              "velocity_mse": 0.027616710524088102,
+              "velocity_rmse": 0.1661827624156251
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 0.07277631636826255,
+              "position_rmse": 0.26977085900493875,
+              "velocity_mse": 0.11331566396722643,
+              "velocity_rmse": 0.3366239206699762
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 2,
+      "law_spec": {
+        "ax": "(x - (-c1 * y + c2 * abs(cos(x)))) * c3",
+        "ay": "c4"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.5759178619331823
+        },
+        {
+          "name": "c2",
+          "initial": 0.0040871501221811275
+        },
+        {
+          "name": "c3",
+          "initial": -0.0598992354178202
+        },
+        {
+          "name": "c4",
+          "initial": -0.0663041592336303
+        }
+      ],
+      "parameter_count": 4,
+      "component_sources": [
+        "pysr",
+        "constant_initialization"
+      ],
+      "selection_role": "middle_complexity",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          3.2062229882288453e-08,
+          0.025043542664778096
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 26.10298469128921,
+            "velocity_mse": 0.3524105359997899,
+            "position_rmse": 5.109108013272885,
+            "velocity_rmse": 0.5936417572912049
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.011621283362527055,
+              "position_rmse": 0.10780205639284927,
+              "velocity_mse": 0.018031950808796642,
+              "velocity_rmse": 0.13428309949057865
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.04372256584214094,
+              "position_rmse": 0.20909941616881894,
+              "velocity_mse": 0.06611538775792897,
+              "velocity_rmse": 0.25712912662304316
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.002178515476314863,
+              "position_rmse": 0.04667456991033622,
+              "velocity_mse": 0.003883413204001409,
+              "velocity_rmse": 0.062317037830768314
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 30.332928266584275,
+              "position_rmse": 5.507533773530969,
+              "velocity_mse": 0.5592320274141936,
+              "velocity_rmse": 0.7478181780447662
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 100.12447282518079,
+              "position_rmse": 10.0062217057779,
+              "velocity_mse": 1.1147899008140285,
+              "velocity_rmse": 1.0558361145623067
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          3.156685025143485e-08,
+          0.02022291955683863
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.0074563887046648625,
+            "velocity_mse": 0.013315514402966754,
+            "position_rmse": 0.08635038334984312,
+            "velocity_rmse": 0.11539286980990963
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.000486247774531341,
+              "position_rmse": 0.02205102660946517,
+              "velocity_mse": 0.0026681770712153304,
+              "velocity_rmse": 0.0516544003083506
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.002265942678841134,
+              "position_rmse": 0.04760191885671348,
+              "velocity_mse": 0.013100591895150287,
+              "velocity_rmse": 0.11445781709935887
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.008519199285947984,
+              "position_rmse": 0.09229950858995938,
+              "velocity_mse": 0.011737018436584729,
+              "velocity_rmse": 0.10833752090843102
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 0.005242214186594284,
+              "position_rmse": 0.07240313657980767,
+              "velocity_mse": 0.006693116240248618,
+              "velocity_rmse": 0.08181146765734384
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 0.020768339597409573,
+              "position_rmse": 0.1441122465212779,
+              "velocity_mse": 0.03237866837163482,
+              "velocity_rmse": 0.17994073572049998
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": -0.07933470455938016,
+          "c2": 0.5008236841731948,
+          "c3": -0.05183806990212802,
+          "c4": 0.006294616274300275
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`xtol` termination condition is satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 2.9319090333611735,
+            "velocity_mse": 0.14631873208299356,
+            "position_rmse": 1.7122818206595471,
+            "velocity_rmse": 0.38251631610036396
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0018003795015913105,
+              "position_rmse": 0.0424308791046251,
+              "velocity_mse": 0.0026933078674367954,
+              "velocity_rmse": 0.05189708920003891
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.07972204227499559,
+              "position_rmse": 0.2823509204429757,
+              "velocity_mse": 0.1217911002302375,
+              "velocity_rmse": 0.3489858166605593
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.013002745414860975,
+              "position_rmse": 0.11402958131494202,
+              "velocity_mse": 0.021671010003364712,
+              "velocity_rmse": 0.14721076728067384
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 3.3647962163181253,
+              "position_rmse": 1.834338086699975,
+              "velocity_mse": 0.15067627046988957,
+              "velocity_rmse": 0.38817041421248166
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 11.200223783296295,
+              "position_rmse": 3.346673539994048,
+              "velocity_mse": 0.43476197184403914,
+              "velocity_rmse": 0.6593648245425586
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 71,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 4.2969776429235935,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0017730929592748496,
+          0.03282472235153795
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.014522321500746824,
+            "velocity_mse": 0.025556192581615976,
+            "position_rmse": 0.12050859513224284,
+            "velocity_rmse": 0.1598630432014103
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 5.8725925637359944e-05,
+              "position_rmse": 0.007663284259203748,
+              "velocity_mse": 0.00028894362794101673,
+              "velocity_rmse": 0.01699834191740526
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.004063338046679623,
+              "position_rmse": 0.06374431775993546,
+              "velocity_mse": 0.023508940118350932,
+              "velocity_rmse": 0.15332625384568335
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.0006957852168632785,
+              "position_rmse": 0.026377740935555467,
+              "velocity_mse": 0.0006716390574380631,
+              "velocity_rmse": 0.025916000027744697
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 0.02062585794272194,
+              "position_rmse": 0.1436170531055485,
+              "velocity_mse": 0.029289199200256338,
+              "velocity_rmse": 0.1711408753052769
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 0.04716790037183192,
+              "position_rmse": 0.21718172200217936,
+              "velocity_mse": 0.07402224090409354,
+              "velocity_rmse": 0.272070286698297
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    }
+  ],
+  "new_candidate_diagnostics": [
+    {
+      "index": 0,
+      "law_spec": {
+        "ax": "x * c1 - c2 * y",
+        "ay": "x * c3 + y * c4"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.05993381724651433
+        },
+        {
+          "name": "c2",
+          "initial": -0.034552499660093126
+        },
+        {
+          "name": "c3",
+          "initial": 0.034567753745799186
+        },
+        {
+          "name": "c4",
+          "initial": -0.09981802061100023
+        }
+      ],
+      "parameter_count": 4,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "selection_role": "simplest_within_resolution_tolerance",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          5.3571983603404457e-08,
+          1.5151192862791406e-07
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 9.9355028550164e-06,
+            "velocity_mse": 1.936798359918171e-06,
+            "position_rmse": 0.0031520632695135418,
+            "velocity_rmse": 0.0013916890313278218
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 1.6685834005049095e-08,
+              "position_rmse": 0.00012917365832494293,
+              "velocity_mse": 2.435069312986737e-08,
+              "velocity_rmse": 0.00015604708625881924
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 2.816508237327217e-07,
+              "position_rmse": 0.0005307078515838273,
+              "velocity_mse": 4.122588561136061e-07,
+              "velocity_rmse": 0.0006420738712279189
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 8.293825726471212e-08,
+              "position_rmse": 0.00028799002980088063,
+              "velocity_mse": 1.3057826858813975e-07,
+              "velocity_rmse": 0.00036135615199985147
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 1.1088813517926343e-05,
+              "position_rmse": 0.003329987014678337,
+              "velocity_mse": 2.1714034846158785e-06,
+              "velocity_rmse": 0.0014735682829838184
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 3.8207425842153175e-05,
+              "position_rmse": 0.0061812155634756154,
+              "velocity_mse": 6.945400497143363e-06,
+              "velocity_rmse": 0.002635412775476237
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          2.1969956670966743e-08,
+          7.467332524338017e-08
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 5.677592390822928e-08,
+            "velocity_mse": 9.577332314493102e-08,
+            "position_rmse": 0.00023827698988410374,
+            "velocity_rmse": 0.00030947265330709113
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 6.768708187177857e-10,
+              "position_rmse": 2.6016741124087498e-05,
+              "velocity_mse": 3.5483700918712964e-09,
+              "velocity_rmse": 5.956819698355236e-05
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 1.5113771238809196e-08,
+              "position_rmse": 0.00012293807888042336,
+              "velocity_mse": 8.672850150911038e-08,
+              "velocity_rmse": 0.00029449703140967375
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 1.0053762898312592e-08,
+              "position_rmse": 0.00010026845415340057,
+              "velocity_mse": 1.1987724107305576e-08,
+              "velocity_rmse": 0.00010948846563590877
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 5.682861986860154e-08,
+              "position_rmse": 0.00023838754134518345,
+              "velocity_mse": 7.518802242524795e-08,
+              "velocity_rmse": 0.0002742043442858773
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 2.0120659471670525e-07,
+              "position_rmse": 0.00044856058087699286,
+              "velocity_mse": 3.014139975911199e-07,
+              "velocity_rmse": 0.0005490118373870638
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": -0.06000000003822663,
+          "c2": -0.03464101621767179,
+          "c3": 0.034641016216704464,
+          "c4": -0.10000000011519077
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`xtol` termination condition is satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 1.2447287250467802e-16,
+            "velocity_mse": 1.492124311313993e-17,
+            "position_rmse": 1.1156741123853239e-08,
+            "velocity_rmse": 3.862802494710276e-09
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 6.441176389799071e-20,
+              "position_rmse": 2.5379472787666556e-10,
+              "velocity_mse": 1.3397082291120657e-20,
+              "velocity_rmse": 1.1574576575892812e-10
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 1.8256817515495846e-19,
+              "position_rmse": 4.272799727988178e-10,
+              "velocity_mse": 1.7329186382903735e-19,
+              "velocity_rmse": 4.162833936503321e-10
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 2.53000212308751e-18,
+              "position_rmse": 1.5905980394453874e-09,
+              "velocity_mse": 1.0207781048085524e-19,
+              "velocity_rmse": 3.194961822633492e-10
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 1.7443969591711925e-16,
+              "position_rmse": 1.3207562073188195e-08,
+              "velocity_mse": 1.9435616447854815e-17,
+              "velocity_rmse": 4.40858440407517e-09
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 4.451476845441305e-16,
+              "position_rmse": 2.1098523278754142e-08,
+              "velocity_mse": 5.4881832361243823e-17,
+              "velocity_rmse": 7.408227342707824e-09
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 16,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 1.067016914486885,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          1.7845372400190492e-09,
+          6.258092265425491e-09
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 1.3104465021695112e-18,
+            "velocity_mse": 1.1993482360540629e-19,
+            "position_rmse": 1.144747352986462e-09,
+            "velocity_rmse": 3.4631607471413495e-10
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 3.619096921914433e-22,
+              "position_rmse": 1.902392420588989e-11,
+              "velocity_mse": 2.2337407022888022e-21,
+              "velocity_rmse": 4.726246610460358e-11
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 5.7812486866984216e-21,
+              "position_rmse": 7.603452299250927e-11,
+              "velocity_mse": 3.756493729301089e-20,
+              "velocity_rmse": 1.938167621569685e-10
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 1.3308203473349529e-18,
+              "position_rmse": 1.1536118703164218e-09,
+              "velocity_mse": 3.4800015199401637e-19,
+              "velocity_rmse": 5.899153769770851e-10
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 2.7032906940748394e-19,
+              "position_rmse": 5.199317930339363e-10,
+              "velocity_mse": 7.820896907063763e-20,
+              "velocity_rmse": 2.7965866528794994e-10
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 4.944939935726228e-18,
+              "position_rmse": 2.223722090488429e-09,
+              "velocity_mse": 1.336663189670778e-19,
+              "velocity_rmse": 3.656040467050082e-10
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 1,
+      "law_spec": {
+        "ax": "x * c1 - c2 * y",
+        "ay": "x * c3 + y * c4 - c5"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.05993381724651433
+        },
+        {
+          "name": "c2",
+          "initial": -0.034552499660093126
+        },
+        {
+          "name": "c3",
+          "initial": 0.034553838254785606
+        },
+        {
+          "name": "c4",
+          "initial": -0.09978470562757859
+        },
+        {
+          "name": "c5",
+          "initial": 0.00015248658360115207
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "selection_role": "alternative_accuracy_candidate",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          5.3571983603404457e-08,
+          1.3173343206596763e-07
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 1.4315993437498434e-05,
+            "velocity_mse": 2.590249772918027e-06,
+            "position_rmse": 0.003783648165130901,
+            "velocity_rmse": 0.0016094252927421101
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 7.052590380045155e-08,
+              "position_rmse": 0.00026556713614536633,
+              "velocity_mse": 1.0500871424619872e-07,
+              "velocity_rmse": 0.00032405048101522504
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 2.3647352922669962e-07,
+              "position_rmse": 0.0004862854400727001,
+              "velocity_mse": 3.4258930915656963e-07,
+              "velocity_rmse": 0.0005853112925243879
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 5.054834621324486e-08,
+              "position_rmse": 0.00022482959372210068,
+              "velocity_mse": 8.046331078301864e-08,
+              "velocity_rmse": 0.0002836605555642494
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 1.6933340899790495e-05,
+              "position_rmse": 0.004115014082574991,
+              "velocity_mse": 2.902816562705135e-06,
+              "velocity_rmse": 0.0017037654071805587
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 5.4289078508461276e-05,
+              "position_rmse": 0.007368112275777377,
+              "velocity_mse": 9.520370967699212e-06,
+              "velocity_rmse": 0.003085509839183666
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          2.1969956670966743e-08,
+          6.859838283097828e-08
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 4.9323489393262314e-08,
+            "velocity_mse": 8.386332942891175e-08,
+            "position_rmse": 0.00022208892226597508,
+            "velocity_rmse": 0.0002895916598055126
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 3.121386674950744e-09,
+              "position_rmse": 5.586937152815256e-05,
+              "velocity_mse": 1.702649453787299e-08,
+              "velocity_rmse": 0.0001304856104628897
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 1.2908589973500043e-08,
+              "position_rmse": 0.00011361597587267401,
+              "velocity_mse": 7.404523618634194e-08,
+              "velocity_rmse": 0.0002721125432359595
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 5.303355158056172e-08,
+              "position_rmse": 0.000230290146512094,
+              "velocity_mse": 7.069022095851476e-08,
+              "velocity_rmse": 0.00026587632643489486
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 2.2599438000259533e-08,
+              "position_rmse": 0.00015033109458877604,
+              "velocity_mse": 2.649866167263085e-08,
+              "velocity_rmse": 0.00016278409526925797
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 1.5495448073703952e-07,
+              "position_rmse": 0.00039364257993392877,
+              "velocity_mse": 2.310560337891982e-07,
+              "velocity_rmse": 0.00048068288277116565
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": -0.0600000000361208,
+          "c2": -0.03464101621321908,
+          "c3": 0.03464101621859165,
+          "c4": -0.10000000011976176,
+          "c5": -1.9656383398149306e-11
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`xtol` termination condition is satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 1.2443061380916289e-16,
+            "velocity_mse": 1.4908807186946334e-17,
+            "position_rmse": 1.1154847099317987e-08,
+            "velocity_rmse": 3.861192456605386e-09
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 6.941161753842313e-20,
+              "position_rmse": 2.634608463100791e-10,
+              "velocity_mse": 1.8532701900528067e-20,
+              "velocity_rmse": 1.3613486658651438e-10
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 1.746426931559507e-19,
+              "position_rmse": 4.1790273169237683e-10,
+              "velocity_mse": 1.624030066756249e-19,
+              "velocity_rmse": 4.0299256404507625e-10
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 2.5152922171301763e-18,
+              "position_rmse": 1.5859672812294004e-09,
+              "velocity_mse": 9.297627021368218e-20,
+              "velocity_rmse": 3.0492010464002234e-10
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 1.7438757628310334e-16,
+              "position_rmse": 1.320558882757991e-08,
+              "velocity_mse": 1.941748879421626e-17,
+              "velocity_rmse": 4.406527974972615e-09
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 4.450061462348866e-16,
+              "position_rmse": 2.1095168788964136e-08,
+              "velocity_mse": 5.485263516172557e-17,
+              "velocity_rmse": 7.406256487708589e-09
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 24,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 1.3709683492779732,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          1.7845367327119584e-09,
+          6.258091959943901e-09
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 1.306356515842108e-18,
+            "velocity_mse": 1.1681601196892108e-19,
+            "position_rmse": 1.1429595425220038e-09,
+            "velocity_rmse": 3.4178357475004715e-10
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 5.166047981547008e-22,
+              "position_rmse": 2.2728941861747564e-11,
+              "velocity_mse": 3.1478963689405934e-21,
+              "velocity_rmse": 5.610611703674202e-11
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 5.439213332149711e-21,
+              "position_rmse": 7.375102258375616e-11,
+              "velocity_mse": 3.540583843601028e-20,
+              "velocity_rmse": 1.8816439205123345e-10
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 1.3409115052193843e-18,
+              "position_rmse": 1.1579773336380053e-09,
+              "velocity_mse": 3.463911299325736e-19,
+              "velocity_rmse": 5.885500233052188e-10
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 2.634527212669687e-19,
+              "position_rmse": 5.132764569576212e-10,
+              "velocity_mse": 7.517674782771666e-20,
+              "velocity_rmse": 2.741837847643742e-10
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 4.921462534593883e-18,
+              "position_rmse": 2.2184369575432795e-09,
+              "velocity_mse": 1.2395844727936439e-19,
+              "velocity_rmse": 3.52077331390938e-10
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 2,
+      "law_spec": {
+        "ax": "(x - c1 * (y - 1 * c2)) * c3",
+        "ay": "x * c4 + y * c5"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.5762842706801675
+        },
+        {
+          "name": "c2",
+          "initial": -0.002371056824800785
+        },
+        {
+          "name": "c3",
+          "initial": -0.05992634478835938
+        },
+        {
+          "name": "c4",
+          "initial": 0.034567753745799186
+        },
+        {
+          "name": "c5",
+          "initial": -0.09981802061100023
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "selection_role": "alternative_accuracy_candidate",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          4.7868723990325323e-08,
+          1.5151192862791406e-07
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 1.2557037980030659e-05,
+            "velocity_mse": 2.1365583437686635e-06,
+            "position_rmse": 0.0035435911135500184,
+            "velocity_rmse": 0.0014616970766094676
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 3.854176273170397e-08,
+              "position_rmse": 0.00019632056115370078,
+              "velocity_mse": 5.753699988937722e-08,
+              "velocity_rmse": 0.00023986871386109783
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 2.7006309300254985e-07,
+              "position_rmse": 0.0005196759499943689,
+              "velocity_mse": 3.9455999573821816e-07,
+              "velocity_rmse": 0.0006281401083661337
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 6.616417439783407e-08,
+              "position_rmse": 0.00025722397710523423,
+              "velocity_mse": 1.048584588722024e-07,
+              "velocity_rmse": 0.0003238185585666801
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 1.79773684855876e-05,
+              "position_rmse": 0.004239972698684227,
+              "velocity_mse": 2.47682192748664e-06,
+              "velocity_rmse": 0.0015737922122969856
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 4.44330523844336e-05,
+              "position_rmse": 0.006665812207408307,
+              "velocity_mse": 7.649014336856879e-06,
+              "velocity_rmse": 0.002765685147817242
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          2.349146532075008e-08,
+          7.467332524338017e-08
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 5.645457317293854e-08,
+            "velocity_mse": 9.564647730329861e-08,
+            "position_rmse": 0.0002376017112163516,
+            "velocity_rmse": 0.00030926764671284095
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 1.6901381046922973e-09,
+              "position_rmse": 4.1111289260886694e-05,
+              "velocity_mse": 9.2210674136426e-09,
+              "velocity_rmse": 9.602638915237103e-05
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 1.4536353037023382e-08,
+              "position_rmse": 0.00012056679906600897,
+              "velocity_mse": 8.340284776952586e-08,
+              "velocity_rmse": 0.000288795512031482
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 2.8813651145010803e-08,
+              "position_rmse": 0.00016974584279154175,
+              "velocity_mse": 3.8916599616469816e-08,
+              "velocity_rmse": 0.000197272906443003
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 5.175220300637094e-08,
+              "position_rmse": 0.00022749110533462828,
+              "velocity_mse": 6.91224762851743e-08,
+              "velocity_rmse": 0.0002629115369951922
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 1.8548052057159527e-07,
+              "position_rmse": 0.000430674494916515,
+              "velocity_mse": 2.7756939543168054e-07,
+              "velocity_rmse": 0.0005268485507540858
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": 0.5773502699595464,
+          "c2": 1.5347832217014836e-10,
+          "c3": -0.06000000003939734,
+          "c4": 0.0346410162161449,
+          "c5": -0.10000000011402539
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`xtol` termination condition is satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 1.244659950925428e-16,
+            "velocity_mse": 1.491924912474301e-17,
+            "position_rmse": 1.1156432901807944e-08,
+            "velocity_rmse": 3.862544384824984e-09
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 6.519819006789363e-20,
+              "position_rmse": 2.553393625508876e-10,
+              "velocity_mse": 1.418054809329474e-20,
+              "velocity_rmse": 1.190821065202272e-10
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 1.813957331883345e-19,
+              "position_rmse": 4.2590577970759507e-10,
+              "velocity_mse": 1.7168132360889035e-19,
+              "velocity_rmse": 4.1434445043814734e-10
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 2.527579523187378e-18,
+              "position_rmse": 1.5898363196214188e-09,
+              "velocity_mse": 1.0064087570621097e-19,
+              "velocity_rmse": 3.1723946114285807e-10
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 40,
+              "position_mse": 1.7442625565568044e-16,
+              "position_rmse": 1.3207053254063922e-08,
+              "velocity_mse": 1.9432639001642125e-17,
+              "velocity_rmse": 4.408246703808911e-09
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 40,
+              "position_mse": 4.4512954636059e-16,
+              "position_rmse": 2.109809342951609e-08,
+              "velocity_mse": 5.487710387466452e-17,
+              "velocity_rmse": 7.4079081983151304e-09
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 24,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.6903880033642054,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0005",
+          "probe_0009",
+          "probe_0010"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          1.7845373979633555e-09,
+          6.258092016872589e-09
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 1.3098815256557972e-18,
+            "velocity_mse": 1.1945665882285592e-19,
+            "position_rmse": 1.1445005572981592e-09,
+            "velocity_rmse": 3.456250263260112e-10
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 3.852857489340759e-22,
+              "position_rmse": 1.962869707683309e-11,
+              "velocity_mse": 2.372604609972093e-21,
+              "velocity_rmse": 4.870938934098941e-11
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 5.731015210920797e-21,
+              "position_rmse": 7.570346894905674e-11,
+              "velocity_mse": 3.724772520173669e-20,
+              "velocity_rmse": 1.9299669738556846e-10
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 1.3325841943599632e-18,
+              "position_rmse": 1.1543761061109863e-09,
+              "velocity_mse": 3.4775334701889793e-19,
+              "velocity_rmse": 5.897061531126312e-10
+            },
+            {
+              "probe_id": "probe_0009",
+              "n_samples": 21,
+              "position_mse": 2.692775636474682e-19,
+              "position_rmse": 5.189196119318176e-10,
+              "velocity_mse": 7.772047471123907e-20,
+              "velocity_rmse": 2.787839211849189e-10
+            },
+            {
+              "probe_id": "probe_0010",
+              "n_samples": 21,
+              "position_mse": 4.9414295693116996e-18,
+              "position_rmse": 2.2229326506468204e-09,
+              "velocity_mse": 1.3218914257243383e-19,
+              "velocity_rmse": 3.6357824821134974e-10
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    }
+  ],
+  "offline_total_seconds": 36.59522121027112,
+  "source_records_unchanged": true
+}

@@ -108,6 +108,42 @@ class FileRuntime(Runtime):
         return response
 
 
+@pytest.mark.parametrize('bad_arguments', [
+    '{"law_id":"law_1","physical_explanation":"' + 'truncated ' * 4096,
+    '[]', '{"value":NaN}',
+], ids=['truncated-tool-call', 'non-object', 'nonfinite-json'])
+def test_invalid_arguments_cannot_break_next_qwen_history_template(tmp_path, bad_arguments):
+    class JsonTemplateClient(Client):
+        def complete(self, messages, tools=None, role='main'):
+            # Reproduce the provider's historical-arguments parsing, including
+            # a truncated call incorrectly labelled finish_reason=tool_calls.
+            for message in messages:
+                for item in message.get('tool_calls') or []:
+                    parsed = json.loads(item['function']['arguments'])
+                    assert isinstance(parsed, dict)
+                    json.dumps(parsed, allow_nan=False)
+            return super().complete(messages, tools=tools, role=role)
+
+    client = JsonTemplateClient([
+        reply(call('save_draft', raw=bad_arguments)),
+        reply(call('submit', args={'law_id': 'existing'}, ident='c2')),
+    ])
+    runtime = Runtime()
+    result = Agent(client, runtime, tmp_path, {'loop_recovery': True}).run()
+    assert result['status'] == 'submitted'
+    assert [name for name, _ in runtime.calls] == ['submit']
+    history = client.requests[1]
+    # Client fixtures store a copy of messages; the audit retains the original.
+    if isinstance(history, dict):
+        history = history['messages']
+    failed = next(m for m in history if m['role'] == 'tool')
+    assert failed['tool_call_id'] == 'c1'
+    assert json.loads(failed['content'])['error']['code'] == 'invalid_tool_arguments_json'
+    events = [json.loads(line) for line in (tmp_path/'events.jsonl').read_text().splitlines()]
+    repair = next(e for e in events if e['event'] == 'invalid_tool_arguments_history_repaired')
+    assert repair['original_arguments'] == bad_arguments and repair['tool_executed'] is False
+
+
 def run(tmp_path, runtime, replies, config=None):
     client = Client(replies)
     agent = Agent(client, runtime, tmp_path, {'loop_recovery': True, **(config or {})})

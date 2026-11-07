@@ -1,0 +1,2839 @@
+{
+  "kind": "offline_symbolic_replay_not_agent_result",
+  "source_run_id": "e7-qwen38-pysr-on-20261107-r01-world_4",
+  "source_search_id": "sr_a24a5b07d712",
+  "created_at": "2026-11-07T05:18:59.000359+00:00",
+  "train_probe_ids": [
+    "probe_0003",
+    "probe_0004",
+    "probe_0005",
+    "probe_0006",
+    "probe_0007",
+    "probe_0008"
+  ],
+  "heldout_probe_ids": [
+    "probe_0001",
+    "probe_0002"
+  ],
+  "source_record_sha256": {
+    "symbolic_search/sr_a24a5b07d712": "2b9b4c24c8f175d0c427f28e262a96c70d43f3301bbf6bfea0a243c7259abb95",
+    "probe/probe_0003": "d97ede558e99a23d7d478526347a5fdeca08ec6472ce419616d8fece0ad5818a",
+    "probe/probe_0004": "c8c66636c7e052ec5b69ff7aef62df7f1f231a84b771bf12fdca195cfe9e0742",
+    "probe/probe_0005": "5170e1f3f509bf4e0c36031314ce877aab96f034f39e11a680f7543e0828d376",
+    "probe/probe_0006": "67cb4780c4762560a64d4ee8fc4d9bf2271162120329ed031ee4c2dd1362a066",
+    "probe/probe_0007": "dfaeb1258c62d2fa5ecdc9983218782b01843b12741627b75840311fe6058d80",
+    "probe/probe_0008": "5790d1bd94ba6d469ec7551f02a85b640e4250339641d18cd40ce4d382f31091",
+    "probe/probe_0001": "a2929c23655e9cf831253b13e4a471152f309db0b874c3bae1ddc2e88e1503e3",
+    "probe/probe_0002": "9e877efc6c5ea15d74dde97346b7728765e4aa4f2887689ff70d39d11e306dc5"
+  },
+  "source_sha256": {
+    "shore_agent/symbolic_regression.py": "a900d508ef285d1db7522db938d8febee4159eded820618e4d6eba89dc60bfa9",
+    "shore_agent/symbolic_service.py": "dfb4cdb2608600bb2aa9bd48ae629cb28499aa2154f757b8bbf2fe9ae25af380",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "deployment/replay_symbolic.py": "f6e175ddcc109a5176fe67c8c74230cb790d4b2234478d21ee9ec5ec2a16b277"
+  },
+  "scope": "No mission, new observations, energy use, model calls, hidden truth, or independent scoring. Held-out records were not sent to search or fit; diagnostic selection must not be credited to the Agent.",
+  "request": {
+    "time_budget_seconds": 30,
+    "random_state": 42,
+    "endpoint": "http://127.0.0.1:8890",
+    "per_candidate_refit_seconds": 5,
+    "per_probe_rollout_seconds": 1
+  },
+  "old_search": {
+    "status": "timeout",
+    "backend": "pysr",
+    "target": "velocity_difference_acceleration",
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy"
+    ],
+    "samples_per_probe": {
+      "probe_0003": 19,
+      "probe_0004": 19,
+      "probe_0005": 19,
+      "probe_0006": 19,
+      "probe_0007": 19,
+      "probe_0008": 19
+    },
+    "dropped_constant_features": [
+      "mass",
+      "charge"
+    ],
+    "omitted_incomplete_properties": [],
+    "search_configuration": {
+      "maxsize": 20,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "random_state": 42,
+      "warm_start": false,
+      "parallelism": "multithreading"
+    },
+    "warnings": [
+      "Search loss is against velocity-difference acceleration, not independent trajectory prediction.",
+      "All selected probes were used for structure discovery and cannot serve as independent validation.",
+      "Constant or absent properties do not establish absence of physical dependence.",
+      "This version searches state and public probe properties only; body-set expressions are not supported.",
+      "State-only dependence on t does not establish explicit physical time dependence; it may substitute for unmodeled body motion.",
+      "A fixed seed with multithreaded search does not guarantee bitwise reproducibility."
+    ],
+    "axis_search_seconds": [
+      13.050155907869339,
+      12.970053549855947
+    ],
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "rejected_candidate_pairs": 6,
+    "elapsed_seconds": 26.41037656366825,
+    "search_elapsed_seconds": 26.398260436952114,
+    "service_elapsed_seconds": 26.41037656366825,
+    "requested_time_budget_seconds": 30,
+    "worker_search_budget_seconds": 27.99926294386387,
+    "cleanup_reserve_seconds": 2.0,
+    "service_budget_exceeded": false,
+    "worker_reap_pending": false,
+    "cleanup_pending": false,
+    "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing",
+    "used_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0005",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "sin(vx / (t * cos(sin(vy) * sin(sin(t)) + sin(sin(vx)) / c1))) / c2",
+          "ay": "sin(vy / (c3 * cos(sin(sin(sin(vx))) / c4))) / (t * cos(sin(vy / c5)))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.5405047227347608
+          },
+          {
+            "name": "c2",
+            "initial": 0.9896727954415355
+          },
+          {
+            "name": "c3",
+            "initial": 0.9997708477683319
+          },
+          {
+            "name": "c4",
+            "initial": -0.5910248067388613
+          },
+          {
+            "name": "c5",
+            "initial": 0.42587363027266845
+          }
+        ],
+        "complexity": 40,
+        "acceleration_search_mse_by_axis": [
+          2.2865598093228294e-07,
+          3.163441246009472e-11
+        ],
+        "acceleration_search_mse": 2.2868761534474304e-07,
+        "normalized_acceleration_search_loss": 4.784840056180209e-06,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "selection_role": "lowest_search_loss",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "vx",
+          "ay": "vy"
+        },
+        "parameter_spec": [],
+        "complexity": 2,
+        "acceleration_search_mse_by_axis": [
+          0.002813325691781436,
+          0.0009585858224981634
+        ],
+        "acceleration_search_mse": 0.0037719115142795996,
+        "normalized_acceleration_search_loss": 0.1692103315411297,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "selection_role": "lowest_complexity",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "vx / (t * cos(vy * c1 + sin(sin(vx)) / c2) / c3)",
+          "ay": "vy / (t * cos(-vx * (y - 1 * c4) + vy / c5))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.8941755463744975
+          },
+          {
+            "name": "c2",
+            "initial": 0.5592126235987945
+          },
+          {
+            "name": "c3",
+            "initial": 1.0050267630410028
+          },
+          {
+            "name": "c4",
+            "initial": 0.3487054923571909
+          },
+          {
+            "name": "c5",
+            "initial": -0.45025697134692333
+          }
+        ],
+        "complexity": 30,
+        "acceleration_search_mse_by_axis": [
+          3.90444007041486e-07,
+          1.370546347581029e-09
+        ],
+        "acceleration_search_mse": 3.91814553389067e-07,
+        "normalized_acceleration_search_loss": 8.322007420096034e-06,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "pysr"
+        ],
+        "selection_role": "middle_complexity",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      }
+    ],
+    "tool_client_wall_seconds": 26.413466492667794,
+    "search_id": "sr_a24a5b07d712",
+    "discovery_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0005",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "effective_time_budget_seconds": 30.0,
+    "wall_seconds": 26.416633808985353,
+    "body_positions_included": false
+  },
+  "status": "completed",
+  "new_search": {
+    "status": "timeout",
+    "backend": "pysr_with_linear_seeds",
+    "target": "velocity_difference_acceleration",
+    "feature_names": [
+      "t",
+      "x",
+      "y",
+      "vx",
+      "vy"
+    ],
+    "samples_per_probe": {
+      "probe_0003": 19,
+      "probe_0004": 19,
+      "probe_0005": 19,
+      "probe_0006": 19,
+      "probe_0007": 19,
+      "probe_0008": 19
+    },
+    "dropped_constant_features": [
+      "mass",
+      "charge"
+    ],
+    "omitted_incomplete_properties": [],
+    "search_configuration": {
+      "maxsize": 20,
+      "binary_operators": [
+        "+",
+        "-",
+        "*",
+        "/",
+        "^"
+      ],
+      "unary_operators": [
+        "sin",
+        "cos",
+        "exp",
+        "sqrt",
+        "log",
+        "abs"
+      ],
+      "power_exponent_max_complexity": 1,
+      "random_state": 42,
+      "warm_start": false,
+      "parallelism": "multithreading",
+      "linear_seed_max_terms": 3,
+      "finalization_reserve_seconds": 5.0,
+      "operator_scope": "All listed operators are enabled in each PySR search; no staged exclusion.",
+      "simplicity_preference": "Linear seeds plus parameter/complexity-aware selection within resolution tolerance."
+    },
+    "warnings": [
+      "Search loss uses finite-difference acceleration, not independent prediction.",
+      "All selected probes are discovery data and cannot serve as independent validation.",
+      "Constant/absent properties do not establish absence of physical dependence.",
+      "Body positions are not included; explicit t may substitute for unobserved body motion.",
+      "Resolution tolerance is a finite-stencil sensitivity heuristic, not a confidence interval.",
+      "Short rollout checks certify only acquired initial states; fit and fresh-probe validation remain required."
+    ],
+    "axis_search_seconds": [
+      11.532239438965917,
+      11.424489110708237
+    ],
+    "search_axes_completed": [
+      "ax",
+      "ay"
+    ],
+    "rejected_candidate_pairs": 1,
+    "elapsed_seconds": 23.170696187764406,
+    "search_elapsed_seconds": 23.142988484352827,
+    "service_elapsed_seconds": 23.170696187764406,
+    "requested_time_budget_seconds": 30.0,
+    "worker_search_budget_seconds": 27.999185981228948,
+    "cleanup_reserve_seconds": 2.0,
+    "service_budget_exceeded": false,
+    "worker_reap_pending": false,
+    "cleanup_pending": false,
+    "timing_scope": "service_validation_dispatch_search_and_cleanup_wait; excludes HTTP and client processing",
+    "axis_equations": {
+      "ax": [
+        {
+          "source": "-0.09842033341450776",
+          "complexity": 1,
+          "origin": "constant_initialization",
+          "parameter_count": 1,
+          "loss": 0.014225438250811235,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.08256416142664513*t)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.015050107302523466,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.008582204750476224*x)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.02286716916066701,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.024869036990608197*y)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.023436506616437078,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.9504648671524124*vx)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.002755862344888907,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.4966342071172735*vy)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.022628559762787968,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.10271929965625382*t) + (0.010136030756075597*x)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.014120787555379244,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.09410968749748866*t) + (0.032195648836922115*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.014426464418562362,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.005614269435769807*t) + (0.9785484418048442*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.002733356407841154,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.09633854095225504*t) + (-0.37872664167809367*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.01455039084971458,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.008346583336378733*x) + (-0.023312512459878983*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.022450121571521174,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0012760449391803572*x) + (0.9444856562396531*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.00273360127404633,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.008005228138966963*x) + (0.4698343141402739*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.021723230384562194,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.003389873243149335*y) + (0.9479432390336717*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0027471765169051316,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.01647221021348869*y) + (0.6511516798224177*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.022544190882956033,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.9594995825934431*vx) + (-0.06897681987617958*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.002733016312152822,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.12988455646006752*t) + (0.014569083224925155*x) + (0.05117128967857083*y)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.012723135309364602,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.016083517531685812*t) + (-0.0036713713351450264*x) + (1.013714403253627*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0026273398885074536,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.14205059034536704*t) + (0.0163954976766361*x) + (-0.7391911919859487*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.012571552989748729,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.010103506362720439*t) + (-0.008456510007140348*y) + (0.9947138518178424*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0026936923863889735,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.09695149003350957*t) + (0.02353903722573183*y) + (-0.1634882780367588*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.014378429505904552,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.003599997402268653*t) + (0.9743711700624464*vx) + (-0.04503274899981709*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0027265155850071353,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0012611998910642503*x) + (-0.003286845043521122*y) + (0.9421102277926541*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0027254384111701528,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.007982593623569362*x) + (0.015957783749610568*y) + (0.6196019881771557*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.021644056130063986,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0012916025080245135*x) + (0.953554836813058*vx) + (-0.06979650413256892*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0027102123435899686,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.01892540675544237*y) + (0.969442401778391*vx) + (-0.25236763563803055*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.002623782531732916,
+          "domain_valid": true
+        },
+        {
+          "source": "vx",
+          "complexity": 1,
+          "loss": 0.002813325691781436,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(vx)",
+          "complexity": 2,
+          "loss": 0.00272426676726595,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "vx/t",
+          "complexity": 3,
+          "loss": 0.0014170068321033421,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/sin(t)",
+          "complexity": 4,
+          "loss": 0.0007311071271135306,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "sin(vx/sin(t))",
+          "complexity": 5,
+          "loss": 0.0005777612964377372,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/((t*exp(vx)))",
+          "complexity": 6,
+          "loss": 0.00028904007895599713,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*(vx + 1.1538712096597514))",
+          "complexity": 7,
+          "loss": 7.445074521878671e-05,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/((t*cos(vx*(-1.6263315848233784))))",
+          "complexity": 8,
+          "loss": 2.0852590801391987e-05,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/((t*cos(sin(vx)*1.7165236691251236)))",
+          "complexity": 9,
+          "loss": 1.3727397506908978e-05,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*exp(t*vx*0.4751609595209588))",
+          "complexity": 10,
+          "loss": 5.628236202564285e-06,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*(t*vx/2.6651183805330603 + 0.9945427587408673))",
+          "complexity": 11,
+          "loss": 2.7850721839059604e-06,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*(vx*sin(t/2.374788831059412) + 1.0008702208107099))",
+          "complexity": 12,
+          "loss": 1.8825904317805215e-06,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/((t*(vx*sin(t/2.386176002467672) + cos(vy))))",
+          "complexity": 13,
+          "loss": 1.5180325408170903e-06,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*(vx*sin((t - vy)/2.3637648255251342) + 1.0023889307959304))",
+          "complexity": 14,
+          "loss": 1.4463805323959235e-06,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/((t*((vx - 1*(-0.020622198507836392))*sin(t/2.2679363632782845) + cos(vy))))",
+          "complexity": 15,
+          "loss": 1.0947465125729962e-06,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*(t**0.7039492278967407*(vx/2.0637736850986497 - 1*(-0.01764023098319868)) + cos(vy)))",
+          "complexity": 16,
+          "loss": 7.201920313201883e-07,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*((vx - 1*(-0.05186578985381473))*(t**0.6696741939109506/1.9828283138416616 - vy) + 0.9961799041614385))",
+          "complexity": 17,
+          "loss": 4.6426310254531646e-07,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*((t**0.652184745279728 - vy)*(vx - 1*(-0.04886970202924677))/1.9544124747178901 + cos(vy)))",
+          "complexity": 18,
+          "loss": 4.3941849970411346e-07,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*((vx - 1*(-0.04994597494331005))*sin((t/2.1946039445920578)**0.8041049828646464) + cos(vy/(-0.7394416708794834))))",
+          "complexity": 19,
+          "loss": 4.0978620577513697e-07,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vx/(t*((vx - (-0.05106720973312221)*cos(y))*sin((t/2.1867715577925755)**0.8012880812960204) + cos(vy)))",
+          "complexity": 20,
+          "loss": 3.69511966080812e-07,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        }
+      ],
+      "ay": [
+        {
+          "source": "-0.037714239338281816",
+          "complexity": 1,
+          "origin": "constant_initialization",
+          "parameter_count": 1,
+          "loss": 0.0029196992164913205,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.030140915036078283*t)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.003161045878380807,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0013478371098159588*x)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.004316292545742515,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.06738210261967809*y)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.0008513358255644168,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.11035064164311267*vx)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.004056886404987038,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.8251103365051472*vy)",
+          "complexity": 3,
+          "origin": "linear_least_squares",
+          "parameter_count": 1,
+          "loss": 0.0007994269804616823,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.043065752083451585*t) + (0.006499908079865573*x)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0027788871737046386,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.007638243467643452*t) + (-0.06275055006280778*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0007919824863957462,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.03677230502433815*t) + (-0.07359097090463053*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0030913863445261544,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.00019633591229408962*t) + (0.8233263695783497*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0007993934289347138,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0006680600312015783*x) + (-0.06725751848930314*y)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0008450166562753192,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0005127964028660477*x) + (0.10794781259383981*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.004053291362287974,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0003359475244970934*x) + (0.8239856517933423*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.000797832562869628,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.06599403969171948*y) + (0.061259594804632306*vx)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0007649325908237106,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.03707942268694221*y) + (0.47728702629384234*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0003719187714403867,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0024665640255137236*vx) + (0.8236563329423269*vy)",
+          "complexity": 7,
+          "origin": "linear_least_squares",
+          "parameter_count": 2,
+          "loss": 0.0007992955030903929,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.010582465413823752*t) + (0.0011990152811299003*x) + (-0.06118888122015577*y)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0007804457344139622,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.061375515868658956*t) + (0.00862789019983243*x) + (-0.15623258529192996*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0025058873747775337,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.0014207394704974976*t) + (-0.0005799949036084987*x) + (0.8360778947978624*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0007969170941520285,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0023693514667760245*t) + (-0.06480587364149777*y) + (0.05029151936390464*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0007619912884204555,
+          "domain_valid": true
+        },
+        {
+          "source": "(0.000770663272766947*t) + (-0.03713559659444431*y) + (0.4837625646876671*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.00037140281025313234,
+          "domain_valid": true
+        },
+        {
+          "source": "(9.830504300308238e-05*t) + (0.0028726621090131785*vx) + (0.8243101731133468*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0007992906556870493,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.00021481332874576694*x) + (-0.06597649145795123*y) + (0.06026608967497598*vx)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0007643019583976348,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0003885764843330188*x) + (-0.037104463924941745*y) + (0.47575125122631196*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.000369785861505647,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.0003292508300285167*x) + (0.0009511500569439167*vx) + (0.8234473818756474*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0007978136456289198,
+          "domain_valid": true
+        },
+        {
+          "source": "(-0.03789645259875964*y) + (0.02237617975052565*vx) + (0.4564324499170228*vy)",
+          "complexity": 11,
+          "origin": "linear_least_squares",
+          "parameter_count": 3,
+          "loss": 0.0003613060662819578,
+          "domain_valid": true
+        },
+        {
+          "source": "vy",
+          "complexity": 1,
+          "loss": 0.0009585858224981632,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "sin(vy)",
+          "complexity": 2,
+          "loss": 0.0009441623200556044,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": true
+        },
+        {
+          "source": "vy/t",
+          "complexity": 3,
+          "loss": 3.00551002181864e-05,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy/((t/1.061790869860666))",
+          "complexity": 5,
+          "loss": 1.5402203131482944e-05,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy/(t*exp(vx))",
+          "complexity": 6,
+          "loss": 9.790052304491797e-06,
+          "origin": "pysr",
+          "parameter_count": 0,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy*(0.9488896088861835 - vy)/t",
+          "complexity": 7,
+          "loss": 2.5543252948947585e-06,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy/(t*cos(vy/0.3831430778975092))",
+          "complexity": 8,
+          "loss": 7.574487713615825e-07,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "sin(vy)/(t*cos(vy/0.3749114230475845))",
+          "complexity": 9,
+          "loss": 7.526292466749388e-07,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy/(1.0024830991883817*t*cos(vy/0.37938906673826456))",
+          "complexity": 10,
+          "loss": 7.454954242686822e-07,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "sin(sin(sin(vy)))/(t*cos(vy/0.36030141654819364))",
+          "complexity": 11,
+          "loss": 7.413802081151787e-07,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy*exp(vy*vy*(x - 1*(-2.92210388193774)))/t",
+          "complexity": 12,
+          "loss": 1.1459675261401597e-07,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy/(t*exp(vy*vy/((cos(x)*(-0.38759467497084427)))))",
+          "complexity": 13,
+          "loss": 4.783506713535081e-08,
+          "origin": "pysr",
+          "parameter_count": 1,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy*exp(vy*vy*(x - 1*(-1.5787384267977123))/0.624211598884038)/t",
+          "complexity": 14,
+          "loss": 9.930674401695149e-10,
+          "origin": "pysr",
+          "parameter_count": 2,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy*exp(vy*(vy + 0.0015857537694056515)*(x - 1*(-1.5818566007276564))/0.6198596280940512)/t",
+          "complexity": 16,
+          "loss": 8.371494017532646e-10,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy*exp(3.080356766657694*vy**2/(cos(x**(1/4)) + 0.2198139132683098))/t",
+          "complexity": 17,
+          "loss": 3.4774362472749755e-10,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "vy*exp(3.088446180236216*vy*sin(vy)/(cos(x**(1/4)) + 0.2163268528194618))/t",
+          "complexity": 18,
+          "loss": 3.1355970785902036e-10,
+          "origin": "pysr",
+          "parameter_count": 3,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "1.0002616865882936*vy*exp(3.082480683929664*vy**2/(cos(x**(1/4)) + 0.22205537087912358))/t",
+          "complexity": 19,
+          "loss": 1.9707059491245124e-10,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        },
+        {
+          "source": "sin(1.0021781814095563*vy*exp(2.9826792237223687*vy**2/(cos(x**(1/4)) + 0.1887798318020918))/t)",
+          "complexity": 20,
+          "loss": 1.8734428189484813e-10,
+          "origin": "pysr",
+          "parameter_count": 4,
+          "domain_valid": false,
+          "rejection_reason": "observed_domain"
+        }
+      ]
+    },
+    "rejection_counts": {
+      "observed_domain": 34,
+      "parameter_budget": 1
+    },
+    "rejection_examples": [
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/t"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/sin(t)"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "sin(vx/sin(t))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/((t*exp(vx)))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*(vx + 1.1538712096597514))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/((t*cos(vx*(-1.6263315848233784))))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/((t*cos(sin(vx)*1.7165236691251236)))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*exp(t*vx*0.4751609595209588))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*(t*vx/2.6651183805330603 + 0.9945427587408673))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*(vx*sin(t/2.374788831059412) + 1.0008702208107099))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/((t*(vx*sin(t/2.386176002467672) + cos(vy))))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*(vx*sin((t - vy)/2.3637648255251342) + 1.0023889307959304))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/((t*((vx - 1*(-0.020622198507836392))*sin(t/2.2679363632782845) + cos(vy))))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*(t**0.7039492278967407*(vx/2.0637736850986497 - 1*(-0.01764023098319868)) + cos(vy)))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*((vx - 1*(-0.05186578985381473))*(t**0.6696741939109506/1.9828283138416616 - vy) + 0.9961799041614385))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*((t**0.652184745279728 - vy)*(vx - 1*(-0.04886970202924677))/1.9544124747178901 + cos(vy)))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*((vx - 1*(-0.04994597494331005))*sin((t/2.1946039445920578)**0.8041049828646464) + cos(vy/(-0.7394416708794834))))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ax",
+        "source": "vx/(t*((vx - (-0.05106720973312221)*cos(y))*sin((t/2.1867715577925755)**0.8012880812960204) + cos(vy)))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vy/t"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vy/((t/1.061790869860666))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vy/(t*exp(vx))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vy*(0.9488896088861835 - vy)/t"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "vy/(t*cos(vy/0.3831430778975092))"
+      },
+      {
+        "reason": "observed_domain",
+        "stage": "axis",
+        "axis": "ay",
+        "source": "sin(vy)/(t*cos(vy/0.3749114230475845))"
+      }
+    ],
+    "candidate_selection": {
+      "strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
+      "normalized_resolution_tolerance": 3.373685758713921e-06,
+      "legal_pairs": 14,
+      "rejection_stage_counts": {
+        "axis": 34,
+        "pair": 1
+      },
+      "rejected_candidates_total": 35,
+      "unchecked_axis_equations": 0,
+      "rollout_candidates_considered": 3,
+      "axis_frontier_counts": [
+        3,
+        5
+      ],
+      "full_axis_equations_retained": true,
+      "selection_incomplete": false,
+      "stop_reason": null,
+      "retained_checkpoint": false,
+      "independent_validation": false
+    },
+    "used_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0005",
+      "probe_0006",
+      "probe_0007",
+      "probe_0008"
+    ],
+    "candidates": [
+      {
+        "law_spec": {
+          "ax": "c1 * y + c2 * vx + c3 * vy",
+          "ay": "c4 * y + c5 * vy"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.01892540675544237
+          },
+          {
+            "name": "c2",
+            "initial": 0.969442401778391
+          },
+          {
+            "name": "c3",
+            "initial": -0.25236763563803055
+          },
+          {
+            "name": "c4",
+            "initial": -0.03707942268694221
+          },
+          {
+            "name": "c5",
+            "initial": 0.47728702629384234
+          }
+        ],
+        "complexity": 18,
+        "parameter_count": 5,
+        "acceleration_search_mse_by_axis": [
+          0.002623782531732916,
+          0.0003719187714403867
+        ],
+        "acceleration_search_mse": 0.0029957013031733024,
+        "normalized_acceleration_search_loss": 0.09769072712733501,
+        "dsl_valid": true,
+        "component_sources": [
+          "linear_least_squares",
+          "linear_least_squares"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 6,
+          "rhs_calls": 432,
+          "position_rmse": 0.0024139063707174437,
+          "velocity_rmse": 0.024139802457018543,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "selection_role": "simplest_within_resolution_tolerance",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "sin(vx)",
+          "ay": "c1 * y + c2 * vx + c3 * vy"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.03789645259875964
+          },
+          {
+            "name": "c2",
+            "initial": 0.02237617975052565
+          },
+          {
+            "name": "c3",
+            "initial": 0.4564324499170228
+          }
+        ],
+        "complexity": 13,
+        "parameter_count": 3,
+        "acceleration_search_mse_by_axis": [
+          0.00272426676726595,
+          0.0003613060662819578
+        ],
+        "acceleration_search_mse": 0.0030855728335479077,
+        "normalized_acceleration_search_loss": 0.09856977184851079,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "linear_least_squares"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 6,
+          "rhs_calls": 432,
+          "position_rmse": 0.0024452051862372095,
+          "velocity_rmse": 0.024455299264138045,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "selection_role": "alternative_accuracy_candidate",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      },
+      {
+        "law_spec": {
+          "ax": "sin(vx)",
+          "ay": "c1 * y + c2 * vy"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.03707942268694221
+          },
+          {
+            "name": "c2",
+            "initial": 0.47728702629384234
+          }
+        ],
+        "complexity": 9,
+        "parameter_count": 2,
+        "acceleration_search_mse_by_axis": [
+          0.00272426676726595,
+          0.0003719187714403867
+        ],
+        "acceleration_search_mse": 0.0030961855387063365,
+        "normalized_acceleration_search_loss": 0.09979185280388694,
+        "dsl_valid": true,
+        "component_sources": [
+          "pysr",
+          "linear_least_squares"
+        ],
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "All acquired states and controlled initial states"
+        },
+        "short_rollout_check": {
+          "status": "passed",
+          "probe_count": 6,
+          "rhs_calls": 432,
+          "position_rmse": 0.002447597067056396,
+          "velocity_rmse": 0.02447812920424165,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "selection_role": "alternative_accuracy_candidate",
+        "discovery_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ]
+      }
+    ],
+    "tool_client_wall_seconds": 23.176506705582142
+  },
+  "search_client_seconds": 23.176526622846723,
+  "old_candidate_diagnostics": [
+    {
+      "index": 0,
+      "law_spec": {
+        "ax": "sin(vx / (t * cos(sin(vy) * sin(sin(t)) + sin(sin(vx)) / c1))) / c2",
+        "ay": "sin(vy / (c3 * cos(sin(sin(sin(vx))) / c4))) / (t * cos(sin(vy / c5)))"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.5405047227347608
+        },
+        {
+          "name": "c2",
+          "initial": 0.9896727954415355
+        },
+        {
+          "name": "c3",
+          "initial": 0.9997708477683319
+        },
+        {
+          "name": "c4",
+          "initial": -0.5910248067388613
+        },
+        {
+          "name": "c5",
+          "initial": 0.42587363027266845
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "selection_role": "lowest_search_loss",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [
+          {
+            "probe_id": "probe_0003",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0004",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0005",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0006",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0007",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0008",
+            "code": "invalid_expression"
+          }
+        ],
+        "all_rollouts_completed": false,
+        "acceleration_mse_by_axis": [
+          2.2865598093228301e-07,
+          3.163441246009473e-11
+        ],
+        "trajectory_errors": null,
+        "failures": [
+          {
+            "probe_id": "probe_0003",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0004",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0005",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0006",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0007",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0008",
+            "stage": "rollout",
+            "code": "expression_domain"
+          }
+        ]
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [
+          {
+            "probe_id": "probe_0001",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0002",
+            "code": "invalid_expression"
+          }
+        ],
+        "all_rollouts_completed": false,
+        "acceleration_mse_by_axis": [
+          0.2443594225029535,
+          6.174847102810881
+        ],
+        "trajectory_errors": null,
+        "failures": [
+          {
+            "probe_id": "probe_0001",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0002",
+            "stage": "rollout",
+            "code": "expression_domain"
+          }
+        ]
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": 0.5405047227347608,
+          "c2": 0.9896727954415355,
+          "c3": 0.9997708477683319,
+          "c4": -0.5910248067388613,
+          "c5": 0.42587363027266845
+        },
+        "fit_status": "failed",
+        "converged": false,
+        "message": "expression domain/evaluation error: ZeroDivisionError Invalid candidate evaluations: 6; last failure: expression domain/evaluation error: ZeroDivisionError",
+        "errors": null,
+        "objective_calls": 6,
+        "invalid_evaluations": 6,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "coarse_fit_not_converged"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.002058284357190132
+    },
+    {
+      "index": 1,
+      "law_spec": {
+        "ax": "vx",
+        "ay": "vy"
+      },
+      "parameter_spec": [],
+      "parameter_count": 0,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "selection_role": "lowest_complexity",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.002813325691781436,
+          0.0009585858224981633
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.017406025062872334,
+            "velocity_mse": 0.031120708618929762,
+            "position_rmse": 0.1319318955479392,
+            "velocity_rmse": 0.1764106250171167
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0637549706097672,
+              "position_rmse": 0.25249746654128474,
+              "velocity_mse": 0.11909254593143566,
+              "velocity_rmse": 0.3450978787698291
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.0007425152149182358,
+              "position_rmse": 0.02724913237000833,
+              "velocity_mse": 0.0011854824027022364,
+              "velocity_rmse": 0.034430835056708055
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 21,
+              "position_mse": 2.496823632606586e-05,
+              "position_rmse": 0.004996822623034147,
+              "velocity_mse": 3.9690885285343217e-05,
+              "velocity_rmse": 0.006300070260349738
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 21,
+              "position_mse": 0.023284635589938325,
+              "position_rmse": 0.15259303912675154,
+              "velocity_mse": 0.039286713881100464,
+              "velocity_rmse": 0.19820876338118976
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0475796199382946,
+          0.04628367807429188
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.007518881268436735,
+            "velocity_mse": 0.05418689715266221,
+            "position_rmse": 0.08671148290991647,
+            "velocity_rmse": 0.2327807920612485
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.007759540632258532,
+              "position_rmse": 0.08808825479176285,
+              "velocity_mse": 0.05577503882925111,
+              "velocity_rmse": 0.23616739577945792
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.007278221904614939,
+              "position_rmse": 0.08531249559481272,
+              "velocity_mse": 0.0525987554760733,
+              "velocity_rmse": 0.22934418561645137
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {},
+        "fit_status": "no_parameters",
+        "converged": true,
+        "message": "No parameters to optimize; evaluated the supplied structure.",
+        "errors": {
+          "overall": {
+            "position_mse": 0.017406025062872334,
+            "velocity_mse": 0.031120708618929762,
+            "position_rmse": 0.1319318955479392,
+            "velocity_rmse": 0.1764106250171167
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0637549706097672,
+              "position_rmse": 0.25249746654128474,
+              "velocity_mse": 0.11909254593143566,
+              "velocity_rmse": 0.3450978787698291
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.0007425152149182358,
+              "position_rmse": 0.02724913237000833,
+              "velocity_mse": 0.0011854824027022364,
+              "velocity_rmse": 0.034430835056708055
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 21,
+              "position_mse": 2.496823632606586e-05,
+              "position_rmse": 0.004996822623034147,
+              "velocity_mse": 3.9690885285343217e-05,
+              "velocity_rmse": 0.006300070260349738
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 21,
+              "position_mse": 0.023284635589938325,
+              "position_rmse": 0.15259303912675154,
+              "velocity_mse": 0.039286713881100464,
+              "velocity_rmse": 0.19820876338118976
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 0,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.047879280522465706,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0475796199382946,
+          0.04628367807429188
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.007518881268436735,
+            "velocity_mse": 0.05418689715266221,
+            "position_rmse": 0.08671148290991647,
+            "velocity_rmse": 0.2327807920612485
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.007759540632258532,
+              "position_rmse": 0.08808825479176285,
+              "velocity_mse": 0.05577503882925111,
+              "velocity_rmse": 0.23616739577945792
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.007278221904614939,
+              "position_rmse": 0.08531249559481272,
+              "velocity_mse": 0.0525987554760733,
+              "velocity_rmse": 0.22934418561645137
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 2,
+      "law_spec": {
+        "ax": "vx / (t * cos(vy * c1 + sin(sin(vx)) / c2) / c3)",
+        "ay": "vy / (t * cos(-vx * (y - 1 * c4) + vy / c5))"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.8941755463744975
+        },
+        {
+          "name": "c2",
+          "initial": 0.5592126235987945
+        },
+        {
+          "name": "c3",
+          "initial": 1.0050267630410028
+        },
+        {
+          "name": "c4",
+          "initial": 0.3487054923571909
+        },
+        {
+          "name": "c5",
+          "initial": -0.45025697134692333
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "selection_role": "middle_complexity",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [
+          {
+            "probe_id": "probe_0003",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0004",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0005",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0006",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0007",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0008",
+            "code": "invalid_expression"
+          }
+        ],
+        "all_rollouts_completed": false,
+        "acceleration_mse_by_axis": [
+          3.9044400704148616e-07,
+          1.3705463475810297e-09
+        ],
+        "trajectory_errors": null,
+        "failures": [
+          {
+            "probe_id": "probe_0003",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0004",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0005",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0006",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0007",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0008",
+            "stage": "rollout",
+            "code": "expression_domain"
+          }
+        ]
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [
+          {
+            "probe_id": "probe_0001",
+            "code": "invalid_expression"
+          },
+          {
+            "probe_id": "probe_0002",
+            "code": "invalid_expression"
+          }
+        ],
+        "all_rollouts_completed": false,
+        "acceleration_mse_by_axis": [
+          5.441626490572389,
+          6.56803747931281
+        ],
+        "trajectory_errors": null,
+        "failures": [
+          {
+            "probe_id": "probe_0001",
+            "stage": "rollout",
+            "code": "expression_domain"
+          },
+          {
+            "probe_id": "probe_0002",
+            "stage": "rollout",
+            "code": "expression_domain"
+          }
+        ]
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": 0.8941755463744975,
+          "c2": 0.5592126235987945,
+          "c3": 1.0050267630410028,
+          "c4": 0.3487054923571909,
+          "c5": -0.45025697134692333
+        },
+        "fit_status": "failed",
+        "converged": false,
+        "message": "expression domain/evaluation error: ZeroDivisionError Invalid candidate evaluations: 6; last failure: expression domain/evaluation error: ZeroDivisionError",
+        "errors": null,
+        "objective_calls": 6,
+        "invalid_evaluations": 6,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "coarse_fit_not_converged"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.0025367308408021927
+    }
+  ],
+  "new_candidate_diagnostics": [
+    {
+      "index": 0,
+      "law_spec": {
+        "ax": "c1 * y + c2 * vx + c3 * vy",
+        "ay": "c4 * y + c5 * vy"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.01892540675544237
+        },
+        {
+          "name": "c2",
+          "initial": 0.969442401778391
+        },
+        {
+          "name": "c3",
+          "initial": -0.25236763563803055
+        },
+        {
+          "name": "c4",
+          "initial": -0.03707942268694221
+        },
+        {
+          "name": "c5",
+          "initial": 0.47728702629384234
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "linear_least_squares",
+        "linear_least_squares"
+      ],
+      "selection_role": "simplest_within_resolution_tolerance",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0026237825317329162,
+          0.0003719187714403868
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.014343422400975808,
+            "velocity_mse": 0.025967491350486312,
+            "position_rmse": 0.11976402799244774,
+            "velocity_rmse": 0.16114431839343984
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0637549706097672,
+              "position_rmse": 0.25249746654128474,
+              "velocity_mse": 0.11909254593143566,
+              "velocity_rmse": 0.3450978787698291
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.0007425152149182358,
+              "position_rmse": 0.02724913237000833,
+              "velocity_mse": 0.0011854824027022364,
+              "velocity_rmse": 0.034430835056708055
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.0021796543554421393,
+              "position_rmse": 0.04668676852644804,
+              "velocity_mse": 0.004409254763547137,
+              "velocity_rmse": 0.06640221956792662
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 21,
+              "position_mse": 2.496823632606586e-05,
+              "position_rmse": 0.004996822623034147,
+              "velocity_mse": 3.9690885285343217e-05,
+              "velocity_rmse": 0.006300070260349738
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 21,
+              "position_mse": 0.011043895626259112,
+              "position_rmse": 0.10508994065208674,
+              "velocity_mse": 0.017518064813420046,
+              "velocity_rmse": 0.1323558265185936
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.06679926155071458,
+          0.017951315172606914
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.005951676486753017,
+            "velocity_mse": 0.04140382814020371,
+            "position_rmse": 0.0771471093868916,
+            "velocity_rmse": 0.2034793064176397
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.0011779113961678412,
+              "position_rmse": 0.03432071380621098,
+              "velocity_mse": 0.007905132465022767,
+              "velocity_rmse": 0.0889108118567296
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.010725441577338192,
+              "position_rmse": 0.10356370781957448,
+              "velocity_mse": 0.07490252381538466,
+              "velocity_rmse": 0.27368325453959486
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": -0.021659229123551692,
+          "c2": 2.601106391215842,
+          "c3": -0.9065286918213074,
+          "c4": -0.058993361499136816,
+          "c5": 0.1277791449102057
+        },
+        "fit_status": "not_converged",
+        "converged": false,
+        "message": "numerical wall-time budget exhausted Returning the best finite iterate; optimization did not converge.",
+        "errors": {
+          "overall": {
+            "position_mse": 0.014209478149669025,
+            "velocity_mse": 0.025827780184107238,
+            "position_rmse": 0.11920351567663189,
+            "velocity_rmse": 0.1607102367122494
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0637549706097672,
+              "position_rmse": 0.25249746654128474,
+              "velocity_mse": 0.11909254593143566,
+              "velocity_rmse": 0.3450978787698291
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.0007425152149182358,
+              "position_rmse": 0.02724913237000833,
+              "velocity_mse": 0.0011854824027022364,
+              "velocity_rmse": 0.034430835056708055
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.0024839672775234527,
+              "position_rmse": 0.04983941489948947,
+              "velocity_mse": 0.0041787047710638466,
+              "velocity_rmse": 0.06464290193875771
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 21,
+              "position_mse": 2.496823632606586e-05,
+              "position_rmse": 0.004996822623034147,
+              "velocity_mse": 3.9690885285343217e-05,
+              "velocity_rmse": 0.006300070260349738
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 21,
+              "position_mse": 0.009935917196337104,
+              "position_rmse": 0.09967907100458502,
+              "velocity_mse": 0.016910347807628928,
+              "velocity_rmse": 0.13003979316974065
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 93,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "coarse_fit_not_converged"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 5.002408625558019,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.40318169290554223,
+          0.022275498015022654
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.1105134301837324,
+            "velocity_mse": 1.271850838990322,
+            "position_rmse": 0.33243560306280734,
+            "velocity_rmse": 1.127763645002942
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.018478870633144708,
+              "position_rmse": 0.13593700979918863,
+              "velocity_mse": 0.23993417962874808,
+              "velocity_rmse": 0.4898307663150081
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.2025479897343201,
+              "position_rmse": 0.4500533187682545,
+              "velocity_mse": 2.303767498351896,
+              "velocity_rmse": 1.5178166879936115
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 1,
+      "law_spec": {
+        "ax": "sin(vx)",
+        "ay": "c1 * y + c2 * vx + c3 * vy"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.03789645259875964
+        },
+        {
+          "name": "c2",
+          "initial": 0.02237617975052565
+        },
+        {
+          "name": "c3",
+          "initial": 0.4564324499170228
+        }
+      ],
+      "parameter_count": 3,
+      "component_sources": [
+        "pysr",
+        "linear_least_squares"
+      ],
+      "selection_role": "alternative_accuracy_candidate",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0027242667672659512,
+          0.00036130606628195783
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.01472098135300043,
+            "velocity_mse": 0.026598090426569344,
+            "position_rmse": 0.12133005131870847,
+            "velocity_rmse": 0.16308921002497173
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0637549706097672,
+              "position_rmse": 0.25249746654128474,
+              "velocity_mse": 0.11909254593143566,
+              "velocity_rmse": 0.3450978787698291
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.0007425152149182358,
+              "position_rmse": 0.02724913237000833,
+              "velocity_mse": 0.0011854824027022364,
+              "velocity_rmse": 0.034430835056708055
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 1.3694322568705338e-05,
+              "position_rmse": 0.003700584084804092,
+              "velocity_mse": 0.00020875162984095123,
+              "velocity_rmse": 0.014448239679661714
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 21,
+              "position_mse": 2.496823632606586e-05,
+              "position_rmse": 0.004996822623034147,
+              "velocity_mse": 3.9690885285343217e-05,
+              "velocity_rmse": 0.006300070260349738
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 21,
+              "position_mse": 0.015475209371280293,
+              "position_rmse": 0.12439939457762764,
+              "velocity_mse": 0.025502162403624472,
+              "velocity_rmse": 0.15969396483156298
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.04624605229431811,
+          0.018224656724716008
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.004529783783651547,
+            "velocity_mse": 0.03093158844949976,
+            "position_rmse": 0.0673036684264056,
+            "velocity_rmse": 0.17587378556652428
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.0014188177441516762,
+              "position_rmse": 0.03766719719001769,
+              "velocity_mse": 0.008796020339553765,
+              "velocity_rmse": 0.09378710113631707
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.007640749823151418,
+              "position_rmse": 0.08741138268641802,
+              "velocity_mse": 0.05306715655944576,
+              "velocity_rmse": 0.2303630972170798
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": -0.058936266933449645,
+          "c2": 0.02237617975052565,
+          "c3": 0.1293916245778963
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`ftol` termination condition is satisfied. Invalid candidate evaluations: 7; last failure: candidate trajectory diverged",
+        "errors": {
+          "overall": {
+            "position_mse": 0.014597554949253994,
+            "velocity_mse": 0.026482523607014658,
+            "position_rmse": 0.12082034162033309,
+            "velocity_rmse": 0.1627345187936925
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0637549706097672,
+              "position_rmse": 0.25249746654128474,
+              "velocity_mse": 0.11909254593143566,
+              "velocity_rmse": 0.3450978787698291
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.0007425152149182358,
+              "position_rmse": 0.02724913237000833,
+              "velocity_mse": 0.0011854824027022364,
+              "velocity_rmse": 0.034430835056708055
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.0006211977390806281,
+              "position_rmse": 0.024923838770956372,
+              "velocity_mse": 0.001044561771035248,
+              "velocity_rmse": 0.03231968086221224
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 21,
+              "position_mse": 2.496823632606586e-05,
+              "position_rmse": 0.004996822623034147,
+              "velocity_mse": 3.9690885285343217e-05,
+              "velocity_rmse": 0.006300070260349738
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 21,
+              "position_mse": 0.014127147532289728,
+              "position_rmse": 0.11885767763291409,
+              "velocity_mse": 0.02397295134510206,
+              "velocity_rmse": 0.15483201007899516
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 43,
+        "invalid_evaluations": 7,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 2.134288130328059,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.04624605229431811,
+          0.023639399373972993
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.0045823154636104564,
+            "velocity_mse": 0.030782178427978094,
+            "position_rmse": 0.06769280215510698,
+            "velocity_rmse": 0.17544850648545884
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.00044780931498244146,
+              "position_rmse": 0.021161505498958278,
+              "velocity_mse": 0.0026036059390721305,
+              "velocity_rmse": 0.05102554202624535
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.008716821612238471,
+              "position_rmse": 0.09336392029171907,
+              "velocity_mse": 0.05896075091688406,
+              "velocity_rmse": 0.24281834962968524
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    },
+    {
+      "index": 2,
+      "law_spec": {
+        "ax": "sin(vx)",
+        "ay": "c1 * y + c2 * vy"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.03707942268694221
+        },
+        {
+          "name": "c2",
+          "initial": 0.47728702629384234
+        }
+      ],
+      "parameter_count": 2,
+      "component_sources": [
+        "pysr",
+        "linear_least_squares"
+      ],
+      "selection_role": "alternative_accuracy_candidate",
+      "initial_training": {
+        "probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.0027242667672659512,
+          0.0003719187714403868
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.01472863912243953,
+            "velocity_mse": 0.0266035650080855,
+            "position_rmse": 0.12136160481156934,
+            "velocity_rmse": 0.16310599317034766
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0637549706097672,
+              "position_rmse": 0.25249746654128474,
+              "velocity_mse": 0.11909254593143566,
+              "velocity_rmse": 0.3450978787698291
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.0007425152149182358,
+              "position_rmse": 0.02724913237000833,
+              "velocity_mse": 0.0011854824027022364,
+              "velocity_rmse": 0.034430835056708055
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 1.448383304919795e-05,
+              "position_rmse": 0.0038057631362445497,
+              "velocity_mse": 0.00021242809745979698,
+              "velocity_rmse": 0.014574913291673366
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 21,
+              "position_mse": 2.496823632606586e-05,
+              "position_rmse": 0.004996822623034147,
+              "velocity_mse": 3.9690885285343217e-05,
+              "velocity_rmse": 0.006300070260349738
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 21,
+              "position_mse": 0.015520366477434397,
+              "position_rmse": 0.1245807628706551,
+              "velocity_mse": 0.025531333425102568,
+              "velocity_rmse": 0.15978527286675254
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "initial_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.04624605229431811,
+          0.017951315172606914
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.004505208852749156,
+            "velocity_mse": 0.030760398198864666,
+            "position_rmse": 0.06712085259253756,
+            "velocity_rmse": 0.17538642535517013
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.0015317518880878518,
+              "position_rmse": 0.03913760197160592,
+              "velocity_mse": 0.009546571480252404,
+              "velocity_rmse": 0.09770655802069994
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.00747866581741046,
+              "position_rmse": 0.08647927969988221,
+              "velocity_mse": 0.05197422491747693,
+              "velocity_rmse": 0.22797856240768982
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      },
+      "training_only_refit": {
+        "fitted_parameters": {
+          "c1": -0.05897917952734689,
+          "c2": 0.12818017269764337
+        },
+        "fit_status": "converged",
+        "converged": true,
+        "message": "`ftol` termination condition is satisfied.",
+        "errors": {
+          "overall": {
+            "position_mse": 0.014597554905269651,
+            "velocity_mse": 0.026482543650905188,
+            "position_rmse": 0.12082034143830934,
+            "velocity_rmse": 0.16273458037831168
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 21,
+              "position_mse": 0.0637549706097672,
+              "position_rmse": 0.25249746654128474,
+              "velocity_mse": 0.11909254593143566,
+              "velocity_rmse": 0.3450978787698291
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 21,
+              "position_mse": 0.0007425152149182358,
+              "position_rmse": 0.02724913237000833,
+              "velocity_mse": 0.0011854824027022364,
+              "velocity_rmse": 0.034430835056708055
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 21,
+              "position_mse": 0.0006211988096089882,
+              "position_rmse": 0.024923860246939843,
+              "velocity_mse": 0.0010420296885353035,
+              "velocity_rmse": 0.032280484639102054
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 21,
+              "position_mse": 0.008314530363142085,
+              "position_rmse": 0.09118404664820533,
+              "velocity_mse": 0.013559909306527411,
+              "velocity_rmse": 0.11644702360527473
+            },
+            {
+              "probe_id": "probe_0007",
+              "n_samples": 21,
+              "position_mse": 2.496823632606586e-05,
+              "position_rmse": 0.004996822623034147,
+              "velocity_mse": 3.9690885285343217e-05,
+              "velocity_rmse": 0.006300070260349738
+            },
+            {
+              "probe_id": "probe_0008",
+              "n_samples": 21,
+              "position_mse": 0.014127146197855319,
+              "position_rmse": 0.11885767201933294,
+              "velocity_mse": 0.02397560369094518,
+              "velocity_rmse": 0.15484057507948354
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "objective_calls": 15,
+        "invalid_evaluations": 0,
+        "refinement": {
+          "attempted": false,
+          "status": "skipped",
+          "tolerance": 1e-12,
+          "position_noise_sigma": null,
+          "reason": "noise_present_or_unknown"
+        },
+        "objective": "equal_trajectory_position_mse",
+        "optimizer": "scipy.least_squares (local)"
+      },
+      "refit_wall_seconds": 0.6674953252077103,
+      "refitted_heldout": {
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002"
+        ],
+        "initial_domain_failures": [],
+        "all_rollouts_completed": true,
+        "acceleration_mse_by_axis": [
+          0.04624605229431811,
+          0.022269012358154913
+        ],
+        "trajectory_errors": {
+          "overall": {
+            "position_mse": 0.004495664530839599,
+            "velocity_mse": 0.03021301919463654,
+            "position_rmse": 0.06704971685875787,
+            "velocity_rmse": 0.1738189264569211
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 0.0004465443538676,
+              "position_rmse": 0.02113159610317214,
+              "velocity_mse": 0.0025960938729415487,
+              "velocity_rmse": 0.05095187801191973
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 0.008544784707811597,
+              "position_rmse": 0.09243800467238351,
+              "velocity_mse": 0.057829944516331534,
+              "velocity_rmse": 0.2404785739236066
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "failures": []
+      }
+    }
+  ],
+  "offline_total_seconds": 31.343211742118,
+  "source_records_unchanged": true
+}

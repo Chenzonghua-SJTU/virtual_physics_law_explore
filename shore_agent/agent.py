@@ -269,6 +269,7 @@ class Agent:
             no_action = 0
             loop_stop_reason = None
             recovery_feedback = []
+            history_message = self.messages[-1]
             for call in calls:
                 name = call['function']['name']
                 print(f'工具调用：{name}', flush=True)
@@ -282,8 +283,9 @@ class Agent:
                     self.session_ended = True
                     result = self._failure('wall_time_exhausted')
                 else:
+                    raw_arguments = call['function']['arguments']
                     try:
-                        args = json.loads(call['function']['arguments'])
+                        args = json.loads(raw_arguments)
                         if not isinstance(args, dict):
                             raise ValueError()
                         # NaN/Infinity are accepted by Python's decoder but not our protocol.
@@ -292,8 +294,27 @@ class Agent:
                         args = None
                         result = self._failure('invalid_tool_arguments_json')
                         executed_or_invalid = True
+                        if self.loop_recovery:
+                            # Some tool parsers mark a truncated call as
+                            # tool_calls rather than length. Qwen's next chat
+                            # template parses historical argument strings as
+                            # JSON, so the raw invalid string would cause HTTP
+                            # 400 before the model can read our failure reply.
+                            # Audit the original, do not execute it, and repair
+                            # only its transport representation in history.
+                            self._event('invalid_tool_arguments_history_repaired',
+                                tool_call_id=call['id'], name=name,
+                                original_arguments=raw_arguments, replacement_arguments='{}',
+                                tool_executed=False)
+                            for historical_call in history_message['tool_calls']:
+                                if historical_call['id'] == call['id']:
+                                    historical_call['function']['arguments'] = '{}'
+                            result['error']['message'] = (
+                                'Original tool arguments were invalid or incomplete JSON and were not executed. '
+                                'The historical arguments were replaced with {} for transport only. '
+                                'Send complete, concise JSON arguments to retry.')
                     if self.loop_recovery:
-                        key = self._repeat_key(name, args, call['function']['arguments'])
+                        key = self._repeat_key(name, args, raw_arguments)
                         block_reason = self._repeat_block_reason(key)
                     else:
                         block_reason = None
