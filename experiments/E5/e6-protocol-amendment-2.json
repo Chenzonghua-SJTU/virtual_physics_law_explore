@@ -1,0 +1,28 @@
+{
+  "registered_at": "2026-11-07T03:28:54.195696+00:00",
+  "authority": "User explicitly requested fixing repeated identical calls and removing cumulative5M token limit, while preserving per-call4096,300s and10energy. Freeze no-extra-tool baseline and report6world results before PySR.",
+  "supersedes": "Pending original E6 seed43/final-unseeded runs and amendment1; completed and interrupted records retained",
+  "configuration_changes": {
+    "max_total_tokens": null,
+    "sampling_seed": null,
+    "loop_recovery": true,
+    "new_tools": 0,
+    "output_per_call": 4096,
+    "energy": 10,
+    "exploration_seconds": 300,
+    "thinking": false,
+    "noise": false
+  },
+  "design": {
+    "profiles": [
+      "baseline",
+      "concise"
+    ],
+    "repeats_per_profile": 2,
+    "total_six_world_batches": 4,
+    "one_batch_per_identical27B_endpoint": true,
+    "selection": "count raw>=90 across2 full repeats; then complete count; then mean with incomplete0; tie baseline",
+    "report": "selected configuration and last full batch six rows, also show both repeats; do not claim globally optimal"
+  },
+  "phase2": "Only after selection and user-facing six-world report; optionalPySR off/on two repeats each under same new limits."
+}

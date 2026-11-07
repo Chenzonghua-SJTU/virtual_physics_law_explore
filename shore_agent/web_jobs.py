@@ -474,6 +474,9 @@ class RunManager:
                                     ('max_total_tokens', 1000, 10000000), ('max_tokens_per_call', 64, 393216)]:
             if name in payload:
                 value = payload[name]
+                if name == 'max_total_tokens' and value is None:
+                    config['model'][name] = None
+                    continue
                 if type(value) is not int or not lower <= value <= upper:
                     raise ValidationError('invalid_output_budget' if name == 'max_tokens_per_call'
                                           else 'invalid_seed' if name == 'seed' else 'invalid_budget')

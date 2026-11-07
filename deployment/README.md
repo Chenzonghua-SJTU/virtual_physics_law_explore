@@ -1,12 +1,24 @@
 # qz-infer 本地 Qwen 部署
 
-当前科研基线已恢复为 `3ba6d63`（E5 R01）；后面保留 E4/E3 的历史部署说明。
+当前在 `3ba6d63`（E5 R01）的科学工具上进行 E6 无新增工具比较；后面保留回退及 E4/E3 的历史部署说明。
 
 服务器项目：`/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery`。
 公共模型根目录：`/inspire/hdd/project/26-the-other-shore/public/models`。
 项目的服务器 `.venv` 链接到已有 `/opt/shore-test5-forge2`（Python 3.12、vLLM 0.24.0、Torch 2.11.0+cu130）。Mac 的虚拟环境、密钥和 `.git` 未复制；代码、文档、实验汇总和运行档案保留。
 
-## 当前：恢复 3ba6d63 的 E5 R01
+## E6：无新增工具的循环修复比较
+
+当前配置继续使用原有 9 个工具、10 能量、300 秒探索、单次最多 4096 输出 token，关闭思考与噪声。用户已取消累计 5M token 限制；`model.max_total_tokens: null` 仅取消累计配额，保留完整用量统计。前端高级设置留空表示不限累计用量。
+
+`agent.loop_recovery: true` 修复反复原样调用而不前进的问题：同一错误最多实际重试一次；同一已知数据上的确定性调用也最多实际执行两次。第三次拦截并反馈一次纠正机会，后续模型轮仍重复才结束并保留有效草稿。新观测会更新状态，合法重复采样不受此限制。环境错误保留结构化 code/message。单次输出截断只允许一次短回复恢复，未完整输出的调用不执行。历史配置未开启该开关时仍保持旧行为。
+
+`run_e6_recovery.py` 在四个同型号 27B 端点上，分别完成 baseline / concise 提示词各两批六世界。取消固定模型采样 seed（环境 seed 仍为 42）。按两批共 12 次中 ≥90 分数、完整评测数、均分顺序选定版本，不逐世界择优拼接。协议见 `experiments/E5/e6-protocol-amendment-2.json`。先报告这版完整结果，再开始可选 PySR 世界实验。
+
+```bash
+.venv/bin/python -u deployment/run_e6_recovery.py
+```
+
+## 历史：恢复 3ba6d63 的 E5 R01
 
 Agent、模型客户端、科学工具、提示词、拟合和评测实现逐文件恢复为该提交。规则为 10 能量、300 秒探索、单次最多 4096 输出 token，关闭思考，探索和独立评测均无噪声。提示词使用原 `main.txt` 加该提交的 `e5.txt`；没有后期诊断、候选公式、HS/谐波、工具筛选或恢复策略。保留原有 8 个工具和 E4 已有的 `save_draft`，共 9 个。
 

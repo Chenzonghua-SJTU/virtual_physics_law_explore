@@ -33,6 +33,15 @@ def statistics(a):
             'max_abs': np.abs(a).max(axis=0).tolist()}
 
 
+class EnvironmentToolError(ValueError):
+    """Preserve public environment error codes in the Agent feedback channel."""
+    def __init__(self, error):
+        error = error if isinstance(error, dict) else {'message': str(error)}
+        code = error.get('code')
+        self.code = code if isinstance(code, str) and code.isidentifier() else 'environment_error'
+        super().__init__(str(error.get('message', error)))
+
+
 class ToolRuntime:
     schemas = SCHEMAS
 
@@ -159,7 +168,7 @@ class ToolRuntime:
     def _environment_call(self, name, **kwargs):
         response = self.environment.request(name, **kwargs)
         if not response['ok']:
-            raise ValueError(str(response['error']))
+            raise EnvironmentToolError(response['error'])
         return response['data']
 
     def observe_body(self, times):

@@ -104,7 +104,10 @@ class DeepSeekClient:
         # obsolete caps in older configurations, including the per-role cap.
         self.max_calls = None
         self.max_tokens_per_call = _positive(config, 'max_tokens_per_call', 4096, integer=True)
-        self.max_total_tokens = _positive(config, 'max_total_tokens', 150000, integer=True)
+        # Explicit null disables the cumulative quota, not the per-call cap or
+        # accounting. Historical configurations with a number keep their limit.
+        self.max_total_tokens = (None if config.get('max_total_tokens', 150000) is None
+                                 else _positive(config, 'max_total_tokens', 150000, integer=True))
         self.role_limits = {'main': None}
         self.max_retries = config.get('max_retries', 1)
         if isinstance(self.max_retries, bool) or not isinstance(self.max_retries, int) or not 0 <= self.max_retries <= 5:
@@ -382,7 +385,8 @@ class DeepSeekClient:
             raise ModelError('invalid_model_role')
         if self.remaining_seconds() <= 0:
             raise ModelError('wall_time_exhausted')
-        if self.usage['total_tokens'] + self.usage['conservative_reserved_tokens'] >= self.max_total_tokens:
+        if (self.max_total_tokens is not None and
+                self.usage['total_tokens'] + self.usage['conservative_reserved_tokens'] >= self.max_total_tokens):
             self.usage['request_budget'] = {'status': 'blocked', 'reason': 'total_budget_exhausted',
                 'available_tokens': max(0, self.max_total_tokens - self.usage['total_tokens']
                                          - self.usage['conservative_reserved_tokens'])}
@@ -435,9 +439,11 @@ class DeepSeekClient:
         prompt_allowance = estimate['estimated_prompt_tokens']
         for attempt in range(self.max_retries + 1):
             self._quota(role)
-            available = self.max_total_tokens - self.usage['total_tokens'] - self.usage['conservative_reserved_tokens']
-            output_limit = min(requested_max, available - prompt_allowance)
+            available = (None if self.max_total_tokens is None else
+                         self.max_total_tokens - self.usage['total_tokens'] - self.usage['conservative_reserved_tokens'])
+            output_limit = requested_max if available is None else min(requested_max, available - prompt_allowance)
             self.usage['request_budget'] = dict(estimate, available_tokens=available,
+                total_quota_enabled=self.max_total_tokens is not None,
                 requested_output_tokens=requested_max, output_token_limit=max(0, output_limit),
                 minimum_output_tokens=64, status='blocked' if output_limit < 64 else 'admitted')
             if output_limit < 64:

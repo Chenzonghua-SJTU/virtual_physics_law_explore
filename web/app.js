@@ -210,7 +210,7 @@
     $('output-tokens').max = String(state.maxOutputTokens);
     if (Number($('output-tokens').value) > state.maxOutputTokens) $('output-tokens').value = state.maxOutputTokens;
     errors.invalid_output_budget = `单次输出上限应在 64–${number(state.maxOutputTokens)} 之间。`;
-    $('output-token-note').textContent = `模型调用无次数上限；Token 总预算与实验时限仍生效。单次输出含思考、正文和工具参数，最多 ${number(state.maxOutputTokens)} Token。`;
+    $('output-token-note').textContent = `累计 Token 可不设上限，用量仍统计；实验时限和单次输出上限仍生效。单次输出含思考、正文和工具参数，最多 ${number(state.maxOutputTokens)} Token。`;
   }
   function setFormState() {
     const active = Boolean(state.active);
@@ -344,7 +344,7 @@
     $('calls-limit').textContent = '无次数上限';
     $('calls-note').textContent = '主 Agent 模型请求';
     $('tokens-note').textContent = '累计输入与输出';
-    $('tokens-limit').textContent = `/ ${compact(state.defaults.max_total_tokens ?? 5000000)}`;
+    $('tokens-limit').textContent = state.defaults.max_total_tokens === null ? '不设累计上限' : `/ ${compact(state.defaults.max_total_tokens ?? 5000000)}`;
     renderChart(); renderTimeline([]); renderDiscovery(); renderHistory(); setFormState();
   }
   async function changeHistory(action, id) {
@@ -480,7 +480,9 @@
         : '累计输入与输出';
     const callLimit = Object.prototype.hasOwnProperty.call(config, 'max_calls') ? config.max_calls : run.max_calls;
     $('calls-limit').textContent = finite(callLimit) && callLimit > 0 ? `/ ${number(callLimit)}` : '无次数上限';
-    $('tokens-limit').textContent = `/ ${compact(config.max_total_tokens ?? run.max_total_tokens ?? state.defaults.max_total_tokens ?? 5000000)}`;
+    const totalLimit = Object.prototype.hasOwnProperty.call(config, 'max_total_tokens') ? config.max_total_tokens
+      : Object.prototype.hasOwnProperty.call(run, 'max_total_tokens') ? run.max_total_tokens : state.defaults.max_total_tokens;
+    $('tokens-limit').textContent = totalLimit === null ? '不设累计上限' : `/ ${compact(totalLimit ?? 5000000)}`;
     $('probes-value').textContent = number(asArray(records.probes).length);
     $('validations-value').textContent = number(asArray(records.validations).length);
     updateSelectors(records);
@@ -895,7 +897,7 @@
     }
     const body = {
       model: $('model').value.trim(), world_id: $('world-select').value, noise: $('noise').checked, seed: Number($('seed').value),
-      max_total_tokens: Number($('max-tokens').value), max_tokens_per_call: Number($('output-tokens').value), thinking: $('thinking').checked,
+      max_total_tokens: $('max-tokens').value.trim() === '' ? null : Number($('max-tokens').value), max_tokens_per_call: Number($('output-tokens').value), thinking: $('thinking').checked,
       code_enabled: $('code-enabled').checked && state.codeAvailable,
     };
     if (state.reasoningEffortSupported) body.reasoning_effort = $('reasoning-effort').value;
@@ -965,7 +967,7 @@
         $('reasoning-effort').value = state.defaults.reasoning_effort || 'low';
         $('code-enabled').checked = Boolean(state.defaults.code_enabled) && state.codeAvailable;
         $('seed').value = state.defaults.seed ?? 42;
-        $('max-tokens').value = state.defaults.max_total_tokens ?? 5000000;
+        $('max-tokens').value = state.defaults.max_total_tokens === null ? '' : (state.defaults.max_total_tokens ?? 5000000);
         $('output-tokens').value = Math.min(state.defaults.max_tokens_per_call ?? 65536, state.maxOutputTokens);
       }
       renderHistory(); setFormState();
