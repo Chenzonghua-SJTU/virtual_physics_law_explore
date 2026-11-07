@@ -100,6 +100,19 @@ def test_missing_usage_never_manufactures_verified_average(saved_run):
     assert world['model_failures'][0]['error'] == 'api_timeout'
 
 
+def test_failed_law_and_validation_with_null_errors_remain_in_audit(saved_run):
+    root, summary, run, _, _ = saved_run
+    for kind, identifier in [('law', 'law_1'), ('validation', 'val_1')]:
+        path = run/'records'/kind/f'{identifier}.json'
+        record = json.loads(path.read_text())
+        record.update(errors=None, fit_status='failed')
+        dump(path, record)
+    world = build_audit(root, summary)['worlds'][0]
+    assert world['fits'][0]['errors'] is None
+    assert world['validations'][0]['errors'] is None
+    assert world['validations'][0]['observation_relative_errors'] == []
+
+
 def test_malformed_usage_log_cannot_fall_back_to_summary_complete_claim(saved_run):
     root, summary, run, _, _ = saved_run
     (run/'model_events.jsonl').write_text('{broken')

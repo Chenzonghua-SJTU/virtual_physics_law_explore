@@ -1,0 +1,377 @@
+{
+  "kind": "posthoc_packaging_diagnostic_not_agent_result",
+  "scope": "Existing R02 world5 observations only. No new environment observations, LLM, PySR search or official independent evaluation. Includes one parameter-sharing replay and one candidate trajectory refit/rollout against existing records. Does not change the submitted law or original score.",
+  "search_id": "sr_4a250f50be8e",
+  "source_run": "e8-qwen38-pysr-stage-20261107-r02-world_5",
+  "training_probe_ids": [
+    "probe_0003",
+    "probe_0005",
+    "probe_0006"
+  ],
+  "pareto_evidence": {
+    "ax": {
+      "candidate": {
+        "source": "-(0.0600087610687798*(x)) + -(0.00199903614122106*(x**3)) + -(0.01198823922769*(x*y**2))",
+        "complexity": 20,
+        "origin": "regression_basis",
+        "parameter_count": 3,
+        "loss": 4.5495188546997795e-10,
+        "domain_valid": true
+      },
+      "retained_before_pairing": true,
+      "dominators": []
+    },
+    "ay": {
+      "candidate": {
+        "source": "-(0.100000928941485*(y)) + -(0.0119849658171937*(x**2*y)) + -(0.00200440307468727*(y**3))",
+        "complexity": 20,
+        "origin": "regression_basis",
+        "parameter_count": 3,
+        "loss": 4.0870828783402794e-10,
+        "domain_valid": true
+      },
+      "retained_before_pairing": false,
+      "dominators": [
+        {
+          "source": "y * ((x * x + y * y) * -0.01198496581734425 - -0.009980562740598086 * y * y - 1 * 0.1000009289380007)",
+          "complexity": 13,
+          "origin": "pysr",
+          "search_representation": "axis_1_full",
+          "parameter_count": 3,
+          "loss": 4.0870828783395556e-10,
+          "domain_valid": true
+        },
+        {
+          "source": "y * (--0.00998727640779761 * y * y + sin((x * x + y * y) * -0.012001401434786152) - 1 * 0.09998075262898988)",
+          "complexity": 14,
+          "origin": "pysr",
+          "search_representation": "axis_1_full",
+          "parameter_count": 3,
+          "loss": 2.859391472058483e-10,
+          "domain_valid": true
+        },
+        {
+          "source": "y * (--0.009994009361599497 * y * y + sin(sin((x * x + y * y) * -0.012017911928680364)) - 1 * 0.09996049747389586)",
+          "complexity": 15,
+          "origin": "pysr",
+          "search_representation": "axis_1_full",
+          "parameter_count": 3,
+          "loss": 2.677349905163733e-10,
+          "domain_valid": true
+        }
+      ]
+    }
+  },
+  "six_parameter_pair": {
+    "law_spec": {
+      "ax": "-(c1 * x) + -(c2 * x ** 3) + -(c3 * (x * y ** 2))",
+      "ay": "-(c4 * y) + -(c5 * (x ** 2 * y)) + -(c6 * y ** 3)"
+    },
+    "parameter_spec": [
+      {
+        "name": "c1",
+        "initial": 0.0600087610687798
+      },
+      {
+        "name": "c2",
+        "initial": 0.00199903614122106
+      },
+      {
+        "name": "c3",
+        "initial": 0.01198823922769
+      },
+      {
+        "name": "c4",
+        "initial": 0.100000928941485
+      },
+      {
+        "name": "c5",
+        "initial": 0.0119849658171937
+      },
+      {
+        "name": "c6",
+        "initial": 0.00200440307468727
+      }
+    ],
+    "parameter_count": 6,
+    "complexity": 40,
+    "component_sources": [
+      "regression_basis",
+      "regression_basis"
+    ]
+  },
+  "sharing_proposal_groups": [
+    [
+      0
+    ],
+    [
+      1
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3
+    ],
+    [
+      5
+    ]
+  ],
+  "single_sharing_step_replay": {
+    "status": "data_validated",
+    "elapsed_seconds": 0.256568542,
+    "candidate": {
+      "law_spec": {
+        "ax": "-(c1 * x) + -(c2 * x ** 3) + -(c3 * (x * y ** 2))",
+        "ay": "-(c4 * y) + -(c3 * (x ** 2 * y)) + -(c5 * y ** 3)"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.06001085588337116
+        },
+        {
+          "name": "c2",
+          "initial": 0.001998945065193276
+        },
+        {
+          "name": "c3",
+          "initial": 0.011985721843621403
+        },
+        {
+          "name": "c4",
+          "initial": 0.09999844223912152
+        },
+        {
+          "name": "c5",
+          "initial": 0.0020047589076282075
+        }
+      ],
+      "parameter_count": 5,
+      "complexity": 40,
+      "component_sources": [
+        "regression_basis",
+        "regression_basis"
+      ],
+      "acceleration_search_mse_by_axis": [
+        4.6177969290906207e-10,
+        4.1075883027308514e-10
+      ],
+      "acceleration_search_mse": 8.725385231821473e-10,
+      "normalized_acceleration_search_loss": 2.8723838457654404e-08,
+      "parameter_sharing": {
+        "status": "data_validated",
+        "proposal": "close coefficients proposed, never assumed equal",
+        "uncompressed_law_spec": {
+          "ax": "-(c1 * x) + -(c2 * x ** 3) + -(c3 * (x * y ** 2))",
+          "ay": "-(c4 * y) + -(c5 * (x ** 2 * y)) + -(c6 * y ** 3)"
+        },
+        "uncompressed_parameter_spec": [
+          {
+            "name": "c1",
+            "initial": 0.0600087610687798
+          },
+          {
+            "name": "c2",
+            "initial": 0.00199903614122106
+          },
+          {
+            "name": "c3",
+            "initial": 0.01198823922769
+          },
+          {
+            "name": "c4",
+            "initial": 0.100000928941485
+          },
+          {
+            "name": "c5",
+            "initial": 0.0119849658171937
+          },
+          {
+            "name": "c6",
+            "initial": 0.00200440307468727
+          }
+        ],
+        "groups": [
+          {
+            "shared_parameter": "c1",
+            "original_parameters": [
+              "c1"
+            ]
+          },
+          {
+            "shared_parameter": "c2",
+            "original_parameters": [
+              "c2"
+            ]
+          },
+          {
+            "shared_parameter": "c3",
+            "original_parameters": [
+              "c3",
+              "c5"
+            ]
+          },
+          {
+            "shared_parameter": "c4",
+            "original_parameters": [
+              "c4"
+            ]
+          },
+          {
+            "shared_parameter": "c5",
+            "original_parameters": [
+              "c6"
+            ]
+          }
+        ],
+        "original_loss_by_axis": [
+          4.5495188546997894e-10,
+          4.08708287834029e-10
+        ],
+        "shared_loss_by_axis": [
+          4.6177969290906207e-10,
+          4.1075883027308514e-10
+        ],
+        "acceptance_tolerance_by_axis": [
+          2.9126837659433726e-09,
+          8.387833844538933e-09
+        ],
+        "fit_evaluations": 24,
+        "heldout_discovery_probe_ids": [
+          "probe_0006"
+        ],
+        "split_checks": [
+          {
+            "split": "fit",
+            "original_mse_by_axis": [
+              1.669857411078199e-10,
+              8.867806803992415e-11
+            ],
+            "shared_mse_by_axis": [
+              9.446477157262319e-12,
+              1.32035275054202e-11
+            ],
+            "maximum_accepted_mse_by_axis": [
+              2.624717621581214e-09,
+              8.067803624744829e-09
+            ],
+            "passed": true
+          },
+          {
+            "split": "heldout_discovery_probes",
+            "original_mse_by_axis": [
+              1.0308841741942958e-09,
+              1.0487687274222364e-09
+            ],
+            "shared_mse_by_axis": [
+              1.8159678477574344e-09,
+              1.5031435865672113e-09
+            ],
+            "maximum_accepted_mse_by_axis": [
+              3.48861605466769e-09,
+              9.02789428412714e-09
+            ],
+            "passed": true
+          }
+        ],
+        "independent_validation": false,
+        "limitation": "Ties are supported only by the supplied discovery data and resolution heuristic."
+      }
+    }
+  },
+  "posthoc_existing_observations_fit": {
+    "scope": "One diagnostic refit of the rescued candidate on original law_3 training probes and rollout against its two already acquired validation records. No new simulator observations, LLM, PySR or official evaluation; does not replace original 64.33 Agent score.",
+    "training_probe_ids": [
+      "probe_0003",
+      "probe_0004",
+      "probe_0005",
+      "probe_0006"
+    ],
+    "validation_probe_ids": [
+      "probe_0007",
+      "probe_0008"
+    ],
+    "elapsed_seconds": 0.3466555419999999,
+    "fit_status": "converged",
+    "fitted_parameters": {
+      "c1": 0.0599999996755462,
+      "c2": 0.002000000052514558,
+      "c3": 0.012000000224499095,
+      "c4": 0.09999999923532345,
+      "c5": 0.002000000140875429
+    },
+    "training_errors": {
+      "overall": {
+        "position_mse": 6.348013228030034e-17,
+        "velocity_mse": 1.4155495553230047e-17,
+        "position_rmse": 7.967442016124142e-09,
+        "velocity_rmse": 3.762378975226984e-09
+      },
+      "per_probe": [
+        {
+          "probe_id": "probe_0003",
+          "n_samples": 50,
+          "position_mse": 3.34139476380582e-17,
+          "position_rmse": 5.780479879565208e-09,
+          "velocity_mse": 7.955650323572154e-18,
+          "velocity_rmse": 2.820576239631213e-09
+        },
+        {
+          "probe_id": "probe_0004",
+          "n_samples": 50,
+          "position_mse": 3.34139476380582e-17,
+          "position_rmse": 5.780479879565208e-09,
+          "velocity_mse": 7.955650323572154e-18,
+          "velocity_rmse": 2.820576239631213e-09
+        },
+        {
+          "probe_id": "probe_0005",
+          "n_samples": 50,
+          "position_mse": 1.6834576045896883e-16,
+          "position_rmse": 1.2974812540417254e-08,
+          "velocity_mse": 3.51023623713696e-17,
+          "velocity_rmse": 5.924724666292063e-09
+        },
+        {
+          "probe_id": "probe_0006",
+          "n_samples": 50,
+          "position_mse": 1.8746873386116145e-17,
+          "position_rmse": 4.329765973596742e-09,
+          "velocity_mse": 5.608319194406277e-18,
+          "velocity_rmse": 2.368189011545801e-09
+        }
+      ],
+      "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+    },
+    "validation_errors": {
+      "overall": {
+        "position_mse": 4.307470367012645e-17,
+        "velocity_mse": 8.947038008144219e-18,
+        "position_rmse": 6.563132153943455e-09,
+        "velocity_rmse": 2.9911599770229974e-09
+      },
+      "per_probe": [
+        {
+          "probe_id": "probe_0007",
+          "n_samples": 41,
+          "position_mse": 3.22416014838955e-17,
+          "position_rmse": 5.6781688495408e-09,
+          "velocity_mse": 1.0943790469980032e-17,
+          "velocity_rmse": 3.3081400317973287e-09
+        },
+        {
+          "probe_id": "probe_0008",
+          "n_samples": 41,
+          "position_mse": 5.390780585635741e-17,
+          "position_rmse": 7.3421935316605085e-09,
+          "velocity_mse": 6.950285546308407e-18,
+          "velocity_rmse": 2.636339421680829e-09
+        }
+      ],
+      "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+    },
+    "numerics_sha256": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265"
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "pid": 2304933,
+  "previous_pid": 1718840,
+  "commit": "174dff5",
+  "started_at": "2026-11-07T07:38:48.003250+00:00",
+  "command": [
+    "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "shore_agent.symbolic_service",
+    "serve",
+    "--worker-python",
+    "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/bin/python",
+    "--pool-size",
+    "4",
+    "--port",
+    "8890",
+    "--spool-dir",
+    "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/deployment/pysr-work-e8-r02-final"
+  ],
+  "log": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/deployment/e8-r02-final-production-symbolic.log",
+  "fixed_environment": {
+    "PYTHON_JULIAPKG_EXE": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/julia-1.13.3/bin/julia",
+    "JULIA_DEPOT_PATH": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/julia-depot",
+    "PYTHON_JULIAPKG_OFFLINE": "yes",
+    "PYTHON_JULIACALL_THREADS": "4",
+    "JULIA_NUM_THREADS": "4",
+    "PYTHON_JULIACALL_HANDLE_SIGNALS": "yes",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "source_sha256": {
+    "benchmark_v15.py": "f3248958305a083ee5a344d7621b2715a5996c8cc242d1a696ae92951aa241e3",
+    "deployment/config.e8.symbolic.json": "89b330b503eaf0c09c7823c701a40db9a43857cc52e6fb4970d4fbf4d8118e25",
+    "deployment/run_e7.py": "730154a8a80e5e446195d1e570c3fa896da41d7ae6fd325334682950073165aa",
+    "deployment/run_e8_symbolic.py": "a6003b15727b81e5d6998f084aa68eb312d8bb3e8891053aa9f4ac9a8f510010",
+    "experiments/E5/e8-protocol.json": "8afdef4453a7d3dd339b507e937b8c77a4001a1a577bce740f973565e1516ed8",
+    "shore_agent/__init__.py": "0547ccfeb2e41c0e42a47e4e2b97f50c5dbe01b7a6fd99dd789d2ca25cf530f6",
+    "shore_agent/agent.py": "ecdd4d05a4e233eeb6ac14332978c12fa2101c07b37a6a350ba1a183603cf6fa",
+    "shore_agent/cli.py": "51cc1ca33fadb5d472d767d7fc94bbc1465da6acb2795b8a5e7fa53fe451d092",
+    "shore_agent/code_execution.py": "2732a262a8b5ec11e58eff6614a4f9f9b9f6b7e32c69d06d700191fd2611ba73",
+    "shore_agent/code_response.py": "16ac5bc9f4b00f78ad42822c9b367182974539e8c6acaa06575b5b51b04c8278",
+    "shore_agent/environment.py": "43d04b3c29bda7064d39c226cca12ee4d5856adcb4048fd8b854934efa69d728",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_agent/model.py": "bdb96de2937ec9109ee99f8b22af3ccff41db20eae11d5aec3a050c7cc1342ef",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "shore_agent/observations.py": "2462c3ecc85d263be1b6f4bbcf1411e2a553f9225900e5cc4aaa4125f7e79197",
+    "shore_agent/prompts/code.txt": "c7ae9c21261fb133886c2fefc70b3f60cd1cd553d21c805ba0ed2f5ef6561483",
+    "shore_agent/prompts/e5.txt": "8faedcb789f1e8b23f13fbee2885abb4065c1c3bf35afb188b67561b20e6f87f",
+    "shore_agent/prompts/e5_concise.txt": "6877c7e0da641954141a2c5e05a6b839c53e904f98bc152d55df8a3c3673f727",
+    "shore_agent/prompts/main.txt": "c20d2d37d767ba2f91601fa084f3f28c8995fcd4c625cc6720c295677fcdb74e",
+    "shore_agent/prompts/symbolic.txt": "fd00a27635711df1d1203df7c9a09e13d75be8a1eb6f3cb59766059f52e842f5",
+    "shore_agent/runtime.py": "073d4ec7d3cbd5365bcd0be53e82878320a6cec0904da9946444625504672b8a",
+    "shore_agent/schemas.py": "d8fdbf39f7de420f58040e24050176d1c0d478eabe0a9c608c9cd387916e0e2e",
+    "shore_agent/store.py": "9543a72ba22e59ff633d12cf6b2bf0a6ef77a9c05fa0aeeb9f92df17045767e9",
+    "shore_agent/submission.py": "92a88d272d864d15fa6ffc469c78030b59677703bd564b78abfa3c65e3bd8c6b",
+    "shore_agent/symbolic_basis.py": "faef5985ab2132c6aa796979ee5413c78c893970044eb964770591dcdf52c924",
+    "shore_agent/symbolic_geometry.py": "402763a0475eef4286e8da648dc0a96ab2867afa7ff4275e3632490ae1fab932",
+    "shore_agent/symbolic_guidance.py": "0225c64eccef6a5c3ffe654af784dd0b22abf64a942e726085909a7ce725fb1c",
+    "shore_agent/symbolic_regression.py": "e5fd8f5c827766655cc03d30ebc0e496b8079c106b3ef835f0a86e9333bfe7e7",
+    "shore_agent/symbolic_service.py": "c48bd8eb261a6b32d792a10a06a9423fd219a6d64b6fba53a6e0c6c061ec7f4c",
+    "shore_agent/web.py": "4da71b8ee35cddf142a6221516c0e066f084753450b4519e14f3796d0acc2a8b",
+    "shore_agent/web_worker.py": "ccdc022007e40a4250d862c31381c9ead104190e98c0cf978d20976c74647fd4",
+    "shore_agent/workspace.py": "2aede4b1faadf20a44e5448ae5c0eb7ad63e4dcf9365f5a76e23507187860eab",
+    "shore_rules.py": "e2904b3b02bdd94cee0d838f82ec0c98e1f76f0e26381456eeb71527580ff475",
+    "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+    "shore_v15/simulator.py": "f2d75f6f74591d7c6cc778e63dc47d1f8533b556996dc92b50cfd3fc2627aaf4",
+    "shore_v15/vendor/SOURCE.json": "9eedfa8092c4fc3a43983dbbc8186355fedc927c3d030c6fe3087ac0a57e3cc2"
+  },
+  "ready_health": {
+    "status": "ready",
+    "pool_size": 4,
+    "ready": 4,
+    "busy": 0,
+    "failed": 0,
+    "warming": 0,
+    "actual_julia_threads": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "worker_warmup": [
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 26.343598568812013
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 0.4291491247713566
+          }
+        ],
+        "warmup_seconds": 31.974858259782195
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 26.315831895917654
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 0.42787971906363964
+          }
+        ],
+        "warmup_seconds": 31.84430395066738
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 27.207027327269316
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 0.42767765559256077
+          }
+        ],
+        "warmup_seconds": 32.86302793212235
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 26.901457929983735
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 0.3946374859660864
+          }
+        ],
+        "warmup_seconds": 32.487700352445245
+      }
+    ]
+  }
+}

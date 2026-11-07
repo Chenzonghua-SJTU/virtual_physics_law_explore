@@ -1,0 +1,249 @@
+{
+  "kind": "read_only_actual_accepted_records_audit",
+  "threshold": 1e-05,
+  "remaining_threshold_seconds": 40,
+  "strict_comparison": true,
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "summary_status": "submitted",
+      "accepted_submissions": [
+        {
+          "submission_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_1/records/submission/submission_da212565bf90.json",
+          "submission_sha256": "62b87867c2987c44b6a4ac0cccf4b2317cdffcf4a9af8300482505de38a003f3",
+          "law_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_1/records/law/law_3.json",
+          "law_sha256": "7cd9fcacd1843703b7ed2fdea7c49fde1150577cb3a2cf17177d988574e96d94",
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_3",
+            "fit_position_rmse": 1.468894705137482e-06,
+            "fit_error_valid": true,
+            "wall_seconds_remaining": 170.5811083652079,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "recomputed_fit_condition": true,
+          "recomputed_time_condition": false,
+          "condition_met": true,
+          "selected_law_rmse": 1.468894705137482e-06,
+          "error_matches_selected_law": true,
+          "reported_allowed": true
+        }
+      ],
+      "accepted_gate_valid": true,
+      "exploration_seconds": 129.762594724074,
+      "total_seconds": 135.1031892001629,
+      "score": 53.41507596589679
+    },
+    {
+      "world_id": "world_2",
+      "summary_status": "submitted",
+      "accepted_submissions": [
+        {
+          "submission_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_2/records/submission/submission_952477bbfca9.json",
+          "submission_sha256": "89c6c2b73aa4d2d312a417c48632edaa8f287f7e4dacaa6d7a0c7366820316c0",
+          "law_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_2/records/law/law_2.json",
+          "law_sha256": "f0b7855ec782a6140d30120eead1ae6a7328b8796bcca2ddef0beb44b0cc3395",
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_2",
+            "fit_position_rmse": 2.0405711561376533e-08,
+            "fit_error_valid": true,
+            "wall_seconds_remaining": 242.89280925877392,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "recomputed_fit_condition": true,
+          "recomputed_time_condition": false,
+          "condition_met": true,
+          "selected_law_rmse": 2.0405711561376533e-08,
+          "error_matches_selected_law": true,
+          "reported_allowed": true
+        }
+      ],
+      "accepted_gate_valid": true,
+      "exploration_seconds": 57.42555616982281,
+      "total_seconds": 61.60506818443537,
+      "score": 96.49999999999986
+    },
+    {
+      "world_id": "world_3",
+      "summary_status": "submitted",
+      "accepted_submissions": [
+        {
+          "submission_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_3/records/submission/submission_cc798ea68d14.json",
+          "submission_sha256": "7abc125d2cccd4210c9d53def26ce6f1e26970894429bf2d58a1f0117d63a002",
+          "law_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_3/records/law/law_1.json",
+          "law_sha256": "9cdaa62aa530ab55e02125af1fb882ebed97479081bbe4ead52089497547d852",
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_1",
+            "fit_position_rmse": 1.4615365450818953e-09,
+            "fit_error_valid": true,
+            "wall_seconds_remaining": 207.9031982626766,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "recomputed_fit_condition": true,
+          "recomputed_time_condition": false,
+          "condition_met": true,
+          "selected_law_rmse": 1.4615365450818953e-09,
+          "error_matches_selected_law": true,
+          "reported_allowed": true
+        }
+      ],
+      "accepted_gate_valid": true,
+      "exploration_seconds": 92.4355910923332,
+      "total_seconds": 97.07685922831297,
+      "score": 95.99999999999983
+    },
+    {
+      "world_id": "world_4",
+      "summary_status": "submitted",
+      "accepted_submissions": [
+        {
+          "submission_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_4/records/submission/submission_3bef9f6763ca.json",
+          "submission_sha256": "cfcca92e3d0a22ccbb87d0584db51082a7e085b197cab9a1a4c8a08a6989803b",
+          "law_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_4/records/law/law_19.json",
+          "law_sha256": "796ea4281436f9cfd4a7657fabdb3f20171300cb77d22f248eb9598fccb78483",
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_19",
+            "fit_position_rmse": 0.0011534196622020663,
+            "fit_error_valid": true,
+            "wall_seconds_remaining": 26.177921764552593,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": false,
+            "time_condition_met": true,
+            "allowed": true
+          },
+          "recomputed_fit_condition": false,
+          "recomputed_time_condition": true,
+          "condition_met": true,
+          "selected_law_rmse": 0.0011534196622020663,
+          "error_matches_selected_law": true,
+          "reported_allowed": true
+        }
+      ],
+      "accepted_gate_valid": true,
+      "exploration_seconds": 274.1495639681816,
+      "total_seconds": 278.97853672131896,
+      "score": 15.0
+    },
+    {
+      "world_id": "world_5",
+      "summary_status": "submitted",
+      "accepted_submissions": [
+        {
+          "submission_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_5/records/submission/submission_7278a2554ca3.json",
+          "submission_sha256": "97ef19705fcb59b3e2838f795d74954250f377f34973d2cab7ed08fd6205112c",
+          "law_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_5/records/law/law_3.json",
+          "law_sha256": "400fe96c8acb1cf02e5e565f4985d30e910c32e03c5a7cb949cc2278c727e20f",
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_3",
+            "fit_position_rmse": 0.0012400156186530903,
+            "fit_error_valid": true,
+            "wall_seconds_remaining": 29.23058887012303,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": false,
+            "time_condition_met": true,
+            "allowed": true
+          },
+          "recomputed_fit_condition": false,
+          "recomputed_time_condition": true,
+          "condition_met": true,
+          "selected_law_rmse": 0.0012400156186530903,
+          "error_matches_selected_law": true,
+          "reported_allowed": true
+        }
+      ],
+      "accepted_gate_valid": true,
+      "exploration_seconds": 271.108992299065,
+      "total_seconds": 276.03322111815214,
+      "score": 64.33311891217821
+    },
+    {
+      "world_id": "world_6",
+      "summary_status": "submitted",
+      "accepted_submissions": [
+        {
+          "submission_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_6/records/submission/submission_f2f0962ca264.json",
+          "submission_sha256": "d460c8c1abce2e9530843a36bf52c3df3992c71843313448a3096c03133dfef0",
+          "law_path": "runs/e8-qwen38-pysr-stage-20261107-r02-world_6/records/law/law_7.json",
+          "law_sha256": "b68a0cab5edde125d4b99c166b283f9d7837cfd5b4969d184579e775b253331f",
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_7",
+            "fit_position_rmse": 4.76876623655224e-09,
+            "fit_error_valid": true,
+            "wall_seconds_remaining": 68.2023896034807,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "recomputed_fit_condition": true,
+          "recomputed_time_condition": false,
+          "condition_met": true,
+          "selected_law_rmse": 4.76876623655224e-09,
+          "error_matches_selected_law": true,
+          "reported_allowed": true
+        }
+      ],
+      "accepted_gate_valid": true,
+      "exploration_seconds": 232.14450257457793,
+      "total_seconds": 238.36231640167534,
+      "score": 96.49999999999993
+    }
+  ],
+  "all_accepted_gates_valid": true
+}

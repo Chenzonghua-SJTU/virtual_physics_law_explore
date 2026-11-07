@@ -1,0 +1,215 @@
+{
+  "checked_at": "2026-11-07T07:47:16.470673+00:00",
+  "commit": "174dff5",
+  "models": [
+    {
+      "port": 8000,
+      "ids": [
+        "qwen3.8-27b"
+      ],
+      "metrics": {
+        "num_requests_running": 0.0,
+        "num_requests_waiting": 0.0
+      }
+    },
+    {
+      "port": 8001,
+      "ids": [
+        "qwen3.8-27b"
+      ],
+      "metrics": {
+        "num_requests_running": 0.0,
+        "num_requests_waiting": 0.0
+      }
+    },
+    {
+      "port": 8002,
+      "ids": [
+        "qwen3.8-27b"
+      ],
+      "metrics": {
+        "num_requests_running": 0.0,
+        "num_requests_waiting": 0.0
+      }
+    },
+    {
+      "port": 8003,
+      "ids": [
+        "qwen3.8-27b"
+      ],
+      "metrics": {
+        "num_requests_running": 0.0,
+        "num_requests_waiting": 0.0
+      }
+    }
+  ],
+  "symbolic_health": {
+    "status": "ready",
+    "pool_size": 4,
+    "ready": 4,
+    "busy": 0,
+    "failed": 0,
+    "warming": 0,
+    "actual_julia_threads": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "worker_warmup": [
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 26.343598568812013
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 0.4291491247713566
+          }
+        ],
+        "warmup_seconds": 31.974858259782195
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 26.315831895917654
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 0.42787971906363964
+          }
+        ],
+        "warmup_seconds": 31.84430395066738
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 27.207027327269316
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 0.42767765559256077
+          }
+        ],
+        "warmup_seconds": 32.86302793212235
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 26.901457929983735
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 0.3946374859660864
+          }
+        ],
+        "warmup_seconds": 32.487700352445245
+      }
+    ]
+  },
+  "web_active_run_id": null,
+  "web_e8_run_ids": [
+    "e8-qwen38-pysr-stage-20261107-r02-world_1",
+    "e8-qwen38-pysr-stage-20261107-r02-world_2",
+    "e8-qwen38-pysr-stage-20261107-r02-world_6",
+    "e8-qwen38-pysr-stage-20261107-r02-world_3",
+    "e8-qwen38-pysr-stage-20261107-r02-world_5",
+    "e8-qwen38-pysr-stage-20261107-r02-world_4"
+  ],
+  "defaults": {
+    "world_set": "v15",
+    "ruleset": "e5",
+    "energy_budget": 10,
+    "wall_seconds": 300,
+    "noise": false,
+    "seed": 42,
+    "world_id": "world_1",
+    "model": "qwen3.8-27b",
+    "max_total_tokens": null,
+    "max_tokens_per_call": 4096,
+    "thinking": false,
+    "reasoning_effort": "low",
+    "max_calls": null,
+    "code_enabled": false
+  }
+}

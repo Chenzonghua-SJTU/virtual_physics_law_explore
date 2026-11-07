@@ -186,7 +186,7 @@ def context_delivery(model_messages, final_messages, search_id, search):
 def relative_validation_errors(validation, probes):
     """Observation-only diagnostic; not an independent score or pass threshold."""
     result = []
-    for row in validation.get("errors", {}).get("per_probe", []):
+    for row in (validation.get("errors") or {}).get("per_probe", []):
         probe = probes.get(row.get("probe_id"), {})
         positions = probe.get("r_obs", [])
         initial = probe.get("initial_conditions", {}).get("r0")
@@ -236,7 +236,7 @@ def analyze_world(archive, row):
             fits.append({"tool_line": index, "law_id": law_id, "ok": response.get("ok"),
                          "law_spec": args.get("law_spec"), "parameter_spec": args.get("parameter_spec", []),
                          "fitted_parameters": law.get("fitted_parameters"), "train_probe_ids": args.get("train_probe_ids", []),
-                         "fit_status": law.get("fit_status"), "errors": law.get("errors", {}).get("overall"),
+                         "fit_status": law.get("fit_status"), "errors": (law.get("errors") or {}).get("overall"),
                          "submitted_same_law_id": final_id is not None and law_id == final_id,
                          "candidate_links": []})
         elif name == "symbolic_regression":
@@ -259,7 +259,7 @@ def analyze_world(archive, row):
             validations.append({"tool_line": index, "validation_id": vid, "law_id": args.get("law_id"),
                                 "ok": response.get("ok"), "test_probe_ids": sorted(test),
                                 "training_or_sr_discovery_overlap": sorted(test & (train | discovered)),
-                                "errors": validation.get("errors", {}).get("overall"),
+                                "errors": (validation.get("errors") or {}).get("overall"),
                                 "observation_relative_errors": relative_validation_errors(validation, probes),
                                 "submitted_same_law_id": final_id is not None and args.get("law_id") == final_id})
     for search in searches:

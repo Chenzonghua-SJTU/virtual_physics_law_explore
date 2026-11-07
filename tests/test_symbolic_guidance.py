@@ -85,6 +85,7 @@ def test_guidance_keeps_complementary_sampling_and_evidence_boundaries():
         '约6枚付费训练探针', '1–2个相同完整初态', '天体可见不证明力来自天体',
         '免费粗轨迹可仅作定性依据', '先原式拟合再考虑改写',
         '仍只有单t0', '新验证应包含较长时域', 'r^(1-p)', '未知源强度不等于hidden_matter',
+        '不同尺度/半径', '训练位置RMSE严格<1e-5', '剩余时间严格<40秒',
     )
     assert all(item in GUIDANCE for item in requirements)
     assert len(GUIDANCE) <= 1500, 'Keep this supplemental prompt short.'
