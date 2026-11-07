@@ -45,7 +45,7 @@ def fit(rt, ids):
                                             'parameter_spec': [], 'train_probe_ids': ids})
 
 
-def test_search_provenance_cannot_be_laundered_through_disjoint_parameter_fit(runtime, monkeypatch):
+def test_search_provenance_preserved_when_parameter_holdout_is_allowed(runtime, monkeypatch):
     before = copy.deepcopy(runtime.store.records['probe'])
     def search(probes, seconds, **kwargs):
         assert [p['probe_id'] for p in probes] == ['p1']
@@ -60,16 +60,20 @@ def test_search_provenance_cannot_be_laundered_through_disjoint_parameter_fit(ru
     assert runtime.store.get('law', law)['discovery_probe_ids'] == ['p1','p2','p3','p4']
     assert runtime.store.get('law', law)['acquired_observation_consistency']['outside_training_probe_ids'] == ['p1','p3','p4']
     bad = runtime.execute('validate_law', {'law_id': law, 'test_probe_ids': ['p1']})
-    assert not bad['ok'] and 'overlap' in bad['error']['message']
-    assert not runtime.execute('validate_law', {'law_id':law,'test_probe_ids':['p3']})['ok']
+    assert bad['ok'] and bad['data']['validation_scope']=='parameter_holdout'
+    assert not bad['data']['independent_of_discovery']
+    assert bad['data']['discovery_overlap_probe_ids']==['p1']
+    assert runtime.execute('validate_law', {'law_id':law,'test_probe_ids':['p3']})['ok']
+    assert not runtime.execute('validate_law', {'law_id':law,'test_probe_ids':['p2']})['ok']
     fresh=copy.deepcopy(runtime.store.get('probe','p3')); fresh['probe_id']='fresh'
     runtime.store.add('probe',fresh,'fresh')
     good = runtime.execute('validate_law', {'law_id': law, 'test_probe_ids': ['fresh']})
-    assert good['ok']
+    assert good['ok'] and good['data']['independent_of_discovery']
+    assert good['data']['validation_scope']=='fresh_observations'
     assert any(path.startswith('analyses/sr_') for path in runtime.files.entries())
 
 
-def test_later_search_also_excludes_data_from_independent_validation(runtime, monkeypatch):
+def test_later_failed_search_preserves_provenance_without_blocking_parameter_holdout(runtime, monkeypatch):
     law = fit(runtime, ['p2'])['data']['law_id']
     def unavailable(*args, **kwargs):
         raise RuntimeError('private process details')
@@ -85,7 +89,8 @@ def test_later_search_also_excludes_data_from_independent_validation(runtime, mo
     assert 'private process details' not in str(record)
     assert f"analyses/{record['search_id']}.json" in result['error']['message']
     assert (runtime.run_dir/'records/symbolic_search'/f"{record['search_id']}.json").is_file()
-    assert not runtime.execute('validate_law', {'law_id': law, 'test_probe_ids': ['p1']})['ok']
+    checked=runtime.execute('validate_law', {'law_id': law, 'test_probe_ids': ['p1']})
+    assert checked['ok'] and not checked['data']['independent_of_discovery']
 
 
 @pytest.mark.parametrize('code', ['symbolic_service_busy', 'symbolic_service_unavailable',

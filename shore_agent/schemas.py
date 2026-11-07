@@ -25,7 +25,7 @@ SCHEMAS = [
          {'law_spec': obj({'ax': {'type': 'string', 'maxLength': 600}, 'ay': {'type': 'string', 'maxLength': 600}}),
           'parameter_spec': {'type': 'array', 'maxItems': 5, 'items': obj({'name': {'type': 'string'}, 'initial': NUM, 'lower': NUM, 'upper': NUM}, ['name', 'initial'])},
           'train_probe_ids': IDS}),
-    tool('validate_law', '固定公式与参数，在未参与该版本拟合的整条轨迹上验证。新版使用当次已取得的天体时间序列作为外部状态输入，并保存来源快照；范围不足请补observe_body，绝不重拟合参数。返回相对观测误差，包含天体插值误差，不设通过阈值。根据验证修改过候选后必须用新实验做最终检查。',
+    tool('validate_law', '固定公式与参数，在未参与该版本拟合的整条轨迹上验证。新版使用当次已取得的天体时间序列作为外部状态输入，并保存来源快照；范围不足请补observe_body，绝不重拟合参数。返回相对观测误差，包含天体插值误差，不设通过阈值。曾参与搜索或诊断的数据也允许验证，但会标注为参数留出验证；完全独立的结构检验应使用新实验。',
          {'law_id': {'type': 'string'}, 'test_probe_ids': IDS}),
     tool('list_files', '列出当前探索会话的公开实验文件或目录，不访问其他会话、源码或隐藏评测。返回路径供read_file和run_code使用。',
          {'path': {'type':'string','maxLength':300}, 'offset': {'type':'integer','minimum':0},
@@ -60,7 +60,7 @@ SYMBOLIC_SCHEMA = tool('symbolic_regression',
     '变量不变化不能证明无依赖；先用控制实验提供可辨识的数据，保留已有属性对照。时间包含在300秒内，建议一次40–50秒，两轴合计；余时不足会拒绝。'
     '返回去重排名的至多3个完整law_spec、parameter_spec、fitted_parameters和residuals，区分加速度搜索、轨迹拟合及速度积分残差；附单轴候选、来源和覆盖诊断；搜索审计保存在audit_path。'
     '返回候选是待检验假说，训练检查不能代替独立验证；没有合格候选时如实返回空列表。'
-    '候选须fit_law_and_rollout登记并按位置轨迹重拟合，再用新探针validate_law；所有搜索用过的探针均不能冒充独立验证。'
+    '候选须fit_law_and_rollout登记并按位置轨迹重拟合，再用未参与当前law参数拟合的轨迹validate_law；用过的发现数据会标注为参数留出验证，不冒充完全独立的结构检验。'
     '预算结束但有候选是正常可用结果；单轴joint_fit_ready=false不能直接当完整力律提交，组合仍须符合5参数上限并验证。'
     '不可用/无好候选时按已有工具继续研究，不要机械重复相同搜索；本工具不投放探针、不自动提交。',
     {'train_probe_ids': IDS,

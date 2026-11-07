@@ -352,13 +352,13 @@ class Agent:
                 prompt += ('\n\n本场开启观测噪声和符号回归：输入仍是当前会话取得的含噪位置、速度，工具没有真值；仅依据公开噪声尺度做局部多项式平滑。'
                            '速度差分噪声随dt减小被放大，不要一味缩小采样间隔；兼顾运动变化、噪声尺度和时间覆盖。'
                            '搜索损失与观测轨迹RMSE均不是隐藏真值误差；比较简单候选与独立验证，不追逐噪声生成复杂项。'
-                           '含噪提交条件是训练与独立验证位置RMSE都<0.1，或余时<60秒；余时<40秒下一次动作必须submit。提前save_draft保留最佳候选，'
+                           '含噪提交条件是训练与未参与当前law拟合的数据验证位置RMSE都<0.1；全部已采集轨迹均参与当前law拟合时免验证但训练仍须<0.1；或余时<60秒；余时<40秒下一次动作必须submit。提前save_draft保留最佳候选，'
                            '在剩余预算内做有信息的检验，不要机械重复搜索或空等。')
         gate_reader = getattr(self.runtime, 'submission_gate_policy', None)
         gate = gate_reader() if callable(gate_reader) else {}
         if gate.get('enabled'):
             if gate.get('requires_validation_for_error_branch'):
-                prompt += ('\n\n本场含噪门槛覆盖通用说明：训练与同一law独立验证的位置RMSE都严格<0.1，'
+                prompt += ('\n\n本场含噪门槛覆盖通用说明：训练与同一law未参与拟合的数据验证的位置RMSE都严格<0.1；全部已采集轨迹均参与该law拟合时免验证但训练仍须<0.1，'
                            '或余时严格<60秒即可submit；余时严格<40秒下一次动作必须submit。'
                            '务必提前保存你选择的law/claims/解释，届时可按该草稿直接提交。')
             else:

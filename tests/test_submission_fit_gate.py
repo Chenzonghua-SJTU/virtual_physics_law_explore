@@ -228,6 +228,7 @@ def test_noisy_gate_requires_both_errors_or_under_one_minute(tmp_path,training,v
     rt=make_runtime(tmp_path,error=training)
     rt.ruleset=rt.environment.ruleset='e4';rt.configure_submission_gate({})
     rt.environment.remaining=remaining
+    rt.store.add('probe',dict(rt.store.get('probe','p1'),probe_id='p2'),'p2')
     if validation is not None:
         rt.store.add('validation',{'validation_id':'v','law_id':'selected','errors':{'overall':{'position_rmse':validation}}},'v')
     report=rt.submission_eligibility(rt.store.get('law','selected'))
@@ -239,6 +240,7 @@ def test_noisy_gate_requires_both_errors_or_under_one_minute(tmp_path,training,v
 def test_noisy_gate_does_not_use_validation_of_another_law(tmp_path):
     rt=make_runtime(tmp_path,error=.01)
     rt.ruleset=rt.environment.ruleset='e4';rt.configure_submission_gate({})
+    rt.store.add('probe',dict(rt.store.get('probe','p1'),probe_id='p2'),'p2')
     rt.store.add('validation',{'law_id':'other','errors':{'overall':{'position_rmse':0}}},'v')
     assert not rt.submission_eligibility(rt.store.get('law','selected'))['allowed']
 
@@ -265,3 +267,26 @@ def test_noisy_agent_submits_its_existing_model_selected_draft_as_next_action(tm
     assert client.usage['calls']==0
     tools=[json.loads(line) for line in (tmp_path/'tools.jsonl').read_text().splitlines()]
     assert tools[-1]['tool']=='submit'
+
+
+@pytest.mark.parametrize('error,allowed',[(.099,True),(.1,False),(.11,False)])
+def test_noisy_all_acquired_probes_fitted_waives_validation_only(tmp_path,error,allowed):
+    rt=make_runtime(tmp_path,error=error)
+    rt.ruleset=rt.environment.ruleset='e4';rt.configure_submission_gate({})
+    report=rt.submission_eligibility(rt.store.get('law','selected'))
+    assert report['allowed'] is allowed
+    assert report['validation_waived']
+    assert report['validation_eligible_probe_ids']==[]
+    assert report['validation_position_rmse'] is None
+    rt.store.add('probe',dict(rt.store.get('probe','p1'),probe_id='p2'),'p2')
+    report=rt.submission_eligibility(rt.store.get('law','selected'))
+    assert not report['allowed'] and not report['validation_waived']
+    assert report['validation_eligible_probe_ids']==['p2']
+
+
+def test_empty_acquired_data_cannot_trigger_validation_waiver(tmp_path):
+    rt=make_runtime(tmp_path,error=.01)
+    rt.ruleset=rt.environment.ruleset='e4';rt.configure_submission_gate({})
+    rt.store.records['probe'].clear()
+    report=rt.submission_eligibility(rt.store.get('law','selected'))
+    assert not report['validation_waived'] and not report['allowed']

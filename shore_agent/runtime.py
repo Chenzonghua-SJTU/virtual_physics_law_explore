@@ -72,7 +72,7 @@ class SubmissionFitGateError(ValueError):
 
     def __init__(self, details):
         self.details = details
-        requirement = ("训练与独立验证的位置RMSE都严格<0.1，或余时严格<60秒"
+        requirement = ("训练与未参与该规律拟合的数据验证的位置RMSE都严格<0.1（全部已采集轨迹均参与拟合时免验证），或余时严格<60秒"
                        if details.get('requires_validation_for_error_branch') else
                        f"训练位置RMSE严格<{details['fit_rmse_threshold']}，或余时严格<{details['time_remaining_threshold_seconds']}秒")
         super().__init__(f"本次submit未执行、未扣能量、未结束会话。要求{requirement}；"
@@ -135,8 +135,9 @@ class ToolRuntime:
                 'fit_error_field': 'selected_law.errors.overall.position_rmse',
                 'fit_rmse_threshold': self.submission_fit_rmse_threshold,
                 'time_remaining_threshold_seconds': self.submission_time_remaining_seconds,
-                'condition': ('(training_position_rmse < 0.1 AND independent_validation_position_rmse < 0.1) OR remaining_seconds < 60' if self.ruleset=='e4' else 'finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold'),
+                'condition': ('(training_position_rmse < 0.1 AND (all_acquired_probes_used_for_fit OR heldout_validation_position_rmse < 0.1)) OR remaining_seconds < 60' if self.ruleset=='e4' else 'finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold'),
                 'requires_validation_for_error_branch':self.ruleset=='e4',
+                'validation_waiver': 'all_acquired_probes_used_for_selected_law_fit' if self.ruleset=='e4' else None,
                 'validation_rmse_threshold':.1 if self.ruleset=='e4' else None,
                 'force_submit_remaining_seconds':40. if self.ruleset=='e4' else None,
                 'comparison': 'strict', 'independent_validation_is_hard_requirement': False,
@@ -163,18 +164,25 @@ class ToolRuntime:
         enabled = self.submission_fit_rmse_threshold is not None
         fit_allowed = bool(enabled and valid_error and error < self.submission_fit_rmse_threshold)
         validation_ids=[]; validation_errors=[]
+        acquired_ids = set(self.store.records['probe'])
+        fit_ids = set(law.get('train_probe_ids') or [])
+        available_ids = sorted(acquired_ids - fit_ids)
+        all_used_for_fit = bool(acquired_ids) and acquired_ids <= fit_ids
         if self.ruleset=='e4':
             for rid,record in self.store.records['validation'].items():
                 if record.get('law_id')!=law.get('law_id'): continue
                 value=((record.get('errors') or {}).get('overall') or {}).get('position_rmse')
                 if type(value) in (int,float) and math.isfinite(value) and value>=0:
                     validation_ids.append(rid);validation_errors.append(value)
-            fit_allowed=fit_allowed and bool(validation_errors) and max(validation_errors)<.1
+            fit_allowed=fit_allowed and (all_used_for_fit or (bool(validation_errors) and max(validation_errors)<.1))
         validation_error=max(validation_errors) if validation_errors else None
         time_allowed = bool(known_remaining and remaining < self.submission_time_remaining_seconds)
         return dict(self.submission_gate_policy(), law_id=law.get('law_id'),
                     fit_position_rmse=error if finite_error else None, fit_error_valid=valid_error,
                     validation_position_rmse=validation_error,validation_ids=validation_ids,
+                    validation_eligible_probe_ids=available_ids,
+                    all_acquired_probes_used_for_fit=all_used_for_fit,
+                    validation_waived=self.ruleset=='e4' and all_used_for_fit,
                     wall_seconds_remaining=remaining if known_remaining else None,
                     remaining_time_source=time_source if known_remaining else 'unavailable',
                     fit_condition_met=fit_allowed, time_condition_met=time_allowed,
@@ -365,6 +373,7 @@ class ToolRuntime:
         if self.symbolic_enabled and record.get('errors'):
             record['acquired_observation_consistency']=self._acquired_consistency(record)
             record['discovery_probe_ids']=sorted(self.discovery_probe_ids)
+        record['validation_eligible_probe_ids'] = sorted(set(self.store.records['probe']) - set(train_probe_ids))
         self.store.add('law', record, rid)
         return preview(record)
 
@@ -391,20 +400,25 @@ class ToolRuntime:
 
     def validate_law(self, law_id, test_probe_ids):
         law = self._law(law_id)
-        used = set(law['train_probe_ids']) | set(law.get('discovery_probe_ids', []))
-        if self.symbolic_enabled:
-            used |= self.discovery_probe_ids
+        used = set(law['train_probe_ids'])
         if set(test_probe_ids) & used:
             raise ValueError('Training and validation trajectories overlap')
         probes = self._probes(test_probe_ids)
+        discovery_overlap = sorted(set(test_probe_ids) &
+                                   (set(law.get('discovery_probe_ids', [])) | self.discovery_probe_ids))
         body_inputs = self._body_inputs(law)
         rollouts = [numerics.rollout(law['law_spec'], law['fitted_parameters'], p, body_inputs,
                                     timeout_seconds=self.budget()['wall_seconds_remaining']) for p in probes]
         rid = 'validation_' + uuid.uuid4().hex[:12]
         data = {'validation_id': rid, 'law_id': law_id, 'test_probe_ids': test_probe_ids,
+                'validation_scope': 'parameter_holdout' if discovery_overlap else 'fresh_observations',
+                'independent_of_discovery': not bool(discovery_overlap),
+                'discovery_overlap_probe_ids': discovery_overlap,
                 'errors': numerics.errors_for_rollouts(probes, rollouts), 'rollouts': rollouts,
                 'warnings': ['Errors are relative to observations, not hidden truth. No pass threshold is defined.',
                              'Changing a model after seeing these data makes them development data; use fresh experiments for final checking.']}
+        if discovery_overlap:
+            data['warnings'].append('These trajectories were not used to fit this law, but were used in discovery or diagnostics. This is parameter-holdout validation, not independent evidence of structure selection.')
         if law.get('body_input_protocol') == 'instantaneous_visible_state':
             data.update(body_context=body_inputs, body_input_protocol='instantaneous_visible_state')
             data['warnings'].append('Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty.')
