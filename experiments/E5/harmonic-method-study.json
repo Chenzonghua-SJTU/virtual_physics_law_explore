@@ -1,0 +1,870 @@
+{
+  "study_status": "observation-only method study; NOT an independent evaluation or contest score",
+  "date": "2026-11-07",
+  "implementation": "shore_agent/harmonic_diagnostics.py",
+  "inputs_policy": "Only supplied acquired probes and public task metadata. No hidden dynamics, catalog, previous final laws, evaluator outputs or scores were read.",
+  "model_family": "Complete independent (1,x,y) x (1,sin(omega*t),cos(omega*t)) for each acceleration axis; a freely searched positive omega.",
+  "integration": "Cubic Hermite position midpoint r_mid=(r_i+r_j)/2+dt*(v_i-v_j)/8, Simpson basis integration against observed Delta-v.",
+  "frequency_search": {
+    "upper": "pi / maximum interval among supplied training probes",
+    "lower": "upper * 1e-4",
+    "grid_target_spacing": "pi / (4 * observed training span)",
+    "grid_cap": 512,
+    "refined_minima": 3,
+    "whole_probe_cv": "All coefficients and omega are selected anew from each training fold. Search range is recalculated from that fold only.",
+    "profile_tolerance": "max(1e-8, 0.05*best relative reconstruction RMSE); engineering interval, not statistical confidence."
+  },
+  "constraints": {
+    "explicit_zero_position_and_velocity_noise_required": true,
+    "default_wall_budget_seconds": 2.0,
+    "maximum_internal_wall_budget_seconds": 10.0,
+    "partial_cv_after_timeout": "unavailable; no error or improvement ratio published",
+    "default_agent_behavior_changed": false,
+    "deployment_performed": false
+  },
+  "synthetic_method_checks": [
+    {
+      "seed": 73,
+      "generator": "Random independent constant/sine/cosine 2x2 matrices, random constant offset, random free omega and initial states; high-accuracy solve_ivp used only for synthetic test data.",
+      "synthetic_true_omega": 0.6955817135729158,
+      "estimated_omega": 0.6955817011859936,
+      "absolute_omega_error": 1.2386922154661306e-08,
+      "relative_coefficient_error": 1.3701455717360062e-08,
+      "reconstruction_cv_relative_rmse": 5.262429184123046e-09,
+      "local_frequency_status": "locally_resolved_within_searched_family",
+      "elapsed_seconds": 0.38868625
+    },
+    {
+      "seed": 121,
+      "generator": "Random independent constant/sine/cosine 2x2 matrices, random constant offset, random free omega and initial states; high-accuracy solve_ivp used only for synthetic test data.",
+      "synthetic_true_omega": 0.7796894852917168,
+      "estimated_omega": 0.7796894873378422,
+      "absolute_omega_error": 2.0461253802395163e-09,
+      "relative_coefficient_error": 7.3193965460620776e-09,
+      "reconstruction_cv_relative_rmse": 3.3197021880040236e-09,
+      "local_frequency_status": "locally_resolved_within_searched_family",
+      "elapsed_seconds": 0.3996814579999999
+    }
+  ],
+  "public_observation_checks": [
+    {
+      "run": "e5-qwen38-tools-on-20261107-r06-world_6",
+      "sources": [
+        "mission.json:task",
+        "records/probe/*.json"
+      ],
+      "all_acquired_probe_count": 12,
+      "summary": {
+        "summary_version": "harmonic_observation_summary_v1",
+        "status": "descriptive_comparison",
+        "reason": null,
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "autonomous_linear_reference": {
+          "training_relative_delta_velocity_rmse": 0.10046665,
+          "cross_validation": {
+            "status": "available",
+            "reason": null,
+            "relative_delta_velocity_rmse": 0.10191202,
+            "frequency_identification_in_all_folds": null,
+            "folds": [
+              {
+                "held_out_probe_ids": [
+                  "probe_0001",
+                  "probe_0006",
+                  "probe_0011"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 2.864444,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0002",
+                  "probe_0007",
+                  "probe_0012"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 1.8660984,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0003",
+                  "probe_0008"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 1.9146586,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0004",
+                  "probe_0009"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 3.0894414,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0005",
+                  "probe_0010"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 1.8947444,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              }
+            ]
+          }
+        },
+        "harmonic_model": {
+          "omega": 0.3926992,
+          "rank": 9,
+          "condition_number": 216.18226,
+          "training_relative_delta_velocity_rmse": 5.2867267e-08,
+          "coefficients_by_term": {
+            "1": {
+              "ax": -3.5717375e-09,
+              "ay": 3.3428668e-08,
+              "delta_velocity_contribution_rms": 7.9987042e-09
+            },
+            "x": {
+              "ax": -0.11999998,
+              "ay": 5.7193743e-09,
+              "delta_velocity_contribution_rms": 0.041930421
+            },
+            "y": {
+              "ax": -7.3335527e-09,
+              "ay": -0.11999993,
+              "delta_velocity_contribution_rms": 0.037458013
+            },
+            "sin(omega*t)": {
+              "ax": 2.2618844e-09,
+              "ay": -1.4336608e-08,
+              "delta_velocity_contribution_rms": 1.4318356e-09
+            },
+            "x*sin(omega*t)": {
+              "ax": -0.033878545,
+              "ay": 0.049520146,
+              "delta_velocity_contribution_rms": 0.008469418
+            },
+            "y*sin(omega*t)": {
+              "ax": 0.049520133,
+              "ay": 0.033878488,
+              "delta_velocity_contribution_rms": 0.0069791756
+            },
+            "cos(omega*t)": {
+              "ax": 5.320584e-09,
+              "ay": -3.0410515e-08,
+              "delta_velocity_contribution_rms": 6.6808513e-09
+            },
+            "x*cos(omega*t)": {
+              "ax": 0.049520108,
+              "ay": 0.033878546,
+              "delta_velocity_contribution_rms": 0.019169182
+            },
+            "y*cos(omega*t)": {
+              "ax": 0.033878559,
+              "ay": -0.049520228,
+              "delta_velocity_contribution_rms": 0.017372183
+            }
+          },
+          "cross_validation": {
+            "status": "available",
+            "reason": null,
+            "relative_delta_velocity_rmse": 6.4387252e-08,
+            "frequency_identification_in_all_folds": true,
+            "folds": [
+              {
+                "held_out_probe_ids": [
+                  "probe_0001",
+                  "probe_0006",
+                  "probe_0011"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269903,
+                "training_rank": 9,
+                "training_condition_number": 291.26125,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0002",
+                  "probe_0007",
+                  "probe_0012"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269921,
+                "training_rank": 9,
+                "training_condition_number": 186.52338,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0003",
+                  "probe_0008"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269912,
+                "training_rank": 9,
+                "training_condition_number": 192.35562,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0004",
+                  "probe_0009"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269924,
+                "training_rank": 9,
+                "training_condition_number": 309.26622,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0005",
+                  "probe_0010"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269919,
+                "training_rank": 9,
+                "training_condition_number": 189.71306,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              }
+            ]
+          },
+          "frequency_identification": {
+            "status": "locally_resolved_within_searched_family",
+            "reasons": [],
+            "local_profile_interval": [
+              0.39268857,
+              0.39270982
+            ],
+            "profile_relative_rmse_tolerance": 1e-08,
+            "global_frequency_uniqueness_established": false,
+            "unrefined_sampled_local_minima_count": 0,
+            "scope": "Local identification at the best searched minimum only. At most the three lowest stable grid minima are refined; other valleys, unsearched frequencies and narrow aliases between grid samples are not excluded."
+          },
+          "frequency_search": {
+            "frequency_lower": 0.0010471976,
+            "frequency_upper": 10.471976,
+            "grid_point_count": 48,
+            "grid_capped": false,
+            "refined_local_minima_count": 3,
+            "sampled_local_minima_count": 3,
+            "range_rule": "upper=pi/largest observed interval; lower=upper*1e-4. Grid spacing targets pi/(4*observed span). All values derive from the supplied training probes.",
+            "range_scope": "A conservative sampling-based search band, not a physical frequency bound or an alias-free guarantee on nonuniform/disconnected observation windows."
+          }
+        },
+        "linear_cv_divided_by_harmonic_cv": 1582798.2,
+        "unvaried_controls": [],
+        "meaning": "Exploratory coefficients and frequency evidence only; no law, selected final answer, submission or official verdict is produced.",
+        "warnings": [
+          "CV compares reconstruction procedures on whole held-out probes; held-out velocities also construct Hermite midpoints. Formal trajectory fit and fresh validation remain necessary.",
+          "A low CV error is compatible with an unresolved frequency. Check frequency_identification_in_all_folds separately; a local profile is neither global uniqueness nor a confidence interval.",
+          "Only the three lowest stable grid minima are refined. Unsearched/narrow aliases and frequencies outside the sampling-derived band remain possible.",
+          "All nine coefficient pairs are shown without pruning. Eighteen independent coefficients plus omega exceed five law parameters; any pruning or signed sharing is a new testable hypothesis.",
+          "Velocity, body and property effects are not included or ruled out. Fixed properties remain unidentified; sparse/disconnected time windows can confound time dependence."
+        ]
+      },
+      "elapsed_seconds": 0.19527779199999995,
+      "metric_scope": "Observed-increment reconstruction and reselected-frequency whole-probe CV only; not evaluation or a score."
+    },
+    {
+      "run": "e5-qwen38-strict-20261107-r09-world_6",
+      "sources": [
+        "mission.json:task",
+        "records/probe/*.json"
+      ],
+      "all_acquired_probe_count": 12,
+      "summary": {
+        "summary_version": "harmonic_observation_summary_v1",
+        "status": "descriptive_comparison",
+        "reason": null,
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011",
+          "probe_0012"
+        ],
+        "autonomous_linear_reference": {
+          "training_relative_delta_velocity_rmse": 0.4136583,
+          "cross_validation": {
+            "status": "available",
+            "reason": null,
+            "relative_delta_velocity_rmse": 0.53264512,
+            "frequency_identification_in_all_folds": null,
+            "folds": [
+              {
+                "held_out_probe_ids": [
+                  "probe_0001",
+                  "probe_0006",
+                  "probe_0011"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 2.1536364,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0002",
+                  "probe_0007",
+                  "probe_0012"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 1.7652267,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0003",
+                  "probe_0008"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 1.8628494,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0004",
+                  "probe_0009"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 1.9643847,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0005",
+                  "probe_0010"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 1.8340599,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              }
+            ]
+          }
+        },
+        "harmonic_model": {
+          "omega": 0.3926991,
+          "rank": 9,
+          "condition_number": 5.7934479,
+          "training_relative_delta_velocity_rmse": 7.1710048e-08,
+          "coefficients_by_term": {
+            "1": {
+              "ax": 2.3807693e-09,
+              "ay": 1.5034602e-08,
+              "delta_velocity_contribution_rms": 2.2375284e-09
+            },
+            "x": {
+              "ax": -0.12000002,
+              "ay": -2.6791059e-09,
+              "delta_velocity_contribution_rms": 0.042305546
+            },
+            "y": {
+              "ax": -1.5053424e-09,
+              "ay": -0.12000003,
+              "delta_velocity_contribution_rms": 0.025511371
+            },
+            "sin(omega*t)": {
+              "ax": 3.7696654e-09,
+              "ay": -3.940611e-09,
+              "delta_velocity_contribution_rms": 5.3177237e-10
+            },
+            "x*sin(omega*t)": {
+              "ax": -0.033878546,
+              "ay": 0.049520148,
+              "delta_velocity_contribution_rms": 0.016588802
+            },
+            "y*sin(omega*t)": {
+              "ax": 0.049520151,
+              "ay": 0.033878544,
+              "delta_velocity_contribution_rms": 0.0070859002
+            },
+            "cos(omega*t)": {
+              "ax": 7.2941243e-09,
+              "ay": -1.7324492e-08,
+              "delta_velocity_contribution_rms": 2.0664969e-09
+            },
+            "x*cos(omega*t)": {
+              "ax": 0.049520145,
+              "ay": 0.033878549,
+              "delta_velocity_contribution_rms": 0.01311184
+            },
+            "y*cos(omega*t)": {
+              "ax": 0.033878547,
+              "ay": -0.04952013,
+              "delta_velocity_contribution_rms": 0.010601194
+            }
+          },
+          "cross_validation": {
+            "status": "available",
+            "reason": null,
+            "relative_delta_velocity_rmse": 1.5752628e-07,
+            "frequency_identification_in_all_folds": true,
+            "folds": [
+              {
+                "held_out_probe_ids": [
+                  "probe_0001",
+                  "probe_0006",
+                  "probe_0011"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269911,
+                "training_rank": 9,
+                "training_condition_number": 15.648522,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0002",
+                  "probe_0007",
+                  "probe_0012"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269909,
+                "training_rank": 9,
+                "training_condition_number": 12.112764,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0003",
+                  "probe_0008"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269909,
+                "training_rank": 9,
+                "training_condition_number": 5.6761516,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0004",
+                  "probe_0009"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269909,
+                "training_rank": 9,
+                "training_condition_number": 6.3244975,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0005",
+                  "probe_0010"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.3926991,
+                "training_rank": 9,
+                "training_condition_number": 5.5898602,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              }
+            ]
+          },
+          "frequency_identification": {
+            "status": "locally_resolved_within_searched_family",
+            "reasons": [],
+            "local_profile_interval": [
+              0.39269903,
+              0.3926991
+            ],
+            "profile_relative_rmse_tolerance": 1e-08,
+            "global_frequency_uniqueness_established": false,
+            "unrefined_sampled_local_minima_count": 15,
+            "scope": "Local identification at the best searched minimum only. At most the three lowest stable grid minima are refined; other valleys, unsearched frequencies and narrow aliases between grid samples are not excluded."
+          },
+          "frequency_search": {
+            "frequency_lower": 0.0010471976,
+            "frequency_upper": 10.471976,
+            "grid_point_count": 165,
+            "grid_capped": false,
+            "refined_local_minima_count": 3,
+            "sampled_local_minima_count": 18,
+            "range_rule": "upper=pi/largest observed interval; lower=upper*1e-4. Grid spacing targets pi/(4*observed span). All values derive from the supplied training probes.",
+            "range_scope": "A conservative sampling-based search band, not a physical frequency bound or an alias-free guarantee on nonuniform/disconnected observation windows."
+          }
+        },
+        "linear_cv_divided_by_harmonic_cv": 3381309.7,
+        "unvaried_controls": [],
+        "meaning": "Exploratory coefficients and frequency evidence only; no law, selected final answer, submission or official verdict is produced.",
+        "warnings": [
+          "CV compares reconstruction procedures on whole held-out probes; held-out velocities also construct Hermite midpoints. Formal trajectory fit and fresh validation remain necessary.",
+          "A low CV error is compatible with an unresolved frequency. Check frequency_identification_in_all_folds separately; a local profile is neither global uniqueness nor a confidence interval.",
+          "Only the three lowest stable grid minima are refined. Unsearched/narrow aliases and frequencies outside the sampling-derived band remain possible.",
+          "All nine coefficient pairs are shown without pruning. Eighteen independent coefficients plus omega exceed five law parameters; any pruning or signed sharing is a new testable hypothesis.",
+          "Velocity, body and property effects are not included or ruled out. Fixed properties remain unidentified; sparse/disconnected time windows can confound time dependence."
+        ]
+      },
+      "elapsed_seconds": 0.4632028750000001,
+      "metric_scope": "Observed-increment reconstruction and reselected-frequency whole-probe CV only; not evaluation or a score."
+    },
+    {
+      "run": "e5-qwen38-candidates-20261107-r10-world_6",
+      "sources": [
+        "mission.json:task",
+        "records/probe/*.json"
+      ],
+      "all_acquired_probe_count": 9,
+      "summary": {
+        "summary_version": "harmonic_observation_summary_v1",
+        "status": "descriptive_comparison",
+        "reason": null,
+        "probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009"
+        ],
+        "autonomous_linear_reference": {
+          "training_relative_delta_velocity_rmse": 0.27146184,
+          "cross_validation": {
+            "status": "available",
+            "reason": null,
+            "relative_delta_velocity_rmse": 0.50517752,
+            "frequency_identification_in_all_folds": null,
+            "folds": [
+              {
+                "held_out_probe_ids": [
+                  "probe_0001",
+                  "probe_0006"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 4.1706886,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0002",
+                  "probe_0007"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 3.816723,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0003",
+                  "probe_0008"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 3.9621077,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0004",
+                  "probe_0009"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 4.5245947,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0005"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": null,
+                "training_rank": 3,
+                "training_condition_number": 4.6509954,
+                "frequency_identification_status": null,
+                "frequency_identification_reasons": []
+              }
+            ]
+          }
+        },
+        "harmonic_model": {
+          "omega": 0.39269908,
+          "rank": 9,
+          "condition_number": 38.40687,
+          "training_relative_delta_velocity_rmse": 7.3565002e-08,
+          "coefficients_by_term": {
+            "1": {
+              "ax": 1.5713268e-08,
+              "ay": 5.2764391e-09,
+              "delta_velocity_contribution_rms": 2.7308304e-09
+            },
+            "x": {
+              "ax": -0.12000001,
+              "ay": 4.389197e-09,
+              "delta_velocity_contribution_rms": 0.037428422
+            },
+            "y": {
+              "ax": -7.2780773e-09,
+              "ay": -0.12000001,
+              "delta_velocity_contribution_rms": 0.034784171
+            },
+            "sin(omega*t)": {
+              "ax": -1.273607e-08,
+              "ay": 1.3266504e-10,
+              "delta_velocity_contribution_rms": 1.4233854e-09
+            },
+            "x*sin(omega*t)": {
+              "ax": -0.033878544,
+              "ay": 0.049520135,
+              "delta_velocity_contribution_rms": 0.014838418
+            },
+            "y*sin(omega*t)": {
+              "ax": 0.049520149,
+              "ay": 0.033878555,
+              "delta_velocity_contribution_rms": 0.01302807
+            },
+            "cos(omega*t)": {
+              "ax": 2.4388842e-09,
+              "ay": -3.9353858e-09,
+              "delta_velocity_contribution_rms": 5.6018952e-10
+            },
+            "x*cos(omega*t)": {
+              "ax": 0.049520137,
+              "ay": 0.033878549,
+              "delta_velocity_contribution_rms": 0.011395925
+            },
+            "y*cos(omega*t)": {
+              "ax": 0.033878553,
+              "ay": -0.049520146,
+              "delta_velocity_contribution_rms": 0.011514393
+            }
+          },
+          "cross_validation": {
+            "status": "available",
+            "reason": null,
+            "relative_delta_velocity_rmse": 3.5011092e-07,
+            "frequency_identification_in_all_folds": true,
+            "folds": [
+              {
+                "held_out_probe_ids": [
+                  "probe_0001",
+                  "probe_0006"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269908,
+                "training_rank": 9,
+                "training_condition_number": 40.467918,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0002",
+                  "probe_0007"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269908,
+                "training_rank": 9,
+                "training_condition_number": 37.468476,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0003",
+                  "probe_0008"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269908,
+                "training_rank": 9,
+                "training_condition_number": 40.358551,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0004",
+                  "probe_0009"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269932,
+                "training_rank": 9,
+                "training_condition_number": 41.882338,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              },
+              {
+                "held_out_probe_ids": [
+                  "probe_0005"
+                ],
+                "usable_for_reconstruction_error": true,
+                "omega": 0.39269908,
+                "training_rank": 9,
+                "training_condition_number": 49.707455,
+                "frequency_identification_status": "locally_resolved_within_searched_family",
+                "frequency_identification_reasons": []
+              }
+            ]
+          },
+          "frequency_identification": {
+            "status": "locally_resolved_within_searched_family",
+            "reasons": [],
+            "local_profile_interval": [
+              0.39269905,
+              0.39269912
+            ],
+            "profile_relative_rmse_tolerance": 1e-08,
+            "global_frequency_uniqueness_established": false,
+            "unrefined_sampled_local_minima_count": 8,
+            "scope": "Local identification at the best searched minimum only. At most the three lowest stable grid minima are refined; other valleys, unsearched frequencies and narrow aliases between grid samples are not excluded."
+          },
+          "frequency_search": {
+            "frequency_lower": 0.0010471976,
+            "frequency_upper": 10.471976,
+            "grid_point_count": 295,
+            "grid_capped": false,
+            "refined_local_minima_count": 3,
+            "sampled_local_minima_count": 11,
+            "range_rule": "upper=pi/largest observed interval; lower=upper*1e-4. Grid spacing targets pi/(4*observed span). All values derive from the supplied training probes.",
+            "range_scope": "A conservative sampling-based search band, not a physical frequency bound or an alias-free guarantee on nonuniform/disconnected observation windows."
+          }
+        },
+        "linear_cv_divided_by_harmonic_cv": 1442907.1,
+        "unvaried_controls": [
+          "mass"
+        ],
+        "meaning": "Exploratory coefficients and frequency evidence only; no law, selected final answer, submission or official verdict is produced.",
+        "warnings": [
+          "CV compares reconstruction procedures on whole held-out probes; held-out velocities also construct Hermite midpoints. Formal trajectory fit and fresh validation remain necessary.",
+          "A low CV error is compatible with an unresolved frequency. Check frequency_identification_in_all_folds separately; a local profile is neither global uniqueness nor a confidence interval.",
+          "Only the three lowest stable grid minima are refined. Unsearched/narrow aliases and frequencies outside the sampling-derived band remain possible.",
+          "All nine coefficient pairs are shown without pruning. Eighteen independent coefficients plus omega exceed five law parameters; any pruning or signed sharing is a new testable hypothesis.",
+          "Velocity, body and property effects are not included or ruled out. Fixed properties remain unidentified; sparse/disconnected time windows can confound time dependence."
+        ]
+      },
+      "elapsed_seconds": 0.4632468329999999,
+      "metric_scope": "Observed-increment reconstruction and reselected-frequency whole-probe CV only; not evaluation or a score."
+    }
+  ],
+  "negative_controls": {
+    "autonomous_linear_and_constant_acceleration": "Low reconstruction error does not identify omega. Profile is broad; derivative after refitting linear coefficients is near zero; frequency status unresolved.",
+    "zero_velocity_increment": "Reports unavailable with zero_observed_velocity_increment and finite JSON; no invented relative error.",
+    "regular_grid_alias": "omega and omega+4*pi/dt produce identical sampled endpoint/midpoint design columns on a uniform grid; the searched band does not exclude such unsearched physical aliases.",
+    "insufficient_rank": "No unique coefficients or frequency are reported.",
+    "frequency_grid_capped": "Reported as unresolved even if one grid minimum fits well.",
+    "deadline_during_cv": "Available fitted coefficients remain diagnostic only; incomplete CV and improvement ratio are withheld."
+  },
+  "interpretation_limits": [
+    "Whole-probe CV reconstructs acquired increments. Held-out velocities participate in Hermite midpoint features; it is not rollout validation.",
+    "Only the three lowest stable sampled minima are refined; other/narrow aliases can remain. Local resolution never establishes globally unique frequency.",
+    "Available reconstruction CV with unresolved fold frequencies describes the model-selection procedure, not a uniquely identified physical frequency.",
+    "Moving sources, velocity, properties and other omitted effects can mimic time dependence. None is ruled out by this dictionary.",
+    "The raw harmonic model has eighteen axis coefficients plus omega. Any pruning or signed sharing is a separate hypothesis requiring formal fitting and fresh trajectory validation.",
+    "No scores, final submissions or claims of meeting the six-world success target are included."
+  ],
+  "verification": {
+    "command": ".venv/bin/python -m pytest -q tests/test_harmonic_diagnostics.py tests/test_diagnostics.py tests/test_candidate_hints.py",
+    "result": "102 passed",
+    "new_harmonic_tests": 25
+  },
+  "sparsity_observation": {
+    "source_run": "e5-qwen38-candidates-20261107-r10-world_6",
+    "axis_contribution_threshold_fraction": 0.001,
+    "strong_axis_coefficient_count": 10,
+    "hypothetical_signed_magnitude_groups": 3,
+    "parameters_if_grouping_is_formally_validated": 4,
+    "grouping_rule": "Same feature units, pairwise absolute coefficient magnitudes within 5%; original sign preserved explicitly. This proposes equality, it does not prove symmetry.",
+    "grouping_status": "Not fitted, validated, deployed or submitted. No final formula or numerical constants are preset in runtime."
+  },
+  "multi_source_library_context": {
+    "method": "Observed body positions interpolated only within acquired coverage; vector source distance-power dictionary, either uniform or independent source weights; declared positive-property multipliers.",
+    "evidence": "No accurate source-only reconstruction candidate was found in these acquired groups. Independent source weights can also exceed parameter/DSL expressiveness limits.",
+    "comparison_selection_warning": "Each fixed dictionary candidate used whole-probe CV; choosing the best across this dictionary is exploratory selection, not independent final validation.",
+    "checks": [
+      {
+        "run": "e5-qwen38-candidates-20261107-r10-world_6",
+        "best_exploratory_source_cv_relative_rmse": 0.4460869482047262,
+        "independent_source_weights": true,
+        "linear_parameter_count": 9
+      },
+      {
+        "run": "e5-qwen38-strict-20261107-r09-world_6",
+        "best_exploratory_source_cv_relative_rmse": 0.3626481506114916,
+        "independent_source_weights": true,
+        "linear_parameter_count": 9
+      },
+      {
+        "run": "e5-qwen38-tools-on-20261107-r06-world_6",
+        "best_exploratory_source_cv_relative_rmse": 0.16473549916505556,
+        "independent_source_weights": true,
+        "linear_parameter_count": 9
+      }
+    ]
+  }
+}

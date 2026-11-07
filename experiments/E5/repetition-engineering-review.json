@@ -1,0 +1,39 @@
+{
+  "scope": [
+    "R10 world_2",
+    "R10 world_5",
+    "R11 world_1",
+    "R11 world_6"
+  ],
+  "method": "Read-only model request history, actual tool_finished records, and installed local Qwen chat-template rendering. No new LLM request or physics experiment.",
+  "requests_checked": 204,
+  "cumulative_historical_tool_pairs_checked": 6427,
+  "tool_results_missing_or_mismatched": 0,
+  "history_prefix_and_previous_assistant_preserved": true,
+  "template_samples": [
+    "R10 world_2 request 25",
+    "R10 world_5 request 30",
+    "R11 world_1 request 8",
+    "R11 world_6 request 70"
+  ],
+  "template_tool_responses_present": [
+    24,
+    29,
+    7,
+    71
+  ],
+  "thinking_disabled_rendering_verified": true,
+  "findings": [
+    "No evidence of feedback loss, incorrect tool pairing, chat-template mismatch, or application response-cache reuse. This is not a proof that the inference engine has no bugs.",
+    "Single-turn tool exclusion cannot stop alternating validate/analyze actions. Required tool choice constrains syntax, not train/validation disjointness.",
+    "R11 world_1 received property coverage and validation position/velocity relative RMSE 4.41%/18.96%, but continued the same interpretation.",
+    "EOF has next_offset=null and empty content, yet truncated=true because it means not the complete file. This pagination ambiguity may contribute to one loop; it does not explain all failures.",
+    "repetition_penalty=1.0, presence/frequency penalties=0, repetition detection unset. These are observed defaults, not established causal bugs."
+  ],
+  "source_science_commit": "abd2293",
+  "limitations": [
+    "No disabled-prefix-cache rerun was performed.",
+    "Model generation is stochastic; fixed seeds do not establish stable success rates.",
+    "Historical tool-pair count repeats prior messages across requests and is not the number of distinct tool executions."
+  ]
+}

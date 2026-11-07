@@ -1,0 +1,100 @@
+{
+  "purpose": "Offline motivation for optional training-data diagnostics, not an autonomous baseline or independent score. No replay was fed into ongoing agents.",
+  "source": "Only original selected train_probe_ids, their already acquired probe records and public mission task; no simulator/world source or evaluator output is loaded.",
+  "cases": [
+    {
+      "run_id": "e5-qwen38-hs-seed43-20261107-r13-world_5",
+      "selected_law_record": "law_1",
+      "training_probe_count": 5,
+      "spatial_whole_probe_reconstruction_cv": {
+        "degree_1": 0.12547242233389955,
+        "degree_2": 0.1481951226767048,
+        "degree_3": 1.4291094049762622e-06
+      },
+      "unfit_hints": 2,
+      "diagnostic_elapsed_seconds_approximately": 0.0026,
+      "train_probe_ids": [
+        "probe_0001",
+        "probe_0002",
+        "probe_0003",
+        "probe_0004",
+        "probe_0005"
+      ],
+      "input_sha256": {
+        "records/law/law_1.json": "a0d1c04de2e955aa797ebe1dbbe676ee0d781d7613d785b526cef4e842883467",
+        "mission.json": "dd18fdc618b67f19947a8d494c10902e2e2be0cc59b2f2057017820363a01e27",
+        "records/probe/probe_0001.json": "e8111e9ca3664ca78ba58c06798a955b71bd247bb5f7efd17f0a849fd9b3259b",
+        "records/probe/probe_0002.json": "02ab1b9b1b2fac199f30eee1e2ed7799aeed8408876f6b92b92dcf4808ebc3fd",
+        "records/probe/probe_0003.json": "5969da2d68e86e4bd3ddc819b1d2ea50d10020696b415ad142aaa63667c65c4d",
+        "records/probe/probe_0004.json": "3a2f794568a6369ead9746c48ee5e3384ec5c7293702d4295b174e38d6da89f3",
+        "records/probe/probe_0005.json": "fc2f9312e8181beae703b5ffd6d1b642270dc3ef4841db26241e48916c04245e"
+      }
+    },
+    {
+      "run_id": "e5-qwen38-hs-seed43-20261107-r13-world_5",
+      "selected_law_record": "law_4",
+      "training_probe_count": 8,
+      "spatial_whole_probe_reconstruction_cv": {
+        "degree_1": 0.2373770454400437,
+        "degree_2": 0.3148407799934124,
+        "degree_3": 1.4375030519360315e-06
+      },
+      "unfit_hints": 2,
+      "diagnostic_elapsed_seconds_approximately": 0.0031,
+      "train_probe_ids": [
+        "probe_0001",
+        "probe_0002",
+        "probe_0003",
+        "probe_0004",
+        "probe_0005",
+        "probe_0006",
+        "probe_0007",
+        "probe_0008"
+      ],
+      "input_sha256": {
+        "records/law/law_4.json": "3dec4bc7b95f77cfbaea039cedaf403236230e2537160c52e92dc58d120d154c",
+        "mission.json": "dd18fdc618b67f19947a8d494c10902e2e2be0cc59b2f2057017820363a01e27",
+        "records/probe/probe_0001.json": "e8111e9ca3664ca78ba58c06798a955b71bd247bb5f7efd17f0a849fd9b3259b",
+        "records/probe/probe_0002.json": "02ab1b9b1b2fac199f30eee1e2ed7799aeed8408876f6b92b92dcf4808ebc3fd",
+        "records/probe/probe_0003.json": "5969da2d68e86e4bd3ddc819b1d2ea50d10020696b415ad142aaa63667c65c4d",
+        "records/probe/probe_0004.json": "3a2f794568a6369ead9746c48ee5e3384ec5c7293702d4295b174e38d6da89f3",
+        "records/probe/probe_0005.json": "fc2f9312e8181beae703b5ffd6d1b642270dc3ef4841db26241e48916c04245e",
+        "records/probe/probe_0006.json": "b4480c61bcde45e88985e164257e94006b1c391249b84cc3085b1ba0e45e2493",
+        "records/probe/probe_0007.json": "3a136e83553e7551752d662f71b2fc08ca351e6a0f3ca2180c1e174196121717",
+        "records/probe/probe_0008.json": "46e38ff3687b5cc04a17b4c61c8d27b1d98ee41a228c9c7cab4e7421c20750bb"
+      }
+    },
+    {
+      "run_id": "e5-qwen38-hs-seed43-20261107-r13-world_6",
+      "selected_law_record": "law_1",
+      "training_probe_count": 6,
+      "harmonic_whole_probe_reconstruction_cv_relative_rmse": 3.8428447017497166e-07,
+      "unfit_hint_available": true,
+      "diagnostic_elapsed_seconds_approximately": 0.111,
+      "train_probe_ids": [
+        "probe_0001",
+        "probe_0002",
+        "probe_0003",
+        "probe_0004",
+        "probe_0005",
+        "probe_0006"
+      ],
+      "input_sha256": {
+        "records/law/law_1.json": "2bc6b9f4457448b4fcaaafae4da0443675d13ec57d1e85bdf705a963ea422168",
+        "mission.json": "39f426e28a0ac24c868da700821b03ccca298511f8397f1ad0623edc70a1baf8",
+        "records/probe/probe_0001.json": "198e9fdd9274afb92e26981f238ef00f30008cb776360a2d9439202dd8b4353b",
+        "records/probe/probe_0002.json": "a4d15f0e4058efec80b5f2538dc10282abebc47d7de2260fc24590ac7c3c030a",
+        "records/probe/probe_0003.json": "481620e50094b4254c9f781ac1bb7451f674c3bf263bfeec9d69ef5af90a14e6",
+        "records/probe/probe_0004.json": "50d271b6d0bb2093081f9857da9e78defb0356673108b3ec85a036076c3ea556",
+        "records/probe/probe_0005.json": "5cd580b0247b53daab652ebc9c1bd5757bb24bb9ff38ece749ce45c8f55d29f2",
+        "records/probe/probe_0006.json": "8e02b3c342803d5bcfd49324f4801a4d053474c15ac345e77561f2f03628235b"
+      }
+    }
+  ],
+  "limitations": [
+    "Observation reconstruction CV is not an independent prediction validation and does not establish physical correctness.",
+    "Interpolation uses held-out observed velocities in the midpoint construction; independent clean rollout evaluation remains required.",
+    "Times are one local CPU measurement, not server timing guarantees.",
+    "This record demonstrates available numerical evidence, not a guaranteed improvement in model behavior."
+  ]
+}

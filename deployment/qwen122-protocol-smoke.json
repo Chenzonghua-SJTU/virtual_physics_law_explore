@@ -1,0 +1,93 @@
+{
+  "purpose": "Synthetic non-physics interface/warm-up check before R14, not a world attempt",
+  "request": {
+    "model": "qwen3.5-122b-a10b",
+    "messages": [
+      {
+        "role": "user",
+        "content": "请调用echo工具，text填写“本地接口检查”，value填写2。不要输出其他文字。"
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "echo",
+          "description": "接口格式检查，不访问物理世界。",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "value": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "text",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    ],
+    "tool_choice": "auto",
+    "max_tokens": 128,
+    "temperature": 1.0,
+    "seed": 42,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "response": {
+    "id": "chatcmpl-9298eac159c3b11a",
+    "object": "chat.completion",
+    "created": 1794015198,
+    "model": "qwen3.5-122b-a10b",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "refusal": null,
+          "annotations": null,
+          "audio": null,
+          "function_call": null,
+          "tool_calls": [
+            {
+              "id": "chatcmpl-tool-85331cc62d5f027f",
+              "type": "function",
+              "function": {
+                "name": "echo",
+                "arguments": "{\"text\": \"本地接口检查\", \"value\": 2}"
+              }
+            }
+          ],
+          "reasoning": null
+        },
+        "logprobs": null,
+        "finish_reason": "tool_calls",
+        "stop_reason": null,
+        "token_ids": null,
+        "routed_experts": null
+      }
+    ],
+    "service_tier": null,
+    "system_fingerprint": "vllm-0.24.0-tp2-b369dbe0",
+    "usage": {
+      "prompt_tokens": 310,
+      "total_tokens": 348,
+      "completion_tokens": 38,
+      "prompt_tokens_details": null
+    },
+    "prompt_logprobs": null,
+    "prompt_token_ids": null,
+    "prompt_text": null,
+    "kv_transfer_params": null
+  },
+  "elapsed_seconds": 2.5126175954937935,
+  "time_since_service_start_seconds": 589.1249175071716
+}

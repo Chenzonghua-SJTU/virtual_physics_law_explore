@@ -96,7 +96,8 @@ def _hashes(project):
     paths = ['shore_agent/agent.py', 'shore_agent/prompts/main.txt', 'shore_agent/prompts/e5.txt', 'shore_agent/schemas.py',
              'shore_agent/runtime.py', 'shore_agent/numerics.py', 'shore_agent/expressions.py',
              'shore_agent/model.py', 'shore_agent/web_worker.py', 'shore_agent/store.py',
-             'shore_agent/diagnostics.py', 'shore_agent/candidate_hints.py', 'shore_agent/workspace.py',
+             'shore_agent/diagnostics.py', 'shore_agent/candidate_hints.py',
+             'shore_agent/harmonic_diagnostics.py', 'shore_agent/harmonic_candidates.py', 'shore_agent/workspace.py',
              'shore_agent/submission.py', 'shore_rules.py', 'shore_v15/simulator.py',
              'shore_v15/evaluation.py', 'benchmark_v15.py', 'shore_v15/vendor/SOURCE.json']
     return {path: hashlib.sha256((project / path).read_bytes()).hexdigest()
@@ -161,6 +162,9 @@ def prepare(output, config, workers=3, project=PROJECT, model_endpoints=None):
                              'energy_budget': energy_budget, 'wall_seconds_per_world': wall_seconds,
                              'single_active_world_per_endpoint': bool(endpoints),
                              'diagnostics_enabled': config.get('numerics', {}).get('diagnostics_enabled', False),
+                             'diagnostics_harmonic': config.get('numerics', {}).get('diagnostics_harmonic', False),
+                             'diagnostics_on_fit': config.get('numerics', {}).get('diagnostics_on_fit', False),
+                             'candidate_hint_source': 'current_session_acquired_observations_only',
                              'model_sampling_seed': config.get('model', {}).get('sampling_seed'),
                              'queue_time_excluded_from_mission_budget': True,
                              'evaluation': 'all_fixed_v15_cases_after_accepted_submission',
@@ -348,7 +352,8 @@ def markdown(summary):
     lines = ['# v15 六世界自主探索 Baseline', '',
              f"实验：`{summary['experiment_id']}`；归档：{group}；规则：`{ruleset}`；编排状态：`{summary['status']}`。", '',
              f"模型 `{config['model']['model']}`；thinking={str(config['model']['thinking']).lower()}；"
-             f"噪声={'开启' if env.get('noise') else '关闭'}；seed={env.get('seed')}；"
+             f"噪声={'开启' if env.get('noise') else '关闭'}；环境 seed={env.get('seed')}；"
+             f"模型采样 seed={config['model'].get('sampling_seed', '未固定')}；"
              f'每世界 {energy} 能量、{wall:g} 秒；每世界仅一次真实模型探索，不自动重跑。', '',
              f"继承配置：总 token 预算 {config['model'].get('max_total_tokens')}，"
              f"单次输出上限 {config['model'].get('max_tokens_per_call')}，"

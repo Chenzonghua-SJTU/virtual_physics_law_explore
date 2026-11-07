@@ -370,7 +370,7 @@ class RunManager:
             for section, names in (
                     ('model', ('strict_tools',)),
                     ('agent', ('strict_tool_recovery', 'budget_aware_tools', 'repeated_tool_failure_feedback', 'stagnation_recovery')),
-                    ('numerics', ('diagnostics_enabled', 'diagnostics_compact', 'diagnostics_curvature', 'diagnostics_candidates', 'diagnostics_quadrature'))):
+                    ('numerics', ('diagnostics_enabled', 'diagnostics_compact', 'diagnostics_curvature', 'diagnostics_candidates', 'diagnostics_quadrature', 'diagnostics_harmonic', 'diagnostics_on_fit'))):
                 for name in names:
                     config.get(section, {}).pop(name, None)
             if config['model'].get('ruleset') == 'e5':

@@ -23,7 +23,10 @@ function render(batch) {
   section.append(element('h2',`${batch.experiment_group} · ${batch.model} · ${repeat} · ${states[batch.status]||batch.status}`));
   section.append(element('div',batch.id,'batch-id'));
   section.append(element('p',`${batch.energy_budget} 能量 · ${batch.wall_seconds} 秒探索 · 噪声${batch.noise?'开启':'关闭'} · 思考${batch.thinking?'开启':'关闭'} · 单次输出上限 ${batch.output_limit??'未记录'} token`,'batch-id'));
-  if(batch.experiment_group==='E5') section.append(element('p',`通用数值诊断工具：${batch.diagnostics_enabled?'开启':'关闭'} · 模型采样 seed：${batch.model_sampling_seed??'未固定'}`,'batch-id'));
+  if(batch.experiment_group==='E5') {
+    section.append(element('p',`通用数值诊断：${batch.diagnostics_enabled?'开启':'关闭'} · 温度：${batch.model_temperature??'模型默认'} · seed：${batch.model_sampling_seed??'未固定'}`,'batch-id'));
+    if(batch.diagnostics_harmonic||batch.diagnostics_on_fit) section.append(element('p',`时间项诊断：${batch.diagnostics_harmonic?'开启':'关闭'} · 拟合残差较大时自动诊断训练数据：${batch.diagnostics_on_fit?'开启':'关闭'}`,'batch-id'));
+  }
   const evaluated=batch.worlds.filter(row=>row.evaluation_complete);
   const highScores=evaluated.filter(row=>typeof row.evaluation_score?.total==='number'&&row.evaluation_score.total>=90).length;
   section.append(element('p',`本批达到 90 分：${highScores} / ${batch.worlds.length} 个世界 · 完成独立测评：${evaluated.length} / ${batch.worlds.length}。90 分为本次复现目标，按原始分数判断。`,'batch-id'));

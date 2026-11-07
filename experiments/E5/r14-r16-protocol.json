@@ -28,7 +28,7 @@
       "Optional fresh diagnosis of the selected training probes when a fitted law has large noise-free residuals. No extra observations, no alteration of fitted law, no automatic submission."
     ],
     "interpretation": "Composite engineering experiment. Original E3 main prompt, ordinary fit/evaluator and world physics unchanged; no per-world answer map.",
-    "condition": "Run only after R14/R15 and source review; if target is already achieved, do not claim an unrun feature improved results."
+    "condition": "Run after R14/R15 and source review while the 27B same-model five-world target is unmet. A 122B batch is recorded separately and does not substitute for 27B reproduction."
   },
   "r14": {
     "batch": "e5-qwen35-122b-hs-20261107-r14",
@@ -48,5 +48,19 @@
     "only_config_difference_from_r13": "model.sampling_seed 43 -> 44",
     "attempts_per_world": 1,
     "interpretation": "Single additional complete-batch repeat, all outcomes retained; no cross-world best selection."
+  },
+  "r17": {
+    "batch": "e5-qwen35-122b-harmonic-fit-20261107-r17",
+    "config": "deployment/config.e5.harmonic-fit-qwen122.json",
+    "model": "qwen3.5-122b-a10b",
+    "seed": 42,
+    "temperature": 1.0,
+    "endpoints": [
+      8002
+    ],
+    "workers": 1,
+    "condition": "Run only if R14 does not meet the single-batch five-world target, concurrently with R16 after source review.",
+    "difference_from_r14": "diagnostics_harmonic and diagnostics_on_fit enabled; same model, seed, sampling and serving configuration.",
+    "interpretation": "Composite numerical-assistance experiment, paired by configuration with R14; not a same-model 27B result."
   }
 }

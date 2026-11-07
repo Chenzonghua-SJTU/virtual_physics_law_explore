@@ -142,7 +142,10 @@ class Handler(BaseHTTPRequestHandler):
                             wall_seconds=environment.get('wall_seconds', profile['wall_seconds']),
                             noise=environment.get('noise', False), output_limit=model.get('max_tokens_per_call'),
                             diagnostics_enabled=data['configuration'].get('numerics', {}).get('diagnostics_enabled', False),
+                            diagnostics_harmonic=data['configuration'].get('numerics', {}).get('diagnostics_harmonic', False),
+                            diagnostics_on_fit=data['configuration'].get('numerics', {}).get('diagnostics_on_fit', False),
                             model_sampling_seed=model.get('sampling_seed'),
+                            model_temperature=model.get('temperature'),
                             updated_at=data['updated_at'], model=model['model'],
                             thinking=model['thinking'], deployment=model['deployment'],
                             worlds=[{key: row.get(key) for key in (

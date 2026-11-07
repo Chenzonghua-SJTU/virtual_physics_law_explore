@@ -57,6 +57,12 @@ class ToolRuntime:
         self.diagnostics_candidates = self.config.get('diagnostics_candidates', False)
         if type(self.diagnostics_candidates) is not bool:
             raise ValueError('numerics.diagnostics_candidates must be boolean')
+        self.diagnostics_harmonic = self.config.get('diagnostics_harmonic', False)
+        if type(self.diagnostics_harmonic) is not bool:
+            raise ValueError('numerics.diagnostics_harmonic must be boolean')
+        self.diagnostics_on_fit = self.config.get('diagnostics_on_fit', False)
+        if type(self.diagnostics_on_fit) is not bool:
+            raise ValueError('numerics.diagnostics_on_fit must be boolean')
         self.diagnostics_quadrature = self.config.get('diagnostics_quadrature', 'trapezoid')
         if self.diagnostics_quadrature not in ('trapezoid', 'hermite_simpson'):
             raise ValueError('numerics.diagnostics_quadrature must be trapezoid or hermite_simpson')
@@ -65,11 +71,16 @@ class ToolRuntime:
         if type(self.code_enabled) is not bool:
             raise ValueError('code_execution.enabled must be boolean')
         self.ruleset = getattr(environment, 'ruleset', 'e3')
+        if self.ruleset == 'e5' and self.diagnostics_on_fit and not self.diagnostics_enabled:
+            raise ValueError('numerics.diagnostics_on_fit requires diagnostics_enabled=true')
         self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset,
                                     diagnostics_enabled=self.diagnostics_enabled,
                                     diagnostics_compact=self.diagnostics_compact,
                                     diagnostics_curvature=self.diagnostics_curvature,
-                                    diagnostics_candidates=self.diagnostics_candidates)
+                                    diagnostics_candidates=self.diagnostics_candidates,
+                                    diagnostics_harmonic=self.diagnostics_harmonic,
+                                    diagnostics_on_fit=self.diagnostics_on_fit)
+        self._observation_diagnostic_cache = {}
         self.last_valid_draft = None
         self.exploration_started_monotonic = None
         self.exploration_deadline_monotonic = None
@@ -366,7 +377,15 @@ class ToolRuntime:
             record['property_coverage'] = self._property_coverage(probes)
             record['residual_scale_check'] = self._residual_scale_check(probes, record.get('errors'))
         self.store.add('law', record, rid)
-        return preview(record)
+        response = preview(record)
+        if (self.ruleset == 'e5' and self.diagnostics_enabled and self.diagnostics_on_fit
+                and record.get('fit_status') in ('converged', 'not_converged')
+                and record.get('residual_scale_check', {}).get('warning') is True):
+            # The completed fit is immutable and durable before optional work.
+            # A diagnostic failure must never discard or rewrite this law.
+            response['training_observation_diagnostic'] = preview(
+                self._training_observation_diagnostic(rid, train_probe_ids))
+        return response
 
     def _law(self, law_id):
         law = self.store.get('law', law_id)
@@ -404,6 +423,95 @@ class ToolRuntime:
     def read_file(self, path, offset=0, limit=12000):
         return self.files.read_file(path, offset, limit)
 
+    def _diagnostic_time_remaining(self):
+        budget = self.budget()
+        remaining = 0. if budget.get('session_ended') or self.session_ended else budget['wall_seconds_remaining']
+        if self.exploration_deadline_monotonic is not None:
+            remaining = min(remaining, self.exploration_deadline_monotonic-time.monotonic())
+        return max(0., remaining)
+
+    def _optional_harmonic_diagnostic(self, probes):
+        """Keep optional harmonic failure separate from the existing diagnostic."""
+        limit = min(2., self._diagnostic_time_remaining()-.1)
+        if limit <= .02:
+            return ({'status': 'unavailable', 'reason': 'insufficient_remaining_time_for_harmonic_diagnostic'},
+                    {'candidate': None, 'reason': 'harmonic_diagnostic_unavailable'})
+        try:
+            from .harmonic_diagnostics import diagnose_harmonic
+            result = diagnose_harmonic(copy.deepcopy(probes), copy.deepcopy(self.task), max_seconds=limit)
+            if not isinstance(result, dict) or 'law_id' in result:
+                raise ValueError('Harmonic diagnostic must be an object without a law_id')
+            json.dumps(result, allow_nan=False)
+        except Exception as exc:
+            return ({'status': 'unavailable', 'reason': 'harmonic_diagnostic_failed',
+                     'error': {'code': type(exc).__name__, 'message': str(exc)[:500]}},
+                    {'candidate': None, 'reason': 'harmonic_diagnostic_failed'})
+        try:
+            from .harmonic_candidates import propose_harmonic_candidate
+            candidate = propose_harmonic_candidate(result, copy.deepcopy(self.task))
+            if (not isinstance(candidate, dict) or 'law_id' in candidate
+                    or isinstance(candidate.get('candidate'), dict) and 'law_id' in candidate['candidate']):
+                raise ValueError('Harmonic candidate must not identify a fitted law')
+            json.dumps(candidate, allow_nan=False)
+            return result, candidate
+        except Exception as exc:
+            return result, {'candidate': None, 'reason': 'harmonic_candidate_failed',
+                            'error': {'code': type(exc).__name__, 'message': str(exc)[:500]}}
+
+    def _diagnostic_response(self, record):
+        if self.diagnostics_compact:
+            from .diagnostics import summarize
+            response = {key: value for key, value in record.items()
+                        if key not in ('diagnostics', 'harmonic_diagnostics')}
+            if self.diagnostics_candidates:
+                response['candidate_hints'] = record['diagnostics']['candidate_hints']
+            response['diagnostic_summary'] = summarize(record['diagnostics'])
+            if 'harmonic_diagnostics' in record:
+                harmonic = record['harmonic_diagnostics']
+                if harmonic.get('method_version') == 'harmonic_observation_diagnostics_v1':
+                    try:
+                        from .harmonic_diagnostics import summarize_harmonic
+                        response['harmonic_summary'] = summarize_harmonic(harmonic)
+                    except Exception as exc:
+                        response['harmonic_summary'] = {'status': 'unavailable', 'reason': 'harmonic_summary_failed',
+                            'error': {'code': type(exc).__name__, 'message': str(exc)[:500]}}
+                else:
+                    response['harmonic_summary'] = copy.deepcopy(harmonic)
+            response['full_evidence'] = f"diagnostics/{record['diagnostic_id']}.json"
+            return preview(response)
+        return preview(record)
+
+    def _training_observation_diagnostic(self, law_id, train_probe_ids):
+        evidence = {'diagnostic_kind': 'training_observation_diagnostic',
+                    'source_law_id': law_id, 'probe_ids': list(train_probe_ids),
+                    'source': 'completed_law_train_probe_ids_only',
+                    'trigger': 'residual_scale_check.warning=true', 'status': 'unavailable',
+                    'meaning': 'Additional development evidence from this completed fit\'s selected training observations only. No validation data were added; the fitted law is unchanged and no next law is automatically selected.'}
+        key = tuple(train_probe_ids)
+        cached = key in self._observation_diagnostic_cache
+        try:
+            if self._diagnostic_time_remaining() <= (.0 if cached else .12):
+                evidence['reason'] = 'insufficient_remaining_time_for_training_diagnostic'
+            else:
+                response = self.diagnose_dynamics(list(train_probe_ids))
+                evidence.update(status='available', cache_hit=cached,
+                                linked_diagnostic_id=response['diagnostic_id'],
+                                full_evidence=f"diagnostics/{response['diagnostic_id']}.json",
+                                observation_diagnostic=response)
+        except Exception as exc:
+            evidence.update(reason='training_observation_diagnostic_failed',
+                            error={'code': type(exc).__name__, 'message': str(exc)[:500]})
+        # A separate association preserves provenance without mutating either the
+        # completed law or a cached diagnostic shared by several fitted laws.
+        rid = 'diagnostic_training_' + uuid.uuid4().hex[:12]
+        evidence['diagnostic_id'] = rid
+        try:
+            self.store.add('diagnostic', evidence, rid)
+        except Exception as exc:
+            evidence.update(status='unavailable', reason='training_diagnostic_evidence_archive_failed',
+                            error={'code': type(exc).__name__, 'message': str(exc)[:500]})
+        return evidence
+
     def diagnose_dynamics(self, probe_ids):
         """Describe selected acquired readouts; never create a law or query truth."""
         if self.ruleset != 'e5' or not self.diagnostics_enabled:
@@ -411,6 +519,14 @@ class ToolRuntime:
         if self.task is None:
             raise ValueError('Framework must initialize mission first')
         probes = self._probes(probe_ids)
+        key = tuple(probe_ids)
+        if self.diagnostics_on_fit and key in self._observation_diagnostic_cache:
+            if self._diagnostic_time_remaining() <= 0:
+                raise ValueError('Session wall time exhausted during observation diagnostics')
+            record = self.store.get('diagnostic', self._observation_diagnostic_cache[key])
+            response = self._diagnostic_response(record)
+            response['cache_hit'] = True
+            return response
         from .diagnostics import diagnose
         diagnostic_kwargs = ({'quadrature': self.diagnostics_quadrature}
                              if self.diagnostics_quadrature != 'trapezoid' else {})
@@ -439,16 +555,17 @@ class ToolRuntime:
                   'meaning': 'Descriptive approximations from selected acquired readouts, not true dynamics, '
                              'a fitted law, a submission, or a correctness verdict. No extra observation was made. '
                              'These selected trajectories are development data; use fresh trajectories for final validation.'}
+        if self.diagnostics_harmonic:
+            harmonic, candidate = self._optional_harmonic_diagnostic(probes)
+            record.update(harmonic_diagnostics=harmonic, harmonic_candidate=candidate)
+            if self._diagnostic_time_remaining() <= 0:
+                raise ValueError('Session wall time exhausted during observation diagnostics')
+        elif self.diagnostics_on_fit and self._diagnostic_time_remaining() <= 0:
+            raise ValueError('Session wall time exhausted during observation diagnostics')
         self.store.add('diagnostic', record, rid)
-        if self.diagnostics_compact:
-            from .diagnostics import summarize
-            response = {key: value for key, value in record.items() if key != 'diagnostics'}
-            if self.diagnostics_candidates:
-                response['candidate_hints'] = diagnostics['candidate_hints']
-            response['diagnostic_summary'] = summarize(diagnostics)
-            response['full_evidence'] = f'diagnostics/{rid}.json'
-            return preview(response)
-        return preview(record)
+        if self.diagnostics_on_fit:
+            self._observation_diagnostic_cache[key] = rid
+        return self._diagnostic_response(record)
 
     def analyze_residual(self, law_id, probe_ids):
         law = self._law(law_id)

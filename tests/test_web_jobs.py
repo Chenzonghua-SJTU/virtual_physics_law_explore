@@ -196,6 +196,8 @@ def test_reusing_strict_template_does_not_leak_e5_flags_into_older_profiles(mana
     from shore_agent.runtime import ToolRuntime
 
     source = json.loads((PROJECT / 'deployment/config.e5.strict.json').read_text())
+    source['numerics'].update(diagnostics_candidates=True, diagnostics_quadrature='hermite_simpson',
+                              diagnostics_harmonic=True, diagnostics_on_fit=True)
     # Exercise a trusted profile change while the remaining strict template is
     # inherited. Browser payloads still cannot change the server's ruleset.
     source['environment']['ruleset'] = ruleset
@@ -225,7 +227,9 @@ def test_reusing_strict_template_does_not_leak_e5_flags_into_older_profiles(mana
         if ruleset != 'e5':
             assert 'strict_tools' not in config['model']
             assert not ({'strict_tool_recovery', 'budget_aware_tools', 'repeated_tool_failure_feedback'} & set(config['agent']))
-            assert not ({'diagnostics_enabled', 'diagnostics_compact', 'diagnostics_curvature'} & set(config['numerics']))
+            assert not ({'diagnostics_enabled', 'diagnostics_compact', 'diagnostics_curvature',
+                         'diagnostics_candidates', 'diagnostics_quadrature', 'diagnostics_harmonic',
+                         'diagnostics_on_fit'} & set(config['numerics']))
             assert 'diagnose_dynamics' not in [s['function']['name'] for s in runtime.schemas]
         if ruleset == 'e3':
             assert config['model'].get('ruleset', 'e3') == 'e3'
