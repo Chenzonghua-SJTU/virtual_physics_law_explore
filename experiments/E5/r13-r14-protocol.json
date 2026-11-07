@@ -1,0 +1,48 @@
+{
+  "status": "pre_registered_before_runs",
+  "science_source": "abd2293",
+  "purpose": "Separate a 27B sampling repeat from an exploratory larger-model capacity comparison. Neither is pooled with other batches.",
+  "r13": {
+    "batch": "e5-qwen38-hs-seed43-20261107-r13",
+    "config": "deployment/config.e5.hs-seed43.json",
+    "model": "qwen3.8-27b",
+    "seed": 43,
+    "endpoints": [
+      8000,
+      8001
+    ],
+    "workers": 2,
+    "difference_from_r11": "sampling_seed only"
+  },
+  "r14": {
+    "batch": "e5-qwen35-122b-hs-20261107-r14",
+    "config": "deployment/config.e5.hs-qwen122.json",
+    "model": "qwen3.5-122b-a10b",
+    "precision": "checkpoint FP8",
+    "seed": 42,
+    "endpoints": [
+      8002
+    ],
+    "workers": 1,
+    "gpu_tensor_parallel": 2,
+    "difference_from_r11": "model, checkpoint precision and inference hardware configuration; same agent and numerical tools"
+  },
+  "shared": {
+    "thinking": false,
+    "temperature": 1.0,
+    "max_output_tokens": 4096,
+    "exploration_wall_seconds": 300,
+    "energy": 10,
+    "exploration_noise": false,
+    "independent_evaluation_noise": false,
+    "attempts_per_world": 1,
+    "guidance_profile": "E3 main unchanged"
+  },
+  "primary_outcome": "One complete six-world batch with at least five raw scores >=90; 122B is a separate-model baseline and not a successful 27B reproduction.",
+  "limitations": [
+    "Single batch per configuration; not a stable success probability estimate",
+    "Different model/precision/TP topology prevents attributing difference only to parameter count",
+    "Do not select per-world bests across batches",
+    "Server model loading occurs before exploration and is reported separately from experiment timing"
+  ]
+}
