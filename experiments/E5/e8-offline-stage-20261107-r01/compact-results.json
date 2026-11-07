@@ -1,0 +1,1421 @@
+{
+  "source_commit": "075ee3c",
+  "production_followup_commit": "72d0fcf",
+  "normal_path_identical": true,
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "status": "completed",
+      "requested_search_seconds": 47,
+      "search_client_seconds": 40.915898432955146,
+      "evaluation_seconds": 0.3280033264309168,
+      "total_seconds": 41.248603127896786,
+      "production_first": {
+        "candidate": {
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * c1 / (x * x + y * y + c2) * x",
+            "ay": "q('charge') / q('mass') * y * c3 / (-(x * x + y * y) - c4)"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.07957748116723697
+            },
+            {
+              "name": "c2",
+              "initial": 0.001243473717559019
+            },
+            {
+              "name": "c3",
+              "initial": 0.0795775255521594
+            },
+            {
+              "name": "c4",
+              "initial": 0.001246440333678803
+            }
+          ],
+          "complexity": 18,
+          "parameter_count": 4,
+          "acceleration_search_mse_by_axis": [
+            2.168494261193074e-15,
+            6.678421239549015e-16
+          ],
+          "acceleration_search_mse": 2.8363363851479754e-15,
+          "normalized_acceleration_search_loss": 1.3150199988418851e-12,
+          "dsl_valid": true,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "All acquired states and controlled initial states"
+          },
+          "short_rollout_check": {
+            "status": "passed",
+            "probe_count": 24,
+            "rhs_calls": 432,
+            "position_rmse": 9.98872551846815e-11,
+            "velocity_rmse": 4.9913797794286825e-09,
+            "scope": "Short acquired-data replay only; not fitted or independently validated."
+          },
+          "joint_fit_ready": true,
+          "prediction_accuracy_status": "not_independently_validated",
+          "selection_role": "simplest_within_resolution_tolerance",
+          "discovery_probe_ids": [
+            "diagnostic_train_0001",
+            "diagnostic_train_0002",
+            "diagnostic_train_0003",
+            "diagnostic_train_0004",
+            "diagnostic_train_0005",
+            "diagnostic_train_0006",
+            "diagnostic_train_0007",
+            "diagnostic_train_0008",
+            "diagnostic_train_0009",
+            "diagnostic_train_0010",
+            "diagnostic_train_0011",
+            "diagnostic_train_0012",
+            "diagnostic_train_0013",
+            "diagnostic_train_0014",
+            "diagnostic_train_0015",
+            "diagnostic_train_0016",
+            "diagnostic_train_0017",
+            "diagnostic_train_0018",
+            "diagnostic_train_0019",
+            "diagnostic_train_0020",
+            "diagnostic_train_0021",
+            "diagnostic_train_0022",
+            "diagnostic_train_0023",
+            "diagnostic_train_0024"
+          ]
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            1.370088039810931e-14,
+            1.1782048432061536e-15
+          ],
+          "nrmse_by_axis": [
+            2.6750812530821466e-06,
+            1.6253507086672331e-06
+          ],
+          "nrmse": 2.510609252975326e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            3.579715723349552e-15,
+            2.7930421433914062e-15
+          ],
+          "nrmse_by_axis": [
+            1.5568358034683123e-06,
+            1.6159147249892516e-06
+          ],
+          "nrmse": 1.5819195851591431e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        }
+      },
+      "raw_training_best_pair": {
+        "raw_sources": {
+          "ax": "(charge / mass * -0.07957742231736954 / (x * x + y * y + ((0.005989534170860494 ** vx * 0.004754577226298076) ** (x * x + y * y)) ** (charge / mass) + 0.0012393874219578896))*x",
+          "ay": "charge / mass * (-0.07957758852988926 * y + (--0.00022367311652487926 * (x * x + y * y) + y / (-(charge / mass) * (vx * vx + vy * vy) - (x * x + y * y) + (vx * vx + vy * vy))) * -9.976446279029937e-05) / (x * x + y * y)"
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            1.5826704776210057e-14,
+            1.858674161634587e-15
+          ],
+          "nrmse_by_axis": [
+            2.875133341050219e-06,
+            2.0414479621329687e-06
+          ],
+          "nrmse": 2.737147453698124e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            5.181324222274185e-15,
+            2.525141753665018e-15
+          ],
+          "nrmse_by_axis": [
+            1.8730049524736147e-06,
+            1.5364646603615765e-06
+          ],
+          "nrmse": 1.7395957049176337e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "export_status": "exportable",
+        "law_spec": {
+          "ax": "q('charge') / q('mass') * c1 / (x * x + y * y + ((c2 ** vx * c3) ** (x * x + y * y)) ** (q('charge') / q('mass')) + c4) * x",
+          "ay": "q('charge') / q('mass') * (c5 * y + (-c6 * (x * x + y * y) + y / (-(q('charge') / q('mass')) * (vx * vx + vy * vy) - (x * x + y * y) + (vx * vx + vy * vy))) * c7) / (x * x + y * y)"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.07957742231736954
+          },
+          {
+            "name": "c2",
+            "initial": 0.005989534170860494
+          },
+          {
+            "name": "c3",
+            "initial": 0.004754577226298076
+          },
+          {
+            "name": "c4",
+            "initial": 0.0012393874219578896
+          },
+          {
+            "name": "c5",
+            "initial": -0.07957758852988926
+          },
+          {
+            "name": "c6",
+            "initial": -0.00022367311652487926
+          },
+          {
+            "name": "c7",
+            "initial": -9.976446279029937e-05
+          }
+        ],
+        "parameter_count": 7,
+        "within_five_parameter_limit": false
+      },
+      "transport_audit_omitted_rows": null,
+      "search_status": "timeout"
+    },
+    {
+      "world_id": "world_2",
+      "status": "completed",
+      "requested_search_seconds": 47,
+      "search_client_seconds": 41.15474081598222,
+      "evaluation_seconds": 0.3501964155584574,
+      "total_seconds": 41.51666568033397,
+      "production_first": {
+        "candidate": {
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * x * c1",
+            "ay": "q('charge') / q('mass') * c2 * y"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.05999970944752331
+            },
+            {
+              "name": "c2",
+              "initial": -0.05999975622024755
+            }
+          ],
+          "complexity": 10,
+          "parameter_count": 2,
+          "acceleration_search_mse_by_axis": [
+            3.232061707936203e-14,
+            4.549805922477511e-15
+          ],
+          "acceleration_search_mse": 3.687042300183954e-14,
+          "normalized_acceleration_search_loss": 1.7411636671843488e-12,
+          "dsl_valid": true,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "All acquired states and controlled initial states"
+          },
+          "short_rollout_check": {
+            "status": "passed",
+            "probe_count": 24,
+            "rhs_calls": 432,
+            "position_rmse": 5.081647129811387e-10,
+            "velocity_rmse": 2.5404994764721286e-08,
+            "scope": "Short acquired-data replay only; not fitted or independently validated."
+          },
+          "joint_fit_ready": true,
+          "prediction_accuracy_status": "not_independently_validated",
+          "selection_role": "simplest_within_resolution_tolerance",
+          "discovery_probe_ids": [
+            "diagnostic_train_0001",
+            "diagnostic_train_0002",
+            "diagnostic_train_0003",
+            "diagnostic_train_0004",
+            "diagnostic_train_0005",
+            "diagnostic_train_0006",
+            "diagnostic_train_0007",
+            "diagnostic_train_0008",
+            "diagnostic_train_0009",
+            "diagnostic_train_0010",
+            "diagnostic_train_0011",
+            "diagnostic_train_0012",
+            "diagnostic_train_0013",
+            "diagnostic_train_0014",
+            "diagnostic_train_0015",
+            "diagnostic_train_0016",
+            "diagnostic_train_0017",
+            "diagnostic_train_0018",
+            "diagnostic_train_0019",
+            "diagnostic_train_0020",
+            "diagnostic_train_0021",
+            "diagnostic_train_0022",
+            "diagnostic_train_0023",
+            "diagnostic_train_0024"
+          ]
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            2.6226571373973457e-13,
+            1.2678976942513748e-13
+          ],
+          "nrmse_by_axis": [
+            4.842541278158093e-06,
+            4.062995874117466e-06
+          ],
+          "nrmse": 4.541333594388781e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            1.1016017723772192e-12,
+            1.6888174416735402e-13
+          ],
+          "nrmse_by_axis": [
+            4.84254127816889e-06,
+            4.062995874130443e-06
+          ],
+          "nrmse": 4.712611675679622e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        }
+      },
+      "raw_training_best_pair": {
+        "raw_sources": {
+          "ax": "charge / mass * x * (-(charge / mass) * (--3.123550375327185e-14 * (charge / mass) * (charge / mass) * (charge / mass) + t * sin(22.958727054886456 / Abs(x * vx + y * vy)) * (charge / mass + (charge / mass + y) * (charge / mass + sin(22.958727054886456 / Abs(x * vx + y * vy)) + cos(22.958727054886456 / Abs(x * vx + y * vy)))) * -1.023163167790785e-17 - 1 * 2.399996467651274e-07) - 0.05999999999988958)",
+          "ay": "charge / mass * (y * -0.05302838291471164 - (y * (charge / mass) * 0.0031482322326410552 - y * (-0.006971617084712859 + 0.003148472231791686 / (charge / mass)) / (charge / mass * (charge / mass * (charge / mass)))))"
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            2.9440200385579487e-13,
+            1.3135042628081414e-13
+          ],
+          "nrmse_by_axis": [
+            5.1306566600637026e-06,
+            4.13542375921026e-06
+          ],
+          "nrmse": 4.750684647814554e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            5.570643742499418e-12,
+            0.0003923737294972781
+          ],
+          "nrmse_by_axis": [
+            1.088964471955802e-05,
+            0.19584161854948337
+          ],
+          "nrmse": 0.0828184506981038,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "export_status": "rejected",
+        "reason": "formula exceeds 256 total AST nodes (307 counted through ay); factor repeated terms or combine body sums. This is a syntax/resource limit, not evidence against the physical hypothesis."
+      },
+      "transport_audit_omitted_rows": null,
+      "search_status": "timeout"
+    },
+    {
+      "world_id": "world_3",
+      "status": "completed",
+      "requested_search_seconds": 47,
+      "search_client_seconds": 40.7188820913434,
+      "evaluation_seconds": 0.11032005213201046,
+      "total_seconds": 40.84624180942774,
+      "production_first": {
+        "candidate": {
+          "law_spec": {
+            "ax": "x * c1 + y * c2",
+            "ay": "x * c3 + y * c4"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.05999968000060871
+            },
+            {
+              "name": "c2",
+              "initial": 0.03464064664811908
+            },
+            {
+              "name": "c3",
+              "initial": 0.03464064664811909
+            },
+            {
+              "name": "c4",
+              "initial": -0.09999925333499718
+            }
+          ],
+          "complexity": 14,
+          "parameter_count": 4,
+          "acceleration_search_mse_by_axis": [
+            9.187938232530578e-30,
+            1.3730692512319115e-29
+          ],
+          "acceleration_search_mse": 2.2918630744849694e-29,
+          "normalized_acceleration_search_loss": 4.867212665360141e-28,
+          "dsl_valid": true,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "All acquired states and controlled initial states"
+          },
+          "short_rollout_check": {
+            "status": "passed",
+            "probe_count": 24,
+            "rhs_calls": 432,
+            "position_rmse": 1.435975924249049e-09,
+            "velocity_rmse": 7.177631733016579e-08,
+            "scope": "Short acquired-data replay only; not fitted or independently validated."
+          },
+          "joint_fit_ready": true,
+          "prediction_accuracy_status": "not_independently_validated",
+          "selection_role": "simplest_within_resolution_tolerance",
+          "discovery_probe_ids": [
+            "diagnostic_train_0001",
+            "diagnostic_train_0002",
+            "diagnostic_train_0003",
+            "diagnostic_train_0004",
+            "diagnostic_train_0005",
+            "diagnostic_train_0006",
+            "diagnostic_train_0007",
+            "diagnostic_train_0008",
+            "diagnostic_train_0009",
+            "diagnostic_train_0010",
+            "diagnostic_train_0011",
+            "diagnostic_train_0012",
+            "diagnostic_train_0013",
+            "diagnostic_train_0014",
+            "diagnostic_train_0015",
+            "diagnostic_train_0016",
+            "diagnostic_train_0017",
+            "diagnostic_train_0018",
+            "diagnostic_train_0019",
+            "diagnostic_train_0020",
+            "diagnostic_train_0021",
+            "diagnostic_train_0022",
+            "diagnostic_train_0023",
+            "diagnostic_train_0024"
+          ]
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            8.197571286953449e-13,
+            2.161785122025377e-12
+          ],
+          "nrmse_by_axis": [
+            7.003090277151934e-06,
+            8.167937248483225e-06
+          ],
+          "nrmse": 7.791111562323457e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            9.351277348511235e-13,
+            2.3820179550614366e-12
+          ],
+          "nrmse_by_axis": [
+            6.537808849988297e-06,
+            8.102085390555823e-06
+          ],
+          "nrmse": 7.551817966311734e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        }
+      },
+      "raw_training_best_pair": {
+        "raw_sources": {
+          "ax": "x * -0.05999968000060877 + y * 0.034640646648119035 + 9.042010537490652e-19 / (y * 0.034640646648119035 + (x + y * y) * -0.05999968000060877)",
+          "ay": "-x * (sin((t + 0.8676911757943572) * -37.74742811797618) * t * y * t * (y - 0.09999925333499717) * (y + 0.011653883865699387) * 1.3587815135374483e-18 - 1 * 0.011653883865699387) - -0.022986762782419685 * x + y * -0.09999925333499717"
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            8.197571287633528e-13,
+            2.1617851223062264e-12
+          ],
+          "nrmse_by_axis": [
+            7.003090277442426e-06,
+            8.167937249013797e-06
+          ],
+          "nrmse": 7.791111562779259e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            9.35127734759308e-13,
+            2.3820179549916844e-12
+          ],
+          "nrmse_by_axis": [
+            6.53780884966734e-06,
+            8.102085390437197e-06
+          ],
+          "nrmse": 7.551817966127822e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "export_status": "exportable",
+        "law_spec": {
+          "ax": "x * c1 + y * c2 + c3 / (y * c4 + (x + y * y) * c5)",
+          "ay": "-x * (sin((t + c6) * c7) * t * y * t * (y - c8) * (y + c9) * c10 - 1 * c11) - c12 * x + y * c13"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.05999968000060877
+          },
+          {
+            "name": "c2",
+            "initial": 0.034640646648119035
+          },
+          {
+            "name": "c3",
+            "initial": 9.042010537490652e-19
+          },
+          {
+            "name": "c4",
+            "initial": 0.034640646648119035
+          },
+          {
+            "name": "c5",
+            "initial": -0.05999968000060877
+          },
+          {
+            "name": "c6",
+            "initial": 0.8676911757943572
+          },
+          {
+            "name": "c7",
+            "initial": -37.74742811797618
+          },
+          {
+            "name": "c8",
+            "initial": 0.09999925333499717
+          },
+          {
+            "name": "c9",
+            "initial": 0.011653883865699387
+          },
+          {
+            "name": "c10",
+            "initial": 1.3587815135374483e-18
+          },
+          {
+            "name": "c11",
+            "initial": 0.011653883865699387
+          },
+          {
+            "name": "c12",
+            "initial": -0.022986762782419685
+          },
+          {
+            "name": "c13",
+            "initial": -0.09999925333499717
+          }
+        ],
+        "parameter_count": 13,
+        "within_five_parameter_limit": false
+      },
+      "transport_audit_omitted_rows": null,
+      "search_status": "timeout"
+    },
+    {
+      "world_id": "world_4",
+      "status": "completed",
+      "requested_search_seconds": 47,
+      "search_client_seconds": 41.4195250980556,
+      "evaluation_seconds": 0.376693706959486,
+      "total_seconds": 41.821647863835096,
+      "production_first": {
+        "candidate": {
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * x * (sqrt(x * x + y * y) * c1 + (x * x + y * y) * c2 - c3) / (x * x + y * y)",
+            "ay": "q('charge') / q('mass') * c4 / (sqrt(x * x + y * y) * (x * x + y * y + c5)) * y"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.06899316598839914
+            },
+            {
+              "name": "c2",
+              "initial": -0.005172111778202162
+            },
+            {
+              "name": "c3",
+              "initial": 0.3104674956491224
+            },
+            {
+              "name": "c4",
+              "initial": -0.508992878010769
+            },
+            {
+              "name": "c5",
+              "initial": 1.2404607178529226
+            }
+          ],
+          "complexity": 26,
+          "parameter_count": 5,
+          "acceleration_search_mse_by_axis": [
+            6.755133689955458e-10,
+            2.977961364560326e-08
+          ],
+          "acceleration_search_mse": 3.0455127014598806e-08,
+          "normalized_acceleration_search_loss": 5.6401337440555755e-06,
+          "dsl_valid": true,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "All acquired states and controlled initial states"
+          },
+          "short_rollout_check": {
+            "status": "passed",
+            "probe_count": 24,
+            "rhs_calls": 432,
+            "position_rmse": 1.2734142610838664e-07,
+            "velocity_rmse": 6.369274297580486e-06,
+            "scope": "Short acquired-data replay only; not fitted or independently validated."
+          },
+          "joint_fit_ready": true,
+          "prediction_accuracy_status": "not_independently_validated",
+          "selection_role": "simplest_within_resolution_tolerance",
+          "discovery_probe_ids": [
+            "diagnostic_train_0001",
+            "diagnostic_train_0002",
+            "diagnostic_train_0003",
+            "diagnostic_train_0004",
+            "diagnostic_train_0005",
+            "diagnostic_train_0006",
+            "diagnostic_train_0007",
+            "diagnostic_train_0008",
+            "diagnostic_train_0009",
+            "diagnostic_train_0010",
+            "diagnostic_train_0011",
+            "diagnostic_train_0012",
+            "diagnostic_train_0013",
+            "diagnostic_train_0014",
+            "diagnostic_train_0015",
+            "diagnostic_train_0016",
+            "diagnostic_train_0017",
+            "diagnostic_train_0018",
+            "diagnostic_train_0019",
+            "diagnostic_train_0020",
+            "diagnostic_train_0021",
+            "diagnostic_train_0022",
+            "diagnostic_train_0023",
+            "diagnostic_train_0024"
+          ]
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            6.647179375756495e-10,
+            2.976316924893694e-08
+          ],
+          "nrmse_by_axis": [
+            0.00021625387893288548,
+            0.0033506378602091063
+          ],
+          "nrmse": 0.001343211567033666,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            1.4506987844770717e-08,
+            3.641089730817851e-07
+          ],
+          "nrmse_by_axis": [
+            0.0014082606306391964,
+            0.007361686201055935
+          ],
+          "nrmse": 0.0051941706758759035,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        }
+      },
+      "raw_training_best_pair": {
+        "raw_sources": {
+          "ax": "x * ((charge / mass - 1.8229233022857904e-05) * (sqrt(x * x + y * y) * 0.07546434383333073 + (x * x + y * y) * (x * x + y * y) * (sqrt(x * x + y * y) * 2.4650704064717453e-05 + (x * x + y * y) * -3.3741915723453634e-06) + (x * x + y * y) * -0.007154273115761181 - 0.3158576281378831) + exp((vx * vx + vy * vy) * sqrt(x * x + y * y) * (x * x + y * y) * 2.717899440366901) * -3.64208283939286e-07) / (x * x + y * y)",
+          "ay": "(-0.3459644254092834 * charge / (mass * (sqrt(x * x + y * y) * (sqrt(x * x + y * y) + (vx * vx + vy * vy) * 1.188579818132478 * vy + 0.05401158773420028 / (-0.002128310227084663 + 0.14409672639487195 / (x * x + y * y))))))*y"
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            2.704752114390381e-12,
+            9.672323674986534e-10
+          ],
+          "nrmse_by_axis": [
+            1.3794594585733819e-05,
+            0.0006040227762496961
+          ],
+          "nrmse": 0.00023981719248557769,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            6.917253207711834e-10,
+            2.2368559719755356e-08
+          ],
+          "nrmse_by_axis": [
+            0.0003075114219188572,
+            0.0018246544099229701
+          ],
+          "nrmse": 0.0012818850794570555,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "export_status": "rejected",
+        "reason": "formula exceeds 256 total AST nodes (328 counted through ay); factor repeated terms or combine body sums. This is a syntax/resource limit, not evidence against the physical hypothesis."
+      },
+      "transport_audit_omitted_rows": null,
+      "search_status": "timeout"
+    },
+    {
+      "world_id": "world_5",
+      "status": "completed",
+      "requested_search_seconds": 47,
+      "search_client_seconds": 41.59082102030516,
+      "evaluation_seconds": 0.168202368542552,
+      "total_seconds": 41.7746448405087,
+      "production_first": {
+        "candidate": {
+          "law_spec": {
+            "ax": "x * (x - (-c1 * x * x + x + y * c2 * y - 1 * c3))",
+            "ay": "y * ((x * x + y * y) * c1 + x * x * c4 - c5)"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": -0.001999863108703775
+            },
+            {
+              "name": "c2",
+              "initial": 0.01199954163289574
+            },
+            {
+              "name": "c3",
+              "initial": -0.060000339399404176
+            },
+            {
+              "name": "c4",
+              "initial": -0.00999960834948193
+            },
+            {
+              "name": "c5",
+              "initial": 0.10000018479061788
+            }
+          ],
+          "complexity": 32,
+          "parameter_count": 5,
+          "acceleration_search_mse_by_axis": [
+            2.740532836358309e-13,
+            1.3309522798223824e-13
+          ],
+          "acceleration_search_mse": 4.0714851161806915e-13,
+          "normalized_acceleration_search_loss": 6.176800281119691e-12,
+          "dsl_valid": true,
+          "component_sources": [
+            "pysr",
+            "pysr"
+          ],
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "All acquired states and controlled initial states"
+          },
+          "parameter_sharing": {
+            "status": "data_validated",
+            "proposal": "close coefficients proposed, never assumed equal",
+            "uncompressed_law_spec": {
+              "ax": "x * (x - (-c1 * x * x + x + y * c2 * y - 1 * c3))",
+              "ay": "y * ((x * x + y * y) * c4 + x * x * c5 - c6)"
+            },
+            "uncompressed_parameter_spec": [
+              {
+                "name": "c1",
+                "initial": -0.0019998823743211215
+              },
+              {
+                "name": "c2",
+                "initial": 0.011999536014988271
+              },
+              {
+                "name": "c3",
+                "initial": -0.06000027601891976
+              },
+              {
+                "name": "c4",
+                "initial": -0.0019998542987582483
+              },
+              {
+                "name": "c5",
+                "initial": -0.009999614081609053
+              },
+              {
+                "name": "c6",
+                "initial": 0.10000024029236494
+              }
+            ],
+            "groups": [
+              {
+                "shared_parameter": "c1",
+                "original_parameters": [
+                  "c1",
+                  "c4"
+                ]
+              },
+              {
+                "shared_parameter": "c2",
+                "original_parameters": [
+                  "c2"
+                ]
+              },
+              {
+                "shared_parameter": "c3",
+                "original_parameters": [
+                  "c3"
+                ]
+              },
+              {
+                "shared_parameter": "c4",
+                "original_parameters": [
+                  "c5"
+                ]
+              },
+              {
+                "shared_parameter": "c5",
+                "original_parameters": [
+                  "c6"
+                ]
+              }
+            ],
+            "original_loss_by_axis": [
+              2.701559304438539e-13,
+              1.3124935684902508e-13
+            ],
+            "shared_loss_by_axis": [
+              2.740532836358309e-13,
+              1.3309522798223824e-13
+            ],
+            "acceptance_tolerance_by_axis": [
+              3.8376176142172557e-11,
+              5.406856533032322e-11
+            ],
+            "fit_evaluations": 24,
+            "heldout_discovery_probe_ids": [
+              "diagnostic_train_0024"
+            ],
+            "split_checks": [
+              {
+                "split": "fit",
+                "original_mse_by_axis": [
+                  2.722549490142638e-13,
+                  1.3519202310239467e-13
+                ],
+                "shared_mse_by_axis": [
+                  2.7674973790023693e-13,
+                  1.3728284507269093e-13
+                ],
+                "maximum_accepted_mse_by_axis": [
+                  3.837827516074297e-11,
+                  5.407250799657659e-11
+                ],
+                "passed": true
+              },
+              {
+                "split": "heldout_discovery_probes",
+                "original_mse_by_axis": [
+                  2.2187850332442086e-13,
+                  4.056803302151562e-14
+                ],
+                "shared_mse_by_axis": [
+                  2.0314530161120428e-13,
+                  5.674297636330004e-14
+                ],
+                "maximum_accepted_mse_by_axis": [
+                  3.832789871505313e-11,
+                  5.397788400649571e-11
+                ],
+                "passed": true
+              }
+            ],
+            "independent_validation": false,
+            "limitation": "Ties are supported only by the supplied discovery data and resolution heuristic."
+          },
+          "short_rollout_check": {
+            "status": "passed",
+            "probe_count": 24,
+            "rhs_calls": 432,
+            "position_rmse": 4.11186215040456e-09,
+            "velocity_rmse": 2.0555709994465358e-07,
+            "scope": "Short acquired-data replay only; not fitted or independently validated."
+          },
+          "joint_fit_ready": true,
+          "prediction_accuracy_status": "not_independently_validated",
+          "selection_role": "simplest_within_resolution_tolerance",
+          "discovery_probe_ids": [
+            "diagnostic_train_0001",
+            "diagnostic_train_0002",
+            "diagnostic_train_0003",
+            "diagnostic_train_0004",
+            "diagnostic_train_0005",
+            "diagnostic_train_0006",
+            "diagnostic_train_0007",
+            "diagnostic_train_0008",
+            "diagnostic_train_0009",
+            "diagnostic_train_0010",
+            "diagnostic_train_0011",
+            "diagnostic_train_0012",
+            "diagnostic_train_0013",
+            "diagnostic_train_0014",
+            "diagnostic_train_0015",
+            "diagnostic_train_0016",
+            "diagnostic_train_0017",
+            "diagnostic_train_0018",
+            "diagnostic_train_0019",
+            "diagnostic_train_0020",
+            "diagnostic_train_0021",
+            "diagnostic_train_0022",
+            "diagnostic_train_0023",
+            "diagnostic_train_0024"
+          ]
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            9.26817653586074e-12,
+            1.323909935357588e-11
+          ],
+          "nrmse_by_axis": [
+            1.80454742471435e-05,
+            1.6461709938153746e-05
+          ],
+          "nrmse": 1.7061827141662263e-05,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            1.8520203520329795e-11,
+            1.891412353805035e-11
+          ],
+          "nrmse_by_axis": [
+            1.8826887658076684e-05,
+            1.703295186771185e-05
+          ],
+          "nrmse": 1.785333730491496e-05,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        }
+      },
+      "raw_training_best_pair": {
+        "raw_sources": {
+          "ax": "x * (x - (-x * x * (--5.689249410960979e-09 * x * x * Abs(y) - 0.0020000433557868895) + x - y * (24.96515696655635 ** (vx * vx + vy * vy) * (-1.66150683308941e-07 * (vx * vx + vy * vy + y) - 1.6649626279324065e-07) - 0.011999409950346224 * y) + 0.05999954562502424)) - 8.170822037890935e-08 * y",
+          "ay": "y * (-0.011999858449298632 * x * (x + 0.166685987819992 * y ** 2 / x) * cos(0.008191110893694715 * exp(-(vx * vx + vy * vy)) / exp(exp(-0.0020552028867041995 / (vx * vx + vy * vy))) ** (1 / 4)) - 0.09999968114383308) * cos(0.0020552028867041995 * y)"
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            9.519611494866277e-12,
+            1.3550325423640982e-11
+          ],
+          "nrmse_by_axis": [
+            1.828861273545311e-05,
+            1.6654077716020926e-05
+          ],
+          "nrmse": 1.727377561916743e-05,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            1.3902143164015719e-11,
+            1.687549127036262e-11
+          ],
+          "nrmse_by_axis": [
+            1.6311598836681994e-05,
+            1.60888506728426e-05
+          ],
+          "nrmse": 1.6188328679758992e-05,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "export_status": "exportable",
+        "law_spec": {
+          "ax": "x * (x - (-x * x * (-c1 * x * x * abs(y) - c2) + x - y * (c3 ** (vx * vx + vy * vy) * (c4 * (vx * vx + vy * vy + y) - c5) - c6 * y) + c7)) - c8 * y",
+          "ay": "y * (c9 * x * (x + c10 * y ** 2 / x) * cos(c11 * exp(-(vx * vx + vy * vy)) / exp(exp(c12 / (vx * vx + vy * vy))) ** (1 / c13)) - c14) * cos(c15 * y)"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -5.689249410960979e-09
+          },
+          {
+            "name": "c2",
+            "initial": 0.0020000433557868895
+          },
+          {
+            "name": "c3",
+            "initial": 24.96515696655635
+          },
+          {
+            "name": "c4",
+            "initial": -1.66150683308941e-07
+          },
+          {
+            "name": "c5",
+            "initial": 1.6649626279324065e-07
+          },
+          {
+            "name": "c6",
+            "initial": 0.011999409950346224
+          },
+          {
+            "name": "c7",
+            "initial": 0.05999954562502424
+          },
+          {
+            "name": "c8",
+            "initial": 8.170822037890935e-08
+          },
+          {
+            "name": "c9",
+            "initial": -0.011999858449298632
+          },
+          {
+            "name": "c10",
+            "initial": 0.166685987819992
+          },
+          {
+            "name": "c11",
+            "initial": 0.008191110893694715
+          },
+          {
+            "name": "c12",
+            "initial": -0.0020552028867041995
+          },
+          {
+            "name": "c13",
+            "initial": 4.0
+          },
+          {
+            "name": "c14",
+            "initial": 0.09999968114383308
+          },
+          {
+            "name": "c15",
+            "initial": 0.0020552028867041995
+          }
+        ],
+        "parameter_count": 15,
+        "within_five_parameter_limit": false
+      },
+      "transport_audit_omitted_rows": null,
+      "search_status": "timeout"
+    },
+    {
+      "world_id": "world_6",
+      "status": "completed",
+      "requested_search_seconds": 47,
+      "search_client_seconds": 42.923446552827954,
+      "evaluation_seconds": 0.20462536811828613,
+      "total_seconds": 43.15934426896274,
+      "production_first": {
+        "candidate": {
+          "law_spec": {
+            "ax": "-(c1 * x) + c2 * (y * sin(c3 * t + c4)) + c5 * (x * cos(c3 * t + c4))",
+            "ay": "-(c1 * y) + c5 * (x * sin(c3 * t + c4)) + -(c2 * (y * cos(c3 * t + c4)))"
+          },
+          "parameter_spec": [
+            {
+              "name": "c1",
+              "initial": 0.11999885151744417
+            },
+            {
+              "name": "c2",
+              "initial": 0.059998243399801435
+            },
+            {
+              "name": "c3",
+              "initial": 0.39269908734039755
+            },
+            {
+              "name": "c4",
+              "initial": 0.5999965768978579
+            },
+            {
+              "name": "c5",
+              "initial": 0.059998595968698214
+            }
+          ],
+          "complexity": 57,
+          "parameter_count": 5,
+          "acceleration_search_mse_by_axis": [
+            1.2203914428647617e-13,
+            7.190418322453364e-14
+          ],
+          "acceleration_search_mse": 1.9394332751100982e-13,
+          "normalized_acceleration_search_loss": 2.308144043452057e-12,
+          "dsl_valid": true,
+          "component_sources": [
+            "regression_basis",
+            "regression_basis"
+          ],
+          "initial_domain_check": {
+            "status": "passed",
+            "scope": "All acquired states and controlled initial states"
+          },
+          "parameter_sharing": {
+            "status": "data_validated",
+            "proposal": "close coefficients proposed, never assumed equal",
+            "uncompressed_law_spec": {
+              "ax": "-(c1 * x) + c2 * (y * sin(c3 * t + c4)) + c5 * (x * cos(c6 * t + c7))",
+              "ay": "-(c8 * y) + c9 * (x * sin(c10 * t + c11)) + -(c12 * (y * cos(c13 * t + c14)))"
+            },
+            "uncompressed_parameter_spec": [
+              {
+                "name": "c1",
+                "initial": 0.119998787504251
+              },
+              {
+                "name": "c2",
+                "initial": 0.0599980396251076
+              },
+              {
+                "name": "c3",
+                "initial": 0.392699081735708
+              },
+              {
+                "name": "c4",
+                "initial": 0.600000000470526
+              },
+              {
+                "name": "c5",
+                "initial": 0.0599986863337223
+              },
+              {
+                "name": "c6",
+                "initial": 0.392699081735708
+              },
+              {
+                "name": "c7",
+                "initial": 0.600000000470526
+              },
+              {
+                "name": "c8",
+                "initial": 0.119998967029032
+              },
+              {
+                "name": "c9",
+                "initial": 0.0599985473461205
+              },
+              {
+                "name": "c10",
+                "initial": 0.392699081735708
+              },
+              {
+                "name": "c11",
+                "initial": 0.600000000470526
+              },
+              {
+                "name": "c12",
+                "initial": 0.0599982019458629
+              },
+              {
+                "name": "c13",
+                "initial": 0.392699081735708
+              },
+              {
+                "name": "c14",
+                "initial": 0.600000000470526
+              }
+            ],
+            "groups": [
+              {
+                "shared_parameter": "c1",
+                "original_parameters": [
+                  "c1",
+                  "c8"
+                ]
+              },
+              {
+                "shared_parameter": "c2",
+                "original_parameters": [
+                  "c2",
+                  "c12"
+                ]
+              },
+              {
+                "shared_parameter": "c3",
+                "original_parameters": [
+                  "c3",
+                  "c6",
+                  "c10",
+                  "c13"
+                ]
+              },
+              {
+                "shared_parameter": "c4",
+                "original_parameters": [
+                  "c4",
+                  "c7",
+                  "c11",
+                  "c14"
+                ]
+              },
+              {
+                "shared_parameter": "c5",
+                "original_parameters": [
+                  "c5",
+                  "c9"
+                ]
+              }
+            ],
+            "original_loss_by_axis": [
+              1.276486551473205e-13,
+              1.4886430575335364e-13
+            ],
+            "shared_loss_by_axis": [
+              1.2203914428647617e-13,
+              7.190418322453364e-14
+            ],
+            "acceptance_tolerance_by_axis": [
+              3.060325569460813e-11,
+              5.719656522651537e-11
+            ],
+            "fit_evaluations": 24,
+            "heldout_discovery_probe_ids": [
+              "diagnostic_train_0024"
+            ],
+            "split_checks": [
+              {
+                "split": "fit",
+                "original_mse_by_axis": [
+                  1.2489329120374513e-13,
+                  1.5337762312864e-13
+                ],
+                "shared_mse_by_axis": [
+                  1.2055834307469725e-13,
+                  7.328727875925688e-14
+                ],
+                "maximum_accepted_mse_by_axis": [
+                  3.060050033066456e-11,
+                  5.720107854389066e-11
+                ],
+                "passed": true
+              },
+              {
+                "split": "heldout_discovery_probes",
+                "original_mse_by_axis": [
+                  1.9102202584955413e-13,
+                  4.5058006121776987e-14
+                ],
+                "shared_mse_by_axis": [
+                  2.162450234158703e-13,
+                  3.2031553377184303e-15
+                ],
+                "maximum_accepted_mse_by_axis": [
+                  3.0666629065310364e-11,
+                  5.7092758926883796e-11
+                ],
+                "passed": true
+              }
+            ],
+            "independent_validation": false,
+            "limitation": "Ties are supported only by the supplied discovery data and resolution heuristic."
+          },
+          "short_rollout_check": {
+            "status": "passed",
+            "probe_count": 24,
+            "rhs_calls": 432,
+            "position_rmse": 3.855713883718315e-09,
+            "velocity_rmse": 1.9276192644862752e-07,
+            "scope": "Short acquired-data replay only; not fitted or independently validated."
+          },
+          "joint_fit_ready": true,
+          "prediction_accuracy_status": "not_independently_validated",
+          "selection_role": "simplest_within_resolution_tolerance",
+          "discovery_probe_ids": [
+            "diagnostic_train_0001",
+            "diagnostic_train_0002",
+            "diagnostic_train_0003",
+            "diagnostic_train_0004",
+            "diagnostic_train_0005",
+            "diagnostic_train_0006",
+            "diagnostic_train_0007",
+            "diagnostic_train_0008",
+            "diagnostic_train_0009",
+            "diagnostic_train_0010",
+            "diagnostic_train_0011",
+            "diagnostic_train_0012",
+            "diagnostic_train_0013",
+            "diagnostic_train_0014",
+            "diagnostic_train_0015",
+            "diagnostic_train_0016",
+            "diagnostic_train_0017",
+            "diagnostic_train_0018",
+            "diagnostic_train_0019",
+            "diagnostic_train_0020",
+            "diagnostic_train_0021",
+            "diagnostic_train_0022",
+            "diagnostic_train_0023",
+            "diagnostic_train_0024"
+          ]
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            7.2468462481564255e-12,
+            1.442015494706464e-11
+          ],
+          "nrmse_by_axis": [
+            1.4212923490189561e-05,
+            1.5605288782838934e-05
+          ],
+          "nrmse": 1.5095082783216458e-05,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            1.4698215574443177e-12,
+            1.474742840661696e-12
+          ],
+          "nrmse_by_axis": [
+            8.709106866189825e-06,
+            1.1146574987635815e-05
+          ],
+          "nrmse": 9.707336647263738e-06,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        }
+      },
+      "raw_training_best_pair": {
+        "raw_sources": {
+          "ax": "((x + y * sin(t * -0.39269910850979783 - 0.599999144797249)) * -0.14982144658255245 + (x * sin(t * 0.3926990678010011 - 0.9707977030194707) + x + (vy * -0.9707977030194707 + x - sin(t * 0.4004660192407586 - 1.9415954010434096) * sin(sin(vx))) * 3.30578402440625e-05) * -0.14982184489984135) * 0.4004660192407586",
+          "ay": "sin(y * -0.2128259866404317) * cos(-0.29109499192708016 * Abs(y) + Abs(cos((x * x + y * y - t) * -0.16378489480618824))) * Abs(cos(t * 0.19657818377827427 + sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(vx + vx)))))))))) - 0.8576163757188023 / y))"
+        },
+        "training": {
+          "status": "finite",
+          "mse_by_axis": [
+            7.642610373403589e-12,
+            0.0004633191878977243
+          ],
+          "nrmse_by_axis": [
+            1.4595862191963258e-05,
+            0.08845593747872818
+          ],
+          "nrmse": 0.0698033462199012,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "heldout": {
+          "status": "finite",
+          "mse_by_axis": [
+            9.691396999038387e-13,
+            0.015748719059185966
+          ],
+          "nrmse_by_axis": [
+            7.071873857466068e-06,
+            1.1518764828598476
+          ],
+          "nrmse": 0.7099245265975226,
+          "normalization": "sqrt(weighted MSE / weighted mean exact acceleration squared)"
+        },
+        "export_status": "exportable",
+        "law_spec": {
+          "ax": "((x + y * sin(t * c1 - c2)) * c3 + (x * sin(t * c4 - c5) + x + (vy * c6 + x - sin(t * c7 - c8) * sin(sin(vx))) * c9) * c10) * c11",
+          "ay": "sin(y * c12) * cos(c13 * abs(y) + abs(cos((x * x + y * y - t) * c14))) * abs(cos(t * c15 + sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(vx + vx)))))))))) - c16 / y))"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.39269910850979783
+          },
+          {
+            "name": "c2",
+            "initial": 0.599999144797249
+          },
+          {
+            "name": "c3",
+            "initial": -0.14982144658255245
+          },
+          {
+            "name": "c4",
+            "initial": 0.3926990678010011
+          },
+          {
+            "name": "c5",
+            "initial": 0.9707977030194707
+          },
+          {
+            "name": "c6",
+            "initial": -0.9707977030194707
+          },
+          {
+            "name": "c7",
+            "initial": 0.4004660192407586
+          },
+          {
+            "name": "c8",
+            "initial": 1.9415954010434096
+          },
+          {
+            "name": "c9",
+            "initial": 3.30578402440625e-05
+          },
+          {
+            "name": "c10",
+            "initial": -0.14982184489984135
+          },
+          {
+            "name": "c11",
+            "initial": 0.4004660192407586
+          },
+          {
+            "name": "c12",
+            "initial": -0.2128259866404317
+          },
+          {
+            "name": "c13",
+            "initial": -0.29109499192708016
+          },
+          {
+            "name": "c14",
+            "initial": -0.16378489480618824
+          },
+          {
+            "name": "c15",
+            "initial": 0.19657818377827427
+          },
+          {
+            "name": "c16",
+            "initial": 0.8576163757188023
+          }
+        ],
+        "parameter_count": 16,
+        "within_five_parameter_limit": false
+      },
+      "transport_audit_omitted_rows": null,
+      "search_status": "timeout"
+    }
+  ]
+}

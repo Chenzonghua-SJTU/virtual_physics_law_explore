@@ -1,0 +1,1128 @@
+{
+  "kind": "e8_offline_production_rank1_readonly_analysis_not_agent_score",
+  "dataset_sha256": "04ac54e7cef7a4e8d7610f1e9404478a70d60009e9a0ba4e0b0336365b973b49",
+  "same_dataset_as_old_B": true,
+  "selection_rule": "Use production candidates[0] unchanged; never choose by heldout scores.",
+  "metric": "sqrt(sum(weighted squared vector acceleration error)/sum(weighted exact vector acceleration squared)); equal total weight per probe.",
+  "metric_crosscheck": "All six returned rank1 predictions recomputed with scalar production Expression and independently implemented weighted NRMSE.",
+  "control_flow_audit": {
+    "search_receives_train_probes_only": true,
+    "world_id_or_exact_labels_in_request": false,
+    "independent_holdout_used_for_selection": false,
+    "evidence": [
+      "deployment/replay_e8_symbolic.py:82",
+      "deployment/replay_e8_symbolic.py:83",
+      "deployment/check_symbolic_identifiability.py:144",
+      "deployment/check_symbolic_identifiability.py:169"
+    ],
+    "archived_request_files_verified": 5,
+    "missing_request_file_worlds": [
+      "world_4"
+    ],
+    "qualification": "For a missing archived request.json, identical frozen dataset SHA, source boundary and matching raw output provide provenance; no claim that the absent request was inspected."
+  },
+  "comparison_limits": [
+    "Old B: 60-second direct PySR plus separate packaging; E8: 47-second complete production request including basis, staged PySR and packaging.",
+    "Offline 24-train/8-heldout trajectory diagnostics are not an Agent 10-energy/300-second score.",
+    "World 1 and world 4 are accurate approximations on these points, not exact recovery of softened/exponential true formulas.",
+    "World 6 is a regression_basis result, not proof that stochastic PySR recovered the periodic law.",
+    "Sharing internal whole-probe checks remain discovery data, separate from the independent eight holdout probes."
+  ],
+  "worlds": [
+    {
+      "world_id": "world_1",
+      "fixed_rank": 1,
+      "law_spec": {
+        "ax": "q('charge') / q('mass') * c1 / (x * x + y * y + c2) * x",
+        "ay": "q('charge') / q('mass') * y * c3 / (-(x * x + y * y) - c4)"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.07957748116723697
+        },
+        {
+          "name": "c2",
+          "initial": 0.001243473717559019
+        },
+        {
+          "name": "c3",
+          "initial": 0.0795775255521594
+        },
+        {
+          "name": "c4",
+          "initial": 0.001246440333678803
+        }
+      ],
+      "parameter_count": 4,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "joint_fit_ready": true,
+      "training_exact_acceleration": {
+        "nrmse": 2.5106092529753274e-06,
+        "mse_by_axis": [
+          1.370088039810931e-14,
+          1.1782048432061536e-15
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "heldout_exact_acceleration": {
+        "nrmse": 1.581919585159143e-06,
+        "mse_by_axis": [
+          3.579715723349552e-15,
+          2.7930421433914062e-15
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "recorded_vs_scalar_expression_nrmse_difference": 2.117582368135751e-22,
+      "old_B_raw_training_best_heldout_nrmse": 0.8496626476697245,
+      "old_B_production_rank1_heldout_nrmse": 0.7684260076599057,
+      "E8_raw_pysr_training_best_heldout_nrmse": 1.7395957049176337e-06,
+      "all_returned_heldout_nrmse_in_original_order": [
+        1.5819195851591431e-06,
+        2.106721462271772e-06,
+        1.622895203558633e-06
+      ],
+      "axis_source_counts": {
+        "ax": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 8,
+          "pysr": 73
+        },
+        "ay": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 8,
+          "pysr": 58
+        }
+      },
+      "sharing_review": null,
+      "search_client_seconds": 40.915898432955146,
+      "total_seconds": 41.248603127896786,
+      "sum_pysr_stage_seconds": 37.82025476358831,
+      "basis_elapsed_seconds": 0.027915166690945625,
+      "basis_time_modulation": {
+        "status": "unresolved",
+        "independent_validation": false,
+        "observed_time_span": 31.94,
+        "median_time_step": 0.03999999999999915,
+        "frequency_range_radians_per_time": [
+          0.0491795969566342,
+          78.53981633974651
+        ],
+        "minimum_observed_cycles": 0.25,
+        "maximum_observation_gap": 5.059999999999999,
+        "temporal_alias_risk": false,
+        "reason": "frequency_minimum_at_resolution_boundary",
+        "frequencies_evaluated": 48
+      },
+      "checkpoint": "original-checkpoints/9dbc5f934c70464da188a75a6dcbb834/result.json",
+      "checkpoint_axis_audit_matches_transport": {
+        "ax": true,
+        "ay": true
+      },
+      "archived_request_exactly_matches_train_probes": true,
+      "transport_audit_omitted_rows": {},
+      "train_state_ranges": {
+        "t": [
+          0.02,
+          31.96
+        ],
+        "x": [
+          -2.896240265134478,
+          2.828145414156816
+        ],
+        "y": [
+          -3.3790455272248243,
+          1.931218831875788
+        ],
+        "vx": [
+          -0.1858188850731443,
+          0.13714208237464204
+        ],
+        "vy": [
+          -0.159109810918433,
+          0.11790181745200044
+        ],
+        "mass": [
+          0.5,
+          2.0
+        ],
+        "charge": [
+          0.5,
+          2.0
+        ]
+      },
+      "heldout_state_ranges": {
+        "t": [
+          2.02,
+          30.96
+        ],
+        "x": [
+          -3.1841376476734653,
+          3.883634570290144
+        ],
+        "y": [
+          -2.375608641932175,
+          2.277022012184879
+        ],
+        "vx": [
+          -0.14489482158619682,
+          0.25726005703391613
+        ],
+        "vy": [
+          -0.1463359571526482,
+          0.16423218651581092
+        ],
+        "mass": [
+          0.6,
+          1.8
+        ],
+        "charge": [
+          0.6,
+          1.8
+        ]
+      }
+    },
+    {
+      "world_id": "world_2",
+      "fixed_rank": 1,
+      "law_spec": {
+        "ax": "q('charge') / q('mass') * x * c1",
+        "ay": "q('charge') / q('mass') * c2 * y"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.05999970944752331
+        },
+        {
+          "name": "c2",
+          "initial": -0.05999975622024755
+        }
+      ],
+      "parameter_count": 2,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "joint_fit_ready": true,
+      "training_exact_acceleration": {
+        "nrmse": 4.541333594388781e-06,
+        "mse_by_axis": [
+          2.6226571373973457e-13,
+          1.2678976942513748e-13
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "heldout_exact_acceleration": {
+        "nrmse": 4.712611675679622e-06,
+        "mse_by_axis": [
+          1.1016017723772192e-12,
+          1.6888174416735402e-13
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "recorded_vs_scalar_expression_nrmse_difference": 0.0,
+      "old_B_raw_training_best_heldout_nrmse": 1.0188043726303741e-05,
+      "old_B_production_rank1_heldout_nrmse": 4.7115690416424065e-06,
+      "E8_raw_pysr_training_best_heldout_nrmse": 0.0828184506981038,
+      "all_returned_heldout_nrmse_in_original_order": [
+        4.712611675679622e-06,
+        0.0680390651046096,
+        8.422425909525174e-06
+      ],
+      "axis_source_counts": {
+        "ax": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 8,
+          "pysr": 50
+        },
+        "ay": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 8,
+          "pysr": 49
+        }
+      },
+      "sharing_review": null,
+      "search_client_seconds": 41.15474081598222,
+      "total_seconds": 41.51666568033397,
+      "sum_pysr_stage_seconds": 37.95994031615555,
+      "basis_elapsed_seconds": 0.027343887835741043,
+      "basis_time_modulation": {
+        "status": "unresolved",
+        "independent_validation": false,
+        "observed_time_span": 31.94,
+        "median_time_step": 0.03999999999999915,
+        "frequency_range_radians_per_time": [
+          0.0491795969566342,
+          78.53981633974651
+        ],
+        "minimum_observed_cycles": 0.25,
+        "maximum_observation_gap": 5.059999999999999,
+        "temporal_alias_risk": false,
+        "reason": "frequency_minimum_at_resolution_boundary",
+        "frequencies_evaluated": 48
+      },
+      "checkpoint": "original-checkpoints/f86cc7d0a1f3465196694cd7cc9bdbb0/result.json",
+      "checkpoint_axis_audit_matches_transport": {
+        "ax": true,
+        "ay": true
+      },
+      "archived_request_exactly_matches_train_probes": true,
+      "transport_audit_omitted_rows": {},
+      "train_state_ranges": {
+        "t": [
+          0.02,
+          31.96
+        ],
+        "x": [
+          -2.8962106228491153,
+          2.828114286427374
+        ],
+        "y": [
+          -3.3790093569230932,
+          1.9312033394656
+        ],
+        "vx": [
+          -0.2019288331503083,
+          0.23987419556056644
+        ],
+        "vy": [
+          -0.19465219726124552,
+          0.27513845528767333
+        ],
+        "mass": [
+          0.5,
+          2.0
+        ],
+        "charge": [
+          0.5,
+          2.0
+        ]
+      },
+      "heldout_state_ranges": {
+        "t": [
+          2.02,
+          30.96
+        ],
+        "x": [
+          -3.1840377988590984,
+          3.8835997566565457
+        ],
+        "y": [
+          -2.3756000538824265,
+          2.254577931983825
+        ],
+        "vx": [
+          -0.2560764146703046,
+          0.7042643930359161
+        ],
+        "vy": [
+          -0.23561281041106244,
+          0.17950873498613262
+        ],
+        "mass": [
+          0.6,
+          1.8
+        ],
+        "charge": [
+          0.6,
+          1.8
+        ]
+      }
+    },
+    {
+      "world_id": "world_3",
+      "fixed_rank": 1,
+      "law_spec": {
+        "ax": "x * c1 + y * c2",
+        "ay": "x * c3 + y * c4"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.05999968000060871
+        },
+        {
+          "name": "c2",
+          "initial": 0.03464064664811908
+        },
+        {
+          "name": "c3",
+          "initial": 0.03464064664811909
+        },
+        {
+          "name": "c4",
+          "initial": -0.09999925333499718
+        }
+      ],
+      "parameter_count": 4,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "joint_fit_ready": true,
+      "training_exact_acceleration": {
+        "nrmse": 7.791111562323448e-06,
+        "mse_by_axis": [
+          8.197571286953449e-13,
+          2.161785122025377e-12
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "heldout_exact_acceleration": {
+        "nrmse": 7.551817966311732e-06,
+        "mse_by_axis": [
+          9.351277348511235e-13,
+          2.3820179550614366e-12
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "recorded_vs_scalar_expression_nrmse_difference": 1.6940658945086007e-21,
+      "old_B_raw_training_best_heldout_nrmse": 7.551817967872854e-06,
+      "old_B_production_rank1_heldout_nrmse": 7.551817966520439e-06,
+      "E8_raw_pysr_training_best_heldout_nrmse": 7.551817966127822e-06,
+      "all_returned_heldout_nrmse_in_original_order": [
+        7.551817966311734e-06,
+        7.5518179662771056e-06,
+        7.55181796630176e-06
+      ],
+      "axis_source_counts": {
+        "ax": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 2,
+          "pysr": 24
+        },
+        "ay": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 2,
+          "pysr": 27
+        }
+      },
+      "sharing_review": null,
+      "search_client_seconds": 40.7188820913434,
+      "total_seconds": 40.84624180942774,
+      "sum_pysr_stage_seconds": 39.283747823908925,
+      "basis_elapsed_seconds": 0.03380929306149483,
+      "basis_time_modulation": {
+        "status": "unresolved",
+        "independent_validation": false,
+        "observed_time_span": 31.94,
+        "median_time_step": 0.03999999999999915,
+        "frequency_range_radians_per_time": [
+          0.0491795969566342,
+          78.53981633974651
+        ],
+        "minimum_observed_cycles": 0.25,
+        "maximum_observation_gap": 5.059999999999999,
+        "temporal_alias_risk": false,
+        "frequency": 40.86061791526642,
+        "frequencies_evaluated": 72,
+        "normalized_fit_mse": 4.334119890249423e-28,
+        "normalized_unmodulated_mse": 4.863760992898204e-28,
+        "design_rank": 15,
+        "design_columns": 15,
+        "reason": "no_resolved_modulation_gain"
+      },
+      "checkpoint": "original-checkpoints/fe2b30c5dacc4187bc8df739d44a9399/result.json",
+      "checkpoint_axis_audit_matches_transport": {
+        "ax": true,
+        "ay": true
+      },
+      "archived_request_exactly_matches_train_probes": true,
+      "transport_audit_omitted_rows": {},
+      "train_state_ranges": {
+        "t": [
+          0.02,
+          31.96
+        ],
+        "x": [
+          -2.896215999327538,
+          2.828094683274633
+        ],
+        "y": [
+          -3.3789886000460805,
+          1.9311914645125254
+        ],
+        "vx": [
+          -0.26876214906021967,
+          0.26815848040253254
+        ],
+        "vy": [
+          -0.31435499783194987,
+          0.3674130062229792
+        ],
+        "mass": [
+          0.5,
+          2.0
+        ],
+        "charge": [
+          0.5,
+          2.0
+        ]
+      },
+      "heldout_state_ranges": {
+        "t": [
+          2.02,
+          30.96
+        ],
+        "x": [
+          -3.184112346678328,
+          3.883588933713603
+        ],
+        "y": [
+          -2.375581650726158,
+          2.2138049789713645
+        ],
+        "vx": [
+          -0.3034843118562922,
+          0.36812846570744967
+        ],
+        "vy": [
+          -0.3718310865049157,
+          0.31260201445820185
+        ],
+        "mass": [
+          0.6,
+          1.8
+        ],
+        "charge": [
+          0.6,
+          1.8
+        ]
+      }
+    },
+    {
+      "world_id": "world_4",
+      "fixed_rank": 1,
+      "law_spec": {
+        "ax": "q('charge') / q('mass') * x * (sqrt(x * x + y * y) * c1 + (x * x + y * y) * c2 - c3) / (x * x + y * y)",
+        "ay": "q('charge') / q('mass') * c4 / (sqrt(x * x + y * y) * (x * x + y * y + c5)) * y"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.06899316598839914
+        },
+        {
+          "name": "c2",
+          "initial": -0.005172111778202162
+        },
+        {
+          "name": "c3",
+          "initial": 0.3104674956491224
+        },
+        {
+          "name": "c4",
+          "initial": -0.508992878010769
+        },
+        {
+          "name": "c5",
+          "initial": 1.2404607178529226
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "joint_fit_ready": true,
+      "training_exact_acceleration": {
+        "nrmse": 0.0013432115670336646,
+        "mse_by_axis": [
+          6.647179375756495e-10,
+          2.976316924893694e-08
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "heldout_exact_acceleration": {
+        "nrmse": 0.005194170675875904,
+        "mse_by_axis": [
+          1.4506987844770717e-08,
+          3.641089730817851e-07
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "recorded_vs_scalar_expression_nrmse_difference": 8.673617379884035e-19,
+      "old_B_raw_training_best_heldout_nrmse": 1.2865992498243275,
+      "old_B_production_rank1_heldout_nrmse": 1.8981419139957347,
+      "E8_raw_pysr_training_best_heldout_nrmse": 0.0012818850794570555,
+      "all_returned_heldout_nrmse_in_original_order": [
+        0.0051941706758759035,
+        0.005008971430508957,
+        0.006742437084750135
+      ],
+      "axis_source_counts": {
+        "ax": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 8,
+          "pysr": 68
+        },
+        "ay": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 7,
+          "pysr": 72
+        }
+      },
+      "sharing_review": null,
+      "search_client_seconds": 41.4195250980556,
+      "total_seconds": 41.821647863835096,
+      "sum_pysr_stage_seconds": 36.99865228123963,
+      "basis_elapsed_seconds": 0.03317444026470184,
+      "basis_time_modulation": {
+        "status": "unresolved",
+        "independent_validation": false,
+        "observed_time_span": 31.94,
+        "median_time_step": 0.03999999999999915,
+        "frequency_range_radians_per_time": [
+          0.0491795969566342,
+          78.53981633974651
+        ],
+        "minimum_observed_cycles": 0.25,
+        "maximum_observation_gap": 5.059999999999999,
+        "temporal_alias_risk": false,
+        "frequency": 1.462679512488221,
+        "frequencies_evaluated": 60,
+        "normalized_fit_mse": 0.06418088852093595,
+        "normalized_unmodulated_mse": 0.08780659838992655,
+        "design_rank": 15,
+        "design_columns": 15,
+        "reason": "frequency_profile_unresolved",
+        "neighboring_profile_losses": [
+          0.06412266422306281,
+          0.06447197423044748
+        ]
+      },
+      "checkpoint": "original-checkpoints/c436d35500b74e68bf430e71d539f806/result.json",
+      "checkpoint_axis_audit_matches_transport": {
+        "ax": true,
+        "ay": true
+      },
+      "archived_request_exactly_matches_train_probes": null,
+      "transport_audit_omitted_rows": {},
+      "train_state_ranges": {
+        "t": [
+          0.02,
+          31.96
+        ],
+        "x": [
+          -2.896235706296057,
+          2.828144089179695
+        ],
+        "y": [
+          -3.3790425961937074,
+          1.93120786941503
+        ],
+        "vx": [
+          -0.251541121438928,
+          0.1636347154401552
+        ],
+        "vy": [
+          -0.15897729225701077,
+          0.11978987814711467
+        ],
+        "mass": [
+          0.5,
+          2.0
+        ],
+        "charge": [
+          0.5,
+          2.0
+        ]
+      },
+      "heldout_state_ranges": {
+        "t": [
+          2.02,
+          30.96
+        ],
+        "x": [
+          -3.1841257873449202,
+          3.883632877503863
+        ],
+        "y": [
+          -2.3756081016059136,
+          2.266383839474374
+        ],
+        "vx": [
+          -0.14472471292073874,
+          0.32027931036259477
+        ],
+        "vy": [
+          -0.1684002286723633,
+          0.16480778621544898
+        ],
+        "mass": [
+          0.6,
+          1.8
+        ],
+        "charge": [
+          0.6,
+          1.8
+        ]
+      }
+    },
+    {
+      "world_id": "world_5",
+      "fixed_rank": 1,
+      "law_spec": {
+        "ax": "x * (x - (-c1 * x * x + x + y * c2 * y - 1 * c3))",
+        "ay": "y * ((x * x + y * y) * c1 + x * x * c4 - c5)"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.001999863108703775
+        },
+        {
+          "name": "c2",
+          "initial": 0.01199954163289574
+        },
+        {
+          "name": "c3",
+          "initial": -0.060000339399404176
+        },
+        {
+          "name": "c4",
+          "initial": -0.00999960834948193
+        },
+        {
+          "name": "c5",
+          "initial": 0.10000018479061788
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "joint_fit_ready": true,
+      "training_exact_acceleration": {
+        "nrmse": 1.706182714166224e-05,
+        "mse_by_axis": [
+          9.26817653586074e-12,
+          1.323909935357588e-11
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "heldout_exact_acceleration": {
+        "nrmse": 1.7853337304914963e-05,
+        "mse_by_axis": [
+          1.8520203520329795e-11,
+          1.891412353805035e-11
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "recorded_vs_scalar_expression_nrmse_difference": 3.3881317890172014e-21,
+      "old_B_raw_training_best_heldout_nrmse": 0.07958995893051472,
+      "old_B_production_rank1_heldout_nrmse": 0.08912974251149793,
+      "E8_raw_pysr_training_best_heldout_nrmse": 1.6188328679758992e-05,
+      "all_returned_heldout_nrmse_in_original_order": [
+        1.785333730491496e-05,
+        0.010303245635031991,
+        0.010303245686251294
+      ],
+      "axis_source_counts": {
+        "ax": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 6,
+          "pysr": 40
+        },
+        "ay": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 7,
+          "pysr": 35
+        }
+      },
+      "sharing_review": {
+        "status": "data_validated",
+        "original_parameter_count": 6,
+        "returned_parameter_count": 5,
+        "original_discovery_label_mse_by_axis": [
+          2.701559304438539e-13,
+          1.3124935684902508e-13
+        ],
+        "shared_discovery_label_mse_by_axis": [
+          2.740532836358309e-13,
+          1.3309522798223824e-13
+        ],
+        "discovery_mse_relative_change": [
+          0.014426309966891412,
+          0.014063848978219792
+        ],
+        "uncompressed_heldout_nrmse": 1.7456320813348885e-05,
+        "shared_heldout_nrmse": 1.7853337304914963e-05,
+        "heldout_nrmse_relative_change": 0.02274342318814848,
+        "internal_check_probe_ids": [
+          "diagnostic_train_0024"
+        ],
+        "internal_split_checks": [
+          {
+            "split": "fit",
+            "original_mse_by_axis": [
+              2.722549490142638e-13,
+              1.3519202310239467e-13
+            ],
+            "shared_mse_by_axis": [
+              2.7674973790023693e-13,
+              1.3728284507269093e-13
+            ],
+            "maximum_accepted_mse_by_axis": [
+              3.837827516074297e-11,
+              5.407250799657659e-11
+            ],
+            "passed": true
+          },
+          {
+            "split": "heldout_discovery_probes",
+            "original_mse_by_axis": [
+              2.2187850332442086e-13,
+              4.056803302151562e-14
+            ],
+            "shared_mse_by_axis": [
+              2.0314530161120428e-13,
+              5.674297636330004e-14
+            ],
+            "maximum_accepted_mse_by_axis": [
+              3.832789871505313e-11,
+              5.397788400649571e-11
+            ],
+            "passed": true
+          }
+        ],
+        "internal_check_is_independent": false
+      },
+      "search_client_seconds": 41.59082102030516,
+      "total_seconds": 41.7746448405087,
+      "sum_pysr_stage_seconds": 38.48671673797071,
+      "basis_elapsed_seconds": 0.03451828472316265,
+      "basis_time_modulation": {
+        "status": "unresolved",
+        "independent_validation": false,
+        "observed_time_span": 31.94,
+        "median_time_step": 0.03999999999999915,
+        "frequency_range_radians_per_time": [
+          0.0491795969566342,
+          78.53981633974651
+        ],
+        "minimum_observed_cycles": 0.25,
+        "maximum_observation_gap": 5.059999999999999,
+        "temporal_alias_risk": false,
+        "frequency": 1.5388539344901366,
+        "frequencies_evaluated": 61,
+        "normalized_fit_mse": 0.028614499280353294,
+        "normalized_unmodulated_mse": 0.03668436416776104,
+        "design_rank": 15,
+        "design_columns": 15,
+        "reason": "frequency_profile_unresolved",
+        "neighboring_profile_losses": [
+          0.02948293258083497,
+          0.03014927151252282
+        ]
+      },
+      "checkpoint": "original-checkpoints/cde17f28845049fa8d77740ea91076f3/result.json",
+      "checkpoint_axis_audit_matches_transport": {
+        "ax": true,
+        "ay": true
+      },
+      "archived_request_exactly_matches_train_probes": true,
+      "transport_audit_omitted_rows": {},
+      "train_state_ranges": {
+        "t": [
+          0.02,
+          31.96
+        ],
+        "x": [
+          -2.8961967074792754,
+          2.8280508928859938
+        ],
+        "y": [
+          -3.3789601930470097,
+          1.9311837669507859
+        ],
+        "vx": [
+          -0.46281178705403087,
+          0.29964858821753504
+        ],
+        "vy": [
+          -0.3225356056388736,
+          0.5010732192059798
+        ],
+        "mass": [
+          0.5,
+          2.0
+        ],
+        "charge": [
+          0.5,
+          2.0
+        ]
+      },
+      "heldout_state_ranges": {
+        "t": [
+          2.02,
+          30.96
+        ],
+        "x": [
+          -3.1841007400671737,
+          3.8835667625016272
+        ],
+        "y": [
+          -2.3755108111799137,
+          2.2112497970221683
+        ],
+        "vx": [
+          -0.40256717565876143,
+          0.4172016623347554
+        ],
+        "vy": [
+          -0.39566585528774545,
+          0.5685587384822399
+        ],
+        "mass": [
+          0.6,
+          1.8
+        ],
+        "charge": [
+          0.6,
+          1.8
+        ]
+      }
+    },
+    {
+      "world_id": "world_6",
+      "fixed_rank": 1,
+      "law_spec": {
+        "ax": "-(c1 * x) + c2 * (y * sin(c3 * t + c4)) + c5 * (x * cos(c3 * t + c4))",
+        "ay": "-(c1 * y) + c5 * (x * sin(c3 * t + c4)) + -(c2 * (y * cos(c3 * t + c4)))"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.11999885151744417
+        },
+        {
+          "name": "c2",
+          "initial": 0.059998243399801435
+        },
+        {
+          "name": "c3",
+          "initial": 0.39269908734039755
+        },
+        {
+          "name": "c4",
+          "initial": 0.5999965768978579
+        },
+        {
+          "name": "c5",
+          "initial": 0.059998595968698214
+        }
+      ],
+      "parameter_count": 5,
+      "component_sources": [
+        "regression_basis",
+        "regression_basis"
+      ],
+      "joint_fit_ready": true,
+      "training_exact_acceleration": {
+        "nrmse": 1.5095082783216334e-05,
+        "mse_by_axis": [
+          7.246846248153423e-12,
+          1.4420154947067268e-11
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "heldout_exact_acceleration": {
+        "nrmse": 9.707336647263475e-06,
+        "mse_by_axis": [
+          1.4698215574443177e-12,
+          1.4747428406615375e-12
+        ],
+        "method": "scalar production Expression.acceleration; separate weighted normalization"
+      },
+      "recorded_vs_scalar_expression_nrmse_difference": 2.625802136488331e-19,
+      "old_B_raw_training_best_heldout_nrmse": 0.7946716991177009,
+      "old_B_production_rank1_heldout_nrmse": 1.1456128793161688,
+      "E8_raw_pysr_training_best_heldout_nrmse": 0.7099245265975226,
+      "all_returned_heldout_nrmse_in_original_order": [
+        9.707336647263738e-06,
+        1.0388395482051571e-05,
+        1.0059967082535104e-05
+      ],
+      "axis_source_counts": {
+        "ax": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 8,
+          "pysr": 49
+        },
+        "ay": {
+          "constant_initialization": 1,
+          "linear_least_squares": 63,
+          "regression_basis": 8,
+          "pysr": 55
+        }
+      },
+      "sharing_review": {
+        "status": "data_validated",
+        "original_parameter_count": 14,
+        "returned_parameter_count": 5,
+        "original_discovery_label_mse_by_axis": [
+          1.276486551473205e-13,
+          1.4886430575335364e-13
+        ],
+        "shared_discovery_label_mse_by_axis": [
+          1.2203914428647617e-13,
+          7.190418322453364e-14
+        ],
+        "discovery_mse_relative_change": [
+          -0.04394492722520538,
+          -0.5169817045083437
+        ],
+        "uncompressed_heldout_nrmse": 9.224951575709458e-06,
+        "shared_heldout_nrmse": 9.707336647263475e-06,
+        "heldout_nrmse_relative_change": 0.052291339157183536,
+        "internal_check_probe_ids": [
+          "diagnostic_train_0024"
+        ],
+        "internal_split_checks": [
+          {
+            "split": "fit",
+            "original_mse_by_axis": [
+              1.2489329120374513e-13,
+              1.5337762312864e-13
+            ],
+            "shared_mse_by_axis": [
+              1.2055834307469725e-13,
+              7.328727875925688e-14
+            ],
+            "maximum_accepted_mse_by_axis": [
+              3.060050033066456e-11,
+              5.720107854389066e-11
+            ],
+            "passed": true
+          },
+          {
+            "split": "heldout_discovery_probes",
+            "original_mse_by_axis": [
+              1.9102202584955413e-13,
+              4.5058006121776987e-14
+            ],
+            "shared_mse_by_axis": [
+              2.162450234158703e-13,
+              3.2031553377184303e-15
+            ],
+            "maximum_accepted_mse_by_axis": [
+              3.0666629065310364e-11,
+              5.7092758926883796e-11
+            ],
+            "passed": true
+          }
+        ],
+        "internal_check_is_independent": false
+      },
+      "search_client_seconds": 42.923446552827954,
+      "total_seconds": 43.15934426896274,
+      "sum_pysr_stage_seconds": 38.06506213918328,
+      "basis_elapsed_seconds": 0.038905492052435875,
+      "basis_time_modulation": {
+        "status": "resolved_on_supplied_data",
+        "independent_validation": false,
+        "observed_time_span": 31.94,
+        "median_time_step": 0.03999999999999915,
+        "frequency_range_radians_per_time": [
+          0.0491795969566342,
+          78.53981633974651
+        ],
+        "minimum_observed_cycles": 0.25,
+        "maximum_observation_gap": 5.059999999999999,
+        "temporal_alias_risk": false,
+        "frequency": 0.3926990817357077,
+        "frequencies_evaluated": 59,
+        "normalized_fit_mse": 2.1463652212067693e-20,
+        "normalized_unmodulated_mse": 0.11061458665203573,
+        "design_rank": 15,
+        "design_columns": 15,
+        "phase": 0.6000000004705256,
+        "limitation": "Local identifiability heuristic only; fresh-probe validation is required."
+      },
+      "checkpoint": "original-checkpoints/a26361ce2f25493abd87fa4e7fd4a223/result.json",
+      "checkpoint_axis_audit_matches_transport": {
+        "ax": true,
+        "ay": true
+      },
+      "archived_request_exactly_matches_train_probes": true,
+      "transport_audit_omitted_rows": {},
+      "train_state_ranges": {
+        "t": [
+          0.02,
+          31.96
+        ],
+        "x": [
+          -2.8962097769606148,
+          2.8280890631235405
+        ],
+        "y": [
+          -3.378941547685787,
+          1.9311645760856395
+        ],
+        "vx": [
+          -0.33549475405331575,
+          0.4313407506078299
+        ],
+        "vy": [
+          -0.424198669454685,
+          0.5512428182669066
+        ],
+        "mass": [
+          0.5,
+          2.0
+        ],
+        "charge": [
+          0.5,
+          2.0
+        ]
+      },
+      "heldout_state_ranges": {
+        "t": [
+          2.02,
+          30.96
+        ],
+        "x": [
+          -3.184114247199338,
+          3.8835912435229107
+        ],
+        "y": [
+          -2.37558076302989,
+          2.2275132641454487
+        ],
+        "vx": [
+          -0.29673748115085846,
+          0.36138248307667736
+        ],
+        "vy": [
+          -0.2551939628832304,
+          0.2397480895112891
+        ],
+        "mass": [
+          0.6,
+          1.8
+        ],
+        "charge": [
+          0.6,
+          1.8
+        ]
+      }
+    }
+  ]
+}
