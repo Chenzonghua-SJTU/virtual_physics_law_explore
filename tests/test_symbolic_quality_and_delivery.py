@@ -75,3 +75,21 @@ def test_complete_shared_polynomial_survives_shorter_factorized_component():
     spec=result[0]['law_spec']
     assert '** 3' in spec['ax'] and '** 3' in spec['ay']
     assert result[0]['rank']==1
+
+
+def test_refit_roundoff_does_not_fill_two_slots_with_same_parameterized_formula():
+    from shore_agent.symbolic_regression import _refine_final_candidates
+    from shore_agent.symbolic_algebra import candidate_structure_key
+    import copy
+    first={'law_spec':{'ax':'c1*x','ay':'c2*y'},'parameter_spec':[{'name':'c1','initial':.3},{'name':'c2','initial':.4}],
+           'complexity':6,'normalized_acceleration_search_loss':.001,
+           'residuals':{'trajectory_training':{'overall':{'position_rmse':.02}}}}
+    better=copy.deepcopy(first);better['parameter_spec'][0]['initial']+=1e-7
+    better['residuals']['trajectory_training']['overall']['position_rmse']=.01
+    different=copy.deepcopy(first);different['law_spec']['ay']='c1*y'
+    assert candidate_structure_key(first)==candidate_structure_key(better)
+    assert candidate_structure_key(first)!=candidate_structure_key(different)
+    report={'candidates':[first,better,different],'candidate_selection':{}}
+    _refine_final_candidates(report,{'probes':[{}]},time.monotonic()-1)
+    assert len(report['candidates'])==2
+    assert report['candidates'][0]['parameter_spec']==better['parameter_spec']

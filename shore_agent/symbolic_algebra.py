@@ -99,3 +99,21 @@ def candidate_key(candidate):
         def visit_Name(self,node):
             return ast.copy_location(ast.Constant(value=values[node.id]),node) if node.id in values else node
     return tuple(expression_key(ast.unparse(Values().visit(ast.parse(candidate['law_spec'][axis],mode='eval')))) for axis in ('ax','ay'))
+
+
+def candidate_structure_key(candidate):
+    """Same parameterized formula/share pattern, irrespective of optimized values.
+
+    Coefficient refits can differ in their last digits. Those are alternative
+    fits of one hypothesis, not separate formula slots. Structural literals and
+    sharing relationships remain part of the key.
+    """
+    parameters={p['name'] for p in candidate['parameter_spec']}
+    mapping={}
+    class Rename(ast.NodeTransformer):
+        def visit_Name(self,node):
+            if node.id in parameters:
+                mapping.setdefault(node.id,'parameter_'+str(len(mapping)))
+                return ast.copy_location(ast.Name(id=mapping[node.id],ctx=ast.Load()),node)
+            return node
+    return tuple(expression_key(ast.unparse(Rename().visit(ast.parse(candidate['law_spec'][axis],mode='eval')))) for axis in ('ax','ay'))

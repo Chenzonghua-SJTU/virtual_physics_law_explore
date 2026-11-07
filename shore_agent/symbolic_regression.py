@@ -744,7 +744,7 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
         simplest = sorted([i for i in ranked if i[1]["normalized_acceleration_search_loss"] <= threshold],
                           key=lambda i: (i[1]["complexity"], i[1]["parameter_count"], i[1]["normalized_acceleration_search_loss"]))
         ranked = simplest[:1] + ranked[:1] + simplest[1:] + ranked[1:]
-    from .symbolic_algebra import candidate_key
+    from .symbolic_algebra import candidate_key, candidate_structure_key
     from .symbolic_quality import consistency
     # Give distinct operator families a bounded chance; repeated sin/cos
     # approximations must not crowd out an algebraic or exponential hypothesis.
@@ -786,7 +786,12 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
         return (bad,residual if residual is not None else float('inf'),c['complexity'])
     candidates.sort(key=integral_rank)
     cache['refinement_candidates']=candidates[:6]
-    candidates=candidates[:limit]
+    unique=[];structures=set()
+    for candidate in candidates:
+        structure=candidate_structure_key(candidate)
+        if structure not in structures:
+            structures.add(structure);unique.append(candidate)
+    candidates=unique[:limit]
     for rank,candidate in enumerate(candidates,1): candidate['rank']=rank
     return candidates, {"axis_candidates": axis_candidates, "axis_equations": dict(zip(("ax", "ay"), audits)), "rejection_counts": rejected,
         "rejection_examples": examples, "rejected_candidate_pairs": stages.get("pair", 0),
@@ -982,7 +987,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
 def _refine_final_candidates(report,dataset,deadline,limit=3):
     """Return actual fitted parameters/residuals for at most three complete laws."""
     from .numerics import fit
-    from .symbolic_algebra import candidate_key
+    from .symbolic_algebra import candidate_structure_key
     from .symbolic_quality import consistency
     results=[]; seen=set()
     probes=dataset['probes']
@@ -1006,14 +1011,17 @@ def _refine_final_candidates(report,dataset,deadline,limit=3):
                 # Keep the original search loss explicitly separate from the
                 # updated-parameter acceleration residual.
                 candidate['residuals']['refitted_acceleration_mse_by_axis']=_candidate_loss(candidate,dataset)
-        key=candidate_key(candidate)
-        if key in seen: continue
-        seen.add(key); results.append(candidate)
+        results.append(candidate)
     def rank(c):
         error=c.get('residuals',{}).get('trajectory_training',{}).get('overall',{}).get('position_rmse')
         return (error is None,error if error is not None else c['normalized_acceleration_search_loss'],c.get('complexity',0))
     results.sort(key=rank)
-    results=results[:limit]
+    unique=[]
+    for candidate in results:
+        key=candidate_structure_key(candidate)
+        if key in seen: continue
+        seen.add(key);unique.append(candidate)
+    results=unique[:limit]
     for index,candidate in enumerate(results,1):
         candidate['rank']=index
         candidate['selection_role']='ranked_observed_residual_after_algebraic_dedup'
