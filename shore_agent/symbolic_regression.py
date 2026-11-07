@@ -543,12 +543,12 @@ def _parameter_sharing(candidate, dataset, deadline):
     signal = np.sum(weights[:,None]*y*y, axis=0)
     def permitted(original_loss):
         return original_loss + np.maximum.reduce([.05*original_loss, 4*resolution, 1e-14*np.maximum(signal, 1e-12)])
-    def residual(parameters, mask):
+    def residual(parameters, mask, formula=law, parameter_names=names):
         nonlocal calls
         calls += 1
         if time.monotonic() >= stop: raise SymbolicRegressionError("sharing_time_limit")
         try:
-            prediction = predict(law, dict(zip(names, parameters)), features)
+            prediction = predict(formula, dict(zip(parameter_names, parameters)), features)
             value = (prediction[mask]-y[mask])*np.sqrt(weights[mask])[:,None]
             return value.ravel()
         except (SymbolicRegressionError, ValueError, OverflowError, ZeroDivisionError):
@@ -556,10 +556,19 @@ def _parameter_sharing(candidate, dataset, deadline):
     result = least_squares(residual, guess, args=(train_mask,), max_nfev=35, x_scale="jac",
                            ftol=1e-9, xtol=1e-9, gtol=1e-9)
     constrained = predict(law, dict(zip(names, result.x)), features)
+    # Compare shared and unconstrained parameterizations trained on the SAME
+    # split. The original search coefficients saw all probes; using those as a
+    # holdout baseline biased rejection against even exactly duplicated scalars.
+    split_reference = before_prediction
+    if heldout_ids:
+        reference = least_squares(residual, values, args=(train_mask,candidate['law_spec'],
+            [p['name'] for p in original]), max_nfev=35,x_scale="jac",ftol=1e-9,xtol=1e-9,gtol=1e-9)
+        split_reference = predict(candidate['law_spec'],dict(zip(
+            [p['name'] for p in original],reference.x)),features)
     checks = []
     for label, mask in (("fit", train_mask), ("heldout_discovery_probes", ~train_mask)):
         if not np.any(mask): continue
-        baseline, fitted = mse(before_prediction, mask), mse(constrained, mask)
+        baseline, fitted = mse(split_reference, mask), mse(constrained, mask)
         tolerance = permitted(baseline)
         passed = bool(np.all(fitted <= tolerance))
         checks.append({"split": label, "original_mse_by_axis": baseline.tolist(),
@@ -588,6 +597,7 @@ def _parameter_sharing(candidate, dataset, deadline):
             "original_loss_by_axis": old.tolist(), "shared_loss_by_axis": after.tolist(),
             "acceptance_tolerance_by_axis": permitted(old).tolist(), "fit_evaluations": calls,
             "heldout_discovery_probe_ids": heldout_ids, "split_checks": checks,
+            "split_baseline": "unconstrained_parameters_refitted_on_same_training_split",
             "independent_validation": False,
             "limitation": "Ties are supported only by the supplied discovery data and resolution heuristic."})
 
@@ -621,6 +631,27 @@ def _axis_public_candidates(axes, dataset, tolerance_by_axis):
 def _select_candidates(axis_rows, dataset, limit, deadline, cache):
     audits = [[], []]
     axes = [_prepare_axis(rows, dataset, axis, audits[axis], deadline) for axis, rows in enumerate(axis_rows)]
+    def scalar_key(row, axis):
+        representation=row.get('search_representation','')
+        if not (representation.startswith('radial') or representation=='sign_checked_radial_log_response'):
+            return None
+        node=ast.parse(row['source'],mode='eval').body
+        if not (isinstance(node,ast.BinOp) and isinstance(node.op,ast.Mult)
+                and isinstance(node.right,ast.Name) and node.right.id==axis):
+            return None
+        from .symbolic_algebra import expression_key
+        return representation,expression_key(ast.unparse(node.left))
+    # A jointly fitted scalar has TWO components. Independent per-axis pruning
+    # can retain disjoint counterparts due to roundoff, destroying a valid pair.
+    # Complete the counterparts of retained joint hypotheses, never invent one.
+    scalar_maps=[{key:row for row in rows if row.get('domain_valid') is True
+                  if (key:=scalar_key(row,axis)) is not None}
+                 for rows,axis in zip(audits,('x','y'))]
+    retained_keys=[{scalar_key(row,axis) for row in rows}-{None}
+                   for rows,axis in zip(axes,('x','y'))]
+    for index in range(2):
+        for key in sorted(retained_keys[1-index]-retained_keys[index],key=repr):
+            if key in scalar_maps[index]: axes[index].append(scalar_maps[index][key])
     pool, seen, rejected = [], set(), {}
     examples, stages = [], {}
     def reject(reason, **fields):
@@ -636,13 +667,8 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
     tolerance = max(1e-10, float(np.mean(resolution/scale)))
     oversized = []
     def same_scalar(left,right):
-        representation=left.get('search_representation','')
-        if not (representation.startswith('radial') or representation=='sign_checked_radial_log_response'): return False
-        if right.get('search_representation')!=representation: return False
-        nodes=[ast.parse(r['source'],mode='eval').body for r in (left,right)]
-        from .symbolic_algebra import expression_key
-        return all(isinstance(n,ast.BinOp) and isinstance(n.op,ast.Mult) and isinstance(n.right,ast.Name) and n.right.id==axis
-                   for n,axis in zip(nodes,('x','y'))) and expression_key(ast.unparse(nodes[0].left))==expression_key(ast.unparse(nodes[1].left))
+        key=scalar_key(left,'x')
+        return key is not None and key==scalar_key(right,'y')
     for left, right in itertools.product(*axes):
         if time.monotonic() >= deadline: break
         try:
@@ -711,7 +737,11 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
     family_choices.sort(key=lambda i:(int(i[1]['normalized_acceleration_search_loss']/max(tolerance,1e-20)),i[1]['complexity']))
     paired=[item for item in oversized if item[1].get('shared_scalar_hypothesis')]
     paired.sort(key=lambda item:(item[1]['normalized_acceleration_search_loss'],item[1]['complexity']))
-    sharing_order=paired[:2]+family_choices+sharing_order
+    # Give each observed joint operator family a fit opportunity, instead of
+    # spending both leading slots on near-identical expressions from one family.
+    paired_families={}
+    for item in paired: paired_families.setdefault(operator_family(item[1]),item)
+    sharing_order=list(paired_families.values())[:4]+family_choices+sharing_order
     sharing_order=list({key:(key,value) for key,value in sharing_order}.values())
     fit_attempts, prefilter_rejections = 0, 0
     for key,candidate in sharing_order:
@@ -825,6 +855,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
     started = time.monotonic()
     deadline = started + float(time_budget_seconds)
     final_reserve = min(9.0, max(2.0, time_budget_seconds*.25))
+    search_deadline = deadline-final_reserve
     dataset = prepare_dataset(probes)
     means = np.sum(dataset["weights"][:, None]*dataset["y"], axis=0)
     axis_rows = [[{"source": repr(float(value)), "complexity": 1, "origin": "constant_initialization"}]
@@ -859,7 +890,10 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
     def snapshot(status):
         import copy
         nonlocal last_complete_selection
-        candidates, audit = _select_candidates(axis_rows, dataset, max_candidates, deadline, cache)
+        # Selection is part of search, not finalization. Previously every
+        # checkpoint could spend the entire reserved trajectory-refit window.
+        selection_deadline = min(search_deadline, time.monotonic()+3.0)
+        candidates, audit = _select_candidates(axis_rows, dataset, max_candidates, selection_deadline, cache)
         # The dataset is immutable throughout a search. A late snapshot may
         # exhaust its selection budget; keep previously certified candidates,
         # never replacing them with unvalidated partial search output.
@@ -867,11 +901,13 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             if last_complete_selection is not None:
                 candidates = copy.deepcopy(last_complete_selection["candidates"])
                 audit["axis_candidates"] = copy.deepcopy(last_complete_selection["axis_candidates"])
+                cache['refinement_candidates'] = copy.deepcopy(last_complete_selection['refinement_candidates'])
                 audit["candidate_selection"]["retained_checkpoint"] = bool(
                     candidates or any(audit["axis_candidates"].values()))
         else:
             last_complete_selection = {"candidates": copy.deepcopy(candidates),
-                                       "axis_candidates": copy.deepcopy(audit["axis_candidates"])}
+                                       "axis_candidates": copy.deepcopy(audit["axis_candidates"]),
+                                       "refinement_candidates": copy.deepcopy(cache.get('refinement_candidates', candidates))}
         report.update(audit)
         report.update(status=status, candidates=candidates, elapsed_seconds=time.monotonic()-started)
         if progress_callback is not None:
@@ -970,29 +1006,60 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
         report['stop_reason'] = 'search_budget_reached'
     # Finishing a bounded search within its reserved deadline is successful.
     # Only an actual overrun (or the supervisor's kill) is a timeout.
-    snapshot("timeout" if time.monotonic() >= deadline else
-             "partial" if report.get('backend_error') else "completed")
+    # The last stage already checkpointed its selection. Re-selecting unchanged
+    # equations here wasted the very window reserved for trajectory fitting.
+    report['status'] = ("timeout" if time.monotonic() >= deadline else
+                       "partial" if report.get('backend_error') else "completed")
     if time.monotonic()<deadline:
-        if cache.get('refinement_candidates') and not report['candidate_selection'].get('selection_incomplete'):
+        if cache.get('refinement_candidates'):
             report['candidates']=cache['refinement_candidates']
-        _refine_final_candidates(report,dataset,deadline,limit=max_candidates)
+        _refine_final_candidates(report,dataset,deadline,limit=max_candidates,
+                                 progress_callback=progress_callback,started=started)
         report['elapsed_seconds']=time.monotonic()-started
         if progress_callback is not None: progress_callback(report)
     return report
 
 
-def _refine_final_candidates(report,dataset,deadline,limit=3):
+def _refine_final_candidates(report,dataset,deadline,limit=3,progress_callback=None,started=None):
     """Return actual fitted parameters/residuals for at most three complete laws."""
     from .numerics import fit
     from .symbolic_algebra import candidate_structure_key
     from .symbolic_quality import consistency
-    results=[]; seen=set()
+    results=[]
     probes=dataset['probes']
     sigma=probes[0].get('observation_noise',{}).get('position_sigma')
-    for index,candidate in enumerate(report['candidates']):
+    pending=list(report['candidates'])
+    def publish():
+        # Publish each completed fit before another can hit the hard supervisor
+        # deadline. Always expose <=limit candidates, never the internal pool.
+        from .symbolic_selection import rank_candidates
+        ranked=sorted(results+pending[len(results):], key=lambda c:(
+            c.get('residuals',{}).get('trajectory_training',{}).get('overall',{}).get('position_rmse',float('inf')),
+            c.get('normalized_acceleration_search_loss',float('inf'))))
+        unique=[];seen=set()
+        for candidate in ranked:
+            key=candidate_structure_key(candidate)
+            if key not in seen:
+                seen.add(key);unique.append(candidate)
+        tolerance=0.0
+        if 'weights' in dataset and 'y' in dataset:
+            scale=np.maximum(np.sum(dataset['weights'][:,None]*dataset['y']**2,axis=0),1e-20)
+            tolerance=max(1e-10,float(np.mean(_differencing_tolerance(dataset)/scale)))
+        report['candidates']=rank_candidates(unique,probes,acceleration_tolerance=tolerance)[:limit]
+        for index,candidate in enumerate(report['candidates'],1):
+            candidate['rank']=index
+            candidate['selection_role']='simplest_within_comparable_error_band'
+        report['candidate_selection']['final_ranking']='observed domain risk, comparable error metric, then exported complexity within 5% MSE / public noise-and-numerical tolerance bands; discovery diagnostics, not independent validation'
+        report['candidate_selection']['trajectory_refit_candidates_processed']=len(results)
+        report['candidate_selection']['trajectory_refit_candidates_planned']=len(pending)
+        if started is not None: report['elapsed_seconds']=time.monotonic()-started
+        if progress_callback is not None:
+            import copy
+            progress_callback(copy.deepcopy(report))
+    for index,candidate in enumerate(pending):
         remaining=deadline-time.monotonic()
         if remaining>.15:
-            budget=min(2.,remaining/max(1,len(report['candidates'])-index))
+            budget=min(2.,remaining/max(1,len(pending)-index))
             # Missing initial controls in an offline record cannot be invented.
             try:
                 fitted=fit(candidate['law_spec'],candidate['parameter_spec'],probes,[],
@@ -1009,23 +1076,4 @@ def _refine_final_candidates(report,dataset,deadline,limit=3):
                 # updated-parameter acceleration residual.
                 candidate['residuals']['refitted_acceleration_mse_by_axis']=_candidate_loss(candidate,dataset)
         results.append(candidate)
-    def rank(c):
-        error=c.get('residuals',{}).get('trajectory_training',{}).get('overall',{}).get('position_rmse')
-        return (error is None,error if error is not None else c['normalized_acceleration_search_loss'],c.get('complexity',0))
-    results.sort(key=rank)
-    unique=[]
-    for candidate in results:
-        key=candidate_structure_key(candidate)
-        if key in seen: continue
-        seen.add(key);unique.append(candidate)
-    from .symbolic_selection import rank_candidates
-    tolerance = 0.0
-    if 'weights' in dataset and 'y' in dataset:
-        scale = np.maximum(np.sum(dataset['weights'][:, None]*dataset['y']**2, axis=0), 1e-20)
-        tolerance = max(1e-10, float(np.mean(_differencing_tolerance(dataset)/scale)))
-    results = rank_candidates(unique, probes, acceleration_tolerance=tolerance)[:limit]
-    for index,candidate in enumerate(results,1):
-        candidate['rank']=index
-        candidate['selection_role']='simplest_within_comparable_error_band'
-    report['candidates']=results
-    report['candidate_selection']['final_ranking']='observed domain risk, comparable error metric, then exported complexity within 5% MSE / public noise-and-numerical tolerance bands; discovery diagnostics, not independent validation'
+        publish()

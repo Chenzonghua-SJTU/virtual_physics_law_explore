@@ -1,5 +1,6 @@
 """Generic regressions for algebra, local data reliability and candidate delivery."""
 import time
+import pytest
 import numpy as np
 from shore_agent.symbolic_algebra import normalize_polynomial,expression_key
 from shore_agent.symbolic_quality import derivatives,consistency
@@ -93,3 +94,30 @@ def test_refit_roundoff_does_not_fill_two_slots_with_same_parameterized_formula(
     _refine_final_candidates(report,{'probes':[{}]},time.monotonic()-1)
     assert len(report['candidates'])==2
     assert report['candidates'][0]['parameter_spec']==better['parameter_spec']
+
+
+def test_each_finished_refit_is_checkpointed_before_next_can_be_interrupted(monkeypatch):
+    import copy
+    from shore_agent import numerics
+    from shore_agent.symbolic_regression import _refine_final_candidates
+    candidates=[{'law_spec':{'ax':f'c*x**{n}','ay':'c*y'},
+        'parameter_spec':[{'name':'c','initial':.1}], 'normalized_acceleration_search_loss':.1,
+        'residuals':{},'fitted_parameters':{'c':.1}} for n in (1,2)]
+    calls=[];checkpoints=[]
+    def fit(*args,**kwargs):
+        calls.append(1)
+        if len(calls)==2: raise RuntimeError('simulated_supervisor_interruption')
+        return {'fit_status':'converged','fitted_parameters':{'c':.2},
+                'errors':{'overall':{'position_rmse':.01}}}
+    from shore_agent import symbolic_quality,symbolic_regression
+    monkeypatch.setattr(numerics,'fit',fit)
+    monkeypatch.setattr(symbolic_quality,'consistency',lambda *a,**k:{'complete':True})
+    monkeypatch.setattr(symbolic_regression,'_candidate_loss',lambda *a:[0.,0.])
+    report={'candidates':candidates,'candidate_selection':{}}
+    with pytest.raises(RuntimeError,match='supervisor'):
+        _refine_final_candidates(report,{'probes':[{}]},time.monotonic()+10,
+                                 progress_callback=lambda value:checkpoints.append(copy.deepcopy(value)))
+    assert len(checkpoints)==1
+    assert checkpoints[0]['candidates'][0]['fitted_parameters']=={'c':.2}
+    assert checkpoints[0]['candidates'][0]['fit_stage']=='position_trajectory_discovery_refit'
+    assert len(checkpoints[0]['candidates'])<=3

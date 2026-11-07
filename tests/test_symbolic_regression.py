@@ -674,3 +674,58 @@ def test_vector_domain_guard_rejects_intermediate_overflow_and_excessive_powers(
     from shore_agent.symbolic_regression import _evaluate_array
     with pytest.raises(SymbolicRegressionError):
         _evaluate_array(source,{"x":np.array([2.])})
+
+
+def test_selection_cannot_consume_trajectory_refit_reserve(monkeypatch):
+    from shore_agent import symbolic_regression as sr
+    clock=[100.0]; deadlines=[]; finalized=[]
+    monkeypatch.setattr(sr.time,'monotonic',lambda:clock[0])
+    candidate=dict(export_candidate('0.1*x','0.2*y',['x','y']),
+                   normalized_acceleration_search_loss=.01,short_rollout_check={'status':'passed'})
+    def selection(rows,dataset,limit,deadline,cache):
+        deadlines.append(deadline)
+        cache['refinement_candidates']=[copy.deepcopy(candidate)]
+        clock[0]=deadline
+        return [copy.deepcopy(candidate)],{'axis_candidates':{},'candidate_selection':{
+            'selection_incomplete':True,'retained_checkpoint':False}}
+    monkeypatch.setattr(sr,'_select_candidates',selection)
+    monkeypatch.setattr(sr,'_refine_final_candidates',lambda report,data,deadline,**kw:finalized.append(deadline-clock[0]))
+    class EmptySearch:
+        def __init__(self,**kwargs): pass
+        def fit(self,*args,**kwargs): self.equations_=Rows([])
+    run_search([probe()],model_factory=EmptySearch,time_budget_seconds=30)
+    assert deadlines and max(deadlines)<=122.5
+    assert finalized and finalized[0]>=7.5
+
+
+def test_parameter_ties_compare_same_split_refits(monkeypatch):
+    import scipy.optimize,time
+    from shore_agent.symbolic_regression import _parameter_sharing
+    original=scipy.optimize.least_squares;calls=[]
+    def capture(fun,x0,*args,**kwargs):
+        calls.append((len(x0),kwargs['args'][0].copy()))
+        return original(fun,x0,*args,**kwargs)
+    monkeypatch.setattr(scipy.optimize,'least_squares',capture)
+    data=prepare_dataset(sharing_probes())
+    raw=export_candidate('0.8*x+0.3502*y+0.21*vx','0.3498*x+0.65*y-0.45*vy',
+                         data['feature_names'],_parameter_limit=24)
+    result=_parameter_sharing(raw,data,time.monotonic()+3)
+    assert [n for n,_ in calls]==[5,6,5]
+    assert np.array_equal(calls[0][1],calls[1][1]) and not calls[0][1].all()
+    assert calls[2][1].all()
+    assert result['parameter_sharing']['split_baseline']=='unconstrained_parameters_refitted_on_same_training_split'
+
+
+def test_joint_scalar_counterparts_survive_different_axis_shortlists(monkeypatch):
+    import time
+    from shore_agent import symbolic_regression as sr
+    data=prepare_dataset([physical_probe('p',(1.,2.))])
+    left=[{'source':f'({v}*x)*x','complexity':6,'loss':i,'domain_valid':True,
+           'parameter_count':1,'search_representation':'radial_full'} for i,v in enumerate((.1,.2))]
+    right=[dict(row,source=row['source'][:-1]+'y') for row in left]
+    def prepare(rows,dataset,axis,audit,*args):
+        audit.extend(rows)
+        return [rows[axis]]
+    monkeypatch.setattr(sr,'_prepare_axis',prepare)
+    result,audit=sr._select_candidates([left,right],data,3,time.monotonic()+3,{})
+    assert audit['candidate_selection']['axis_frontier_counts']==[2,2]

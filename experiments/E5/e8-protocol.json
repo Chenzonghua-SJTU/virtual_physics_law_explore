@@ -155,6 +155,28 @@
         "Final formula compared with public reference only after completion; no truth injected into exploration"
       ],
       "selection_policy": "One attempt per world, retain all six results; no replacing failed worlds with retries. Diagnose the complete round before registering the next frozen implementation."
+    },
+    "r06": {
+      "batch_id": "e8-qwen38-pysr-stage-20261107-r06",
+      "registration": "Registered after complete R05 tool/input/output review, before execution. Clean-only progression requested by user.",
+      "observation_noise": false,
+      "evaluation_noise": false,
+      "ruleset": "e5",
+      "scientific_implementation": "Frozen commit recorded by launcher and source hashes; changes below.",
+      "inherits": "27B, four replicas, 10 energy, 300 seconds, 4096 output tokens/call, no thinking or total-token cap; unchanged clean submission gate.",
+      "changes": [
+        "Bound checkpoint selection by search deadline; preserve refit pool; checkpoint after every trajectory refinement.",
+        "Compare constrained/unconstrained parameter fits on identical discovery splits; retain matching scalar components through per-axis pruning; fit opportunities across observed operator families.",
+        "Compact actionable time-span, property-control and missing-refit diagnostics; long continuous discovery trajectory and selective audit reading guidance."
+      ],
+      "audit_required_before_next_round": [
+        "Every acquired-probe plan and public coverage",
+        "Every SR input, returned candidate and selection/fit residual",
+        "Every Agent fit/validation/submit argument and feedback",
+        "Final formula compared with public reference only after completion; no truth injected into exploration"
+      ],
+      "selection_policy": "One attempt per world, retain all six results; no replacing failed worlds with retries. Diagnose the complete round before registering the next frozen implementation.",
+      "preceding_audit": "experiments/E5/e8-r05-diagnosis.json"
     }
   }
 }

@@ -345,3 +345,20 @@ def test_coverage_does_not_mask_failure_for_single_observation(runtime, monkeypa
     assert record['input_coverage']['sample_interval_range'] is None
     assert record['input_coverage']['insufficient_sample_probe_ids'] == ['p1']
     assert record['used_probe_ids'] == ['p1']
+
+
+def test_compact_feedback_exposes_actionable_gaps_without_full_search_audit():
+    from shore_agent.symbolic_feedback import search_feedback
+    raw={'search_id':'sr_test','candidates':[],
+         'basis_diagnostics':{'time_modulation':{'status':'unresolved',
+             'reason':'frequency_minimum_at_resolution_boundary','observed_time_span':2.4,
+             'temporal_alias_risk':True,'large_private_fit_table':list(range(10000))}},
+         'input_coverage':{'unselected_acquired_property_contrasts':{'mass':['p8']}}}
+    reply=search_feedback(raw)
+    gaps=reply['research_gaps']
+    assert gaps[0]['observed_time_span']==2.4 and gaps[0]['temporal_alias_risk'] is True
+    assert gaps[0]['reason']=='frequency_minimum_at_resolution_boundary'
+    assert 'longer continuous' in gaps[0]['action']
+    assert gaps[1]['probe_ids']=={'mass':['p8']}
+    assert 'large_private_fit_table' not in json.dumps(reply)
+    assert 'basis_diagnostics' not in reply

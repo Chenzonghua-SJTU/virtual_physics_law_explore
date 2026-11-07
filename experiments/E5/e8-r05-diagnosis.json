@@ -1,0 +1,308 @@
+{
+  "batch": "e8-qwen38-pysr-stage-20261107-r05",
+  "source_commit": "f247eb7",
+  "scientific_implementation": "882315c",
+  "noise": false,
+  "evaluation_noise": false,
+  "source_files_unchanged_after_completion": true,
+  "all_six_tool_traces_reviewed": true,
+  "audit_inputs_unchanged": true,
+  "audit_warnings": [],
+  "success_criterion": "Report complete batch, numerical scores AND posthoc structure; do not count W4 local approximation as true-law recovery. No reference laws entered Agent inputs.",
+  "worlds": {
+    "world_1": {
+      "structure": "correct leading inverse-radius field and charge/mass scaling; softening unresolved",
+      "issues": [
+        "SR not trajectory-refitted before timeout",
+        "Agent simplified returned sine approximation",
+        "Validation overlap rejected then fresh probes acquired"
+      ],
+      "score": 95.99993709901302,
+      "timing": {
+        "exploration_seconds": 103.95400060899556,
+        "evaluation_seconds": 3.520013779401779,
+        "wall_seconds_including_evaluation": 109.11003329232335,
+        "model_elapsed_seconds": 57.86340116150677,
+        "symbolic_search_seconds": 45.131324673071504,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 8,
+        "completion_tokens": 3561,
+        "average_output_tokens_per_call": 445.125,
+        "max_call_output_tokens": 988,
+        "requests_with_reported_usage": 8,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 8,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-c1 * q('charge') / q('mass') * x / (x * x + y * y)",
+          "ay": "-c1 * q('charge') / q('mass') * y / (x * x + y * y)"
+        },
+        "fitted_parameters": {
+          "c1": 0.07956851540751546
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      }
+    },
+    "world_2": {
+      "structure": "correct isotropic linear field and property ratio",
+      "issues": [
+        "Manual solution did not require SR",
+        "Unsupported run_code and malformed probe schema recovered",
+        "Fresh validation obtained after discovery-overlap rejection"
+      ],
+      "score": 96.49999999999956,
+      "timing": {
+        "exploration_seconds": 112.82619494199753,
+        "evaluation_seconds": 1.7173536904156208,
+        "wall_seconds_including_evaluation": 115.38819247484207,
+        "model_elapsed_seconds": 111.92131968960166,
+        "symbolic_search_seconds": 0,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 11,
+        "completion_tokens": 7047,
+        "average_output_tokens_per_call": 640.6363636363636,
+        "max_call_output_tokens": 1699,
+        "requests_with_reported_usage": 11,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 7,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-k*q('charge')/q('mass')*x",
+          "ay": "-k*q('charge')/q('mass')*y"
+        },
+        "fitted_parameters": {
+          "k": 0.05999999943061308
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0008"
+        ],
+        "fit_status": "converged"
+      }
+    },
+    "world_3": {
+      "structure": "correct coupled linear tensor",
+      "issues": [
+        "Correct numerical prediction; incorrect hidden_matter declaration loses five points"
+      ],
+      "score": 91.4999999999999,
+      "timing": {
+        "exploration_seconds": 132.0060259513557,
+        "evaluation_seconds": 2.4684881418943405,
+        "wall_seconds_including_evaluation": 136.3425249196589,
+        "model_elapsed_seconds": 88.65558183006942,
+        "symbolic_search_seconds": 42.078811625018716,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 8,
+        "completion_tokens": 5415,
+        "average_output_tokens_per_call": 676.875,
+        "max_call_output_tokens": 1482,
+        "requests_with_reported_usage": 8,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 7,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1 * x + c2 * y",
+          "ay": "c3 * x + c4 * y"
+        },
+        "fitted_parameters": {
+          "c1": -0.05999999993623082,
+          "c2": 0.03464101602717061,
+          "c3": 0.03464101604646358,
+          "c4": -0.09999999978068388
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "fit_status": "converged"
+      }
+    },
+    "world_4": {
+      "structure": "rational local approximation, NOT recovered exponential screening",
+      "issues": [
+        "SR refinement reserve consumed by checkpoint selection",
+        "Parameter-sharing holdout baseline used all-data search coefficients, unlike split-trained constrained coefficients",
+        "Independent axis pruning can discard matching components of one scalar hypothesis",
+        "Validation RMSE 0.0004415 vs training 0.000005926 ignored although over 200 seconds remained",
+        "Only two property levels, cannot distinguish exponential and power response"
+      ],
+      "score": 91.5100340354819,
+      "timing": {
+        "exploration_seconds": 98.0847452096641,
+        "evaluation_seconds": 4.1201119758188725,
+        "wall_seconds_including_evaluation": 102.84159515053034,
+        "model_elapsed_seconds": 49.49764413945377,
+        "symbolic_search_seconds": 45.12481722049415,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 8,
+        "completion_tokens": 2971,
+        "average_output_tokens_per_call": 371.375,
+        "max_call_output_tokens": 994,
+        "requests_with_reported_usage": 8,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 6,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "q('charge') / q('mass') * (c1 - c2 / (x * x + y * y) + c3 / sqrt(x * x + y * y)) * x",
+          "ay": "q('charge') / q('mass') * (c1 - c4 / (x * x + y * y) + c5 / sqrt(x * x + y * y)) * y"
+        },
+        "fitted_parameters": {
+          "c1": -0.0051437701208009,
+          "c2": 0.310047296886404,
+          "c3": 0.0688212682375928,
+          "c4": 0.3100932177253906,
+          "c5": 0.06883158208615718
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      }
+    },
+    "world_5": {
+      "structure": "correct cubic self terms and cross coupling",
+      "issues": [
+        "One malformed probe schema recovered",
+        "Original complete SR candidate fitted and freshly validated"
+      ],
+      "score": 96.99999999999997,
+      "timing": {
+        "exploration_seconds": 119.96232011914253,
+        "evaluation_seconds": 2.8187498413026333,
+        "wall_seconds_including_evaluation": 124.07390780374408,
+        "model_elapsed_seconds": 75.28920401632786,
+        "symbolic_search_seconds": 42.880838142707944,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 7,
+        "completion_tokens": 4574,
+        "average_output_tokens_per_call": 653.4285714285714,
+        "max_call_output_tokens": 1784,
+        "requests_with_reported_usage": 7,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 6,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+          "ay": "c4 * y + c3 * (x ** 2 * y) + c5 * y ** 3"
+        },
+        "fitted_parameters": {
+          "c1": -0.059999999785441,
+          "c2": -0.002000000022342662,
+          "c3": -0.012000000098248378,
+          "c4": -0.09999999972117023,
+          "c5": -0.0020000000593617217
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      }
+    },
+    "world_6": {
+      "structure": "incorrect linear-in-time approximation to periodic tensor",
+      "issues": [
+        "Selected observation span 3.9; temporal frequency minimum at boundary",
+        "Excluded acquired mass controls from search",
+        "Compact feedback hid unresolved temporal diagnostic",
+        "No original complete SR candidate fitted",
+        "Read 76k characters of full SR audit, then many tiny file reads; no second search after extending data",
+        "No independent validation; submitted under late-time gate"
+      ],
+      "score": 10.000000305595744,
+      "timing": {
+        "exploration_seconds": 282.27041243575513,
+        "evaluation_seconds": 3.320067096501589,
+        "wall_seconds_including_evaluation": 287.78804294764996,
+        "model_elapsed_seconds": 212.29957812651992,
+        "symbolic_search_seconds": 41.60675642825663,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 67,
+        "completion_tokens": 10213,
+        "average_output_tokens_per_call": 152.43283582089552,
+        "max_call_output_tokens": 1501,
+        "requests_with_reported_usage": 67,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 9,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1 * x + c2 * y",
+          "ay": "c3 * x + c4 * y + c5 * t * y"
+        },
+        "fitted_parameters": {
+          "c1": -0.12375398953854819,
+          "c2": 0.04757875222956939,
+          "c3": 0.05627277630813739,
+          "c4": -0.1627912737994013,
+          "c5": 0.017472906465893917
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0007",
+          "probe_0008",
+          "probe_0009",
+          "probe_0010",
+          "probe_0011"
+        ],
+        "fit_status": "converged"
+      }
+    }
+  },
+  "decision": "Continue clean rounds; noisy postponed until clean passes. Correct candidate delivery/refit and data coverage feedback before new run."
+}

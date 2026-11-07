@@ -39,6 +39,33 @@ def search_feedback(result):
         'omitted_incomplete_properties', 'effective_time_budget_seconds', 'wall_seconds',
         'stop_reason', 'rejection_counts', 'input_coverage', 'warnings', 'body_positions_included'))
     output['candidates'] = [candidate_feedback(c) for c in result.get('candidates', [])]
+    gaps = []
+    temporal = result.get('basis_diagnostics', {}).get('time_modulation', {})
+    if temporal.get('status') == 'unresolved':
+        gaps.append(dict(_pick(temporal, ('reason', 'observed_time_span', 'maximum_observation_gap',
+            'temporal_alias_risk')), kind='time_dependence_unresolved',
+            action='This is not evidence of periodicity or time independence. If current candidates fit poorly, '
+                   'acquire a longer continuous trajectory plus a delayed identical-state control; use near the '
+                   'sample limit and adjust dt to extend the span, then search again on the enlarged data. '
+                   'Do not replace unresolved slow variation with an arbitrary linear t term.'))
+    coverage = result.get('input_coverage', {})
+    two_levels = {key: values for key, values in coverage.get('selected_property_values', {}).items()
+                  if len(values) == 2}
+    if two_levels:
+        gaps.append({'kind': 'two_property_levels_cannot_resolve_functional_form', 'values': two_levels,
+                     'action': 'A power and an exponential can agree at two property values. '
+                               'Validate at a third permitted value, then refit/search if the discrepancy persists.'})
+    contrasts = coverage.get('unselected_acquired_property_contrasts', {})
+    if any(contrasts.values()):
+        gaps.append({'kind': 'available_property_controls_omitted', 'probe_ids': contrasts,
+                     'action': 'Include relevant acquired property contrasts in the next discovery set; '
+                               'they will then cease to be independent validation data.'})
+    if output['candidates'] and not any(c.get('fit_stage') == 'position_trajectory_discovery_refit'
+                                       for c in output['candidates']):
+        gaps.append({'kind': 'trajectory_refit_not_completed',
+                     'action': 'Do not interpret acceleration search loss as fitted trajectory error. '
+                               'Use fit_law_and_rollout on the returned complete formulas.'})
+    output['research_gaps'] = gaps
     axes = result.get('axis_candidates', {})
     if not output['candidates']:
         output['axis_candidates'] = {axis: [_pick(c, ('component', 'source', 'law_spec',
@@ -51,5 +78,6 @@ def search_feedback(result):
                               'material accuracy gains can justify complexity. Search residuals are discovery diagnostics.')
     output['next_step'] = ('Fit a complete candidate using its unchanged law_spec, parameter_spec and used_probe_ids; '
         'compare alternatives if needed, then validate on fresh probes. All reported errors are discovery errors. '
-        'Read audit_path with read_file only if detailed diagnostics or single-axis alternatives are needed.')
+        'Use research_gaps to decide the next experiment. Do not page through the full audit to look for a hidden answer; '
+        'read it only for a specific diagnostic or a necessary single-axis alternative.')
     return output
