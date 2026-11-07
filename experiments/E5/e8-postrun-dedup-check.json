@@ -1,0 +1,578 @@
+{
+  "kind": "posthoc_archived_candidate_dedup_check",
+  "measured_source_commit": "9cdc700",
+  "input_path": "runs/e8-qwen38-pysr-stage-20261107-r03-world_5/tools.jsonl",
+  "input_sha256": "182cd6d8e003759195ad70182974bf65c2ed054ddb0745eaa69a33d369f4546d",
+  "new_model_calls": 0,
+  "new_searches": 0,
+  "new_parameter_fits": 0,
+  "new_evaluations": 0,
+  "before_count": 3,
+  "after_count": 2,
+  "unique_structures": 2,
+  "before_ranks": [
+    1,
+    2,
+    3
+  ],
+  "retained_candidates": [
+    {
+      "law_spec": {
+        "ax": "exp(sin(y * c1 * (exp(sin(x * sin(y) * sin(sqrt(x * x + y * y) * sin(sin(sin(t)))))) * y * c2 - y))) * x * c3",
+        "ay": "c2 * y + c4 * (x ** 2 * y) + c5 * y ** 3"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.1228942165015669
+        },
+        {
+          "name": "c2",
+          "initial": -0.09999912541939067
+        },
+        {
+          "name": "c3",
+          "initial": -0.06448823909749522
+        },
+        {
+          "name": "c4",
+          "initial": -0.012005266514259752
+        },
+        {
+          "name": "c5",
+          "initial": -0.002000141881882332
+        }
+      ],
+      "complexity": 47,
+      "parameter_count": 5,
+      "acceleration_search_mse_by_axis": [
+        8.447944327815946e-08,
+        3.912248830657776e-09
+      ],
+      "acceleration_search_mse": 8.839169210881723e-08,
+      "normalized_acceleration_search_loss": 3.6571764004431107e-06,
+      "dsl_valid": true,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "initial_domain_check": {
+        "status": "passed",
+        "scope": "All acquired states and controlled initial states"
+      },
+      "parameter_sharing": {
+        "status": "data_validated",
+        "proposal": "close coefficients proposed, never assumed equal",
+        "uncompressed_law_spec": {
+          "ax": "exp(sin(y * c1 * (exp(sin(x * sin(y) * sin(sqrt(x * x + y * y) * sin(sin(sin(t)))))) * y * c2 - y))) * x * c3",
+          "ay": "c4 * y + c5 * (x ** 2 * y) + c6 * y ** 3"
+        },
+        "uncompressed_parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.1235878508268733
+          },
+          {
+            "name": "c2",
+            "initial": -0.10269871418110171
+          },
+          {
+            "name": "c3",
+            "initial": -0.06448685057533766
+          },
+          {
+            "name": "c4",
+            "initial": -0.10000646233916181
+          },
+          {
+            "name": "c5",
+            "initial": -0.012004386165903574
+          },
+          {
+            "name": "c6",
+            "initial": -0.001992903890288869
+          }
+        ],
+        "groups": [
+          {
+            "shared_parameter": "c1",
+            "original_parameters": [
+              "c1"
+            ]
+          },
+          {
+            "shared_parameter": "c2",
+            "original_parameters": [
+              "c2",
+              "c4"
+            ]
+          },
+          {
+            "shared_parameter": "c3",
+            "original_parameters": [
+              "c3"
+            ]
+          },
+          {
+            "shared_parameter": "c4",
+            "original_parameters": [
+              "c5"
+            ]
+          },
+          {
+            "shared_parameter": "c5",
+            "original_parameters": [
+              "c6"
+            ]
+          }
+        ],
+        "original_loss_by_axis": [
+          8.423798417554758e-08,
+          3.91221669261422e-09
+        ],
+        "shared_loss_by_axis": [
+          8.447944327815946e-08,
+          3.912248830657776e-09
+        ],
+        "acceptance_tolerance_by_axis": [
+          8.844988338432496e-08,
+          2.9967446104842896e-08
+        ],
+        "fit_evaluations": 36,
+        "heldout_discovery_probe_ids": [
+          "probe_0006"
+        ],
+        "split_checks": [
+          {
+            "split": "fit",
+            "original_mse_by_axis": [
+              1.0098173264751565e-07,
+              4.683066708832003e-09
+            ],
+            "shared_mse_by_axis": [
+              1.0120859273058996e-07,
+              4.6825422701786774e-09
+            ],
+            "maximum_accepted_mse_by_axis": [
+              1.0603081927989143e-07,
+              3.073829612106068e-08
+            ],
+            "passed": true
+          },
+          {
+            "split": "heldout_discovery_probes",
+            "original_mse_by_axis": [
+              5.192418157072791e-10,
+              5.796661152530053e-11
+            ],
+            "shared_mse_by_axis": [
+              1.085767901173229e-09,
+              6.506810692800888e-11
+            ],
+            "maximum_accepted_mse_by_axis": [
+              3.9286814237941714e-09,
+              2.6113196023753977e-08
+            ],
+            "passed": true
+          }
+        ],
+        "independent_validation": false,
+        "limitation": "Ties are supported only by the supplied discovery data and resolution heuristic."
+      },
+      "short_rollout_check": {
+        "status": "passed",
+        "probe_count": 6,
+        "rhs_calls": 240,
+        "position_rmse": 0.00037626278113776887,
+        "velocity_rmse": 9.956684906363544e-05,
+        "scope": "Short acquired-data replay only; not fitted or independently validated."
+      },
+      "fitted_parameters": {
+        "c1": -0.1228942165015669,
+        "c2": -0.09999912541939067,
+        "c3": -0.06448823909749522,
+        "c4": -0.012005266514259752,
+        "c5": -0.002000141881882332
+      },
+      "residuals": {
+        "acceleration_weighted_mse": 8.839169210881723e-08,
+        "acceleration_weighted_mse_by_axis": [
+          8.447944327815946e-08,
+          3.912248830657776e-09
+        ],
+        "short_rollout": {
+          "status": "passed",
+          "probe_count": 6,
+          "rhs_calls": 240,
+          "position_rmse": 0.00037626278113776887,
+          "velocity_rmse": 9.956684906363544e-05,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "observed_velocity_integral": {
+          "scope": "Frozen formula on acquired observed paths; trapezoidal velocity increments, not hidden truth or independent validation.",
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "status": "checked",
+              "velocity_increment_rmse": 6.2126899724705694e-06,
+              "relative_increment_rmse": 0.00038068959062254157,
+              "cumulative_velocity_residual_rmse": 1.3303287869495839e-05,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0002",
+              "status": "checked",
+              "velocity_increment_rmse": 7.842024806418317e-05,
+              "relative_increment_rmse": 0.0013806709845207766,
+              "cumulative_velocity_residual_rmse": 0.0001687660807287336,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0003",
+              "status": "checked",
+              "velocity_increment_rmse": 2.2791466148706163e-06,
+              "relative_increment_rmse": 0.00043764721941585256,
+              "cumulative_velocity_residual_rmse": 3.659501289247377e-05,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0004",
+              "status": "checked",
+              "velocity_increment_rmse": 5.516809636926227e-06,
+              "relative_increment_rmse": 0.0007541319762159863,
+              "cumulative_velocity_residual_rmse": 0.00011202203116453923,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0005",
+              "status": "checked",
+              "velocity_increment_rmse": 6.94995073833378e-05,
+              "relative_increment_rmse": 0.00406773616828982,
+              "cumulative_velocity_residual_rmse": 0.0007575104244920103,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0006",
+              "status": "checked",
+              "velocity_increment_rmse": 1.5362221993165823e-06,
+              "relative_increment_rmse": 0.00030008962663536184,
+              "cumulative_velocity_residual_rmse": 3.378064712445034e-05,
+              "denominator_sign_changes": 0
+            }
+          ],
+          "checked_probe_ids": [
+            "probe_0001",
+            "probe_0002",
+            "probe_0003",
+            "probe_0004",
+            "probe_0005",
+            "probe_0006"
+          ],
+          "complete": true,
+          "domain_error_probe_ids": [],
+          "denominator_sign_change_probe_ids": [],
+          "velocity_increment_rmse": 4.292727187965035e-05,
+          "relative_increment_rmse": 0.0018003684056764181,
+          "action": "A contradiction remains evidence even when a probe is omitted from train_probe_ids; acquire denser controls if quadrature resolution is insufficient."
+        },
+        "trajectory_training": {
+          "overall": {
+            "position_mse": 2.1694995111660587e-08,
+            "velocity_mse": 1.0784020414866106e-07,
+            "position_rmse": 0.00014729220994900099,
+            "velocity_rmse": 0.0003283903228608618
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 9.161170432186324e-12,
+              "position_rmse": 3.0267425447477894e-06,
+              "velocity_mse": 3.6357918676538426e-11,
+              "velocity_rmse": 6.029752787348618e-06
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 1.988593716081675e-09,
+              "position_rmse": 4.459365107368621e-05,
+              "velocity_mse": 1.4900754099602382e-08,
+              "velocity_rmse": 0.00012206864503058261
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 50,
+              "position_mse": 1.1813420412422846e-09,
+              "position_rmse": 3.4370656689133604e-05,
+              "velocity_mse": 1.1479460314506538e-09,
+              "velocity_rmse": 3.388135226714916e-05
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 50,
+              "position_mse": 6.729775959211611e-09,
+              "position_rmse": 8.203521170333878e-05,
+              "velocity_mse": 1.132382987276601e-08,
+              "velocity_rmse": 0.00010641348538961596
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 50,
+              "position_mse": 1.1975649645879683e-07,
+              "position_rmse": 0.00034605851594607064,
+              "velocity_mse": 6.186306522977024e-07,
+              "velocity_rmse": 0.0007865307700895767
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 41,
+              "position_mse": 5.046013241989565e-10,
+              "position_rmse": 2.246333288269923e-05,
+              "velocity_mse": 1.001684671768289e-09,
+              "velocity_rmse": 3.164940239196135e-05
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "refitted_acceleration_mse_by_axis": [
+          3.1975826346132056e-07,
+          9.027444173219437e-09
+        ]
+      },
+      "fit_stage": "position_trajectory_discovery_refit",
+      "joint_fit_ready": true,
+      "prediction_accuracy_status": "not_independently_validated",
+      "selection_role": "ranked_observed_residual_after_algebraic_dedup",
+      "rank": 1,
+      "trajectory_refit_status": "converged",
+      "discovery_probe_ids": [
+        "probe_0001",
+        "probe_0002",
+        "probe_0003",
+        "probe_0004",
+        "probe_0005",
+        "probe_0006"
+      ]
+    },
+    {
+      "law_spec": {
+        "ax": "x * sin(exp(sin(y * c1 * y)) * c2)",
+        "ay": "c3 * y + c4 * (x ** 2 * y) + c5 * y ** 3"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": 0.15479398644905185
+        },
+        {
+          "name": "c2",
+          "initial": -0.06443712954500208
+        },
+        {
+          "name": "c3",
+          "initial": -0.10000236839667069
+        },
+        {
+          "name": "c4",
+          "initial": -0.01200480648334482
+        },
+        {
+          "name": "c5",
+          "initial": -0.0020000542840895204
+        }
+      ],
+      "complexity": 27,
+      "parameter_count": 5,
+      "acceleration_search_mse_by_axis": [
+        5.66273454678411e-07,
+        3.91221669259269e-09
+      ],
+      "acceleration_search_mse": 5.701856713710037e-07,
+      "normalized_acceleration_search_loss": 2.4210669595519216e-05,
+      "dsl_valid": true,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "initial_domain_check": {
+        "status": "passed",
+        "scope": "All acquired states and controlled initial states"
+      },
+      "short_rollout_check": {
+        "status": "passed",
+        "probe_count": 6,
+        "rhs_calls": 240,
+        "position_rmse": 0.000377833710525763,
+        "velocity_rmse": 9.793143523524385e-05,
+        "scope": "Short acquired-data replay only; not fitted or independently validated."
+      },
+      "fitted_parameters": {
+        "c1": 0.15479398644905185,
+        "c2": -0.06443712954500208,
+        "c3": -0.10000236839667069,
+        "c4": -0.01200480648334482,
+        "c5": -0.0020000542840895204
+      },
+      "residuals": {
+        "acceleration_weighted_mse": 5.701856713710037e-07,
+        "acceleration_weighted_mse_by_axis": [
+          5.66273454678411e-07,
+          3.91221669259269e-09
+        ],
+        "short_rollout": {
+          "status": "passed",
+          "probe_count": 6,
+          "rhs_calls": 240,
+          "position_rmse": 0.000377833710525763,
+          "velocity_rmse": 9.793143523524385e-05,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "observed_velocity_integral": {
+          "scope": "Frozen formula on acquired observed paths; trapezoidal velocity increments, not hidden truth or independent validation.",
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "status": "checked",
+              "velocity_increment_rmse": 1.8818033167050203e-05,
+              "relative_increment_rmse": 0.0011530962231223246,
+              "cumulative_velocity_residual_rmse": 7.029823383496173e-05,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0002",
+              "status": "checked",
+              "velocity_increment_rmse": 0.00022915949643992107,
+              "relative_increment_rmse": 0.004034594066866993,
+              "cumulative_velocity_residual_rmse": 0.0003864478736731991,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0003",
+              "status": "checked",
+              "velocity_increment_rmse": 1.814688567041219e-05,
+              "relative_increment_rmse": 0.003484608670146535,
+              "cumulative_velocity_residual_rmse": 0.00015268726144050874,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0004",
+              "status": "checked",
+              "velocity_increment_rmse": 5.123794305529161e-05,
+              "relative_increment_rmse": 0.0070040791320575965,
+              "cumulative_velocity_residual_rmse": 0.0011343958536831494,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0005",
+              "status": "checked",
+              "velocity_increment_rmse": 0.00014388904845727025,
+              "relative_increment_rmse": 0.008421681083321872,
+              "cumulative_velocity_residual_rmse": 0.0015890562295006675,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0006",
+              "status": "checked",
+              "velocity_increment_rmse": 1.1058281779475807e-05,
+              "relative_increment_rmse": 0.002160153428265655,
+              "cumulative_velocity_residual_rmse": 7.762893140383516e-05,
+              "denominator_sign_changes": 0
+            }
+          ],
+          "checked_probe_ids": [
+            "probe_0001",
+            "probe_0002",
+            "probe_0003",
+            "probe_0004",
+            "probe_0005",
+            "probe_0006"
+          ],
+          "complete": true,
+          "domain_error_probe_ids": [],
+          "denominator_sign_change_probe_ids": [],
+          "velocity_increment_rmse": 0.00011302593604331093,
+          "relative_increment_rmse": 0.005072773359796916,
+          "action": "A contradiction remains evidence even when a probe is omitted from train_probe_ids; acquire denser controls if quadrature resolution is insufficient."
+        },
+        "trajectory_training": {
+          "overall": {
+            "position_mse": 1.7147960929265982e-07,
+            "velocity_mse": 6.639406354255933e-07,
+            "position_rmse": 0.0004141009650950597,
+            "velocity_rmse": 0.0008148255245300023
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0001",
+              "n_samples": 8,
+              "position_mse": 7.710814869717392e-10,
+              "position_rmse": 2.776835405586257e-05,
+              "velocity_mse": 3.633894192942916e-09,
+              "velocity_rmse": 6.0281789894983346e-05
+            },
+            {
+              "probe_id": "probe_0002",
+              "n_samples": 8,
+              "position_mse": 1.0082279175069352e-08,
+              "position_rmse": 0.0001004105531060822,
+              "velocity_mse": 1.392753966174183e-07,
+              "velocity_rmse": 0.000373196190518363
+            },
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 50,
+              "position_mse": 4.795754316407862e-09,
+              "position_rmse": 6.92513849421646e-05,
+              "velocity_mse": 2.4101759234954623e-08,
+              "velocity_rmse": 0.00015524741297346834
+            },
+            {
+              "probe_id": "probe_0004",
+              "n_samples": 50,
+              "position_mse": 6.870175886049699e-07,
+              "position_rmse": 0.0008288652415229933,
+              "velocity_mse": 1.1827029608727555e-06,
+              "velocity_rmse": 0.0010875214760512804
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 50,
+              "position_mse": 3.2088356767161075e-07,
+              "position_rmse": 0.0005664658574632815,
+              "velocity_mse": 2.628060241163383e-06,
+              "velocity_rmse": 0.0016211293104386778
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 41,
+              "position_mse": 5.327384500929261e-09,
+              "position_rmse": 7.298893409914451e-05,
+              "velocity_mse": 5.869560472106375e-09,
+              "velocity_rmse": 7.661305679912775e-05
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "refitted_acceleration_mse_by_axis": [
+          1.643871367960534e-06,
+          9.47475025567559e-09
+        ]
+      },
+      "fit_stage": "position_trajectory_discovery_refit",
+      "joint_fit_ready": true,
+      "prediction_accuracy_status": "not_independently_validated",
+      "selection_role": "ranked_observed_residual_after_algebraic_dedup",
+      "rank": 2,
+      "trajectory_refit_status": "converged",
+      "discovery_probe_ids": [
+        "probe_0001",
+        "probe_0002",
+        "probe_0003",
+        "probe_0004",
+        "probe_0005",
+        "probe_0006"
+      ]
+    }
+  ],
+  "limitation": "Post-run engineering check only. The published R03/R04 scores have not been rerun with this patch."
+}

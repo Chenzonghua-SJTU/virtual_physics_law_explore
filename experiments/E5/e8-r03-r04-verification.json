@@ -1,0 +1,952 @@
+{
+  "scientific_commit": "9cdc700",
+  "scientific_source_changes_since_launch": [],
+  "source_exception": {
+    "shore_agent/web_jobs.py": {
+      "reason": "Preserve preexisting unrelated web changes; no edits or reset by this experiment.",
+      "actual_sha256": "feb70349021878eb3b5a3b70b4637b465c2eee6bb7ad96894be98ebd6c44dd64"
+    }
+  },
+  "arms": {
+    "r03": {
+      "status": "completed",
+      "worlds": [
+        {
+          "world_id": "world_1",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_1",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 95.99995557826794,
+          "evaluation_complete": true,
+          "evaluation_noise": false,
+          "exploration_noise": false,
+          "position_noise_sigma": 0.0,
+          "velocity_noise_sigma": 0.0,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "requires_validation_for_error_branch": false,
+            "validation_rmse_threshold": null,
+            "force_submit_remaining_seconds": null,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_1",
+            "fit_position_rmse": 2.8567380564026575e-06,
+            "fit_error_valid": true,
+            "validation_position_rmse": null,
+            "validation_ids": [],
+            "wall_seconds_remaining": 204.71161612309515,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * c1 * x / (x * x + y * y)",
+            "ay": "q('charge') / q('mass') * c1 * y / (x * x + y * y)"
+          },
+          "fitted_parameters": {
+            "c1": -0.07955196857308067
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 8.160952322899233e-12,
+            "velocity_mse": 8.928157705744501e-12,
+            "position_rmse": 2.8567380564026575e-06,
+            "velocity_rmse": 2.9880022934637283e-06
+          },
+          "evaluation_failures": []
+        },
+        {
+          "world_id": "world_2",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_2",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 96.49999999999906,
+          "evaluation_complete": true,
+          "evaluation_noise": false,
+          "exploration_noise": false,
+          "position_noise_sigma": 0.0,
+          "velocity_noise_sigma": 0.0,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "requires_validation_for_error_branch": false,
+            "validation_rmse_threshold": null,
+            "force_submit_remaining_seconds": null,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_5",
+            "fit_position_rmse": 6.2157244457667865e-09,
+            "fit_error_valid": true,
+            "validation_position_rmse": null,
+            "validation_ids": [],
+            "wall_seconds_remaining": 139.24645672552288,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "q('charge')/q('mass')*c1*x",
+            "ay": "q('charge')/q('mass')*c1*y"
+          },
+          "fitted_parameters": {
+            "c1": -0.0599999990187626
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 3.863523038570283e-17,
+            "velocity_mse": 6.511159449792567e-18,
+            "position_rmse": 6.2157244457667865e-09,
+            "velocity_rmse": 2.5516973664195697e-09
+          },
+          "evaluation_failures": []
+        },
+        {
+          "world_id": "world_3",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_3",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 15.0,
+          "evaluation_complete": false,
+          "evaluation_noise": false,
+          "exploration_noise": false,
+          "position_noise_sigma": 0.0,
+          "velocity_noise_sigma": 0.0,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "requires_validation_for_error_branch": false,
+            "validation_rmse_threshold": null,
+            "force_submit_remaining_seconds": null,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_7",
+            "fit_position_rmse": 0.030472493224685152,
+            "fit_error_valid": true,
+            "validation_position_rmse": null,
+            "validation_ids": [],
+            "wall_seconds_remaining": 35.699258303269744,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": false,
+            "time_condition_met": true,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 0,
+          "candidate_counts": [],
+          "candidates_with_parameters_and_residuals": 0,
+          "candidate_total": 0,
+          "law_spec": {
+            "ax": "sum_b(k1*(bx-x)*(bx-x)/sqrt((bx-x)**2+(by-y)**2)*(sqrt((bx-x)**2+(by-y)**2)**2+k2*(sqrt((bx-x)**2+(by-y)**2)**2+q('mass'))))",
+            "ay": "sum_b(k1*(by-y)*(by-y)/sqrt((bx-x)**2+(by-y)**2)*(sqrt((bx-x)**2+(by-y)**2)**2+k2*(sqrt((bx-x)**2+(by-y)**2)**2+q('mass'))))"
+          },
+          "fitted_parameters": {
+            "k1": -0.0003572514756794113,
+            "k2": -0.0035084300417678495
+          },
+          "fit_status": "not_converged",
+          "training_errors": {
+            "position_mse": 0.0009285728433284825,
+            "velocity_mse": 0.006071612650100609,
+            "position_rmse": 0.030472493224685152,
+            "velocity_rmse": 0.07792055345093879
+          },
+          "evaluation_failures": [
+            {
+              "probe_id": "v15_b0-s0_1",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b0-s0_2",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b0-s0_3",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b0-s0_4",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b0-s1_1",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b0-s1_2",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b0-s1_3",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b1-s0_1",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b1-s0_2",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b1-s0_3",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b1-s0_4",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b1-s1_1",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b1-s1_2",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b1-s1_3",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b1-s1_4",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b2-s0_1",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b2-s0_2",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b2-s0_3",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b2-s0_4",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b2-s1_1",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b2-s1_2",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b2-s1_3",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            },
+            {
+              "probe_id": "v15_b2-s1_4",
+              "stage": "candidate_rollout",
+              "reason": "candidate trajectory diverged"
+            }
+          ]
+        },
+        {
+          "world_id": "world_4",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_4",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 52.24455019954916,
+          "evaluation_complete": true,
+          "evaluation_noise": false,
+          "exploration_noise": false,
+          "position_noise_sigma": 0.0,
+          "velocity_noise_sigma": 0.0,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "requires_validation_for_error_branch": false,
+            "validation_rmse_threshold": null,
+            "force_submit_remaining_seconds": null,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_1",
+            "fit_position_rmse": 3.547729786994255e-06,
+            "fit_error_valid": true,
+            "validation_position_rmse": null,
+            "validation_ids": [],
+            "wall_seconds_remaining": 129.56977846845984,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "q('charge') * (c1 + c2 / ((x * x + y * y + c3) / c4)) * (c5 ** sqrt(x * x + y * y) + c1) * x",
+            "ay": "q('charge') * (c1 + c2 / ((x * x + y * y + c3) / c4)) * (c5 ** sqrt(x * x + y * y) + c1) * y"
+          },
+          "fitted_parameters": {
+            "c1": 2.045073450862262e-05,
+            "c2": 0.42324402303753905,
+            "c3": 0.001225968120570276,
+            "c4": -0.7515284324615982,
+            "c5": 0.7791070579149195
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 1.2586386641526304e-11,
+            "velocity_mse": 1.5902215373449616e-07,
+            "position_rmse": 3.547729786994255e-06,
+            "velocity_rmse": 0.0003987758188938945
+          },
+          "evaluation_failures": []
+        },
+        {
+          "world_id": "world_5",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_5",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 16.501178799245373,
+          "evaluation_complete": true,
+          "evaluation_noise": false,
+          "exploration_noise": false,
+          "position_noise_sigma": 0.0,
+          "velocity_noise_sigma": 0.0,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "requires_validation_for_error_branch": false,
+            "validation_rmse_threshold": null,
+            "force_submit_remaining_seconds": null,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_6",
+            "fit_position_rmse": 0.2859097360312529,
+            "fit_error_valid": true,
+            "validation_position_rmse": null,
+            "validation_ids": [],
+            "wall_seconds_remaining": 31.10760204680264,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": false,
+            "time_condition_met": true,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "-c1 * x * (x * x + y * y) ** -1",
+            "ay": "-c1 * y * (x * x + y * y) ** -1"
+          },
+          "fitted_parameters": {
+            "c1": 0.2810751221658569
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 0.08174437715746072,
+            "velocity_mse": 0.1351110327363233,
+            "position_rmse": 0.2859097360312529,
+            "velocity_rmse": 0.3675745267783437
+          },
+          "evaluation_failures": []
+        },
+        {
+          "world_id": "world_6",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r03-world_6",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 95.9999999999999,
+          "evaluation_complete": true,
+          "evaluation_noise": false,
+          "exploration_noise": false,
+          "position_noise_sigma": 0.0,
+          "velocity_noise_sigma": 0.0,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 1e-05,
+            "time_remaining_threshold_seconds": 40,
+            "condition": "finite_nonnegative_fit_rmse < threshold OR known_remaining_seconds < time_threshold",
+            "requires_validation_for_error_branch": false,
+            "validation_rmse_threshold": null,
+            "force_submit_remaining_seconds": null,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_1",
+            "fit_position_rmse": 5.478907420678334e-09,
+            "fit_error_valid": true,
+            "validation_position_rmse": null,
+            "validation_ids": [],
+            "wall_seconds_remaining": 205.26292919181287,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "-(c1 * x) + c2 * (x * sin(c3 * t + c4)) + -(c5 * (y * cos(c3 * t + c4)))",
+            "ay": "-(c1 * y) + -(c5 * (y * sin(c3 * t + c4))) + -(c2 * (x * cos(c3 * t + c4)))"
+          },
+          "fitted_parameters": {
+            "c1": 0.11999999960487365,
+            "c2": 0.059999999670801156,
+            "c3": 0.39269908158150163,
+            "c4": 2.1707963264957395,
+            "c5": 0.05999999977374322
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 3.0018426524364114e-17,
+            "velocity_mse": 4.897605370884847e-18,
+            "position_rmse": 5.478907420678334e-09,
+            "velocity_rmse": 2.2130534044357918e-09
+          },
+          "evaluation_failures": []
+        }
+      ]
+    },
+    "r04": {
+      "status": "completed",
+      "worlds": [
+        {
+          "world_id": "world_1",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_1",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 15.0,
+          "evaluation_complete": false,
+          "evaluation_noise": false,
+          "exploration_noise": true,
+          "position_noise_sigma": 0.057008771254956896,
+          "velocity_noise_sigma": 0.0005,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 0.1,
+            "time_remaining_threshold_seconds": 60.0,
+            "condition": "(training_position_rmse < 0.1 AND independent_validation_position_rmse < 0.1) OR remaining_seconds < 60",
+            "requires_validation_for_error_branch": true,
+            "validation_rmse_threshold": 0.1,
+            "force_submit_remaining_seconds": 40.0,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_1",
+            "fit_position_rmse": 0.07984767915831802,
+            "fit_error_valid": true,
+            "validation_position_rmse": 0.08354639296719885,
+            "validation_ids": [
+              "validation_2a6010c81b7c"
+            ],
+            "wall_seconds_remaining": 203.72876221872866,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "q('charge') / q('mass') * x * c1 / (x * x + y * y)",
+            "ay": "(vx * vx + vy * vy) * c2 * (q('charge') / q('mass') * y * c3 + vx * sqrt(x * x + y * y) * sin(sqrt(x * x + y * y) * cos(y * cos(cos(q('mass') + x * y))) * cos(y + c4)) * c5)"
+          },
+          "fitted_parameters": {
+            "c1": -0.08400997088109673,
+            "c2": -0.5751936110483903,
+            "c3": 0.30083457777006556,
+            "c4": 2.084164385242326,
+            "c5": 0.8821500834381755
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 0.006375651866969694,
+            "velocity_mse": 3.599071064106206e-05,
+            "position_rmse": 0.07984767915831802,
+            "velocity_rmse": 0.005999225836811118
+          },
+          "evaluation_failures": [
+            {
+              "probe_id": "v15_b2-s1_3",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            }
+          ]
+        },
+        {
+          "world_id": "world_2",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_2",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 91.09565994629618,
+          "evaluation_complete": true,
+          "evaluation_noise": false,
+          "exploration_noise": true,
+          "position_noise_sigma": 0.042573465914816006,
+          "velocity_noise_sigma": 0.00030000000000000003,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 0.1,
+            "time_remaining_threshold_seconds": 60.0,
+            "condition": "(training_position_rmse < 0.1 AND independent_validation_position_rmse < 0.1) OR remaining_seconds < 60",
+            "requires_validation_for_error_branch": true,
+            "validation_rmse_threshold": 0.1,
+            "force_submit_remaining_seconds": 40.0,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_1",
+            "fit_position_rmse": 0.05589554848981029,
+            "fit_error_valid": true,
+            "validation_position_rmse": 0.06063008215795094,
+            "validation_ids": [
+              "validation_6b148f735f37"
+            ],
+            "wall_seconds_remaining": 242.57175233960152,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 0,
+          "candidate_counts": [],
+          "candidates_with_parameters_and_residuals": 0,
+          "candidate_total": 0,
+          "law_spec": {
+            "ax": "-k*q('charge')*x/q('mass')",
+            "ay": "-k*q('charge')*y/q('mass')"
+          },
+          "fitted_parameters": {
+            "k": 0.05759457794888201
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 0.003124312340976734,
+            "velocity_mse": 9.873788823080374e-06,
+            "position_rmse": 0.05589554848981029,
+            "velocity_rmse": 0.0031422585544605293
+          },
+          "evaluation_failures": []
+        },
+        {
+          "world_id": "world_3",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_3",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 95.4687248126484,
+          "evaluation_complete": true,
+          "evaluation_noise": false,
+          "exploration_noise": true,
+          "position_noise_sigma": 0.042573465914816006,
+          "velocity_noise_sigma": 0.00030000000000000003,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 0.1,
+            "time_remaining_threshold_seconds": 60.0,
+            "condition": "(training_position_rmse < 0.1 AND independent_validation_position_rmse < 0.1) OR remaining_seconds < 60",
+            "requires_validation_for_error_branch": true,
+            "validation_rmse_threshold": 0.1,
+            "force_submit_remaining_seconds": 40.0,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_2",
+            "fit_position_rmse": 0.059210500795496376,
+            "fit_error_valid": true,
+            "validation_position_rmse": 0.06131625469272576,
+            "validation_ids": [
+              "validation_d38e01977e70"
+            ],
+            "wall_seconds_remaining": 163.98329874686897,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": true,
+            "time_condition_met": false,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "c1 * x + c2 * y",
+            "ay": "c3 * x + c4 * y"
+          },
+          "fitted_parameters": {
+            "c1": -0.06027577992186965,
+            "c2": 0.03492095623167358,
+            "c3": 0.03474602962794406,
+            "c4": -0.1002563942869169
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 0.0035058834044534772,
+            "velocity_mse": 4.044401264692235e-06,
+            "position_rmse": 0.059210500795496376,
+            "velocity_rmse": 0.00201106968170977
+          },
+          "evaluation_failures": []
+        },
+        {
+          "world_id": "world_4",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_4",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 15.0,
+          "evaluation_complete": false,
+          "evaluation_noise": false,
+          "exploration_noise": true,
+          "position_noise_sigma": 0.07106335201775947,
+          "velocity_noise_sigma": 0.0005,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 0.1,
+            "time_remaining_threshold_seconds": 60.0,
+            "condition": "(training_position_rmse < 0.1 AND independent_validation_position_rmse < 0.1) OR remaining_seconds < 60",
+            "requires_validation_for_error_branch": true,
+            "validation_rmse_threshold": 0.1,
+            "force_submit_remaining_seconds": 40.0,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_6",
+            "fit_position_rmse": 0.11192679037623539,
+            "fit_error_valid": true,
+            "validation_position_rmse": null,
+            "validation_ids": [],
+            "wall_seconds_remaining": 30.212389951571822,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": false,
+            "time_condition_met": true,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "sin(sin(sin(sqrt(x * x + y * y) * c1 / (x * x + y * y))) / (x * x + y * y)) * (q('charge') / q('mass')) * c2 * (c3 * t * (t - y) + x)",
+            "ay": "c4 * (q('charge') / q('mass')) * y * sin(sqrt(sqrt(q('charge') / q('mass') * cos(t) + t + c5) / (q('mass') + (x * x + y * y))) / (x * x + y * y))"
+          },
+          "fitted_parameters": {
+            "c1": 1.4696851573849188,
+            "c2": -0.3202113399854931,
+            "c3": -5.208355853467595e-05,
+            "c4": -0.24714967923053294,
+            "c5": 6.812155341276314
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 0.01252760640392574,
+            "velocity_mse": 0.00018328910521619356,
+            "position_rmse": 0.11192679037623539,
+            "velocity_rmse": 0.013538430677748198
+          },
+          "evaluation_failures": [
+            {
+              "probe_id": "v15_b0-s1_1",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            }
+          ]
+        },
+        {
+          "world_id": "world_5",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_5",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 15.0,
+          "evaluation_complete": false,
+          "evaluation_noise": false,
+          "exploration_noise": true,
+          "position_noise_sigma": 0.035531676008879735,
+          "velocity_noise_sigma": 0.00030000000000000003,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 0.1,
+            "time_remaining_threshold_seconds": 60.0,
+            "condition": "(training_position_rmse < 0.1 AND independent_validation_position_rmse < 0.1) OR remaining_seconds < 60",
+            "requires_validation_for_error_branch": true,
+            "validation_rmse_threshold": 0.1,
+            "force_submit_remaining_seconds": 40.0,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_4",
+            "fit_position_rmse": 0.052048751292084736,
+            "fit_error_valid": true,
+            "validation_position_rmse": null,
+            "validation_ids": [],
+            "wall_seconds_remaining": 38.52320323139429,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": false,
+            "time_condition_met": true,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "c1 * sqrt(sqrt(x * x + y * y)) * sin(x)",
+            "ay": "y * c2 + sin(cos(cos(x * x + y * y) * c3) * cos(x * sin((x * x + y * y) * cos((x * x + y * y) * y))) * c4 * y) * cos(x) * c5"
+          },
+          "fitted_parameters": {
+            "c1": -0.07820403240914998,
+            "c2": -0.12670099031844045,
+            "c3": 0.1855804061269353,
+            "c4": 0.8215354278458468,
+            "c5": 0.03332449441790957
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 0.0027090725110652924,
+            "velocity_mse": 2.6638776887829612e-05,
+            "position_rmse": 0.052048751292084736,
+            "velocity_rmse": 0.005161276672280765
+          },
+          "evaluation_failures": [
+            {
+              "probe_id": "v15_b0-s0_4",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b1-s0_2",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b1-s0_3",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b1-s0_4",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b1-s1_2",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b1-s1_3",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b1-s1_4",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b2-s0_1",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b2-s0_2",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b2-s0_3",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b2-s0_4",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b2-s1_1",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b2-s1_2",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b2-s1_3",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            },
+            {
+              "probe_id": "v15_b2-s1_4",
+              "stage": "candidate_rollout",
+              "reason": "integration exceeded derivative-evaluation limit"
+            }
+          ]
+        },
+        {
+          "world_id": "world_6",
+          "run_id": "e8-qwen38-pysr-stage-20261107-r04-world_6",
+          "status": "submitted",
+          "reason": "submission_accepted_locally",
+          "score": 17.93252088728313,
+          "evaluation_complete": true,
+          "evaluation_noise": false,
+          "exploration_noise": true,
+          "position_noise_sigma": 0.042573465914816006,
+          "velocity_noise_sigma": 0.00030000000000000003,
+          "gate": {
+            "enabled": true,
+            "fit_error_field": "selected_law.errors.overall.position_rmse",
+            "fit_rmse_threshold": 0.1,
+            "time_remaining_threshold_seconds": 60.0,
+            "condition": "(training_position_rmse < 0.1 AND independent_validation_position_rmse < 0.1) OR remaining_seconds < 60",
+            "requires_validation_for_error_branch": true,
+            "validation_rmse_threshold": 0.1,
+            "force_submit_remaining_seconds": 40.0,
+            "comparison": "strict",
+            "independent_validation_is_hard_requirement": false,
+            "save_draft_allowed_before_eligibility": true,
+            "law_id": "law_7",
+            "fit_position_rmse": 0.2514662452783034,
+            "fit_error_valid": true,
+            "validation_position_rmse": null,
+            "validation_ids": [],
+            "wall_seconds_remaining": 42.41196300089359,
+            "remaining_time_source": "environment_budget",
+            "fit_condition_met": false,
+            "time_condition_met": true,
+            "allowed": true
+          },
+          "gate_recomputed_allowed": true,
+          "non_submit_actions_estimated_below_40s": [],
+          "symbolic_calls": 1,
+          "candidate_counts": [
+            3
+          ],
+          "candidates_with_parameters_and_residuals": 3,
+          "candidate_total": 3,
+          "law_spec": {
+            "ax": "-k * x + B * vy + a2 * sin(w * t)",
+            "ay": "-k * y - B * vx + a1 * cos(w * t)"
+          },
+          "fitted_parameters": {
+            "k": 0.10346069248598275,
+            "B": 0.21813741953024418,
+            "a1": 0.04964267980163514,
+            "a2": -0.06319222634388832,
+            "w": 0.28424739250907954
+          },
+          "fit_status": "converged",
+          "training_errors": {
+            "position_mse": 0.06323527251436786,
+            "velocity_mse": 0.013862733487518797,
+            "position_rmse": 0.2514662452783034,
+            "velocity_rmse": 0.11774010993505482
+          },
+          "evaluation_failures": []
+        }
+      ]
+    }
+  }
+}

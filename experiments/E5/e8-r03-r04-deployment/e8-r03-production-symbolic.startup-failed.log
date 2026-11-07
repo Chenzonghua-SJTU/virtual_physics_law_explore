@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/shore_agent/symbolic_service.py", line 622, in <module>
+    main()
+  File "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/shore_agent/symbolic_service.py", line 608, in main
+    pool = WorkerPool(args.pool_size, args.worker_python, args.spool_dir)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/shore_agent/symbolic_service.py", line 218, in __init__
+    self.root = Path(tempfile.mkdtemp(prefix="shore-sr-", dir=spool_dir)).resolve()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv/lib/python3.12/tempfile.py", line 438, in mkdtemp
+    _os.mkdir(file, 0o700)
+FileNotFoundError: [Errno 2] No such file or directory: '/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/deployment/pysr-work-e8-r03/shore-sr-15i2bvm5'

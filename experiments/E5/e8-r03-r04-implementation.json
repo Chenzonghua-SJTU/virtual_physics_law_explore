@@ -1,0 +1,40 @@
+{
+  "frozen_commit": "9cdc700",
+  "test_validation": {
+    "passed": 1319,
+    "skipped": 9,
+    "elapsed_seconds": 57.87
+  },
+  "requested_experiments": {
+    "r03": "one six-world noise-free Agent batch",
+    "r04": "one six-world noisy Agent batch"
+  },
+  "evaluation_noise": false,
+  "unchanged_limits": {
+    "model": "qwen3.8-27b",
+    "thinking": false,
+    "energy": 10,
+    "wall_seconds": 300,
+    "max_output_tokens_per_call": 4096,
+    "max_total_tokens": null
+  },
+  "noise_free_gate": "training position RMSE < 1e-5 OR remaining < 40 seconds",
+  "noisy_gate": "training AND same-law independent-validation position RMSE < 0.1 OR remaining < 60 seconds; next action must submit at remaining < 40 seconds",
+  "changes": [
+    "Bounded polynomial expansion and commutative algebraic deduplication before joint parameter sharing; preserve distinct operator families and matching scalar hypotheses. No sample-agreement-only deduplication or domain-changing denominator cancellation.",
+    "Return up to three complete ranked laws with fitted parameters and separately labelled acceleration-search, observed-velocity-integral and trajectory-refit residuals. Time-bounded numerical refit, no automatic law registration/submission.",
+    "Local resolution-quality weights retain all observed samples with equal total weight per probe. Public-noise-conditioned local cubic smoothing only when the corresponding observation sigma is positive.",
+    "Data-supported radial projection retains full Cartesian search, adds a low-dimensional position/property branch and sign-checked generic log-response regression. No world id, truth constants, exact labels or reference-force templates. All sin/cos/exp/log/power operators remain enabled.",
+    "Frozen-law consistency feedback on all acquired observations at fit/save; inspected observations become discovery data and cannot be relabelled independent validation.",
+    "Noisy gate enforced by runtime, model tool restriction and explicit submission of an already model-selected draft when below 40 seconds. Clean post-session evaluation metadata explicit."
+  ],
+  "prechecks": "Existing R02 W4/W5 expression/observation diagnostics v1-v3 retained separately; these are engineering checks, not new autonomous scores or official reevaluations. W5 v3 complete five-parameter formula training position RMSE 8.57e-9. W4 remains unresolved in these checks.",
+  "selection_policy": "All twelve attempts retained, no per-world retries or interim source tuning.",
+  "preserved_unrelated_changes": [
+    "docs/web.md",
+    "shore_agent/web_jobs.py",
+    "tests/test_web_jobs.py",
+    "web/app.js",
+    "web/index.html"
+  ]
+}

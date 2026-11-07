@@ -1,0 +1,2627 @@
+{
+  "candidates": [
+    {
+      "law_spec": {
+        "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+        "ay": "c4 * y + c3 * (x ** 2 * y) + c5 * y ** 3"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.05999999961458171
+        },
+        {
+          "name": "c2",
+          "initial": -0.0020000000562382944
+        },
+        {
+          "name": "c3",
+          "initial": -0.012000000266757896
+        },
+        {
+          "name": "c4",
+          "initial": -0.09999999928245468
+        },
+        {
+          "name": "c5",
+          "initial": -0.0019999999679993856
+        }
+      ],
+      "complexity": 33,
+      "parameter_count": 5,
+      "acceleration_search_mse_by_axis": [
+        4.617643408825983e-10,
+        4.107384433568299e-10
+      ],
+      "acceleration_search_mse": 8.725027842394282e-10,
+      "normalized_acceleration_search_loss": 2.8723718992452086e-08,
+      "discovery_probe_ids": [
+        "probe_0003",
+        "probe_0005",
+        "probe_0006"
+      ],
+      "dsl_valid": true,
+      "component_sources": [
+        "regression_basis",
+        "pysr"
+      ],
+      "initial_domain_check": {
+        "status": "passed",
+        "scope": "All acquired states and controlled initial states"
+      },
+      "parameter_sharing": {
+        "status": "data_validated",
+        "proposal": "close coefficients proposed, never assumed equal",
+        "uncompressed_law_spec": {
+          "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+          "ay": "c4 * y + c5 * (x ** 2 * y) + c6 * y ** 3"
+        },
+        "uncompressed_parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.0600087610687798
+          },
+          {
+            "name": "c2",
+            "initial": -0.00199903614122106
+          },
+          {
+            "name": "c3",
+            "initial": -0.01198823922769
+          },
+          {
+            "name": "c4",
+            "initial": -0.1000009289380007
+          },
+          {
+            "name": "c5",
+            "initial": -0.01198496581734425
+          },
+          {
+            "name": "c6",
+            "initial": -0.0020044030767461633
+          }
+        ],
+        "groups": [
+          {
+            "shared_parameter": "c1",
+            "original_parameters": [
+              "c1"
+            ]
+          },
+          {
+            "shared_parameter": "c2",
+            "original_parameters": [
+              "c2"
+            ]
+          },
+          {
+            "shared_parameter": "c3",
+            "original_parameters": [
+              "c3",
+              "c5"
+            ]
+          },
+          {
+            "shared_parameter": "c4",
+            "original_parameters": [
+              "c4"
+            ]
+          },
+          {
+            "shared_parameter": "c5",
+            "original_parameters": [
+              "c6"
+            ]
+          }
+        ],
+        "original_loss_by_axis": [
+          4.549338768780516e-10,
+          4.0868710528156136e-10
+        ],
+        "shared_loss_by_axis": [
+          4.617643408825983e-10,
+          4.107384433568299e-10
+        ],
+        "acceptance_tolerance_by_axis": [
+          3.0153973334575794e-09,
+          8.58122846603744e-09
+        ],
+        "fit_evaluations": 24,
+        "heldout_discovery_probe_ids": [
+          "probe_0006"
+        ],
+        "split_checks": [
+          {
+            "split": "fit",
+            "original_mse_by_axis": [
+              1.6697482120229628e-10,
+              8.867135833054007e-11
+            ],
+            "shared_mse_by_axis": [
+              9.446590706181012e-12,
+              1.3205013523512343e-11
+            ],
+            "maximum_accepted_mse_by_axis": [
+              2.727438277781824e-09,
+              8.261212719086419e-09
+            ],
+            "passed": true
+          },
+          {
+            "split": "heldout_discovery_probes",
+            "original_mse_by_axis": [
+              1.0308519882295615e-09,
+              1.0487185991836028e-09
+            ],
+            "shared_mse_by_axis": [
+              1.8159066572585537e-09,
+              1.503102131414122e-09
+            ],
+            "maximum_accepted_mse_by_axis": [
+              3.5913154448090894e-09,
+              9.221259959939481e-09
+            ],
+            "passed": true
+          }
+        ],
+        "independent_validation": false,
+        "limitation": "Ties are supported only by the supplied discovery data and resolution heuristic."
+      },
+      "short_rollout_check": {
+        "status": "passed",
+        "probe_count": 3,
+        "rhs_calls": 102,
+        "position_rmse": 1.4247088236628808e-06,
+        "velocity_rmse": 1.412977406897716e-05,
+        "scope": "Short acquired-data replay only; not fitted or independently validated."
+      },
+      "fitted_parameters": {
+        "c1": -0.05999999961458171,
+        "c2": -0.0020000000562382944,
+        "c3": -0.012000000266757896,
+        "c4": -0.09999999928245468,
+        "c5": -0.0019999999679993856
+      },
+      "residuals": {
+        "acceleration_weighted_mse": 8.725027842394282e-10,
+        "acceleration_weighted_mse_by_axis": [
+          4.617643408825983e-10,
+          4.107384433568299e-10
+        ],
+        "short_rollout": {
+          "status": "passed",
+          "probe_count": 3,
+          "rhs_calls": 102,
+          "position_rmse": 1.4247088236628808e-06,
+          "velocity_rmse": 1.412977406897716e-05,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "observed_velocity_integral": {
+          "scope": "Frozen formula on acquired observed paths; trapezoidal velocity increments, not hidden truth or independent validation.",
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "status": "checked",
+              "velocity_increment_rmse": 9.184664650367961e-07,
+              "relative_increment_rmse": 8.648639420684489e-05,
+              "cumulative_velocity_residual_rmse": 2.4615134587124157e-05,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0005",
+              "status": "checked",
+              "velocity_increment_rmse": 4.03557459935342e-06,
+              "relative_increment_rmse": 0.0001647842859165306,
+              "cumulative_velocity_residual_rmse": 7.49811483907365e-05,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0006",
+              "status": "checked",
+              "velocity_increment_rmse": 1.8294140351021875e-06,
+              "relative_increment_rmse": 0.00012312397817695352,
+              "cumulative_velocity_residual_rmse": 2.6582844015546262e-05,
+              "denominator_sign_changes": 0
+            }
+          ],
+          "checked_probe_ids": [
+            "probe_0003",
+            "probe_0005",
+            "probe_0006"
+          ],
+          "complete": true,
+          "domain_error_probe_ids": [],
+          "denominator_sign_change_probe_ids": [],
+          "velocity_increment_rmse": 2.612546567761844e-06,
+          "relative_increment_rmse": 0.00012883228279439074,
+          "action": "A contradiction remains evidence even when a probe is omitted from train_probe_ids; acquire denser controls if quadrature resolution is insufficient."
+        },
+        "trajectory_training": {
+          "overall": {
+            "position_mse": 7.345368889212791e-17,
+            "velocity_mse": 1.623784695273136e-17,
+            "position_rmse": 8.570512755496483e-09,
+            "velocity_rmse": 4.0296211922129055e-09
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 50,
+              "position_mse": 3.381465985548394e-17,
+              "position_rmse": 5.815037390721056e-09,
+              "velocity_mse": 8.108890105049482e-18,
+              "velocity_rmse": 2.847611298096965e-09
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 50,
+              "position_mse": 1.6802519966461748e-16,
+              "position_rmse": 1.2962453458532358e-08,
+              "velocity_mse": 3.487935955638325e-17,
+              "velocity_rmse": 5.9058750034506525e-09
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 50,
+              "position_mse": 1.8521207156282335e-17,
+              "position_rmse": 4.303627209259921e-09,
+              "velocity_mse": 5.725291196761357e-18,
+              "velocity_rmse": 2.392758073178598e-09
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "refitted_acceleration_mse_by_axis": [
+          6.449004048233806e-10,
+          2.047754907479762e-09
+        ]
+      },
+      "fit_stage": "position_trajectory_discovery_refit",
+      "joint_fit_ready": true,
+      "prediction_accuracy_status": "not_independently_validated",
+      "selection_role": "ranked_observed_residual_after_algebraic_dedup",
+      "rank": 1,
+      "trajectory_refit_status": "converged"
+    },
+    {
+      "law_spec": {
+        "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+        "ay": "y * (c3 * (x * x + y * y) - 1 * c4) - sin(y * c5)"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.060000112321240404
+        },
+        {
+          "name": "c2",
+          "initial": -0.002000077223856201
+        },
+        {
+          "name": "c3",
+          "initial": -0.011999673083591388
+        },
+        {
+          "name": "c4",
+          "initial": -0.2935025122277017
+        },
+        {
+          "name": "c5",
+          "initial": 0.39354567495880105
+        }
+      ],
+      "complexity": 32,
+      "parameter_count": 5,
+      "acceleration_search_mse_by_axis": [
+        4.58351092902926e-10,
+        1.6058882368786608e-09
+      ],
+      "acceleration_search_mse": 2.0642393297815867e-09,
+      "normalized_acceleration_search_loss": 7.355716684027887e-08,
+      "discovery_probe_ids": [
+        "probe_0003",
+        "probe_0005",
+        "probe_0006"
+      ],
+      "dsl_valid": true,
+      "component_sources": [
+        "regression_basis",
+        "pysr"
+      ],
+      "initial_domain_check": {
+        "status": "passed",
+        "scope": "All acquired states and controlled initial states"
+      },
+      "parameter_sharing": {
+        "status": "data_validated",
+        "proposal": "close coefficients proposed, never assumed equal",
+        "uncompressed_law_spec": {
+          "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+          "ay": "y * (c4 * (x * x + y * y) - 1 * c5) - sin(y * c6)"
+        },
+        "uncompressed_parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.0600087610687798
+          },
+          {
+            "name": "c2",
+            "initial": -0.00199903614122106
+          },
+          {
+            "name": "c3",
+            "initial": -0.01198823922769
+          },
+          {
+            "name": "c4",
+            "initial": -0.011990557088799623
+          },
+          {
+            "name": "c5",
+            "initial": -0.2940934147452945
+          },
+          {
+            "name": "c6",
+            "initial": 0.39419586668810275
+          }
+        ],
+        "groups": [
+          {
+            "shared_parameter": "c1",
+            "original_parameters": [
+              "c1"
+            ]
+          },
+          {
+            "shared_parameter": "c2",
+            "original_parameters": [
+              "c2"
+            ]
+          },
+          {
+            "shared_parameter": "c3",
+            "original_parameters": [
+              "c3",
+              "c4"
+            ]
+          },
+          {
+            "shared_parameter": "c4",
+            "original_parameters": [
+              "c5"
+            ]
+          },
+          {
+            "shared_parameter": "c5",
+            "original_parameters": [
+              "c6"
+            ]
+          }
+        ],
+        "original_loss_by_axis": [
+          4.549338768780516e-10,
+          1.6048609395564027e-09
+        ],
+        "shared_loss_by_axis": [
+          4.58351092902926e-10,
+          1.6058882368786608e-09
+        ],
+        "acceptance_tolerance_by_axis": [
+          3.0153973334575794e-09,
+          9.777402300312282e-09
+        ],
+        "fit_evaluations": 36,
+        "heldout_discovery_probe_ids": [
+          "probe_0006"
+        ],
+        "split_checks": [
+          {
+            "split": "fit",
+            "original_mse_by_axis": [
+              1.6697482120229628e-10,
+              6.493053925851132e-10
+            ],
+            "shared_mse_by_axis": [
+              1.0573443663019532e-11,
+              3.1940825889004324e-10
+            ],
+            "maximum_accepted_mse_by_axis": [
+              2.727438277781824e-09,
+              8.821846753340992e-09
+            ],
+            "passed": true
+          },
+          {
+            "split": "heldout_discovery_probes",
+            "original_mse_by_axis": [
+              1.0308519882295615e-09,
+              3.5159720334989785e-09
+            ],
+            "shared_mse_by_axis": [
+              1.8071358154734524e-09,
+              6.30210891919103e-09
+            ],
+            "maximum_accepted_mse_by_axis": [
+              3.5913154448090894e-09,
+              1.1688513394254857e-08
+            ],
+            "passed": true
+          }
+        ],
+        "independent_validation": false,
+        "limitation": "Ties are supported only by the supplied discovery data and resolution heuristic."
+      },
+      "short_rollout_check": {
+        "status": "passed",
+        "probe_count": 3,
+        "rhs_calls": 102,
+        "position_rmse": 1.1275550528557792e-06,
+        "velocity_rmse": 1.2105485263342239e-05,
+        "scope": "Short acquired-data replay only; not fitted or independently validated."
+      },
+      "fitted_parameters": {
+        "c1": -0.060000112321240404,
+        "c2": -0.002000077223856201,
+        "c3": -0.011999673083591388,
+        "c4": -0.2935025122277017,
+        "c5": 0.39354567495880105
+      },
+      "residuals": {
+        "acceleration_weighted_mse": 2.0642393297815867e-09,
+        "acceleration_weighted_mse_by_axis": [
+          4.58351092902926e-10,
+          1.6058882368786608e-09
+        ],
+        "short_rollout": {
+          "status": "passed",
+          "probe_count": 3,
+          "rhs_calls": 102,
+          "position_rmse": 1.1275550528557792e-06,
+          "velocity_rmse": 1.2105485263342239e-05,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "observed_velocity_integral": {
+          "scope": "Frozen formula on acquired observed paths; trapezoidal velocity increments, not hidden truth or independent validation.",
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "status": "checked",
+              "velocity_increment_rmse": 2.2504514635099703e-06,
+              "relative_increment_rmse": 0.0002119113106744695,
+              "cumulative_velocity_residual_rmse": 3.504132568576129e-05,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0005",
+              "status": "checked",
+              "velocity_increment_rmse": 5.616547501859668e-06,
+              "relative_increment_rmse": 0.00022934002249853238,
+              "cumulative_velocity_residual_rmse": 7.467320619273894e-05,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0006",
+              "status": "checked",
+              "velocity_increment_rmse": 1.0055769629337419e-05,
+              "relative_increment_rmse": 0.0006767775564408274,
+              "cumulative_velocity_residual_rmse": 3.284968501978467e-05,
+              "denominator_sign_changes": 0
+            }
+          ],
+          "checked_probe_ids": [
+            "probe_0003",
+            "probe_0005",
+            "probe_0006"
+          ],
+          "complete": true,
+          "domain_error_probe_ids": [],
+          "denominator_sign_change_probe_ids": [],
+          "velocity_increment_rmse": 6.775658405118651e-06,
+          "relative_increment_rmse": 0.0004303220152449466,
+          "action": "A contradiction remains evidence even when a probe is omitted from train_probe_ids; acquire denser controls if quadrature resolution is insufficient."
+        },
+        "trajectory_training": {
+          "overall": {
+            "position_mse": 1.1825187308504595e-10,
+            "velocity_mse": 3.9449499697929754e-10,
+            "position_rmse": 1.0874367709666892e-05,
+            "velocity_rmse": 1.986189812125965e-05
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 50,
+              "position_mse": 1.2869837879359378e-10,
+              "position_rmse": 1.1344530787722945e-05,
+              "velocity_mse": 3.0140111783693287e-10,
+              "velocity_rmse": 1.7360907748068153e-05
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 50,
+              "position_mse": 1.6021594834815342e-10,
+              "position_rmse": 1.2657643870332006e-05,
+              "velocity_mse": 1.99276446202176e-10,
+              "velocity_rmse": 1.4116530954954054e-05
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 50,
+              "position_mse": 6.584129211339067e-11,
+              "position_rmse": 8.114264730300009e-06,
+              "velocity_mse": 6.828074268987836e-10,
+              "velocity_rmse": 2.6130584128541474e-05
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "refitted_acceleration_mse_by_axis": [
+          6.437521532273604e-10,
+          4.234235276941864e-09
+        ]
+      },
+      "fit_stage": "position_trajectory_discovery_refit",
+      "joint_fit_ready": true,
+      "prediction_accuracy_status": "not_independently_validated",
+      "selection_role": "ranked_observed_residual_after_algebraic_dedup",
+      "rank": 2,
+      "trajectory_refit_status": "converged"
+    },
+    {
+      "law_spec": {
+        "ax": "c1 * sqrt(x * x + y * y) ** (1 / c2) * x",
+        "ay": "y * (-c3 * y * y + sin(sin((x * x + y * y) * c4)) - 1 * c5)"
+      },
+      "parameter_spec": [
+        {
+          "name": "c1",
+          "initial": -0.060870234270252344
+        },
+        {
+          "name": "c2",
+          "initial": 3.061540763765057
+        },
+        {
+          "name": "c3",
+          "initial": -0.010231951082636848
+        },
+        {
+          "name": "c4",
+          "initial": -0.01188833870445716
+        },
+        {
+          "name": "c5",
+          "initial": 0.10074660821068396
+        }
+      ],
+      "complexity": 22,
+      "parameter_count": 5,
+      "acceleration_search_mse_by_axis": [
+        9.989290248667629e-05,
+        2.6771098559514616e-10
+      ],
+      "acceleration_search_mse": 9.989317019766189e-05,
+      "normalized_acceleration_search_loss": 0.0028732924006360495,
+      "discovery_probe_ids": [
+        "probe_0003",
+        "probe_0005",
+        "probe_0006"
+      ],
+      "dsl_valid": true,
+      "component_sources": [
+        "pysr",
+        "pysr"
+      ],
+      "initial_domain_check": {
+        "status": "passed",
+        "scope": "All acquired states and controlled initial states"
+      },
+      "short_rollout_check": {
+        "status": "passed",
+        "probe_count": 3,
+        "rhs_calls": 102,
+        "position_rmse": 0.00048106679193532314,
+        "velocity_rmse": 0.004684699935161168,
+        "scope": "Short acquired-data replay only; not fitted or independently validated."
+      },
+      "fitted_parameters": {
+        "c1": -0.060870234270252344,
+        "c2": 3.061540763765057,
+        "c3": -0.010231951082636848,
+        "c4": -0.01188833870445716,
+        "c5": 0.10074660821068396
+      },
+      "residuals": {
+        "acceleration_weighted_mse": 9.989317019766189e-05,
+        "acceleration_weighted_mse_by_axis": [
+          9.989290248667629e-05,
+          2.6771098559514616e-10
+        ],
+        "short_rollout": {
+          "status": "passed",
+          "probe_count": 3,
+          "rhs_calls": 102,
+          "position_rmse": 0.00048106679193532314,
+          "velocity_rmse": 0.004684699935161168,
+          "scope": "Short acquired-data replay only; not fitted or independently validated."
+        },
+        "observed_velocity_integral": {
+          "scope": "Frozen formula on acquired observed paths; trapezoidal velocity increments, not hidden truth or independent validation.",
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "status": "checked",
+              "velocity_increment_rmse": 0.00045379286943705095,
+              "relative_increment_rmse": 0.04273091123998278,
+              "cumulative_velocity_residual_rmse": 0.007827736235049293,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0005",
+              "status": "checked",
+              "velocity_increment_rmse": 0.001655324976084875,
+              "relative_increment_rmse": 0.06759174869116473,
+              "cumulative_velocity_residual_rmse": 0.019606956032780846,
+              "denominator_sign_changes": 0
+            },
+            {
+              "probe_id": "probe_0006",
+              "status": "checked",
+              "velocity_increment_rmse": 0.0007334638383263882,
+              "relative_increment_rmse": 0.049363885862304765,
+              "cumulative_velocity_residual_rmse": 0.011944643991684203,
+              "denominator_sign_changes": 0
+            }
+          ],
+          "checked_probe_ids": [
+            "probe_0003",
+            "probe_0005",
+            "probe_0006"
+          ],
+          "complete": true,
+          "domain_error_probe_ids": [],
+          "denominator_sign_change_probe_ids": [],
+          "velocity_increment_rmse": 0.001077651450599061,
+          "relative_increment_rmse": 0.05425670002852338,
+          "action": "A contradiction remains evidence even when a probe is omitted from train_probe_ids; acquire denser controls if quadrature resolution is insufficient."
+        },
+        "trajectory_training": {
+          "overall": {
+            "position_mse": 0.00045675669293076653,
+            "velocity_mse": 0.00020559858820700207,
+            "position_rmse": 0.021371866856472004,
+            "velocity_rmse": 0.014338709433104573
+          },
+          "per_probe": [
+            {
+              "probe_id": "probe_0003",
+              "n_samples": 50,
+              "position_mse": 0.00032775954585659436,
+              "position_rmse": 0.018104130629682122,
+              "velocity_mse": 4.2413015385271936e-05,
+              "velocity_rmse": 0.006512527572707231
+            },
+            {
+              "probe_id": "probe_0005",
+              "n_samples": 50,
+              "position_mse": 0.00036886008018017976,
+              "position_rmse": 0.0192057303995495,
+              "velocity_mse": 0.0004913645419020397,
+              "velocity_rmse": 0.022166744052793133
+            },
+            {
+              "probe_id": "probe_0006",
+              "n_samples": 50,
+              "position_mse": 0.0006736504527555254,
+              "position_rmse": 0.025954777070040985,
+              "velocity_mse": 8.301820733369454e-05,
+              "velocity_rmse": 0.009111432781604359
+            }
+          ],
+          "definition": "sqrt(mean_trajectories(mean_samples(sum_coordinates((pred-obs)^2))))"
+        },
+        "refitted_acceleration_mse_by_axis": [
+          0.00011230958129803404,
+          9.524596135761016e-08
+        ]
+      },
+      "fit_stage": "position_trajectory_discovery_refit",
+      "joint_fit_ready": true,
+      "prediction_accuracy_status": "not_independently_validated",
+      "selection_role": "ranked_observed_residual_after_algebraic_dedup",
+      "trajectory_refit_status": "converged",
+      "rank": 3
+    }
+  ],
+  "axis_candidates": {
+    "ax": [
+      {
+        "law_spec": {
+          "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+          "ay": "0"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.0600087610687798
+          },
+          {
+            "name": "c2",
+            "initial": -0.00199903614122106
+          },
+          {
+            "name": "c3",
+            "initial": -0.01198823922769
+          }
+        ],
+        "component": "ax",
+        "source": "(-0.0600087610687798)*(x) + (-0.00199903614122106)*(x**3) + (-0.01198823922769)*(x*y**2)",
+        "loss": 4.5493387687805143e-10,
+        "complexity": 20,
+        "origin": "regression_basis",
+        "parameter_count": 3,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": true,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      },
+      {
+        "law_spec": {
+          "ax": "(x + (cos(y) * x * c1 + x * cos(cos(y) * y * c2)) * ((x * x + y * y) * c3 + cos(y) * x * x * c4 + cos(y)) * c5) * c6",
+          "ay": "0"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.16140123260266637
+          },
+          {
+            "name": "c2",
+            "initial": -0.15838551302907047
+          },
+          {
+            "name": "c3",
+            "initial": -0.06565326975076312
+          },
+          {
+            "name": "c4",
+            "initial": -0.015025824314259521
+          },
+          {
+            "name": "c5",
+            "initial": -0.34930227514520784
+          },
+          {
+            "name": "c6",
+            "initial": -0.08484044138072278
+          }
+        ],
+        "component": "ax",
+        "source": "(x + (cos(y) * x * -0.16140123260266637 + x * cos(cos(y) * y * -0.15838551302907047)) * ((x * x + y * y) * -0.06565326975076312 + cos(y) * x * x * -0.015025824314259521 + cos(y)) * -0.34930227514520784) * -0.08484044138072278",
+        "loss": 1.0132951991939248e-09,
+        "complexity": 38,
+        "origin": "pysr",
+        "parameter_count": 6,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": false,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      },
+      {
+        "law_spec": {
+          "ax": "(x + ((x * x + y * y) * c1 + x * x * cos(y) * c2 + cos(y)) * (cos(y) * c3 * x + x * cos(x * cos(y) * y * c4)) * c5) * c6",
+          "ay": "0"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.06542396428481397
+          },
+          {
+            "name": "c2",
+            "initial": -0.014923433791770066
+          },
+          {
+            "name": "c3",
+            "initial": -0.15904147618248488
+          },
+          {
+            "name": "c4",
+            "initial": -0.08511979264758461
+          },
+          {
+            "name": "c5",
+            "initial": -0.34847258444055323
+          },
+          {
+            "name": "c6",
+            "initial": -0.08488753458478547
+          }
+        ],
+        "component": "ax",
+        "source": "(x + ((x * x + y * y) * -0.06542396428481397 + x * x * cos(y) * -0.014923433791770066 + cos(y)) * (cos(y) * -0.15904147618248488 * x + x * cos(x * cos(y) * y * -0.08511979264758461)) * -0.34847258444055323) * -0.08488753458478547",
+        "loss": 8.585856700992154e-10,
+        "complexity": 40,
+        "origin": "pysr",
+        "parameter_count": 6,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": false,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      }
+    ],
+    "ay": [
+      {
+        "law_spec": {
+          "ax": "0",
+          "ay": "y * (c1 * (x * x + y * y) - 1 * c2) - sin(y * c3)"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.011990557088799623
+          },
+          {
+            "name": "c2",
+            "initial": -0.2940934147452945
+          },
+          {
+            "name": "c3",
+            "initial": 0.39419586668810275
+          }
+        ],
+        "component": "ay",
+        "source": "y * (-0.011990557088799623 * (x * x + y * y) - 1 * -0.2940934147452945) - sin(y * 0.39419586668810275)",
+        "loss": 1.604860939556402e-09,
+        "complexity": 12,
+        "origin": "pysr",
+        "parameter_count": 3,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": true,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      },
+      {
+        "law_spec": {
+          "ax": "0",
+          "ay": "y * (c1 * sqrt(x * x + y * y) ** 2 + c2 * y * (y + c3 / (c4 + log(c5 * abs(vy)) / (-sqrt(x * x + y * y) / (-exp(x) - c6) + exp(-x) * log(c7 * abs(vy)))))) - c8 * y + c9 * exp(-x)"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.011984046474124804
+          },
+          {
+            "name": "c2",
+            "initial": 0.009987127546492164
+          },
+          {
+            "name": "c3",
+            "initial": 0.0009202985730152824
+          },
+          {
+            "name": "c4",
+            "initial": -0.6795532226299726
+          },
+          {
+            "name": "c5",
+            "initial": 1.661723923922186
+          },
+          {
+            "name": "c6",
+            "initial": 0.011984046474124804
+          },
+          {
+            "name": "c7",
+            "initial": 1.657194990524912
+          },
+          {
+            "name": "c8",
+            "initial": 0.10000344743306114
+          },
+          {
+            "name": "c9",
+            "initial": 1.2876918232108542e-05
+          }
+        ],
+        "component": "ay",
+        "source": "y * (-0.011984046474124804 * sqrt(x * x + y * y) ** 2 + 0.009987127546492164 * y * (y + 0.0009202985730152824 / (-0.6795532226299726 + log(1.661723923922186 * Abs(vy)) / (-sqrt(x * x + y * y) / (-exp(x) - 0.011984046474124804) + exp(-x) * log(1.657194990524912 * Abs(vy)))))) - 0.10000344743306114 * y + 1.2876918232108542e-05 * exp(-x)",
+        "loss": 6.747871714610254e-12,
+        "complexity": 48,
+        "origin": "pysr",
+        "parameter_count": 9,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": false,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      },
+      {
+        "law_spec": {
+          "ax": "0",
+          "ay": "c1 * y + c2 * (x ** 2 * y) + c3 * y ** 3"
+        },
+        "parameter_spec": [
+          {
+            "name": "c1",
+            "initial": -0.1000009289380007
+          },
+          {
+            "name": "c2",
+            "initial": -0.01198496581734425
+          },
+          {
+            "name": "c3",
+            "initial": -0.0020044030767461633
+          }
+        ],
+        "component": "ay",
+        "source": "(-0.1000009289380007)*(y) + (-0.01198496581734425)*(x**2*y) + (-0.0020044030767461633)*(y**3)",
+        "loss": 4.0868710528156115e-10,
+        "complexity": 13,
+        "origin": "pysr",
+        "parameter_count": 3,
+        "joint_fit_ready": false,
+        "parameter_budget_compatible": true,
+        "initial_domain_check": {
+          "status": "passed",
+          "scope": "This component on all acquired and controlled initial states"
+        },
+        "prediction_accuracy_status": "not_independently_validated"
+      }
+    ]
+  },
+  "axis_equations": {
+    "ax": [
+      {
+        "source": "-0.0713618161580956",
+        "complexity": 1,
+        "origin": "constant_initialization",
+        "parameter_count": 1,
+        "loss": 0.012290606460963294,
+        "domain_valid": true
+      },
+      {
+        "source": "(-0.024391186594122392)*(t)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.012669980404798959,
+        "domain_valid": true,
+        "original_source": "(-0.024391186594122392*t)"
+      },
+      {
+        "source": "(-0.07755601499283894)*(x)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.0001830254206198877,
+        "domain_valid": true,
+        "original_source": "(-0.07755601499283894*x)"
+      },
+      {
+        "source": "(-0.06093681275113579)*(y)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.014763299977155243,
+        "domain_valid": true,
+        "original_source": "(-0.06093681275113579*y)"
+      },
+      {
+        "source": "(0.0859568576953217)*(vx)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.016328436802662095,
+        "domain_valid": true,
+        "original_source": "(0.0859568576953217*vx)"
+      },
+      {
+        "source": "(0.1641536988768818)*(vy)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.009912180341235258,
+        "domain_valid": true,
+        "original_source": "(0.1641536988768818*vy)"
+      },
+      {
+        "source": "(-0.0001367830351843356)*(t) + (-0.07743733116111252)*(x)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.00018291749201278213,
+        "domain_valid": true,
+        "original_source": "(-0.0001367830351843356*t) + (-0.07743733116111252*x)"
+      },
+      {
+        "source": "(-0.020444583607740922)*(t) + (-0.035206830679996505)*(y)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.011919043016259488,
+        "domain_valid": true,
+        "original_source": "(-0.020444583607740922*t) + (-0.035206830679996505*y)"
+      },
+      {
+        "source": "(-0.026275192207428685)*(t) + (0.11076570303275275)*(vx)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.010946882090723685,
+        "domain_valid": true,
+        "original_source": "(-0.026275192207428685*t) + (0.11076570303275275*vx)"
+      },
+      {
+        "source": "(-0.027775300075763724)*(t) + (0.17914556898489087)*(vy)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.0038632133661642993,
+        "domain_valid": true,
+        "original_source": "(-0.027775300075763724*t) + (0.17914556898489087*vy)"
+      },
+      {
+        "source": "(-0.07707656987781905)*(x) + (-0.002565718757492354)*(y)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.00017903801557499487,
+        "domain_valid": true,
+        "original_source": "(-0.07707656987781905*x) + (-0.002565718757492354*y)"
+      },
+      {
+        "source": "(-0.016589667788838632)*(vx) + (-0.07863564395398083)*(x)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.00014709589644532975,
+        "domain_valid": true,
+        "original_source": "(-0.07863564395398083*x) + (-0.016589667788838632*vx)"
+      },
+      {
+        "source": "(0.004810871893769201)*(vy) + (-0.07658557150672443)*(x)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.0001793010719352714,
+        "domain_valid": true,
+        "original_source": "(-0.07658557150672443*x) + (0.004810871893769201*vy)"
+      },
+      {
+        "source": "(0.12678895266340418)*(vx) + (-0.07491349135615645)*(y)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.012606967805520581,
+        "domain_valid": true,
+        "original_source": "(-0.07491349135615645*y) + (0.12678895266340418*vx)"
+      },
+      {
+        "source": "(0.1725708779740459)*(vy) + (-0.06918618997197637)*(y)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.006554477927837678,
+        "domain_valid": true,
+        "original_source": "(-0.06918618997197637*y) + (0.1725708779740459*vy)"
+      },
+      {
+        "source": "(-0.06331766612858895)*(vx) + (0.18978772959730794)*(vy)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.009522326765464127,
+        "domain_valid": true,
+        "original_source": "(-0.06331766612858895*vx) + (0.18978772959730794*vy)"
+      },
+      {
+        "source": "(5.4774280377551276e-05)*(t) + (-0.07711692587370385)*(x) + (-0.002604091334939966)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.00017902158394166048,
+        "domain_valid": true,
+        "original_source": "(5.4774280377551276e-05*t) + (-0.07711692587370385*x) + (-0.002604091334939966*y)"
+      },
+      {
+        "source": "(0.000809298352414568)*(t) + (-0.018425321986942567)*(vx) + (-0.07945731695082832)*(x)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.00014375801385565026,
+        "domain_valid": true,
+        "original_source": "(0.000809298352414568*t) + (-0.07945731695082832*x) + (-0.018425321986942567*vx)"
+      },
+      {
+        "source": "(-0.001246775228245889)*(t) + (0.009849127798680966)*(vy) + (-0.07448745911064321)*(x)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.000174416997243028,
+        "domain_valid": true,
+        "original_source": "(-0.001246775228245889*t) + (-0.07448745911064321*x) + (0.009849127798680966*vy)"
+      },
+      {
+        "source": "(-0.021162735566184834)*(t) + (0.1326030678680559)*(vx) + (-0.048920621911507194)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.009563848450823103,
+        "domain_valid": true,
+        "original_source": "(-0.021162735566184834*t) + (-0.048920621911507194*y) + (0.1326030678680559*vx)"
+      },
+      {
+        "source": "(-0.023306110151143936)*(t) + (0.18163475296381704)*(vy) + (-0.04028818937981679)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.0028813554087144437,
+        "domain_valid": true,
+        "original_source": "(-0.023306110151143936*t) + (-0.04028818937981679*y) + (0.18163475296381704*vy)"
+      },
+      {
+        "source": "(-0.027373852519121052)*(t) + (-0.0424468287815802)*(vx) + (0.19611339935929678)*(vy)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.00368933700352352,
+        "domain_valid": true,
+        "original_source": "(-0.027373852519121052*t) + (-0.0424468287815802*vx) + (0.19611339935929678*vy)"
+      },
+      {
+        "source": "(-0.017120149435338395)*(vx) + (-0.07878518037597786)*(x) + (0.0006154872704320454)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.0001469036895262747,
+        "domain_valid": true,
+        "original_source": "(-0.07878518037597786*x) + (0.0006154872704320454*y) + (-0.017120149435338395*vx)"
+      },
+      {
+        "source": "(0.008895885033286406)*(vy) + (-0.07489373149492602)*(x) + (-0.004644059326404146)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.00016892100619053484,
+        "domain_valid": true,
+        "original_source": "(-0.07489373149492602*x) + (-0.004644059326404146*y) + (0.008895885033286406*vy)"
+      },
+      {
+        "source": "(-0.026336645082747887)*(vx) + (0.01703944958073384)*(vy) + (-0.07583278363471178)*(x)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.00011279425219483899,
+        "domain_valid": true,
+        "original_source": "(-0.07583278363471178*x) + (-0.026336645082747887*vx) + (0.01703944958073384*vy)"
+      },
+      {
+        "source": "(-0.018837995513794965)*(vx) + (0.17998789655095096)*(vy) + (-0.06746412343114438)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.006522036629164106,
+        "domain_valid": true,
+        "original_source": "(-0.06746412343114438*y) + (-0.018837995513794965*vx) + (0.17998789655095096*vy)"
+      },
+      {
+        "source": "(-0.0600087610687798)*(x) + (-0.00199903614122106)*(x**3) + (-0.01198823922769)*(x*y**2)",
+        "complexity": 20,
+        "origin": "regression_basis",
+        "parameter_count": 3,
+        "loss": 4.5493387687805143e-10,
+        "domain_valid": true,
+        "original_source": "-(0.0600087610687798*(x)) + -(0.00199903614122106*(x**3)) + -(0.01198823922769*(x*y**2))"
+      },
+      {
+        "source": "(-0.0676533281466898)*(x) + (0.00731576693510288)*(vy*x) + (-0.0119801510496906)*(x*y**2)",
+        "complexity": 19,
+        "origin": "regression_basis",
+        "parameter_count": 3,
+        "loss": 9.12767079234568e-06,
+        "domain_valid": true,
+        "original_source": "-(0.0676533281466898*(x)) + -(0.0119801510496906*(x*y**2)) + 0.00731576693510288*(x*vy)"
+      },
+      {
+        "source": "(-0.0701786743792239)*(x) + (-0.0112263700489605)*(x*y**2)",
+        "complexity": 13,
+        "origin": "regression_basis",
+        "parameter_count": 2,
+        "loss": 4.535704895428341e-05,
+        "domain_valid": true,
+        "original_source": "-(0.0701786743792239*(x)) + -(0.0112263700489605*(x*y**2))"
+      },
+      {
+        "source": "(-0.0759657158573427)*(x) + (-0.0206026966405805)*(vx*y)",
+        "complexity": 11,
+        "origin": "regression_basis",
+        "parameter_count": 2,
+        "loss": 0.00013227362630489984,
+        "domain_valid": true,
+        "original_source": "-(0.0759657158573427*(x)) + -(0.0206026966405805*(y*vx))"
+      },
+      {
+        "source": "-0.07136181616481303",
+        "complexity": 1,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 1,
+        "loss": 0.0122906064609633,
+        "domain_valid": true
+      },
+      {
+        "source": "(-0.07755601499923503)*(x)",
+        "complexity": 3,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 1,
+        "loss": 0.00018302542061990958,
+        "domain_valid": true,
+        "original_source": "x * -0.07755601499923503"
+      },
+      {
+        "source": "0.00024755860318273205 + (-0.07763586740597181)*(x)",
+        "complexity": 5,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 2,
+        "loss": 0.00018298206636163265,
+        "domain_valid": true,
+        "original_source": "(0.0031887143333918576 - x) * 0.07763586740597181"
+      },
+      {
+        "source": "-0.05133489799162464 * sqrt(sqrt(x * x + y * y)) * x",
+        "complexity": 6,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 1,
+        "loss": 0.00015224910927403077,
+        "domain_valid": true
+      },
+      {
+        "source": "-0.06346755267489652 * sqrt(x * x + y * y) ** (1 / 4) * x",
+        "complexity": 7,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 2,
+        "loss": 9.989290248667629e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "sqrt(x * x + y * y) * sin(x / 1.4053728506652976) * -0.07707038947845378",
+        "complexity": 8,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 2,
+        "loss": 3.2495039562069197e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "sqrt(x * x + y * y) * sin(sin(x / 1.4772388260618128)) * -0.09008373730552019",
+        "complexity": 9,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 2,
+        "loss": 2.311707430818098e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "((x * x + y * y) * 0.01873400870672365 - 1 * -0.07341771912176975) * sin(x / -1.4226177587828077)",
+        "complexity": 10,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 3,
+        "loss": 5.707319218861312e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "((x * x + y * y) * 0.024631212847228058 - 1 * -0.0715691802075984) * sin(sin(x / -1.377307640481136))",
+        "complexity": 11,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 3,
+        "loss": 3.424825177108319e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "((x * x + y * y) * -0.022487361619337363 - 1 * 0.05005663398010466) * sin(x / sqrt(x * x + y * y) ** 0.34017897434463085)",
+        "complexity": 12,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 3,
+        "loss": 7.385973644534452e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "(-0.022487359373810304 * (x * x + y * y) - 0.05005663997651077) * sin(x / (x * x + y * y) ** 0.1700895727363331)",
+        "complexity": 13,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 3,
+        "loss": 7.385973643923663e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "(sqrt(x * x + y * y) * sqrt(x * x + y * y) * -0.022487359027430355 - 1 * 0.050056641461880616) * sin(x / sqrt(x * x + y * y) ** 0.3401791436647751)",
+        "complexity": 14,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 3,
+        "loss": 7.385973643073029e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "(sqrt(x * x + y * y) * ((x * x + y * y) * -0.005147075155092602 - 1 * 0.028373185037370963) - 1 * 0.039897032454110436) * sin(x / sqrt(x * x + y * y) ** 0.31673249782348917)",
+        "complexity": 16,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 4,
+        "loss": 1.6973446471120933e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "(sqrt(x * x + y * y) * (-0.005147075155092602 * (x * x + y * y) - 0.028373185037370963) - 0.039897032454110436) * sin(x / (x * x + y * y) ** 0.15836624891174458)",
+        "complexity": 17,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 4,
+        "loss": 1.6973446471120922e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "(sqrt(x * x + y * y) * ((x * x + y * y) * sqrt(x * x + y * y) * -0.0014526825003099361 - 1 * 0.041731612860599544) - 1 * 0.029995724710763887) * sin(x / sqrt(x * x + y * y) ** 0.3096471240703407)",
+        "complexity": 18,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 4,
+        "loss": 6.405197377889681e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(x / sqrt(x * x + y * y) ** 0.31019637075166573) * sin(sqrt(x * x + y * y) * ((x * x + y * y) * sqrt(x * x + y * y) * -0.0014865787405251094 - 1 * 0.04161094478847525) - 1 * 0.030166235707172973)",
+        "complexity": 19,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 4,
+        "loss": 6.21901009349463e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "(sqrt(x * x + y * y) * (sqrt(x * x + y * y) * ((x * x + y * y) * sqrt(x * x + y * y) * -0.0002910236158733461 - 1 * 0.009995146688916969) - 1 * 0.024881796736081443) - 1 * 0.03794333910612906) * sin(x / sqrt(x * x + y * y) ** 0.31047599881579635)",
+        "complexity": 22,
+        "origin": "pysr",
+        "search_representation": "axis_0_algebra",
+        "parameter_count": 5,
+        "loss": 5.1308029984323936e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "-0.07136181615113338",
+        "complexity": 1,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 1,
+        "loss": 0.01229060646096329,
+        "domain_valid": true
+      },
+      {
+        "source": "(-0.0775560149974513)*(x)",
+        "complexity": 3,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 1,
+        "loss": 0.00018302542061990348,
+        "domain_valid": true,
+        "original_source": "x * -0.0775560149974513"
+      },
+      {
+        "source": "0.00024755856616785147 + (-0.07763586739162331)*(x)",
+        "complexity": 5,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 2,
+        "loss": 0.00018298206636166957,
+        "domain_valid": true,
+        "original_source": "(x - 0.003188713857205675) * -0.07763586739162331"
+      },
+      {
+        "source": "x * (sqrt(x * x + y * y) * -0.010378352384437458 - 0.05382529149745911)",
+        "complexity": 7,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 2,
+        "loss": 0.00010118980850814646,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(x * (sqrt(x * x + y * y) * -0.010773445221200327 - 0.053351493379612897))",
+        "complexity": 8,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 2,
+        "loss": 9.917822653267373e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(x + sin(x * -0.7489788414101031)) * -0.19961880263171936",
+        "complexity": 9,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 2,
+        "loss": 7.101374292717898e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "(x * cos(y) * -0.2728833232607922 + x) * -0.0959875214672831",
+        "complexity": 10,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 2,
+        "loss": 4.553824109818418e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + sin(x * -0.3419199859068776) * cos(y)) * -0.09910947043491243",
+        "complexity": 11,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 2,
+        "loss": 2.8840505902289036e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + sin(sin(x * -0.3993247784200136)) * cos(y)) * -0.09978306464113418",
+        "complexity": 12,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 2,
+        "loss": 1.3048967889359536e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + sin(x * -0.33270663922753535 * (cos(y) + 0.5437450104368702))) * -0.11982930462450571",
+        "complexity": 13,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 3,
+        "loss": 4.398584841126633e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "(x * ((x * x + y * y) * -0.0857198731870123 + cos(y)) * -0.28071467975592357 + x) * -0.08297661901453882",
+        "complexity": 14,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 3,
+        "loss": 3.0746782350166276e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "(x * ((x * x + y * y) * -0.06871561209922376 + sin(cos(y))) * -0.3423934917805932 + x) * -0.08477674373053974",
+        "complexity": 15,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 3,
+        "loss": 1.1894686908837734e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + sin(((x * x + y * y) * -0.07528272356552936 + cos(y)) * -0.2637878268695699 * x + x * -0.1309601745275277)) * -0.09683077706048417",
+        "complexity": 19,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 4,
+        "loss": 9.196706145856187e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + sin(x * sin(((x * x + y * y) * -0.07554362966382093 + cos(y)) * -0.26571501138658815) + x * -0.1308756951526612)) * -0.09682043776350309",
+        "complexity": 20,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 4,
+        "loss": 8.216965264520438e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + ((x * x + y * y) * -0.08748156516765623 + cos(y)) * (x * cos(y) * -0.1517458188871488 + x) * -0.31633963757498845) * -0.08243888418345993",
+        "complexity": 21,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 4,
+        "loss": 6.643052812933117e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin((x + (x * cos(y) * -0.15237187017416212 + x) * ((x * x + y * y) * -0.09105524539630411 + cos(y)) * -0.31769364679219103) * -0.0824040607671233)",
+        "complexity": 22,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 4,
+        "loss": 4.8200198320962335e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(sin((x + (cos(y) * -0.15440930133675335 * x + x) * ((x * x + y * y) * -0.09473794281834694 + cos(y)) * -0.3193869175601223) * -0.08235557538619177))",
+        "complexity": 23,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 4,
+        "loss": 3.411878273414198e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(sin(sin((x + (cos(y) * x * -0.15601657917778744 + x) * ((x * x + y * y) * -0.09849321133332821 + cos(y)) * -0.32096291629632656) * -0.08230325486412653)))",
+        "complexity": 24,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 4,
+        "loss": 2.436080970584062e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(sin(sin(sin((x + ((x * x + y * y) * -0.10236890815429446 + cos(y)) * (x * cos(y) * -0.15868275582738117 + x) * -0.322771563845996) * -0.08223702223123192))))",
+        "complexity": 25,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 4,
+        "loss": 1.9109852395338245e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(sin(sin(sin(sin((x + (cos(y) * x * -0.161297160721588 + x) * ((x * x + y * y) * -0.10634768136357248 + cos(y)) * -0.3245355963822253) * -0.08216255067393617)))))",
+        "complexity": 26,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 4,
+        "loss": 1.8538630998857104e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(sin(sin(sin((x + ((x * x + y * y) * -0.10229561693880858 + cos(y)) * (x * cos(y) * -0.15866175498082435 + x) * -0.32287307825457695) * -0.08223775664119719 - 3.061397982409238e-05))))",
+        "complexity": 27,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 5,
+        "loss": 1.848984827349254e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + (cos(y) * x * -0.17986910341919146 + x) * ((x * x + y * y) * -0.016980503408848793 * cos(y) + (x * x + y * y) * -0.06357387608027779 + cos(y)) * -0.356694103406179) * -0.08484838605218059",
+        "complexity": 28,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 5,
+        "loss": 2.7266313795781268e-09,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + ((x * x + y * y) * -0.06531727919426232 + x * cos(y) * -0.015134564315230097 * x + cos(y)) * (x * cos(y) * -0.15710678425370708 + x) * -0.34774904858162053) * -0.08490378863477203",
+        "complexity": 30,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 5,
+        "loss": 1.7526166998731962e-09,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + ((x * x + y * y) * -0.06531802260795884 + x * Abs(cos(y)) * -0.015135968445735545 * x + cos(y)) * (x * -0.15710648295358445 * cos(y) + x) * -0.34774862492974346) * -0.0849034747629932",
+        "complexity": 31,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 5,
+        "loss": 1.6980673058269558e-09,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + ((x * x + y * y) * -0.06533080816972221 + Abs(cos(y)) * x * x * -0.01511509335928953 + cos(y * 0.9998827036977986)) * -0.3477651737537912 * (x * cos(y) * -0.1570891300016073 + x)) * -0.08490586116319658",
+        "complexity": 33,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 6,
+        "loss": 1.6969123009535862e-09,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + ((x * x + y * y) * -0.06533080816972221 + Abs(cos(y)) * x * x * -0.01511509335928953 + cos(y * 0.9998827036977986)) * (x * -0.1570891300016073 * cos(y * 0.9997755196073563) + x) * -0.3477651737537912) * -0.08490586116319658",
+        "complexity": 35,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 7,
+        "loss": 1.696425736308588e-09,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + ((x * x + y * y) * -0.06530011541909937 + x * Abs(cos(y)) * x * -0.015214736304102583 + cos(y)) * -0.347751886156268 * (cos(y) * x * cos((x * x + y * y) * -0.015210045066057578) * -0.1571368849112861 + x)) * -0.08490231867669007",
+        "complexity": 36,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 6,
+        "loss": 1.6758741445777856e-09,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + (x * cos(y) * cos((x * x + y * y) * 0.015671388608672544) * -0.15713688491128658 + x) * -0.3477518861562626 * ((x * x + y * y) * -0.06530011541909794 + Abs(cos(y)) * x * x * -0.015214736304108351 + cos(y))) * -0.08490231867668958",
+        "complexity": 37,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 6,
+        "loss": 1.6751327608217184e-09,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + (cos(y) * x * -0.16140123260266637 + x * cos(cos(y) * y * -0.15838551302907047)) * ((x * x + y * y) * -0.06565326975076312 + cos(y) * x * x * -0.015025824314259521 + cos(y)) * -0.34930227514520784) * -0.08484044138072278",
+        "complexity": 38,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 6,
+        "loss": 1.0132951991939248e-09,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + ((x * x + y * y) * -0.06542396428481397 + x * x * cos(y) * -0.014923433791770066 + cos(y)) * (cos(y) * -0.15904147618248488 * x + x * cos(x * cos(y) * y * -0.08511979264758461)) * -0.34847258444055323) * -0.08488753458478547",
+        "complexity": 40,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 6,
+        "loss": 8.585856700992154e-10,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + ((x * x + y * y) * -0.0654370094713775 + cos(y) + Abs(x ** 2 * cos(y)) * -0.014964792437911512) * (cos(y) * x * -0.1601689829776138 + x * cos(x * cos(y) * y * 0.08520769503864264)) * -0.34891144301761245) * -0.08488118547475092",
+        "complexity": 41,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 6,
+        "loss": 7.699916724567071e-10,
+        "domain_valid": true
+      },
+      {
+        "source": "(x + ((x * x + y * y) * -0.06550782962662738 + cos(y) * x * -0.014959898717973557 * x + cos(y)) * cos((y * cos(x) * x * -0.16135616869227323 + y * cos(y)) * -0.15836446760001296) * (cos(y) * x * -0.16135616869227323 + x) * -0.34941477285459105) * -0.08487051653333735",
+        "complexity": 47,
+        "origin": "pysr",
+        "search_representation": "axis_0_full",
+        "parameter_count": 7,
+        "loss": 7.600756302427745e-10,
+        "domain_valid": true
+      }
+    ],
+    "ay": [
+      {
+        "source": "-0.03238034246199262",
+        "complexity": 1,
+        "origin": "constant_initialization",
+        "parameter_count": 1,
+        "loss": 0.012251387773292528,
+        "domain_valid": true
+      },
+      {
+        "source": "(-0.010098417648927698)*(t)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.012491761348761692,
+        "domain_valid": true,
+        "original_source": "(-0.010098417648927698*t)"
+      },
+      {
+        "source": "(-0.025882158451032054)*(x)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.01138444055885033,
+        "domain_valid": true,
+        "original_source": "(-0.025882158451032054*x)"
+      },
+      {
+        "source": "(-0.13458522685289107)*(y)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.0005201082904871274,
+        "domain_valid": true,
+        "original_source": "(-0.13458522685289107*y)"
+      },
+      {
+        "source": "(-0.07704781382858243)*(vx)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.012452791855629801,
+        "domain_valid": true,
+        "original_source": "(-0.07704781382858243*vx)"
+      },
+      {
+        "source": "(-0.00017334868011960493)*(vy)",
+        "complexity": 3,
+        "origin": "linear_least_squares",
+        "parameter_count": 1,
+        "loss": 0.013299641431656253,
+        "domain_valid": true,
+        "original_source": "(-0.00017334868011960493*vy)"
+      },
+      {
+        "source": "(-0.002735094008985312)*(t) + (-0.0235089735258628)*(x)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.011341246179056,
+        "domain_valid": true,
+        "original_source": "(-0.002735094008985312*t) + (-0.0235089735258628*x)"
+      },
+      {
+        "source": "(0.005807590273454271)*(t) + (-0.14189421374543518)*(y)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.0002906323343466137,
+        "domain_valid": true,
+        "original_source": "(0.005807590273454271*t) + (-0.14189421374543518*y)"
+      },
+      {
+        "source": "(-0.008931351976235714)*(t) + (-0.06861489626575883)*(vx)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.011830967566006446,
+        "domain_valid": true,
+        "original_source": "(-0.008931351976235714*t) + (-0.06861489626575883*vx)"
+      },
+      {
+        "source": "(-0.010199134873442895)*(t) + (0.005331690142850442)*(vy)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.012483975785371223,
+        "domain_valid": true,
+        "original_source": "(-0.010199134873442895*t) + (0.005331690142850442*vy)"
+      },
+      {
+        "source": "(-0.000853575480174206)*(x) + (-0.13393880298292776)*(y)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.0005183199132445973,
+        "domain_valid": true,
+        "original_source": "(-0.000853575480174206*x) + (-0.13393880298292776*y)"
+      },
+      {
+        "source": "(-0.12107529135475541)*(vx) + (-0.03376154414392908)*(x)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.009470492143950598,
+        "domain_valid": true,
+        "original_source": "(-0.03376154414392908*x) + (-0.12107529135475541*vx)"
+      },
+      {
+        "source": "(-0.09309454754881867)*(vy) + (-0.04466108236678594)*(x)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.009990109074977771,
+        "domain_valid": true,
+        "original_source": "(-0.04466108236678594*x) + (-0.09309454754881867*vy)"
+      },
+      {
+        "source": "(-0.003927209292274935)*(vx) + (-0.13415230788842497)*(y)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.0005180423498446716,
+        "domain_valid": true,
+        "original_source": "(-0.13415230788842497*y) + (-0.003927209292274935*vx)"
+      },
+      {
+        "source": "(0.016295031926351185)*(vy) + (-0.1353641755768254)*(y)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.00044692527082917515,
+        "domain_valid": true,
+        "original_source": "(-0.1353641755768254*y) + (0.016295031926351185*vy)"
+      },
+      {
+        "source": "(-0.11284402809997947)*(vx) + (0.04551133080659665)*(vy)",
+        "complexity": 7,
+        "origin": "linear_least_squares",
+        "parameter_count": 2,
+        "loss": 0.012061604192059578,
+        "domain_valid": true,
+        "original_source": "(-0.11284402809997947*vx) + (0.04551133080659665*vy)"
+      },
+      {
+        "source": "(0.007504176677330389)*(t) + (-0.006382420788988808)*(x) + (-0.13919591633515385)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.0002102162428935867,
+        "domain_valid": true,
+        "original_source": "(0.007504176677330389*t) + (-0.006382420788988808*x) + (-0.13919591633515385*y)"
+      },
+      {
+        "source": "(0.003940687572142095)*(t) + (-0.1300135768012)*(vx) + (-0.03776248713038272)*(x)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.009391401444479265,
+        "domain_valid": true,
+        "original_source": "(0.003940687572142095*t) + (-0.03776248713038272*x) + (-0.1300135768012*vx)"
+      },
+      {
+        "source": "(0.014243362577131732)*(t) + (-0.15065240078833028)*(vy) + (-0.06863025893360336)*(x)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.009352984360173271,
+        "domain_valid": true,
+        "original_source": "(0.014243362577131732*t) + (-0.06863025893360336*x) + (-0.15065240078833028*vy)"
+      },
+      {
+        "source": "(0.005837544961711846)*(t) + (-0.005530979221430916)*(vx) + (-0.14132220062712647)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.00028653830080860093,
+        "domain_valid": true,
+        "original_source": "(0.005837544961711846*t) + (-0.14132220062712647*y) + (-0.005530979221430916*vx)"
+      },
+      {
+        "source": "(0.005585093093912881)*(t) + (0.014122958367908164)*(vy) + (-0.14228931334063363)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.00023598884692090563,
+        "domain_valid": true,
+        "original_source": "(0.005585093093912881*t) + (-0.14228931334063363*y) + (0.014122958367908164*vy)"
+      },
+      {
+        "source": "(-0.009198221896490222)*(t) + (-0.10583096360899333)*(vx) + (0.047636896218847244)*(vy)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.011402965266258763,
+        "domain_valid": true,
+        "original_source": "(-0.009198221896490222*t) + (-0.10583096360899333*vx) + (0.047636896218847244*vy)"
+      },
+      {
+        "source": "(-0.006709466015702462)*(vx) + (-0.0015231878638024914)*(x) + (-0.1326920735770938)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.0005133873871351823,
+        "domain_valid": true,
+        "original_source": "(-0.0015231878638024914*x) + (-0.1326920735770938*y) + (-0.006709466015702462*vx)"
+      },
+      {
+        "source": "(0.031115209849768666)*(vy) + (0.006781356187412129)*(x) + (-0.14120823179175396)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.00039457119017177473,
+        "domain_valid": true,
+        "original_source": "(0.006781356187412129*x) + (-0.14120823179175396*y) + (0.031115209849768666*vy)"
+      },
+      {
+        "source": "(-0.09235166276500269)*(vx) + (-0.05021401059758887)*(vy) + (-0.042021368330648845)*(x)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.009172475881431351,
+        "domain_valid": true,
+        "original_source": "(-0.042021368330648845*x) + (-0.09235166276500269*vx) + (-0.05021401059758887*vy)"
+      },
+      {
+        "source": "(-0.025110707190789932)*(vx) + (0.026181783495907714)*(vy) + (-0.1330686920346289)*(y)",
+        "complexity": 11,
+        "origin": "linear_least_squares",
+        "parameter_count": 3,
+        "loss": 0.0003893105320941606,
+        "domain_valid": true,
+        "original_source": "(-0.1330686920346289*y) + (-0.025110707190789932*vx) + (0.026181783495907714*vy)"
+      },
+      {
+        "source": "(-0.100004270169543)*(y) + (3.40106066246237e-05)*(vy**2) + (-0.0119837110701395)*(x**2*y) + (-0.00200545316237423)*(y**3)",
+        "complexity": 26,
+        "origin": "regression_basis",
+        "parameter_count": 4,
+        "loss": 2.8498098129828246e-10,
+        "domain_valid": true,
+        "original_source": "-(0.100004270169543*(y)) + 3.40106066246237e-05*(vy**2) + -(0.0119837110701395*(x**2*y)) + -(0.00200545316237423*(y**3))"
+      },
+      {
+        "source": "(-0.100000928941485)*(y) + (-0.0119849658171937)*(x**2*y) + (-0.00200440307468727)*(y**3)",
+        "complexity": 20,
+        "origin": "regression_basis",
+        "parameter_count": 3,
+        "loss": 4.08687105284458e-10,
+        "domain_valid": true,
+        "original_source": "-(0.100000928941485*(y)) + -(0.0119849658171937*(x**2*y)) + -(0.00200440307468727*(y**3))"
+      },
+      {
+        "source": "(-0.102916735491808)*(y) + (-0.0118910796404942)*(x**2*y)",
+        "complexity": 13,
+        "origin": "regression_basis",
+        "parameter_count": 2,
+        "loss": 1.43476212691178e-06,
+        "domain_valid": true,
+        "original_source": "-(0.102916735491808*(y)) + -(0.0118910796404942*(x**2*y))"
+      },
+      {
+        "source": "(-0.139685031906053)*(y) + (0.043007908053881)*(vy*y)",
+        "complexity": 10,
+        "origin": "regression_basis",
+        "parameter_count": 2,
+        "loss": 0.00019947685334960964,
+        "domain_valid": true,
+        "original_source": "-(0.139685031906053*(y)) + 0.043007908053881*(y*vy)"
+      },
+      {
+        "source": "-0.032380342462728376",
+        "complexity": 1,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 1,
+        "loss": 0.01225138777329253,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(y * -0.1351468166350511)",
+        "complexity": 4,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 1,
+        "loss": 0.0005190826210164008,
+        "domain_valid": true
+      },
+      {
+        "source": "sqrt(x * x + y * y) * y * -0.06804887254436594",
+        "complexity": 5,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 1,
+        "loss": 0.0002535773989012399,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(y) * sqrt(x * x + y * y) * -0.08604128534113699",
+        "complexity": 6,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 1,
+        "loss": 0.0002260380549762659,
+        "domain_valid": true
+      },
+      {
+        "source": "1.386845391053652 ** sqrt(x * x + y * y) * y * -0.07080849367378148",
+        "complexity": 7,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 2,
+        "loss": 4.1777917269783624e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(1.3903325943984968 ** sqrt(x * x + y * y) * y * -0.07080533578086298)",
+        "complexity": 8,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 2,
+        "loss": 3.902776414585527e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (1.09033786135516 ** sqrt(x * x + y * y)) ** sqrt(x * x + y * y) * -0.09342639489360265",
+        "complexity": 9,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 2,
+        "loss": 2.9830316905377527e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "1.3990585658576966 ** sqrt(x * x + y * y) * sin(y / 1.4725909619440736) * -0.11389767795757572",
+        "complexity": 10,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 3,
+        "loss": 2.6178847155667587e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(y / 1.5482560464105262) * (sqrt(x * x + y * y) ** sqrt(x * x + y * y)) ** 0.2072464003193843 * -0.17060424042983233",
+        "complexity": 12,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 3,
+        "loss": 1.1227112974867586e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "sin((sqrt(x * x + y * y) ** 0.2111068096146071) ** sqrt(x * x + y * y) * -0.1710902068603557) * sin(y / 1.545715969964648)",
+        "complexity": 13,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 3,
+        "loss": 1.096081372210861e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(y / 1.5429372542895852) * sin(sin((sqrt(x * x + y * y) ** sqrt(x * x + y * y)) ** 0.21509482560837745 * -0.171553158606004))",
+        "complexity": 14,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 3,
+        "loss": 1.072178749738779e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(y / 1.5402002059483515) * sin(sin(sin((sqrt(x * x + y * y) ** sqrt(x * x + y * y)) ** 0.21921964099783606 * -0.17201683232516643)))",
+        "complexity": 15,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 3,
+        "loss": 1.0513413792715315e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "(sqrt(x * x + y * y) ** sqrt(x * x + y * y)) ** 0.20613559606378545 * -0.1737356615475669 * sin(y / 1.5809097727956614) * 0.9916792278277294 ** (x * vx + y * vy)",
+        "complexity": 16,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 4,
+        "loss": 6.900022090902611e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "(sqrt(x * x + y * y) ** 0.29944826094927984) ** sqrt(x * x + y * y) * -0.14998966195645058 * sin(y * 0.7524551803019908 / ((x * x + y * y) ** sqrt(x * x + y * y)) ** 0.05475394113925725)",
+        "complexity": 18,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 4,
+        "loss": 1.5843257218731883e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "sin((sqrt(x * x + y * y) ** 0.30536375163472096) ** sqrt(x * x + y * y) * -0.15017506948139914) * sin(y * 0.7536349981993221 / ((x * x + y * y) ** 0.054862363982044596) ** sqrt(x * x + y * y))",
+        "complexity": 19,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 4,
+        "loss": 1.0197151630180974e-07,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(y * 0.7547438285385571 / ((x * x + y * y) ** sqrt(x * x + y * y)) ** 0.053377791447348395) * sin(sin((sqrt(x * x + y * y) ** sqrt(x * x + y * y)) ** 0.30846743308079755 * -0.15039894057882017))",
+        "complexity": 20,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 4,
+        "loss": 5.7243196907955224e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(y * 0.7540064706534184 / ((x * x + y * y) ** sqrt(x * x + y * y)) ** 0.05166534601023369) * sin(sin(sin((sqrt(x * x + y * y) ** 0.3113293527596073) ** sqrt(x * x + y * y) * -0.1509185046235699)))",
+        "complexity": 21,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 4,
+        "loss": 2.72407054412765e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(y * 0.7539909380015584 / ((x * x + y * y) ** 0.05014326212927559) ** sqrt(x * x + y * y)) * sin(sin(sin(sin((sqrt(x * x + y * y) ** sqrt(x * x + y * y)) ** 0.3145460365353039 * -0.15132865711125684))))",
+        "complexity": 22,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 4,
+        "loss": 1.1862874857935158e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "sin(y * 0.7538455935633401 / ((x * x + y * y) ** sqrt(x * x + y * y)) ** 0.04853111610630944) * sin(sin(sin(sin(sin((sqrt(x * x + y * y) ** sqrt(x * x + y * y)) ** 0.3176409755212382 * -0.15176632597613526)))))",
+        "complexity": 23,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 4,
+        "loss": 1.0696518706872127e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "-sin(0.7537806480326722 * y / ((x * x + y * y) ** sqrt(x * x + y * y)) ** 0.04850153591475904) * sin(sin(sin(sin(sin(0.15177550519227567 * (x * x + y * y) ** (0.1587965668282217 * sqrt(x * x + y * y)))))))",
+        "complexity": 24,
+        "origin": "pysr",
+        "search_representation": "axis_1_algebra",
+        "parameter_count": 4,
+        "loss": 1.0695180869537738e-08,
+        "domain_valid": true
+      },
+      {
+        "source": "-0.032380342462306616",
+        "complexity": 1,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 1,
+        "loss": 0.01225138777329253,
+        "domain_valid": true
+      },
+      {
+        "source": "(-0.1345852268521851)*(y)",
+        "complexity": 3,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 1,
+        "loss": 0.0005201082904871262,
+        "domain_valid": true,
+        "original_source": "y * -0.1345852268521851"
+      },
+      {
+        "source": "sin(y * -0.1351468166357611)",
+        "complexity": 4,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 1,
+        "loss": 0.0005190826210164021,
+        "domain_valid": true
+      },
+      {
+        "source": "y * sqrt(x * x + y * y) * -0.068048872543995",
+        "complexity": 5,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 1,
+        "loss": 0.0002535773989012408,
+        "domain_valid": true
+      },
+      {
+        "source": "sqrt(x * x + y * y) * -0.08604128534096182 * sin(y)",
+        "complexity": 6,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 1,
+        "loss": 0.0002260380549762659,
+        "domain_valid": true
+      },
+      {
+        "source": "(-0.0888145202104211)*(y) + (-0.011462248550698082)*(x**2*y) + (-0.011462248550698082)*(y**3)",
+        "complexity": 7,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 3,
+        "loss": 3.5357083626857345e-05,
+        "domain_valid": true,
+        "original_source": "y * ((x * x + y * y) * -0.011462248550698082 - 1 * 0.0888145202104211)"
+      },
+      {
+        "source": "sin(y * ((x * x + y * y) * -0.011609062200640261 - 1 * 0.0889005794886632))",
+        "complexity": 8,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 2,
+        "loss": 3.279996110170777e-05,
+        "domain_valid": true
+      },
+      {
+        "source": "(-0.10466720898096435)*(y) + (-0.0014129053562223466)*(x**4*y) + (-0.0028258107124446933)*(x**2*y**3) + (-0.0014129053562223466)*(y**5)",
+        "complexity": 9,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 6,
+        "loss": 2.711078768510993e-05,
+        "domain_valid": true,
+        "original_source": "y * ((x * x + y * y) * (x * x + y * y) * -0.0014129053562223466 - 1 * 0.10466720898096435)"
+      },
+      {
+        "source": "y * sqrt(x * x + y * y) * -0.04343701429221332 - 0.06549256079824667 * sin(y)",
+        "complexity": 10,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 2,
+        "loss": 7.597649273811283e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "y * -0.04528766658163146 * sqrt(x * x + y * y) - 0.0686594093397203 * sin(sin(y))",
+        "complexity": 11,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 2,
+        "loss": 7.294687648776612e-06,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (-0.011990557088799623 * (x * x + y * y) - 1 * -0.2940934147452945) - sin(y * 0.39419586668810275)",
+        "complexity": 12,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 3,
+        "loss": 1.604860939556402e-09,
+        "domain_valid": true
+      },
+      {
+        "source": "(-0.1000009289380007)*(y) + (-0.01198496581734425)*(x**2*y) + (-0.0020044030767461633)*(y**3)",
+        "complexity": 13,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 3,
+        "loss": 4.0868710528156115e-10,
+        "domain_valid": true,
+        "original_source": "y * ((x * x + y * y) * -0.01198496581734425 - -0.009980562740598086 * y * y - 1 * 0.1000009289380007)"
+      },
+      {
+        "source": "y * (--0.00998727640779761 * y * y + sin((x * x + y * y) * -0.012001401434786152) - 1 * 0.09998075262898988)",
+        "complexity": 14,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 3,
+        "loss": 2.8591677218500096e-10,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (--0.009994009361599497 * y * y + sin(sin((x * x + y * y) * -0.012017911928680364)) - 1 * 0.09996049747389586)",
+        "complexity": 15,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 3,
+        "loss": 2.6771098559514616e-10,
+        "domain_valid": true
+      },
+      {
+        "source": "y * 0.8001677830980689 * (--0.012486222333945673 * y * y + sin((x * x + y * y) * -0.0150102107962596) - 1 * 0.1249355072601165)",
+        "complexity": 16,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 4,
+        "loss": 2.627486917793405e-10,
+        "domain_valid": true
+      },
+      {
+        "source": "y * ((x * x + y * y) * -0.011979989170453394 - -0.009986889136284881 * y * y) - (y * 0.1000394913692818 - 3.1980578260654464e-05 / (x * x + y * y))",
+        "complexity": 19,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 4,
+        "loss": 1.9513566864924645e-10,
+        "domain_valid": true
+      },
+      {
+        "source": "y * ((x * x + y * y) * -0.0119827614886876 - -0.009980347243144897 * y * y) - (y * 0.10000371822773184 - 9.765750717931362e-06 / exp(x))",
+        "complexity": 20,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 4,
+        "loss": 4.615520192096156e-11,
+        "domain_valid": true
+      },
+      {
+        "source": "y * ((x * x + y * y) * -0.011983428894103592 - y * (y * -0.009983715232254381 - 1 * -6.541344974029383e-06)) - (y * 0.10000143317118859 - 1.156963488738071e-05 / exp(x))",
+        "complexity": 22,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 5,
+        "loss": 3.19164023892234e-11,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (sqrt(x * x + y * y) * -0.011983436239776374 * sqrt(x * x + y * y) - -0.00998369214299793 * y * (y - 1 * 0.0006574547413918146)) - (y * 0.10000134942600922 - 1.157617878186493e-05 / exp(x))",
+        "complexity": 24,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 5,
+        "loss": 3.191563779929982e-11,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (sqrt(x * x + y * y) * sqrt(x * x + y * y) * -0.011983436843417888 - -0.009817200418237729 * y * (y - 1 * 0.0006582872709013798)) - sin(y * 0.10000147150231359 - 1.1615362549374617e-05 / exp(x))",
+        "complexity": 25,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 5,
+        "loss": 3.1491753963303364e-11,
+        "domain_valid": true
+      },
+      {
+        "source": "y * ((x * x + y * y) * -0.011984377809586748 - -0.009989827680393774 * y * (y - -1 * 0.009213378457574025 / (-4.346010008170987 / (vx * vx + vy * vy)))) - (y * 0.100003520288079 - 1.2748887206135963e-05 / exp(x))",
+        "complexity": 26,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 6,
+        "loss": 1.7494405643265416e-11,
+        "domain_valid": true
+      },
+      {
+        "source": "y * ((x * x + y * y) * -0.011982921564298593 - -0.009982897355936254 * (y * y - -1 * 0.006737683601756132 / (-2.042143707583745 / (vx * vx + vy * vy)))) - (y * 0.0999953154145701 - 5.2337863458204795e-05 / exp(exp(x)))",
+        "complexity": 27,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 6,
+        "loss": 1.3485689329507649e-11,
+        "domain_valid": true
+      },
+      {
+        "source": "y * ((x * x + y * y) * -0.011983702324353083 - -0.009991997249969582 * y * (y - -1 * 0.0028649777526357865 / (-2.0258684259154744 / (vx * vx + vy * vy + vx)))) - (y * 0.10000653848266929 - 1.3537310295479813e-05 / exp(x))",
+        "complexity": 28,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 6,
+        "loss": 1.0302997972863475e-11,
+        "domain_valid": true
+      },
+      {
+        "source": "y * ((x * x + y * y) * -0.011983214027333676 - -1 * 0.009991497136401618 * y * (y - -1 * 0.004604737682741284 / (-2.6025802278337284 / sin(vx * vx + vy * vy + vx)))) - (y * 0.10000824786270911 - 1.3650003858933141e-05 / exp(x))",
+        "complexity": 29,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 6,
+        "loss": 9.680653212802537e-12,
+        "domain_valid": true
+      },
+      {
+        "source": "y * ((x * x + y * y) * -0.011983280271039141 - -0.009990348000358298 * y * (y - -1 * 0.002382598526776611 / ((-vx - 1.3261676770527946) / (vx * vx + vy * vy + vx)))) - (y * 0.10000765476316459 - 1.3141533961492352e-05 / exp(x))",
+        "complexity": 30,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 6,
+        "loss": 9.515115355464023e-12,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (sqrt(x * x + y * y) * sqrt(x * x + y * y) * -0.0119830435393344 - -0.00999149140595206 * y * (y - -1 * 0.0033565642320622685 / (-2.1073657238133094 / sin(vx * vx + vy * vy + (vx * vx + vy * vy) + vx - 1 * 0.3499012242708893)))) - 0.10001049413644897 * y - -1 * 1.3352745795386728e-05 / exp(x)",
+        "complexity": 35,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 7,
+        "loss": 8.84270966660446e-12,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (-0.011984384361377345 * sqrt(x * x + y * y) ** 2 - y * (-0.009987383014971039 * y - 8.731090430489607e-06 / (-Abs(vy) + exp(x) * log(1.634726463361908 * Abs(vy)) / sqrt(x * x + y * y)))) - 0.10000149470620016 * y + 1.3155198551585506e-05 * exp(-x)",
+        "complexity": 38,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 6,
+        "loss": 8.786467031433305e-12,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (-0.011984213315122515 * sqrt(x * x + y * y) ** 2 + 0.009986528559822442 * y * (y + 0.0009128286632180002 / (-0.6915375848446668 - exp(x) * log(1.657195456935529 * Abs(vy)) / (-sqrt(x * x + y * y) - 0.006554535594082585)))) - 0.10000134779712103 * y + 1.289704220460376e-05 * exp(-x)",
+        "complexity": 39,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 8,
+        "loss": 7.632196133935732e-12,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (-0.01198425986534849 * sqrt(x * x + y * y) ** 2 + 0.009820235257667157 * y * (y + 0.0009316985674515576 / (-0.6795531985912366 + exp(x) * log(1.657195434723306 * Abs(vy)) / (sqrt(x * x + y * y) + 0.05437261532586437)))) - sin(0.1000013830353593 * y - 1.3035096032385455e-05 * exp(-x))",
+        "complexity": 40,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 8,
+        "loss": 7.555996522292059e-12,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (-0.01198425986534849 * sqrt(x * x + y * y) ** 2 + 0.009820235257667157 * y * (y + 0.0009316985674515576 / (-0.6795531985912366 + (exp(x) + 0.0009316985674515576) * log(1.657195434723306 * Abs(vy)) / (sqrt(x * x + y * y) + 0.05437261532586437)))) - sin(0.1000013830353593 * y - 1.3035096032385455e-05 * exp(-x))",
+        "complexity": 42,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 9,
+        "loss": 7.54662571805513e-12,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (-0.011984218741276956 * sqrt(x * x + y * y) ** 2 - y * (-0.009986692768080061 * y - 9.115768864257123e-06 / (-0.6795532161246658 + log(1.657195447097976 * Abs(vy)) / (sqrt(x * x + y * y) * exp(-x) + 0.0009127915593231599 + 0.04455245714032361 * exp(-t))))) - 0.10000141602792165 * y + 1.2962429349339583e-05 * exp(-x)",
+        "complexity": 44,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 9,
+        "loss": 7.455354478193001e-12,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (-0.01198420925156937 * sqrt(x * x + y * y) ** 2 + 0.009820152226256769 * y * (y + 0.000913950896481456 / (-0.6795532148768464 + log(1.657195448888656 * Abs(vy)) / (sqrt(x * x + y * y) * exp(-x) + 0.0009127921071376168 + 0.04455245743584299 * exp(-t))))) - sin(0.10000152852535801 * y - 1.2984453256020061e-05 * exp(-x))",
+        "complexity": 45,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 9,
+        "loss": 7.282127954877346e-12,
+        "domain_valid": true
+      },
+      {
+        "source": "y * (-0.011984046474124804 * sqrt(x * x + y * y) ** 2 + 0.009987127546492164 * y * (y + 0.0009202985730152824 / (-0.6795532226299726 + log(1.661723923922186 * Abs(vy)) / (-sqrt(x * x + y * y) / (-exp(x) - 0.011984046474124804) + exp(-x) * log(1.657194990524912 * Abs(vy)))))) - 0.10000344743306114 * y + 1.2876918232108542e-05 * exp(-x)",
+        "complexity": 48,
+        "origin": "pysr",
+        "search_representation": "axis_1_full",
+        "parameter_count": 9,
+        "loss": 6.747871714610254e-12,
+        "domain_valid": true
+      }
+    ]
+  },
+  "rejection_counts": {
+    "sharing_no_supported_proposal": 18,
+    "sharing_data_rejected": 3
+  },
+  "rejection_examples": [
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + (cos(y) * x * c1 + x) * ((x * x + y * y) * c2 * cos(y) + (x * x + y * y) * c3 + cos(y)) * c4) * c5",
+      "ay": "c6 * y + c7 * (x ** 2 * y) + c8 * y ** 3"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + (cos(y) * x * c1 + x) * ((x * x + y * y) * c2 * cos(y) + (x * x + y * y) * c3 + cos(y)) * c4) * c5",
+      "ay": "y * (-c6 * y * y + sin((x * x + y * y) * c7) - 1 * c8)"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + ((x * x + y * y) * c1 + x * abs(cos(y)) * c2 * x + cos(y)) * (x * c3 * cos(y) + x) * c4) * c5",
+      "ay": "c6 * y + c7 * (x ** 2 * y) + c8 * y ** 3"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+      "ay": "y * (sqrt(x * x + y * y) * sqrt(x * x + y * y) * c4 - c5 * y * (y - 1 * c6)) - sin(y * c7 - c8 / exp(x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+      "ay": "y * ((x * x + y * y) * c4 - c5 * y * (y - -1 * c6 / (c7 / (vx * vx + vy * vy)))) - (y * c8 - c9 / exp(x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+      "ay": "y * ((x * x + y * y) * c4 - -1 * c5 * y * (y - -1 * c6 / (c7 / sin(vx * vx + vy * vy + vx)))) - (y * c8 - c9 / exp(x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + (cos(y) * x * c1 + x) * ((x * x + y * y) * c2 * cos(y) + (x * x + y * y) * c3 + cos(y)) * c4) * c5",
+      "ay": "y * (sqrt(x * x + y * y) * sqrt(x * x + y * y) * c6 - c7 * y * (y - 1 * c8)) - sin(y * c9 - c10 / exp(x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + (cos(y) * x * c1 + x) * ((x * x + y * y) * c2 * cos(y) + (x * x + y * y) * c3 + cos(y)) * c4) * c5",
+      "ay": "y * ((x * x + y * y) * c6 - c7 * y * (y - -1 * c8 / (c9 / (vx * vx + vy * vy)))) - (y * c10 - c11 / exp(x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + ((x * x + y * y) * c1 + x * abs(cos(y)) * c2 * x + cos(y)) * (x * c3 * cos(y) + x) * c4) * c5",
+      "ay": "y * (sqrt(x * x + y * y) * sqrt(x * x + y * y) * c6 - c7 * y * (y - 1 * c8)) - sin(y * c9 - c10 / exp(x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + (cos(y) * x * c1 + x) * ((x * x + y * y) * c2 * cos(y) + (x * x + y * y) * c3 + cos(y)) * c4) * c5",
+      "ay": "y * ((x * x + y * y) * c6 - -1 * c7 * y * (y - -1 * c8 / (c9 / sin(vx * vx + vy * vy + vx)))) - (y * c10 - c11 / exp(x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + ((x * x + y * y) * c1 + x * abs(cos(y)) * c2 * x + cos(y)) * (x * c3 * cos(y) + x) * c4) * c5",
+      "ay": "y * ((x * x + y * y) * c6 - c7 * y * (y - -1 * c8 / (c9 / (vx * vx + vy * vy)))) - (y * c10 - c11 / exp(x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+      "ay": "y * (c4 * sqrt(x * x + y * y) ** 2 - y * (c5 * y - c6 / (-abs(vy) + exp(x) * log(c7 * abs(vy)) / sqrt(x * x + y * y)))) - c8 * y + c9 * exp(-x)"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1 * x + c2 * x ** 3 + c3 * (x * y ** 2)",
+      "ay": "y * (c4 * sqrt(x * x + y * y) ** 2 + c5 * y * (y + c6 / (c7 + exp(x) * log(c8 * abs(vy)) / (sqrt(x * x + y * y) + c9)))) - sin(c10 * y - c11 * exp(-x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + ((x * x + y * y) * c1 + x * abs(cos(y)) * c2 * x + cos(y)) * (x * c3 * cos(y) + x) * c4) * c5",
+      "ay": "y * ((x * x + y * y) * c6 - -1 * c7 * y * (y - -1 * c8 / (c9 / sin(vx * vx + vy * vy + vx)))) - (y * c10 - c11 / exp(x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + (cos(y) * x * c1 + x) * ((x * x + y * y) * c2 * cos(y) + (x * x + y * y) * c3 + cos(y)) * c4) * c5",
+      "ay": "y * (c6 * sqrt(x * x + y * y) ** 2 - y * (c7 * y - c8 / (-abs(vy) + exp(x) * log(c9 * abs(vy)) / sqrt(x * x + y * y)))) - c10 * y + c11 * exp(-x)"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + (cos(y) * x * c1 + x) * ((x * x + y * y) * c2 * cos(y) + (x * x + y * y) * c3 + cos(y)) * c4) * c5",
+      "ay": "y * (c6 * sqrt(x * x + y * y) ** 2 + c7 * y * (y + c8 / (c9 + exp(x) * log(c10 * abs(vy)) / (sqrt(x * x + y * y) + c11)))) - sin(c12 * y - c13 * exp(-x))"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "(x + ((x * x + y * y) * c1 + x * abs(cos(y)) * c2 * x + cos(y)) * (x * c3 * cos(y) + x) * c4) * c5",
+      "ay": "y * (c6 * (x * x + y * y) - 1 * c7) - sin(y * c8)"
+    },
+    {
+      "reason": "sharing_no_supported_proposal",
+      "stage": "sharing",
+      "ax": "c1 * sqrt(x * x + y * y) ** (1 / c2) * x",
+      "ay": "y * ((x * x + y * y) * c3 - c4 * y * (y - -1 * c5 / (c6 / (vx * vx + vy * vy)))) - (y * c7 - c8 / exp(x))"
+    },
+    {
+      "reason": "sharing_data_rejected",
+      "stage": "sharing",
+      "ax": "(x + ((x * x + y * y) * c1 + x * abs(cos(y)) * c2 * x + cos(y)) * (x * c3 * cos(y) + x) * c4) * c5",
+      "ay": "sin(y) * sqrt(x * x + y * y) * c6"
+    },
+    {
+      "reason": "sharing_data_rejected",
+      "stage": "sharing",
+      "ax": "(x + (cos(y) * x * c1 + x) * ((x * x + y * y) * c2 * cos(y) + (x * x + y * y) * c3 + cos(y)) * c4) * c5",
+      "ay": "sin(y) * sqrt(x * x + y * y) * c6"
+    },
+    {
+      "reason": "sharing_data_rejected",
+      "stage": "sharing",
+      "ax": "(x + (cos(y) * x * c1 + x) * ((x * x + y * y) * c2 * cos(y) + (x * x + y * y) * c3 + cos(y)) * c4) * c5",
+      "ay": "sqrt(x * x + y * y) * y * c6"
+    }
+  ],
+  "rejected_candidate_pairs": 0,
+  "candidate_selection": {
+    "strategy": "bounded_algebraic_dedup_then_joint_sharing_and_observed_integral_residual",
+    "normalized_resolution_tolerance": 9.52236746118318e-08,
+    "legal_pairs": 347,
+    "over_budget_pairs_retained": 680,
+    "sharing_attempts_cached": 24,
+    "sharing_fit_attempts_this_selection": 6,
+    "sharing_proposal_prefilter_rejections_this_selection": 18,
+    "sharing_order": "public_axis_first_pair_then_interleaved_loss_and_complexity; infeasible_proposals_do_not_consume_fit_slots",
+    "sharing_public_axis_pair_prioritized": true,
+    "sharing_unattempted_pairs": 656,
+    "rejection_stage_counts": {
+      "sharing": 21
+    },
+    "rejected_candidates_total": 21,
+    "unchecked_axis_equations": 0,
+    "rollout_candidates_considered": 8,
+    "axis_frontier_counts": [
+      32,
+      32
+    ],
+    "full_axis_equations_retained": true,
+    "selection_incomplete": false,
+    "stop_reason": null,
+    "retained_checkpoint": false,
+    "independent_validation": false,
+    "final_ranking": "trajectory position RMSE when refitted, otherwise weighted acceleration loss; at most three algebraically distinct complete laws"
+  },
+  "scope": "Implementation diagnostic only: existing R02 observations/expression pools, no new Agent, PySR search, world observations or official evaluation.",
+  "elapsed_seconds": 2.8625765420000002,
+  "used_probe_ids": [
+    "probe_0003",
+    "probe_0005",
+    "probe_0006"
+  ]
+}
