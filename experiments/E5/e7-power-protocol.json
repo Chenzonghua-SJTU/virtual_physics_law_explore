@@ -1,0 +1,33 @@
+{
+  "registered_at": "2026-11-07T05:09:02.364934+00:00",
+  "study": "E7 power-law symbolic-regression repair acceptance",
+  "baseline_commit": "eae6745",
+  "previous_symbolic_feature_commit": "8b5bb7d",
+  "public_spec_source": "彼岸更新版.pdf, page 8, basic power laws / integrals / gradients; no fixed force formula or exponent list supplied",
+  "scope": "Repair current-session state/probe-property symbolic search, output delivery and opt-in tool guidance. No simulator/truth imports or per-world formula templates. Body-position features remain out of scope.",
+  "stages": [
+    "Unit and service tests including variable real powers, initial-domain failures, parameter-budget selection, complete executable argument delivery, and disabled-baseline prompt equivalence",
+    "Offline replay on the three original E7 search inputs; same acquired probes only, fixed 30/30/40-second budgets. Original heldout observations are diagnostic-only; do not change any previous score.",
+    "One new six-world autonomous Qwen3.8-27B batch, 4 identical model endpoints where available, one active mission per endpoint, no world retries or best-of selection."
+  ],
+  "configuration": "deployment/config.e7.power.json",
+  "limits": {
+    "wall_seconds": 300,
+    "energy_budget": 10,
+    "max_output_tokens_per_call": 4096,
+    "max_total_tokens": null,
+    "thinking": false,
+    "observation_noise": false,
+    "evaluation_noise": false
+  },
+  "model_sampling_seed": null,
+  "symbolic_seed": 42,
+  "recording": [
+    "all raw axis candidates and explicit rejection reasons in current-session symbolic_search records",
+    "per-experiment exploration/evaluation/total seconds and average/maximum output tokens",
+    "actual SR calls, candidate valid-domain/short-rollout checks, candidate-to-fit/submit adoption",
+    "original scores and evaluation completeness separately"
+  ],
+  "limitations": "One six-world repair acceptance batch is not a controlled estimate of improvement or evidence of nine-hidden-world generalization; deterministic warm candidates carry their own provenance.",
+  "user_operator_clarification": "Trigonometric, exponential and logarithmic operations are also possible. Keep the complete operator space, including real powers; prefer simple candidates without banning these functions."
+}

@@ -35,6 +35,20 @@ def test_profiles_preserve_tools_and_original_main_prompt(tmp_path, monkeypatch,
     assert result['status'] == 'submitted'
 
 
+@pytest.mark.parametrize('enabled', [False, True])
+def test_symbolic_instructions_are_opt_in_and_baseline_prompt_is_exact(tmp_path, monkeypatch, enabled):
+    value, requests = make_client(tmp_path, monkeypatch,
+        [response(assistant(calls=[call()]), 'tool_calls')])
+    runtime = Runtime()
+    runtime.symbolic_enabled = enabled
+    Agent(value, runtime, tmp_path, {'guidance_profile': 'baseline'}).run()
+    folder = Path(__file__).parents[1] / 'shore_agent/prompts'
+    expected = (folder/'main.txt').read_text() + '\n\n' + (folder/'e5.txt').read_text()
+    if enabled:
+        expected += '\n\n' + (folder/'symbolic.txt').read_text()
+    assert requests[0]['messages'][0]['content'] == expected
+
+
 @pytest.mark.parametrize('seed', [None, 42, 43])
 def test_local_sampling_seed_is_opt_in(tmp_path, monkeypatch, seed):
     value, requests, _ = client(tmp_path, monkeypatch, [answer_stream()],

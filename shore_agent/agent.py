@@ -199,6 +199,8 @@ class Agent:
         elif self.ruleset == 'e5' and self.guidance_profile != 'e3':
             filename = 'e5_concise.txt' if self.guidance_profile == 'concise' else 'e5.txt'
             prompt += '\n\n' + (Path(__file__).parent / 'prompts' / filename).read_text(encoding='utf-8')
+        if getattr(self.runtime, 'symbolic_enabled', False):
+            prompt += '\n\n' + (Path(__file__).parent / 'prompts' / 'symbolic.txt').read_text(encoding='utf-8')
         if getattr(self.runtime, 'code_enabled', False):
             prompt = prompt.replace('不可访问任意文件、Shell、网络、源码或任意 Python。',
                                     '代码只可通过run_code在隔离环境执行，不可访问宿主文件、网络或仿真源码。')

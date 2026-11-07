@@ -25,6 +25,65 @@ import uuid
 
 MAX_REQUEST_BYTES = 4 * 1024 * 1024
 MAX_RESPONSE_BYTES = 512 * 1024
+MAX_AUDIT_BYTES = 256 * 1024
+MAX_AXIS_AUDIT_ROWS = 160
+
+
+def _scientific_metadata(value):
+    """Keep bounded scientific metadata, excluding accidental worker internals."""
+    if isinstance(value, dict):
+        return {key: _scientific_metadata(item) for key, item in value.items()
+                if isinstance(key, str) and not any(part in key.lower() for part in
+                    ("path", "directory", "traceback", "hostname", "command", "host_", "log_file"))}
+    if isinstance(value, list):
+        return [_scientific_metadata(item) for item in value]
+    return copy.deepcopy(value)
+
+
+def _search_audit(raw):
+    """Retain raw equation/rejection evidence before per-job files are removed.
+
+    Normal bounded HOFs are transported whole. If a faulty worker emits excessive
+    audit data, omit explicit rows with counts rather than corrupting/truncating
+    returned executable formulas or losing otherwise valid candidates.
+    """
+    allowed = {"source", "complexity", "loss", "origin", "parameter_count",
+               "domain_valid", "rejection_reason"}
+    result = {}
+    omitted = dict(raw.get("transport_audit_omitted_rows", {}))
+    if "axis_equations" in raw:
+        axes = raw["axis_equations"]
+        if not isinstance(axes, dict):
+            raise SymbolicServiceError("invalid_worker_result", 502)
+        result["axis_equations"] = {}
+        for axis in ("ax", "ay"):
+            rows = axes.get(axis, [])
+            if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
+                raise SymbolicServiceError("invalid_worker_result", 502)
+            result["axis_equations"][axis] = [
+                {key: copy.deepcopy(value) for key, value in row.items() if key in allowed}
+                for row in rows[:MAX_AXIS_AUDIT_ROWS]]
+            if len(rows) > MAX_AXIS_AUDIT_ROWS:
+                omitted[axis] = omitted.get(axis, 0) + len(rows) - MAX_AXIS_AUDIT_ROWS
+    for key in ("rejection_counts", "rejection_examples", "candidate_selection"):
+        if key in raw:
+            result[key] = _scientific_metadata(raw[key])
+    # Trimming is an exceptional transport guard; the normal core cap is lower.
+    while len(_json_bytes(result)) > MAX_AUDIT_BYTES:
+        axes = result.get("axis_equations", {})
+        axis = max((a for a in ("ax", "ay") if axes.get(a)), key=lambda a: len(axes[a]), default=None)
+        if axis is not None:
+            axes[axis].pop()
+            omitted[axis] = omitted.get(axis, 0) + 1
+        elif result.get("rejection_examples"):
+            result["rejection_examples"].pop()
+            omitted["rejection_examples"] = omitted.get("rejection_examples", 0) + 1
+        else:
+            raise SymbolicServiceError("invalid_worker_result", 502)
+    if omitted:
+        result["transport_audit_omitted_rows"] = omitted
+        result.setdefault("candidate_selection", {})["full_axis_equations_retained"] = False
+    return result
 
 
 class SymbolicServiceError(RuntimeError):
@@ -81,8 +140,10 @@ def _public_result(raw, ids):
                "warnings", "axis_search_seconds", "search_axes_completed", "rejected_candidate_pairs",
                "elapsed_seconds", "service_elapsed_seconds", "search_elapsed_seconds",
                "requested_time_budget_seconds", "worker_search_budget_seconds", "cleanup_reserve_seconds",
-               "service_budget_exceeded", "worker_reap_pending", "cleanup_pending", "timing_scope"}
+               "service_budget_exceeded", "worker_reap_pending", "cleanup_pending", "timing_scope",
+               "search_version", "stop_reason"}
     result = {k: copy.deepcopy(v) for k, v in raw.items() if k in allowed}
+    result.update(_search_audit(raw))
     result["used_probe_ids"] = list(ids)
     result["candidates"] = []
     candidates = raw.get("candidates", [])
@@ -90,7 +151,8 @@ def _public_result(raw, ids):
         raise SymbolicServiceError("invalid_worker_result", 502)
     candidate_keys = {"law_spec", "parameter_spec", "complexity", "acceleration_search_mse_by_axis",
                       "acceleration_search_mse", "normalized_acceleration_search_loss",
-                      "component_sources", "dsl_valid", "selection_role"}
+                      "component_sources", "dsl_valid", "selection_role", "parameter_count",
+                      "initial_domain_check", "short_rollout_check"}
     for candidate in candidates:
         try:
             Expression(candidate["law_spec"], candidate["parameter_spec"])
@@ -98,7 +160,7 @@ def _public_result(raw, ids):
                 raise ValueError("length")
         except (KeyError, TypeError, ValueError) as exc:
             raise SymbolicServiceError("invalid_worker_result", 502) from exc
-        item = {k: copy.deepcopy(v) for k, v in candidate.items() if k in candidate_keys}
+        item = {k: _scientific_metadata(v) for k, v in candidate.items() if k in candidate_keys}
         item["discovery_probe_ids"] = list(ids)
         result["candidates"].append(item)
     if len(_json_bytes(result)) > MAX_RESPONSE_BYTES:
@@ -433,8 +495,12 @@ def _worker(directory):
     # Synthetic-only compilation warmup: no experiment, archive or world input.
     rng = np.random.default_rng(123)
     X = rng.uniform(.2, 1.2, size=(64, 7))
-    y = 2 * X[:, 1] + np.sin(X[:, 0])
+    # Compile the same complete operator space before any mission starts.
+    # Power laws are common, but trigonometric/exponential/log terms stay legal.
+    y = (2 * X[:, 1] ** 1.7 + np.sqrt(X[:, 0]) + np.sin(X[:, 3])
+         + np.cos(X[:, 4]) + np.exp(X[:, 5]) + np.log(X[:, 6]))
     model = PySRRegressor(binary_operators=list(BINARY_OPERATORS), unary_operators=list(UNARY_OPERATORS),
+                          constraints={"^": (-1, 1)},
                           maxsize=20, niterations=1, populations=2, population_size=27,
                           ncycles_per_iteration=10, timeout_in_seconds=2, parallelism="multithreading",
                           warm_start=False, precision=64, verbosity=0, progress=False,

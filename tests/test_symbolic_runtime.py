@@ -215,3 +215,34 @@ def test_disabled_tool_surface_and_scope_are_unchanged(tmp_path):
     assert len(tool_schemas(ruleset='e5', symbolic_enabled=True)) == 10
     with pytest.raises(ValueError, match='ruleset=e5'):
         tool_schemas(ruleset='e3', symbolic_enabled=True)
+
+
+def test_search_delivery_keeps_executable_fields_complete_and_audit_in_file(runtime, monkeypatch):
+    # Seven IDs/features cross the generic preview threshold. The result must
+    # remain usable as scientific tool arguments, not {preview, truncated}.
+    for i in range(5, 8):
+        record = runtime.store.get('probe', 'p1')
+        record['probe_id'] = f'p{i}'
+        runtime.store.add('probe', record, record['probe_id'])
+    ids = [f'p{i}' for i in range(1, 8)]
+    law = {'ax': 'c1*x+c2*y+c3*vx+c4*vy+c5', 'ay': 'c1*y'}
+    parameters = [{'name': f'c{i}', 'initial': i / 10} for i in range(1, 6)]
+    features = ['t', 'x', 'y', 'vx', 'vy', 'mass', 'charge']
+    audit = {'ax': [{'source': f'x*{i}.1', 'complexity': 3} for i in range(15)]}
+    stub_service(monkeypatch, lambda *args, **kwargs: {
+        'status': 'completed', 'candidates': [{'law_spec': law, 'parameter_spec': parameters}],
+        'feature_names': features, 'axis_equations': audit,
+        'rejection_counts': {'initial_domain_failure': 2}})
+    reply = runtime.execute('symbolic_regression', {'train_probe_ids': ids, 'time_budget_seconds': 20})
+    assert reply['ok']
+    data = reply['data']
+    assert data['used_probe_ids'] == data['discovery_probe_ids'] == ids
+    assert data['feature_names'] == features
+    assert data['candidates'][0]['law_spec'] == law
+    assert data['candidates'][0]['parameter_spec'] == parameters
+    assert data['candidates'][0]['discovery_probe_ids'] == ids
+    assert 'axis_equations' not in data
+    saved = runtime.store.get('symbolic_search', data['search_id'])
+    assert saved['axis_equations'] == audit
+    assert data['audit_path'] in runtime.files.entries()
+    assert data['rejection_counts']['initial_domain_failure'] == 2

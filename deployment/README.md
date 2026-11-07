@@ -39,11 +39,15 @@ baseline 两批分别 2/6 达到 90 分，12/12 完成独立评测；concise 两
 
 ## E7：冻结 E6 后的可选 PySR 对照
 
-`numerics.symbolic_regression_enabled` 默认关闭。打开后仅增加 `symbolic_regression(train_probe_ids, time_budget_seconds)` 一个工具；普通 baseline 仍是 9 个工具。搜索只读取当前会话已获取的指定探针位置、速度、时间和共同提供的 mass/charge，从速度中心差分估计加速度，分别搜索 ax/ay。当前未输入天体集合位置，不预置引力、周期项或开发世界公式。
+`numerics.symbolic_regression_enabled` 默认关闭。打开后仅增加 `symbolic_regression(train_probe_ids, time_budget_seconds)` 一个工具；普通 baseline 仍是 9 个工具。搜索只读取当前会话已获取的指定探针位置、速度、时间和共同提供的 mass/charge，从速度中心差分估计加速度，分别搜索 ax/ay。当前未输入天体集合位置，不预置引力、周期项或开发世界公式。修复版配置为 `deployment/config.e7.power.json`。
 
-输入示例：`{"train_probe_ids":["probe_..."],"time_budget_seconds":25}`。工具输出 feature_names、被移除的常量列、两轴搜索完成情况、搜索耗时及最多 3 个候选。每个候选含现有 DSL 的 law_spec、最多 5 个 parameter_spec 初值、加速度搜索误差、复杂度和来源。Pareto 候选保留误差最小端、复杂度最小端及中部，防止微小数值误差把简单式挤出结果；搜索误差不作为独立预测分数。
+输入示例：`{"train_probe_ids":["probe_..."],"time_budget_seconds":25}`。工具输出完整 feature_names、探针编号、两轴搜索完成情况、搜索耗时及最多 3 个候选。每个候选含现有 DSL 的完整 law_spec、最多 5 个 parameter_spec 初值、加速度搜索误差、复杂度和来源。公式、参数、探针编号不会被通用数组预览截断；全部轴公式、拒绝原因和筛选统计存于当前会话的 `audit_path`，不把整个人口的搜索式反复塞入模型上下文。
 
-Agent 仍须用原 fit_law_and_rollout 按位置轨迹拟合，再取得独立新探针验证并自行提交。搜索用过的所有探针会记入发现数据，不能在后续验证中冒充未见数据；搜索失败也保留这项来源记录。每次搜索最多 60 秒，并为拟合/验证/交卷保留至少 35 秒，搜索计入原 300 秒时限。CPU 服务预热在实验开始前完成，进程级硬超时可返回已取得的部分候选；服务不可用有明确失败反馈，不扩大预算。
+修复版保留 `+ - * / ^ sin cos exp sqrt log abs` 全部算子，支持实数幂。题目第 8 页说明涉及幂律、积分、梯度；用户进一步明确三角、指数、对数也可能出现，因此仅优先简单表达式，不禁用这些运算，也没有限定几个开发世界指数。每次 PySR 搜索均开放全算子，未宣称两阶段搜索。通用稀疏线性候选以 `linear_least_squares` 单独标注，PySR 候选标为 `pysr`；线性候选不冒充进化搜索的发现。
+
+轴候选先按误差、复杂度、参数数目保留，再组合为不超过五参数的二维规律。候选必须在所有已取得状态和已知投放初态可计算，包括首次采样晚于投放的情形，并通过有时间与 RHS 次数上限的短轨迹积分。速度差分的宽窄模板敏感度只作为简单式排序的启发，不是统计置信区间。短轨迹检查只证实有限已知条件下可执行，不代表全域正确；缺少合格候选时返回空列表。筛选超时会保留同一数据上此前已通过检查的候选，未检查的新公式只进入审计。
+
+Agent 仍须用原 fit_law_and_rollout 按位置轨迹拟合，再取得独立新探针验证并自行提交。搜索用过的所有探针会记入发现数据，不能在后续验证中冒充未见数据；搜索失败也保留这项来源记录。每次搜索最多 60 秒，并为拟合/验证/交卷保留至少 35 秒，搜索计入原 300 秒时限。CPU 服务预热在实验开始前完成，进程级硬超时可返回已取得的部分候选；服务不可用有明确失败反馈，不扩大预算。仅开启 SR 时附加 `prompts/symbolic.txt`，提示在有差异训练数据和充足余时下尝试一次搜索、拟合合理候选；关闭时原基线提示词逐字不变。
 
 服务器安装独立 PySR 2.7.2 / Julia 1.13.3 环境，4 个 CPU worker，每个固定 4 线程，保留原 vLLM Python 环境。已安装依赖后可离线启动：
 
@@ -61,7 +65,7 @@ env PYTHON_JULIAPKG_EXE="$PWD/.venv-pysr/julia-1.13.3/bin/julia" \
 
 `deployment/run_e7.py` 必须读取已冻结的 `e6-final-selection.json` 与 `config.e6.final.json`，交错运行 PySR 开/关各两批完整六世界；四卡各接一个活跃会话，排队不计入探索时间。保留所有尝试，不按世界选最好的结果。E6/E7 均记录每次实验探索耗时、交卷后评测、总耗时、平均/最大输出 token；E7 额外记录搜索次数和耗时。开发世界结果不代表九个隐藏世界泛化能力。
 
-### E7 已完成结果与默认选择
+### 初版 E7 已完成结果与默认选择
 
 PySR 功能提交 `8b5bb7d`；四批实验启动源码为 `97ae517`。全部 80 项源码哈希与该提交一致，开关两组配置仅 `numerics.symbolic_regression_enabled` 不同。模型采样 seed 未固定，符号搜索 seed 为 42。原始逐世界成绩与计时保留在各批次 summary/report；详细复查见 [E7 最终分析](../experiments/E5/e7-final-analysis.json) 和 [源码核对](../experiments/E5/e7-source-verification.json)。
 

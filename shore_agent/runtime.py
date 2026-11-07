@@ -357,7 +357,28 @@ class ToolRuntime:
         if failure_code is not None:
             # Archive provenance before the generic Agent failure/retry path sees it.
             raise SymbolicSearchToolError(failure_code, rid)
-        return preview(result)
+        # Keep the searchable audit in the current-session file rather than
+        # feeding the complete equation population back into every LLM turn.
+        # Formula strings, parameter lists and probe IDs are executable inputs:
+        # never turn them into the generic {preview, truncated} representation.
+        public_keys = {
+            'search_id', 'status', 'backend', 'target', 'feature_names',
+            'dropped_constant_features', 'omitted_incomplete_properties',
+            'used_probe_ids', 'discovery_probe_ids', 'candidates', 'warnings',
+            'search_configuration', 'search_axes_completed', 'axis_search_seconds',
+            'requested_time_budget_seconds', 'effective_time_budget_seconds',
+            'wall_seconds', 'body_positions_included', 'rejected_candidate_pairs',
+            'rejection_counts', 'candidate_selection', 'stop_reason',
+            'transport_audit_omitted_rows',
+        }
+        public = {key: copy.deepcopy(value) for key, value in result.items() if key in public_keys}
+        public['audit_path'] = f'analyses/{rid}.json'
+        public['next_step'] = (
+            'For a promising candidate, pass its complete law_spec and parameter_spec '
+            'plus used_probe_ids as train_probe_ids to fit_law_and_rollout. '
+            'Initial-domain and short-rollout checks are training diagnostics, '
+            'not independent validation. Validate the fitted law on fresh probes.')
+        return public
 
     def list_files(self, path='', offset=0, limit=100):
         return self.files.list_files(path, offset, limit)

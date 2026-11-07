@@ -139,11 +139,11 @@ def test_search_adapter_uses_shared_budget_weights_and_exports_two_axis_candidat
     json.dumps(result, allow_nan=False)
 
 
-def test_tiny_time_budget_returns_only_explicit_initialization_without_loading_pysr():
-    result = run_search([probe()], time_budget_seconds=.001)
+def test_tiny_time_budget_never_claims_an_unchecked_initialization_is_valid():
+    result = run_search([probe()], time_budget_seconds=1e-9)
     assert result["status"] == "timeout"
     assert result["search_axes_completed"] == []
-    assert result["candidates"][0]["component_sources"] == ["constant_initialization"] * 2
+    assert result["candidates"] == []
 
 
 def test_constant_observed_acceleration_requires_no_pysr_dependency():
@@ -215,3 +215,153 @@ def test_frontier_limit_one_preserves_accuracy_choice_and_limit_two_preserves_bo
 def test_invalid_search_settings_are_rejected(kwargs):
     with pytest.raises(SymbolicRegressionError):
         run_search([probe()], **kwargs)
+
+
+def physical_probe(name, position, velocity=(0.2, -0.1), start_sample=0.0):
+    from scipy.integrate import solve_ivp
+    t = np.linspace(start_sample, 1.2, 25)
+    matrix = np.array([[-.13, .07], [.02, -.19]])
+    def rhs(time, state):
+        return np.r_[state[2:], matrix @ state[:2]]
+    trajectory = solve_ivp(rhs, (0, t[-1]), np.r_[position, velocity],
+                           t_eval=t, rtol=1e-11, atol=1e-13).y.T
+    return {"probe_id": name, "times": t.tolist(), "r_obs": trajectory[:, :2].tolist(),
+            "v_obs": trajectory[:, 2:].tolist(),
+            "initial_conditions": {"t0": 0, "r0": list(position), "v0": list(velocity), "properties": {}}}
+
+
+def test_real_power_exports_without_changing_negative_base_semantics():
+    candidate = export_candidate("1.3*x**0.7", "y**2.0", ["x", "y"])
+    assert candidate["law_spec"]["ay"] == "y ** 2"
+    assert len(candidate["parameter_spec"]) == 2
+    expression = Expression(candidate["law_spec"], candidate["parameter_spec"])
+    parameters = {p["name"]: p["initial"] for p in candidate["parameter_spec"]}
+    np.testing.assert_allclose(expression.acceleration(0, (3, -2), (0, 0), [], {}, parameters), [1.3*3**.7, 4])
+    with pytest.raises(ValueError):
+        expression.acceleration(0, (-3, 2), (0, 0), [], {}, parameters)
+
+
+def test_every_returned_candidate_is_finite_at_actual_initial_state_even_if_measurements_start_later():
+    import time
+    from shore_agent.symbolic_regression import _select_candidates
+    data = prepare_dataset([physical_probe("later", (0., 1.), velocity=(1., 0.), start_sample=.2)])
+    rows = [[{"source": "1/x", "complexity": 3, "origin": "pysr"},
+             {"source": "0.2", "complexity": 1, "origin": "constant_initialization"}],
+            [{"source": "0.0", "complexity": 1, "origin": "constant_initialization"}]]
+    candidates, audit = _select_candidates(rows, data, 3, time.monotonic()+3, {})
+    assert audit["rejection_counts"]["observed_domain"] == 1
+    rejected = next(r for r in audit["axis_equations"]["ax"] if r["source"] == "1/x")
+    assert rejected["domain_valid"] is False
+    assert candidates
+    assert all(c["short_rollout_check"]["status"] == "passed" for c in candidates)
+    assert all("/ x" not in c["law_spec"]["ax"] for c in candidates)
+
+
+def test_time_singularity_is_rejected_despite_perfect_interior_derivative_fit():
+    import time
+    from shore_agent.symbolic_regression import _select_candidates
+    t = np.linspace(0, 1, 12)
+    p = {"probe_id": "constant_acceleration", "times": t.tolist(),
+         "r_obs": np.column_stack((.5*t*t, 1+t*0)).tolist(),
+         "v_obs": np.column_stack((t, t*0)).tolist(),
+         "initial_conditions": {"t0": 0, "r0": [0, 1], "v0": [0, 0], "properties": {}}}
+    rows = [[{"source": "vx/t", "complexity": 3, "origin": "pysr"},
+             {"source": "1.0", "complexity": 1, "origin": "pysr"}],
+            [{"source": "0", "complexity": 1, "origin": "pysr"}]]
+    candidates, audit = _select_candidates(rows, prepare_dataset([p]), 3, time.monotonic()+3, {})
+    assert audit["rejection_counts"]["observed_domain"] == 1
+    assert candidates[0]["short_rollout_check"]["position_rmse"] < 1e-8
+    assert candidates[0]["short_rollout_check"]["velocity_rmse"] < 1e-8
+
+
+def test_moderate_linear_pair_survives_complex_coefficient_budget_and_all_axis_rows_are_auditable():
+    import time
+    from shore_agent.symbolic_regression import _select_candidates
+    data = prepare_dataset([physical_probe("a", (1., 0.)), physical_probe("b", (0., 1.)),
+                            physical_probe("c", (-1., 2.))])
+    rows = []
+    for ax in (True, False):
+        simple = "-0.13*x + 0.07*y" if ax else "0.02*x - 0.19*y"
+        axis = [{"source": simple+f" + {i*1e-8!r}*t + {i*2e-8!r}*vx", "complexity": 15, "origin": "pysr"}
+                for i in range(1, 10)]
+        axis += [{"source": simple, "complexity": 7, "origin": "pysr"},
+                 {"source": "0.0", "complexity": 1, "origin": "constant_initialization"}]
+        rows.append(axis)
+    candidates, audit = _select_candidates(rows, data, 3, time.monotonic()+3, {})
+    assert len(audit["axis_equations"]["ax"]) == 11
+    assert len(audit["axis_equations"]["ay"]) == 11
+    assert candidates
+    best = candidates[0]
+    assert best["component_sources"] == ["pysr", "pysr"]
+    assert best["parameter_count"] == 4
+    assert best["short_rollout_check"]["position_rmse"] < 1e-6
+    assert "x" in best["law_spec"]["ay"] and "y" in best["law_spec"]["ay"]
+
+
+def test_generic_linear_seed_recovers_coupled_components_without_claiming_pysr_origin():
+    class EmptySearch:
+        def __init__(self, **kwargs):
+            assert kwargs["binary_operators"] == ["+", "-", "*", "/", "^"]
+            assert kwargs["constraints"]["^"] == (-1, 1)
+            assert {"sin", "cos", "exp", "log", "sqrt", "abs"} == set(kwargs["unary_operators"])
+        def fit(self, *args, **kwargs): self.equations_ = Rows([])
+    records = [physical_probe("a", (1., 0.)), physical_probe("b", (0., 1.)),
+               physical_probe("c", (-1., 2.))]
+    result = run_search(records, time_budget_seconds=15, model_factory=EmptySearch)
+    best = result["candidates"][0]
+    assert best["component_sources"] == ["linear_least_squares"] * 2
+    assert best["parameter_count"] <= 5
+    assert best["short_rollout_check"]["position_rmse"] < 1e-5
+    assert best["acceleration_search_mse"] < 1e-8
+    assert result["candidate_selection"]["independent_validation"] is False
+    json.dumps(result, allow_nan=False)
+
+
+def test_late_snapshot_retains_only_previously_certified_candidates(monkeypatch):
+    from shore_agent import symbolic_regression as sr
+    clock = [100.0]
+    monkeypatch.setattr(sr.time, "monotonic", lambda: clock[0])
+    checkpoints = []
+    class SlowSearch:
+        def __init__(self, **kwargs): pass
+        def fit(self, *args, **kwargs):
+            # Backend can exceed its soft timeout; hard supervisor remains external.
+            clock[0] += 40
+            self.equations_ = Rows([{ "loss": 0., "complexity": 3, "sympy_format": "vx/t"}])
+    result = run_search([physical_probe("p", (1., 2.))], time_budget_seconds=30,
+                        model_factory=SlowSearch, progress_callback=checkpoints.append)
+    before = checkpoints[1]["candidates"]
+    assert before
+    assert result["candidates"] == before
+    assert result["candidate_selection"]["selection_incomplete"] is True
+    assert result["candidate_selection"]["retained_checkpoint"] is True
+    assert all(c["short_rollout_check"]["status"] == "passed" for c in result["candidates"])
+    assert any(r["source"] == "vx/t" for r in result["axis_equations"]["ax"])
+    assert next(r for r in result["axis_equations"]["ax"] if r["source"] == "vx/t")["domain_valid"] is None
+
+
+@pytest.mark.parametrize("source", ["sin(t)", "cos(t)", "exp(t)", "log(t + 2.0)"])
+def test_elementary_functions_remain_in_search_and_certified_return_space(source):
+    import time
+    from shore_agent.symbolic_regression import _select_candidates, UNARY_OPERATORS
+    function = source.split("(")[0]
+    assert function in UNARY_OPERATORS
+    data = prepare_dataset([physical_probe("p", (1., 2.))])
+    rows = [[{"source": source, "complexity": 4, "origin": "pysr"}],
+            [{"source": "0", "complexity": 1, "origin": "pysr"}]]
+    candidates, audit = _select_candidates(rows, data, 3, time.monotonic()+3, {})
+    assert len(candidates) == 1
+    assert function+"(" in candidates[0]["law_spec"]["ax"]
+    assert candidates[0]["short_rollout_check"]["status"] == "passed"
+    assert audit["axis_equations"]["ax"][0]["domain_valid"] is True
+
+
+def test_log_is_allowed_but_its_initial_domain_failure_is_rejected():
+    import time
+    from shore_agent.symbolic_regression import _select_candidates
+    data = prepare_dataset([physical_probe("late", (1., 2.), start_sample=.2)])
+    rows = [[{"source": "log(t)", "complexity": 2, "origin": "pysr"}],
+            [{"source": "0", "complexity": 1, "origin": "pysr"}]]
+    candidates, audit = _select_candidates(rows, data, 3, time.monotonic()+3, {})
+    assert candidates == []
+    assert audit["rejection_counts"]["observed_domain"] == 1

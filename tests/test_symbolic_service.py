@@ -25,10 +25,19 @@ for line in sys.stdin:
  probe=data['probes'][0]
  result={'status':'completed','elapsed_seconds':.01,'search_axes_completed':['ax','ay'],
          'output_directory':'/private/worker/path',
+         'axis_equations':{'ax':[{'source':'2.5*x','complexity':3,'loss':.01,'origin':'pysr',
+                                 'parameter_count':1,'domain_valid':True,'host_path':'/private/secret'}],
+                           'ay':[{'source':'0','complexity':1,'loss':0,'origin':'constant_initialization'}]},
+         'rejection_counts':{'initial_domain':2},
+         'rejection_examples':[{'stage':'domain','reason':'initial_domain','ax':'vx/t','ay':'0',
+                                'host_path':'/private/secret'}],
+         'candidate_selection':{'strategy':'power_law','rollout_checks':1,'debug_path':'/private/secret'},
          'candidates':[{'law_spec':{'ax':'c1*x','ay':'0'},
                         'parameter_spec':[{'name':'c1','initial':float(data['random_state'])}],
                         'discovery_probe_ids':['wrong'], 'host_path':'/private/secret',
-                        'component_sources':['pysr','constant_initialization']}],
+                        'component_sources':['pysr','constant_initialization'],
+                        'parameter_count':1,'initial_domain_check':{'status':'passed','probe_count':1},
+                        'short_rollout_check':{'status':'passed','probe_count':1,'position_rmse':.002}}],
          'used_probe_ids':['wrong']}
  save(job/'progress.json',dict(result,status='running',search_axes_completed=['ax']))
  if probe.get('crash'):
@@ -187,6 +196,14 @@ def test_http_round_trip_and_request_path_control(pool):
         assert result['candidates'][0]['parameter_spec'][0]['initial'] == 42
         assert result['tool_client_wall_seconds'] >= result['service_elapsed_seconds']
         assert result['requested_time_budget_seconds'] == 2
+        assert result['axis_equations']['ax'][0]['source'] == '2.5*x'
+        assert result['axis_equations']['ax'][0]['parameter_count'] == 1
+        assert result['rejection_counts'] == {'initial_domain': 2}
+        assert result['rejection_examples'][0]['ax'] == 'vx/t'
+        assert result['candidate_selection'] == {'strategy': 'power_law', 'rollout_checks': 1}
+        assert result['candidates'][0]['short_rollout_check']['position_rmse'] == .002
+        assert result['candidates'][0]['initial_domain_check']['status'] == 'passed'
+        assert '/private/' not in json.dumps(result)
         connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
         connection.request('GET', '/health')
         response = connection.getresponse()
@@ -327,3 +344,19 @@ def test_slow_reap_uses_background_wait_and_reports_pending(pool, monkeypatch):
         gate.set()
         wait_until(worker.reaped.is_set)
         wait_until(lambda: not list((pool.root / 'jobs').iterdir()))
+
+
+def test_excess_audit_rows_are_explicitly_bounded_without_changing_formula():
+    candidate = {'law_spec': {'ax': 'c1*x', 'ay': 'c2*y'},
+                 'parameter_spec': [{'name': 'c1', 'initial': -0.03}, {'name': 'c2', 'initial': -.07}]}
+    raw = {'status': 'completed', 'candidates': [candidate],
+           'axis_equations': {'ax': [{'source': f'{i}.0*x', 'complexity': 3, 'loss': .1}
+                                    for i in range(180)], 'ay': []}}
+    first = symbolic_service._public_result(raw, ['p'])
+    assert first['candidates'][0]['law_spec'] == candidate['law_spec']
+    assert first['candidates'][0]['parameter_spec'] == candidate['parameter_spec']
+    assert len(first['axis_equations']['ax']) == 160
+    assert first['transport_audit_omitted_rows'] == {'ax': 20}
+    assert first['candidate_selection']['full_axis_equations_retained'] is False
+    # search_remote applies the public boundary again; omission accounting must survive.
+    assert symbolic_service._public_result(first, ['p']) == first

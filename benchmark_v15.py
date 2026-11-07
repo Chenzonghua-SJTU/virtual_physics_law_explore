@@ -93,7 +93,7 @@ def configuration(project=PROJECT, model='qwen3.8-27b', config_path=None, *, thi
 
 
 def _hashes(project):
-    paths = ['shore_agent/agent.py', 'shore_agent/prompts/main.txt', 'shore_agent/prompts/e5.txt', 'shore_agent/prompts/e5_concise.txt', 'shore_agent/schemas.py',
+    paths = ['shore_agent/agent.py', 'shore_agent/prompts/main.txt', 'shore_agent/prompts/e5.txt', 'shore_agent/prompts/e5_concise.txt', 'shore_agent/prompts/symbolic.txt', 'shore_agent/schemas.py',
              'shore_agent/runtime.py', 'shore_agent/numerics.py', 'shore_agent/expressions.py',
              'shore_agent/model.py', 'shore_agent/web_worker.py', 'shore_agent/store.py', 'shore_agent/workspace.py',
              'shore_agent/submission.py', 'shore_agent/symbolic_regression.py', 'shore_agent/symbolic_service.py',
