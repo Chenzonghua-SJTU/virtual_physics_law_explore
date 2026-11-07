@@ -160,6 +160,28 @@ def _lines(path, root):
     return result
 
 
+def _validation_completion_order(validations, events, *, tool_log=False):
+    """Associate immutable validations with successful tool completions."""
+    known = {item.get('validation_id'): item for item in validations
+             if isinstance(item.get('validation_id'), str)}
+    order = {}
+    for index, item in enumerate(events):
+        if not tool_log and item.get('event') != 'tool_finished':
+            continue
+        if item.get('tool' if tool_log else 'name') != 'validate_law':
+            continue
+        response = item.get('result')
+        if not isinstance(response, dict) or response.get('ok') is not True:
+            continue
+        data = response.get('data')
+        if not isinstance(data, dict) or not isinstance(data.get('validation_id'), str):
+            continue
+        record = known.get(data['validation_id'])
+        if record is not None and data.get('law_id', record.get('law_id')) == record.get('law_id'):
+            order[data['validation_id']] = index
+    return order
+
+
 def accepted_submission(directory):
     root = Path(directory)
     folder = root / 'records' / 'submission'
@@ -852,6 +874,28 @@ class RunManager:
                         value = _read(path, directory)
                         if isinstance(value, dict):
                             records[public_name].append(value)
+            validations = records['validations']
+            validation_order = _validation_completion_order(validations, raw_events)
+            validation_source = 'events.jsonl'
+            if validations and not validation_order:
+                # Legacy archives can retain only status events plus tools.jsonl.
+                # This detail-only fallback must not add log reads to history.
+                fallback = tool_events if not raw_events else _lines(directory / 'tools.jsonl', directory)
+                validation_order = _validation_completion_order(validations, fallback, tool_log=True)
+                validation_source = 'tools.jsonl'
+            unknown_validations = [item.get('validation_id') for item in validations
+                                   if not isinstance(item.get('validation_id'), str)
+                                   or item['validation_id'] not in validation_order]
+            # Unmatched records have unknown chronology. Keep their stable file
+            # order before logged records without inventing timestamps for them.
+            records['validations'] = sorted(validations, key=lambda item: validation_order.get(
+                item.get('validation_id') if isinstance(item.get('validation_id'), str) else None, -1))
+            validation_order_info = {
+                'source': validation_source if validation_order else 'stable_record_order',
+                'chronology_complete': not unknown_validations,
+                'unmatched_validation_ids': unknown_validations,
+                'unmatched_placement': 'stable_record_order_before_logged_records',
+            }
             # Display the same acquired information available to the Agent.
             # Old archives may keep first-light observations only in mission.json.
             observations = records['body_observations']
@@ -896,6 +940,7 @@ class RunManager:
                             'code_enabled': configuration.get('code_execution', {}).get('enabled', False),
                             'experiment_id': metadata.get('experiment_id'), 'experiment_arm': metadata.get('arm'),
                             'budget': budget, 'model_usage': usage, 'records': records, 'result': result,
+                            'validation_order': validation_order_info,
                             'evaluation': evaluation,
                             **_evaluation_projection(directory, status, metadata, configuration, mission, evaluation, running),
                             'evaluation_status': metadata.get('evaluation_status'), 'finished_at': metadata.get('finished_at'),

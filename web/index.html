@@ -76,7 +76,7 @@
         <div class="metric energy-metric"><div class="metric-label"><span>剩余探索能量</span><span class="metric-symbol">ϟ</span></div><div class="metric-value"><strong id="energy-value">—</strong><span>/ <span id="energy-maximum">100</span></span></div><progress id="energy-progress" value="0" max="100" aria-label="剩余探索能量"></progress></div>
         <div class="metric"><div class="metric-label">模型调用</div><div class="metric-value"><strong id="calls-value">—</strong><span id="calls-limit">无次数上限</span></div><div id="calls-note" class="metric-foot">主 Agent 模型请求</div></div>
         <div class="metric"><div class="metric-label">Token 用量</div><div class="metric-value"><strong id="tokens-value">—</strong><span id="tokens-limit">/ 5M</span></div><div id="tokens-note" class="metric-foot">累计输入与输出</div></div>
-        <div class="metric"><div class="metric-label">已取得轨迹</div><div class="metric-value"><strong id="probes-value">—</strong><span>条</span></div><div class="metric-foot"><span id="validations-value">0</span> 次独立轨迹验证</div></div>
+        <div class="metric"><div class="metric-label">已取得轨迹</div><div class="metric-value"><strong id="probes-value">—</strong><span>条</span></div><div class="metric-foot"><span id="validations-value">0</span> 次会话内轨迹验证</div></div>
       </section>
       <section id="model-progress" class="model-progress" aria-label="模型请求实时进度" hidden>
         <div class="model-progress-heading"><span class="live-dot running" aria-hidden="true"></span><strong id="model-progress-phase" role="status">等待模型首字</strong><span id="model-progress-elapsed"></span></div>
@@ -103,18 +103,18 @@
       <section class="panel discovery-panel" aria-labelledby="discovery-title">
         <div class="panel-heading"><div><span class="eyebrow">HYPOTHESIS & EVIDENCE</span><h2 id="discovery-title">候选规律与验证</h2></div><a id="export-link" class="text-action" href="#" hidden download>导出实验记录 <span>↗</span></a></div>
         <div id="discovery-empty" class="discovery-empty"><span class="formula-placeholder">a = ?</span><div><h3>规律还在等待被发现</h3><p>Agent 提出的公式、拟合参数和验证误差会随探索实时更新。</p></div></div>
-        <div id="discovery-content" class="discovery-content" hidden><div class="law-main"><div class="law-meta"><span id="law-label">候选规律</span><span id="fit-status" class="badge badge-neutral"></span></div><div class="formula-line"><span>a<sub>x</sub> =</span><code id="formula-x"></code></div><div class="formula-line"><span>a<sub>y</sub> =</span><code id="formula-y"></code></div><div id="law-parameters" class="parameter-list"></div><p id="law-train-note" class="field-hint"></p><p id="law-body-note" class="field-hint"></p></div><div class="evidence"><div class="evidence-row"><span>训练位置 RMSE</span><strong id="training-rmse">—</strong></div><div class="evidence-row"><span>验证位置 RMSE</span><strong id="validation-rmse">—</strong></div><p id="validation-note" class="field-hint">等待独立轨迹验证</p><div id="submission-outcome" class="submission-outcome" hidden></div></div></div>
+        <div id="discovery-content" class="discovery-content" hidden><div class="law-main"><div class="law-meta"><span id="law-label">候选规律</span><span id="fit-status" class="badge badge-neutral"></span></div><div class="formula-line"><span>a<sub>x</sub> =</span><code id="formula-x"></code></div><div class="formula-line"><span>a<sub>y</sub> =</span><code id="formula-y"></code></div><div id="law-parameters" class="parameter-list"></div><p id="law-train-note" class="field-hint"></p><p id="law-body-note" class="field-hint"></p></div><div class="evidence"><div class="evidence-row"><span>训练位置 RMSE</span><strong id="training-rmse">—</strong></div><div class="evidence-row"><span>会话内验证 RMSE</span><strong id="validation-rmse">—</strong></div><p id="validation-note" class="field-hint">等待会话内验证</p><div id="submission-outcome" class="submission-outcome" hidden></div></div></div>
         <section id="physical-explanation-block" class="physical-explanation-block" aria-labelledby="physical-explanation-title" hidden>
           <span class="eyebrow">PHYSICAL EXPLANATION</span>
-          <h3 id="physical-explanation-title">最终答案 · 物理解释</h3>
+          <h3 id="physical-explanation-title">Agent 最终解释</h3>
           <p id="physical-explanation-law" class="field-hint"></p>
           <div id="physical-explanation" class="physical-explanation"></div>
           <p class="field-hint">随最终规律提交；解释中的物理假说需结合实验依据判断，数值拟合与评测不等于机制已获证实。</p>
         </section>
         <div id="evaluation-block" class="evaluation-block" hidden>
           <div class="evaluation-copy">
-            <span class="eyebrow">POST-SESSION EVALUATION</span><h3>会话后独立测评 · 题目得分</h3>
-            <p id="evaluation-summary" class="evaluation-summary" role="status"></p><p id="evaluation-note"></p>
+            <span class="eyebrow">POST-SESSION EVALUATION</span><h3>交卷后固定测试 · 题目得分</h3>
+            <p id="evaluation-summary" class="evaluation-summary" role="status"></p><p id="evaluation-note"></p><p id="evaluation-coverage" class="field-hint"></p>
             <details class="evaluation-rule"><summary>计分公式与依据</summary>
               <p id="evaluation-formula">总分 = P + L + C，满分 100。e = MSE / max(V, 1e-12)；P = 80 / (1 + 10e)。三项声明每项正确得 5 分，L 满分 15。仅当未舍入的 P ≥ 40 时，C = 5 × (1 − E / 100)，否则 C = 0。</p>
               <p id="evaluation-source-note">V 为参考轨迹的位置方差，E 为已用实验能量。按题目公式与本地测试集计分，不是官方成绩，不对物理解释质量打分。</p>
@@ -129,7 +129,7 @@
               <div><span>声明 L</span><p><b id="evaluation-law">—</b> / 15</p></div>
               <div><span>节能 C</span><p><b id="evaluation-conservation">—</b> / 5</p></div>
             </div>
-            <div class="evaluation-diagnostic"><span>未见初态 · 位置 RMSE</span><b id="evaluation-rmse">—</b></div>
+            <div class="evaluation-diagnostic"><span>固定测试 · 位置 RMSE</span><b id="evaluation-rmse">—</b></div>
           </div>
         </div>
         <div id="run-outcome" class="run-outcome" hidden></div>

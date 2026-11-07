@@ -9,6 +9,7 @@ function element(tag, text, cls) {
 const number=(value,digits=2)=>typeof value==='number'&&Number.isFinite(value)?value.toFixed(digits):'—';
 const duration=(seconds)=>typeof seconds==='number'&&Number.isFinite(seconds)?`${Math.floor(Math.round(seconds)/60)}分${Math.round(seconds)%60}秒`:'—';
 const studyGroup=batch=>batch.id.startsWith('e7-')?'E7':batch.id.startsWith('e6-')?'E6':batch.experiment_group;
+const scored=row=>row.evaluation_score?.status==='scored'&&Number.isFinite(row.evaluation_score.total);
 let latestBatches=[], lastRefreshed=null;
 const query=new URLSearchParams(location.search), requestedBatch=query.get('batch');
 const groupSelector=document.getElementById('experiment-group');
@@ -34,7 +35,7 @@ function render(batch) {
   }
   const evaluated=batch.worlds.filter(row=>row.evaluation_complete);
   const highScores=evaluated.filter(row=>typeof row.evaluation_score?.total==='number'&&row.evaluation_score.total>=90).length;
-  section.append(element('p',`本批达到 90 分：${highScores} / ${batch.worlds.length} 个世界 · 完成独立测评：${evaluated.length} / ${batch.worlds.length}。90 分为本次复现目标，按原始分数判断。`,'batch-id'));
+  section.append(element('p',`本批达到 90 分：${highScores} / ${batch.worlds.length} 个世界 · 全部测试轨迹预测有效：${evaluated.length} / ${batch.worlds.length}。预测失败时按原记录显示声明分；90 分按原始分数判断。`,'batch-id'));
   const wrap=element('div',undefined,'table-wrap'), table=element('table');
   const head=element('tr');
   for(const title of ['世界','状态','本地总分','位置 RMSE','探索耗时','交卷后评测','总耗时','平均输出 / 轮','单次最大输出','调用数','PySR 调用 / 耗时','测试轨迹','消耗能量']) head.append(element('th',title));
@@ -43,11 +44,12 @@ function render(batch) {
   for(const row of batch.worlds){
     const tr=element('tr'), name=element('td'), link=element('a',row.world_id.replace('world_','世界 0'));
     link.href='/?run='+encodeURIComponent(row.run_id);name.append(link);tr.append(name);
-    const status=element('td',states[row.status]||row.status,row.status==='submitted'?'submitted':(['running','queued','evaluating'].includes(row.status)?'running':'failed'));
+    const predictionFailed=scored(row)&&row.evaluation_score.reason==='candidate_prediction_invalid';
+    const status=element('td',predictionFailed?'预测失败 · 按规则计分':states[row.status]||row.status,predictionFailed?'failed':row.status==='submitted'?'submitted':(['running','queued','evaluating'].includes(row.status)?'running':'failed'));
     if(row.reason&&row.status!=='submitted') status.append(element('span',row.reason,'reason'));
     tr.append(status);
     const rmse=row.evaluation_complete?row.independent_rmse?.position_rmse:null;
-    const score=row.evaluation_complete?row.evaluation_score?.total:null;
+    const score=scored(row)?row.evaluation_score.total:null;
     const error=typeof rmse==='number'&&Number.isFinite(rmse)?(rmse<0.001?rmse.toExponential(3):rmse.toFixed(4)):'—';
     const terminal=!['queued','running','starting','evaluating'].includes(row.status);
     const average=row.average_output_tokens_per_call??(terminal&&row.calls>0&&row.conservative_reserved_tokens===0?row.completion_tokens/row.calls:null);
@@ -64,7 +66,7 @@ function renderAll(){
   const sorted=latestBatches.filter(b=>selected==='all'||studyGroup(b)===selected||selected==='batch:'+b.id||(selected==='E5_AB'&&b.id.startsWith('e5-qwen38-tools-'))).sort((a,b)=>studyGroup(b).localeCompare(studyGroup(a))||a.id.localeCompare(b.id));
   document.getElementById('batches').replaceChildren(...sorted.map(render));
   const rows=sorted.flatMap(b=>b.worlds), completed=rows.filter(r=>r.evaluation_complete).length;
-  document.getElementById('connection').textContent=`当前筛选已完成独立评测 ${completed} / ${rows.length} · 更新于 ${lastRefreshed??'—'} · 每 5 秒刷新`;
+  document.getElementById('connection').textContent=`当前筛选全部测试轨迹预测有效 ${completed} / ${rows.length} · 更新于 ${lastRefreshed??'—'} · 每 5 秒刷新`;
 }
 document.getElementById('experiment-group').addEventListener('change',renderAll);
 async function refresh(){

@@ -1,0 +1,123 @@
+{
+  "candidates": [
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_2",
+      "world_id": "world_2",
+      "law_id": "law_6",
+      "law_spec": {
+        "ax": "-p1*x/((x*x+y*y)*sqrt(x*x+y*y))+a*vx+b*vy",
+        "ay": "-p1*y/((x*x+y*y)*sqrt(x*x+y*y))+c*vx+d*vy"
+      },
+      "fitted_parameters": {
+        "p1": 0.4183701845439802,
+        "a": -0.1578842577926926,
+        "b": -0.2874348785427238,
+        "c": 0.07439893933784769,
+        "d": -0.013835954637938762
+      },
+      "failures": [
+        {
+          "probe_id": "v15_b0-s0_1",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b0-s0_2",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b0-s0_3",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b0-s0_4",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b0-s1_1",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b0-s1_2",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b0-s1_3",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b0-s1_4",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b1-s0_2",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b1-s0_4",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        },
+        {
+          "probe_id": "v15_b1-s1_2",
+          "stage": "candidate_rollout",
+          "reason": "integration exceeded derivative-evaluation limit"
+        }
+      ],
+      "original_evaluation_sha256": "698176935bdecfedded8cebe99463e80d5fd6dc47553b0505fddaef237ebbe4e"
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_4",
+      "world_id": "world_4",
+      "law_id": "law_4",
+      "law_spec": {
+        "ax": "-k*x/(x**2+y**2+c)",
+        "ay": "-k*y/(x**2+y**2+c)"
+      },
+      "fitted_parameters": {
+        "k": 0.13989424921706278,
+        "c": -0.9101117225374225
+      },
+      "failures": [
+        {
+          "probe_id": "v15_b0-s0_1",
+          "stage": "candidate_rollout",
+          "reason": "integration failed: Required step size is less than spacing between numbers."
+        },
+        {
+          "probe_id": "v15_b0-s0_2",
+          "stage": "candidate_rollout",
+          "reason": "integration failed: Required step size is less than spacing between numbers."
+        },
+        {
+          "probe_id": "v15_b0-s1_1",
+          "stage": "candidate_rollout",
+          "reason": "integration failed: Required step size is less than spacing between numbers."
+        },
+        {
+          "probe_id": "v15_b0-s1_2",
+          "stage": "candidate_rollout",
+          "reason": "non-finite or excessive intermediate expression value"
+        }
+      ],
+      "original_evaluation_sha256": "e7b09f62af589ff07a90e4f7d0d8fb47dd0359ee0242a366300ce8cecbe07cac"
+    }
+  ],
+  "source_sha256": {
+    "shore_v15/evaluation.py": "7a61360466b4a608738c2c012e30b77ee0d23eecd99c2c4dad5f0e44bbfe984d",
+    "shore_v15/source.py": "807a419648ec493ac0b613ab84d54b9060b9066449f09cdfc39ceb97a25a6638",
+    "shore_agent/numerics.py": "fd6d3fad7b64532866f0ef12c0468c2bf14601afdc29d6f9fb235ee257189265",
+    "shore_agent/expressions.py": "cdc8f7bdaeecf70cc7cd23ab278e90c86cb5f715f9e593a50226854bf26a8c01",
+    "shore_v15/vendor/development_worlds/worlds.py": "576f3700e583682e63b56177d73046a6e8c728c33251aaeb8424630f7ab873e6",
+    "shore_v15/vendor/development_worlds/catalog.py": "52d4d53949521af8c3d09d0190cdeaf88749bd58cad375fd1f64c70b47745bd0",
+    "shore_v15/vendor/rift_numerics/rollout.py": "76dac8e186332c101c41b67829f175b99c970a2819397bc0877d75e6ebcbe414"
+  }
+}

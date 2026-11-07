@@ -13,7 +13,7 @@
   };
   const tools = {
     observe_body: '观测公开天体', insert_probe: '投放探针', summarize_data: '分析实验数据',
-    fit_law_and_rollout: '拟合候选规律', validate_law: '验证独立轨迹',
+    fit_law_and_rollout: '拟合候选规律', validate_law: '会话内验证轨迹',
     call_back: '查阅实验档案', list_files: '浏览实验文件', read_file: '读取实验文件', analyze_residual: '分析预测残差', submit: '提交候选规律',
     run_code: '运行分析代码', diagnose_dynamics: '诊断观测中的数值关系', symbolic_regression: '搜索符号规律（PySR）',
   };
@@ -646,7 +646,7 @@
       const validationContext = validation?.body_context;
       const contextNote = validationContext?.kind === 'observed_body_trajectories'
         ? ` · 天体状态 ${validationContext.version}，覆盖 t=${asArray(validationContext.time_range).map(scientific).join('–')}` : '';
-      $('validation-note').textContent = validation ? `${asArray(validation.test_probe_ids).length} 条未参与该版本拟合的轨迹 · 误差相对观测计算${contextNote}` : '等待独立轨迹验证';
+      $('validation-note').textContent = validation ? `${asArray(validation.test_probe_ids).length} 条未参与该版本拟合的轨迹 · Agent 自选验证，可据此继续改进 · 误差相对观测计算${contextNote}` : '等待会话内验证';
       const submission = accepted || run.result?.submission || submissions.at(-1);
       $('submission-outcome').hidden = !submission || submission.law_id !== law.law_id;
       if (submission) {
@@ -679,8 +679,21 @@
       $('evaluation-conservation').textContent = scoreNumber(score?.conservation);
       $('evaluation-rmse').textContent = scientific(evaluation?.overall?.position_rmse);
       const subject = evaluation?.law_id && law && evaluation.law_id !== law.law_id ? '评测对象为最终提交版本，与当前所选候选不同。' : '评测对象为最终提交版本。';
-      const counts = evaluation ? `${evaluation.n_successful ?? '—'} / ${evaluation.n_trajectories ?? '—'} 条未见初态取得有效预测。` : '';
+      const counts = evaluation ? `${evaluation.n_successful ?? '—'} / ${evaluation.n_trajectories ?? '—'} 条固定测试轨迹取得有效预测；初态和公开属性可与探索采样不同。` : '';
       $('evaluation-note').textContent = `${subject}${counts}${scoreExplanation(run)}`;
+      const propertyRange = (items) => {
+        const properties = items.map(item => item?.initial_conditions?.properties || item?.properties || {});
+        const names = [...new Set(properties.flatMap(item => Object.keys(item)))].sort();
+        return names.map(name => {
+          const values = properties.map(item => item[name]).filter(finite);
+          if (!values.length) return null;
+          const low = Math.min(...values), high = Math.max(...values);
+          return `${name}=${scientific(low)}${high !== low ? '–' + scientific(high) : ''}${values.length < items.length ? '（部分记录缺失）' : ''}`;
+        }).filter(Boolean).join('，') || '未记录属性';
+      };
+      $('evaluation-coverage').textContent = evaluation
+        ? `公开属性覆盖：会话已采集轨迹 ${propertyRange(asArray(run.records?.probes))}；固定测试 ${propertyRange(asArray(evaluation.initial_conditions))}。会话内低误差仅支持已采样的条件。`
+        : '';
       $('evaluation-source-note').textContent = `V 为参考轨迹的位置方差，E 为已用实验能量。按题目公式与${runWorldSet(run) === 'v15' ? 'v15 公开开发案例' : '本地隐藏测试集'}计分，不是官方成绩，不对物理解释质量打分。`;
       $('evaluation-inputs').textContent = score
         ? `位置 MSE = ${scientific(score.position_mse)} · 参考方差 V = ${scientific(score.reference_variance)} · 归一化误差 e = ${scientific(score.normalized_error)} · 已用能量 E = ${number(score.energy_used)}`

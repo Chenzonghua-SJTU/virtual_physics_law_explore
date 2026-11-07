@@ -1,0 +1,2533 @@
+{
+  "kind": "read_only_e6_evaluation_api_ui_audit",
+  "audited_at": "2026-11-07T04:06:14.137676+00:00",
+  "scope": "Existing 24 recovery runs, raw server files and live HTTP projections; no model, simulator, re-evaluation, mutation or restart",
+  "batches": [
+    {
+      "id": "e6-qwen38-recovery-baseline-20261107-r01",
+      "status": "completed",
+      "count": 6,
+      "source_sha256": "f551e2ba950d508713ea63103f74fa7269593982d71985a86a585911235422b7"
+    },
+    {
+      "id": "e6-qwen38-recovery-baseline-20261107-r02",
+      "status": "completed",
+      "count": 6,
+      "source_sha256": "c0a567c16333fc9d8a947a5c28198deefed41645fb77c723022d99b152ad8d97"
+    },
+    {
+      "id": "e6-qwen38-recovery-concise-20261107-r01",
+      "status": "completed",
+      "count": 6,
+      "source_sha256": "dce0b976581ff01f110b213f36661ab8f8d8595dda4382e4d839a102496bbf05"
+    },
+    {
+      "id": "e6-qwen38-recovery-concise-20261107-r02",
+      "status": "completed",
+      "count": 6,
+      "source_sha256": "0934bd330a464819b274374c7151d311c6f5c14673b8a1234c15d766dee4adac"
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r01-world_1",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 96.49994442844148,
+      "baseline_display_score": 96.5,
+      "final_law_id": "law_6",
+      "formula": {
+        "ax": "-k*q('charge')/q('mass')*x/(x**2+y**2)",
+        "ay": "-k*q('charge')/q('mass')*y/(x**2+y**2)"
+      },
+      "parameters": {
+        "k": 0.07956518350101306
+      },
+      "fitted_laws": 6,
+      "validation_count": 2,
+      "fit_position_rmse": 9.466026559105118e-07,
+      "ui_validation_id": "validation_051d767786ed",
+      "ui_validation_position_rmse": 0.00014780236711000848,
+      "post_session_position_rmse": 0.001672984794751053,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "2e56622dcd6ccf8336ed8920923c61073b27fec14b4d54c767ddab6353a933dc",
+      "archive_sha256": {
+        "result.json": "17fad6689129ecf00cc84ff67ebb7f73ea7639a6febc71098f3d4aaaeac5748e",
+        "evaluation.json": "e5fb4921be982ddd75487ab0794bb3e39a84624c8026dd2654ab24f971ac72d1"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r01-world_2",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 97.99999999999987,
+      "baseline_display_score": 98.0,
+      "final_law_id": "law_1",
+      "formula": {
+        "ax": "(-k*q('charge')/q('mass'))*x",
+        "ay": "(-k*q('charge')/q('mass'))*y"
+      },
+      "parameters": {
+        "k": 0.060000000001855805
+      },
+      "fitted_laws": 1,
+      "validation_count": 1,
+      "fit_position_rmse": 1.9419980428567604e-08,
+      "ui_validation_id": "validation_be2cc1b20fca",
+      "ui_validation_position_rmse": 2.5217687644581403e-08,
+      "post_session_position_rmse": 3.95273855307938e-08,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "87ddb7dcfda0d48e0fc4e2812b568d76fac691bc4c7c7058c5ada38df4eb910f",
+      "archive_sha256": {
+        "result.json": "202fb3c6fc343315c914753b021007e8a52ade4e2a81d8caf5a1f0d2ea92f563",
+        "evaluation.json": "fee9a5cdc5214c4d60d1c16521bb4b7c0b98d60735cd130a3b97993414d1a553"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r01-world_3",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 17.50817205051677,
+      "baseline_display_score": 17.51,
+      "final_law_id": "law_2",
+      "formula": {
+        "ax": "-a1*vx/a0 - a2*vy/a0",
+        "ay": "-a1*vy/a0 + a2*vx/a0"
+      },
+      "parameters": {
+        "a0": 2.886136799415813,
+        "a1": 0.3908014849373322,
+        "a2": 0.13159297439258968
+      },
+      "fitted_laws": 3,
+      "validation_count": 2,
+      "fit_position_rmse": 0.046394097540058486,
+      "ui_validation_id": "validation_8f193d072a3d",
+      "ui_validation_position_rmse": 0.22947590037747556,
+      "post_session_position_rmse": 5.220100781771303,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "4beb99241e4c7d36d547a7b73717f85dc16732138218b4b064b268f87ff9d05c",
+      "archive_sha256": {
+        "result.json": "20f59434275fcfeec4d5ae1facde9488103d72617561315f5d71c57f34cf4f1b",
+        "evaluation.json": "0b83e81107043e5a249c35a9c7c7fcf7b2de8faaa323f2d34786dcc8acc3b357"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r01-world_4",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 88.83486521494808,
+      "baseline_display_score": 88.83,
+      "final_law_id": "law_2",
+      "formula": {
+        "ax": "(q('charge')/q('mass'))*(-G*x/((x*x+y*y+s)*sqrt(x*x+y*y+s)))",
+        "ay": "(q('charge')/q('mass'))*(-G*y/((x*x+y*y+s)*sqrt(x*x+y*y+s)))"
+      },
+      "parameters": {
+        "G": 0.5055376763179171,
+        "s": 0.7818796333748834
+      },
+      "fitted_laws": 2,
+      "validation_count": 2,
+      "fit_position_rmse": 0.00045501866906002896,
+      "ui_validation_id": "validation_f45202c57be2",
+      "ui_validation_position_rmse": 0.005996401112915826,
+      "post_session_position_rmse": 0.5491325142013267,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "207294189176a748f68c968df8278e205393026343e2148b7569208f16c673d3",
+      "archive_sha256": {
+        "result.json": "fb1fe51a62f284c9d65e922d5e6a74f8b11534230fa43ba41758674db8937e7b",
+        "evaluation.json": "f25e85e3a19820c968fb407e6ea9196dca2dba2412ca8454bd790551b6a9142a"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r01-world_5",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 32.370924402878785,
+      "baseline_display_score": 32.37,
+      "final_law_id": "law_2",
+      "formula": {
+        "ax": "-w2*x",
+        "ay": "-w2*y"
+      },
+      "parameters": {
+        "w2": 0.10975394390349136
+      },
+      "fitted_laws": 2,
+      "validation_count": 1,
+      "fit_position_rmse": 0.030516321658873417,
+      "ui_validation_id": "validation_0cf006ed0429",
+      "ui_validation_position_rmse": 0.030860531178959535,
+      "post_session_position_rmse": 1.5507770917080999,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "59376789d7015d003336534127f95cf900fe73cd9fda34bcc5293d9df0e18f0e",
+      "archive_sha256": {
+        "result.json": "5d44bec784e23bc85aa49aa334e0ddfede781b3419791cc712578d81ecce1be7",
+        "evaluation.json": "b789a19ff688d546435bc11cf5d5885ce90a1e63de714ddf655784f8a0c42886"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r01-world_6",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 17.00252590040793,
+      "baseline_display_score": 17.0,
+      "final_law_id": "law_2",
+      "formula": {
+        "ax": "a11*x + a12*y",
+        "ay": "a21*x + a22*y"
+      },
+      "parameters": {
+        "a11": -0.07469558838826654,
+        "a12": 0.03899783628067424,
+        "a21": 0.03906091392477181,
+        "a22": -0.16530720188868425
+      },
+      "fitted_laws": 2,
+      "validation_count": 2,
+      "fit_position_rmse": 0.0006669651743922036,
+      "ui_validation_id": "validation_ed6bd35c8e7e",
+      "ui_validation_position_rmse": 0.000990542210952939,
+      "post_session_position_rmse": 4.2927983222114685,
+      "n_fixed_test_trajectories": 32,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "a09407bbc559a6e2c37f4a78704e26d7bcf938654a461f102394dd7c188b61f7",
+      "archive_sha256": {
+        "result.json": "433e9248e81e1cbec45909bf81af5222e6f7902b3f74a50211916433c11cd149",
+        "evaluation.json": "08ca880608db8c88639bde5811806166d0e172fc78dfd6385bab3fe3acefde2e"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r02-world_1",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 97.4999552260212,
+      "baseline_display_score": 97.5,
+      "final_law_id": "law_1",
+      "formula": {
+        "ax": "-p*(q('charge')/q('mass'))*x/(x*x+y*y)",
+        "ay": "-p*(q('charge')/q('mass'))*y/(x*x+y*y)"
+      },
+      "parameters": {
+        "p": 0.07955596439936335
+      },
+      "fitted_laws": 1,
+      "validation_count": 1,
+      "fit_position_rmse": 6.552815002625062e-06,
+      "ui_validation_id": "validation_67e0c00e9e2d",
+      "ui_validation_position_rmse": 9.561865153285309e-05,
+      "post_session_position_rmse": 0.001501683886902816,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "a2a58b39a9d70209183dc4af7b951bdbc62abc574dc367582c7cfdf4728831f6",
+      "archive_sha256": {
+        "result.json": "9b5e337c6782d17b1a2362ade7d13a9386660e2ac924f5bb0f247512ad177563",
+        "evaluation.json": "d6316e5dc3287309736a81ab4e1933e8cbddab1b884f519090cbcdf6dcd0b017"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r02-world_2",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 20.651059879566297,
+      "baseline_display_score": 20.65,
+      "final_law_id": "law_1",
+      "formula": {
+        "ax": "-k*x",
+        "ay": "-k*y"
+      },
+      "parameters": {
+        "k": 0.0599999994550875
+      },
+      "fitted_laws": 1,
+      "validation_count": 1,
+      "fit_position_rmse": 2.5724364730548043e-08,
+      "ui_validation_id": "validation_1e2758af9321",
+      "ui_validation_position_rmse": 2.989284508084576e-08,
+      "post_session_position_rmse": 2.4927675792940605,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "9353f851adfc278a8d42a5000936638ec5391620cef6c21d7962649a019a7aaf",
+      "archive_sha256": {
+        "result.json": "4b7c35d9ed40a0844100bc44e501b6e3e6566f1e2fc14e1b29c93149d5c5d7d0",
+        "evaluation.json": "09b98a745c6382662c8c3999370ae498c091064003a410714b09bfb9c893912c"
+      },
+      "focus_evidence": {
+        "training_probe_ids": [
+          "probe_0001",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005"
+        ],
+        "validation_probe_ids": [
+          "probe_0002",
+          "probe_0006"
+        ],
+        "acquired_probe_properties": [
+          {
+            "mass": 1.0,
+            "charge": 1.0
+          },
+          {
+            "mass": 1.0,
+            "charge": 1.0
+          },
+          {
+            "charge": 1.0,
+            "mass": 1.0
+          },
+          {
+            "charge": 1.0,
+            "mass": 1.0
+          },
+          {
+            "charge": 1.0,
+            "mass": 1.0
+          },
+          {
+            "charge": 1.0,
+            "mass": 1.0
+          }
+        ],
+        "score_components": {
+          "total": 20.651059879566297,
+          "prediction": 10.651059879566299,
+          "law": 10,
+          "conservation": 0.0,
+          "normalized_error": 0.6510989601464668
+        },
+        "score_claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": true,
+            "expected": false,
+            "correct": false,
+            "points": 0
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "fixed_test_probe_properties": [
+          {
+            "probe_id": "v15_b0-s0_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              0.7789331160042999,
+              0.18238201882815075
+            ],
+            "v0": [
+              -0.05289888547303294,
+              0.2957278227626382
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s0_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -0.2507752758887072,
+              1.0710330345059125
+            ],
+            "v0": [
+              -0.3850708890887644,
+              -0.10996441759118769
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s0_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -1.3631329530075247,
+              -0.31916853294926356
+            ],
+            "v0": [
+              0.12948313335511769,
+              -0.48320529324166167
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s0_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              0.38756179000982066,
+              -1.6552328715091371
+            ],
+            "v0": [
+              0.5885955059166105,
+              0.11801310594400083
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s1_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              0.5573653674777325,
+              0.5738848727196182
+            ],
+            "v0": [
+              -0.20344183402468272,
+              0.22112570347281793
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s1_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -0.7890916999894749,
+              0.7663773802818822
+            ],
+            "v0": [
+              -0.2919070305697298,
+              -0.2740987576336085
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s1_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -0.9753893930860318,
+              -1.0042985272593314
+            ],
+            "v0": [
+              0.3704430386949354,
+              -0.33623966400491445
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s1_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              1.219505354529188,
+              -1.1844014058901817
+            ],
+            "v0": [
+              0.4047996787774359,
+              0.443257333265914
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s0_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              2.100104562718309,
+              0.9378490420370114
+            ],
+            "v0": [
+              -0.14137060219671638,
+              0.37494119585093805
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s0_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -1.060177177954882,
+              2.374031244812002
+            ],
+            "v0": [
+              -0.453426969128314,
+              -0.21086117744980298
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s0_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -2.6479579269056943,
+              -1.1825053138727528
+            ],
+            "v0": [
+              0.26638985086285366,
+              -0.5381477444613703
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s0_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              1.3048334497906238,
+              -2.921884608999387
+            ],
+            "v0": [
+              0.6422797592464561,
+              0.27845136622168093
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s1_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              1.2619866793376513,
+              1.922859750781197
+            ],
+            "v0": [
+              -0.33206814650967686,
+              0.2230447683550528
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s1_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -2.173667544361354,
+              1.4265936375121273
+            ],
+            "v0": [
+              -0.2949386342423076,
+              -0.40449719333309464
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s1_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -1.5912005956866038,
+              -2.4244753379415096
+            ],
+            "v0": [
+              0.5039578320908437,
+              -0.32564509222653476
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s1_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              2.675283131521666,
+              -1.7558075538610802
+            ],
+            "v0": [
+              0.36348919845559735,
+              0.5987339809875301
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s0_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              3.60645127852011,
+              2.5206168244421177
+            ],
+            "v0": [
+              -0.3239137966271208,
+              0.5056320725622104
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s0_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -2.749763808482309,
+              3.934310485658302
+            ],
+            "v0": [
+              -0.5774244169666444,
+              -0.39575510387331514
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s0_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -4.262169692796495,
+              -2.978910792522502
+            ],
+            "v0": [
+              0.47810064751355286,
+              -0.641875152421461
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s0_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              3.2080577765626956,
+              -4.590028899934684
+            ],
+            "v0": [
+              0.7340124115861228,
+              0.5208328322874548
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s1_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              1.6760692272142803,
+              4.06826645459529
+            ],
+            "v0": [
+              -0.5584581108268102,
+              0.21958735083892572
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s1_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -4.438108859558497,
+              1.8284391569610339
+            ],
+            "v0": [
+              -0.28795214958306997,
+              -0.6384469385577645
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s1_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -1.9808090867077872,
+              -4.807951264521705
+            ],
+            "v0": [
+              0.7359903065444181,
+              -0.3137074032747091
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s1_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              5.177793669484913,
+              -2.13317901645454
+            ],
+            "v0": [
+              0.32152756940394145,
+              0.8409226812950679
+            ]
+          }
+        ]
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r02-world_3",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 96.49999999999984,
+      "baseline_display_score": 96.5,
+      "final_law_id": "law_7",
+      "formula": {
+        "ax": "-k11*x-k12*y-d*vx",
+        "ay": "-k21*x-k22*y-d*vy"
+      },
+      "parameters": {
+        "k11": 0.05999999937317549,
+        "k12": -0.03464101590644177,
+        "k21": -0.03464101528480235,
+        "k22": 0.09999999961545973,
+        "d": -2.4106061261429613e-10
+      },
+      "fitted_laws": 7,
+      "validation_count": 2,
+      "fit_position_rmse": 6.177703202251078e-09,
+      "ui_validation_id": "validation_b5cf8b90fcbc",
+      "ui_validation_position_rmse": 2.0465647976219166e-08,
+      "post_session_position_rmse": 4.221154980437675e-08,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "c54f5993cee6f243b32dc214955c5c5ada30f235897742918a3c93abef893b71",
+      "archive_sha256": {
+        "result.json": "9724d3ebcadb18aacbc6df4a44c56d331ca58ba5ee738e40d55c5948a4e95928",
+        "evaluation.json": "1a5199c001f371bab6a5e5246d5d119012598c8665a732d354eedc0828e52234"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r02-world_4",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 43.914283549161674,
+      "baseline_display_score": 43.91,
+      "final_law_id": "law_3",
+      "formula": {
+        "ax": "sum_b(-k*q('charge')/q('mass')*(x-bx)/sqrt((x-bx)**2+(y-by)**2)**3)",
+        "ay": "sum_b(-k*q('charge')/q('mass')*(y-by)/sqrt((x-bx)**2+(y-by)**2)**3)"
+      },
+      "parameters": {
+        "k": 0.29703958703967914
+      },
+      "fitted_laws": 3,
+      "validation_count": 1,
+      "fit_position_rmse": 0.2059240813767567,
+      "ui_validation_id": "validation_d52e36d92b12",
+      "ui_validation_position_rmse": 0.19445565332936415,
+      "post_session_position_rmse": 2.0409223686549733,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "3912b533244d604df972831ca6dc95225688934f9fe205513bca6e41cc7bf997",
+      "archive_sha256": {
+        "result.json": "14daa0d76bb300b50792ef7bc8698c6ae70e5a281fa5cc56140fe4627e49b478",
+        "evaluation.json": "eefbce4d36b6bd24d2bb3af5c98ef1be8a91f001ed14939e10f26e4fe97aba98"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r02-world_5",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 5.750381349166196,
+      "baseline_display_score": 5.75,
+      "final_law_id": "law_2",
+      "formula": {
+        "ax": "-p1*x/sqrt(x**2+y**2)/((x**2+y**2))",
+        "ay": "-p1*y/sqrt(x**2+y**2)/((x**2+y**2))"
+      },
+      "parameters": {
+        "p1": 0.23880004683142456
+      },
+      "fitted_laws": 6,
+      "validation_count": 1,
+      "fit_position_rmse": 0.4282222834537418,
+      "ui_validation_id": "validation_5a5820358d22",
+      "ui_validation_position_rmse": 0.32158745852606896,
+      "post_session_position_rmse": 8.39325496967814,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "e11e1c224433a069ae346fc768db4f3694d63c2e49df423f2b42a650356c4b9e",
+      "archive_sha256": {
+        "result.json": "40ef32252fcee21813cb395e9b42b09a92f4d10eeb2a902d908b3f2f4a3131cb",
+        "evaluation.json": "205c607a37a23f04149b0500103f7efed64567cd72bbee2d8aafcc9521a9aa22"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-baseline-20261107-r02-world_6",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 21.10046377162031,
+      "baseline_display_score": 21.1,
+      "final_law_id": "law_1",
+      "formula": {
+        "ax": "sum_b(k*(bx-x)/((x-bx)*(x-bx)+(y-by)*(y-by))*sqrt((x-bx)*(x-bx)+(y-by)*(y-by)))",
+        "ay": "sum_b(k*(by-y)/((x-bx)*(x-bx)+(y-by)*(y-by))*sqrt((x-bx)*(x-bx)+(y-by)*(y-by)))"
+      },
+      "parameters": {
+        "k": 0.0323064634073905
+      },
+      "fitted_laws": 4,
+      "validation_count": 1,
+      "fit_position_rmse": 0.08284947851738479,
+      "ui_validation_id": "validation_793e47a6a7ec",
+      "ui_validation_position_rmse": 0.18673448583684413,
+      "post_session_position_rmse": 3.312466681432178,
+      "n_fixed_test_trajectories": 32,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "6dc5b2f4606332fc33d29d276a8739b1c0de3b1f63c617cee1ba410b3e573cd8",
+      "archive_sha256": {
+        "result.json": "7670ad2af4660083d26a64955d0969ee3cdb31f9bca6567e27bc5e6e518644e4",
+        "evaluation.json": "3ad3d93971680578659971064a8c9ed254313a080209ff031ec0e863ceb73dbd"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r01-world_1",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 53.40823842891941,
+      "baseline_display_score": 53.41,
+      "final_law_id": "law_2",
+      "formula": {
+        "ax": "-k*x/(x**2+y**2)",
+        "ay": "-k*y/(x**2+y**2)"
+      },
+      "parameters": {
+        "k": 0.0795045545075704
+      },
+      "fitted_laws": 2,
+      "validation_count": 1,
+      "fit_position_rmse": 0.0002965550929974,
+      "ui_validation_id": "validation_3da6466cb16e",
+      "ui_validation_position_rmse": 0.00020176407053922084,
+      "post_session_position_rmse": 2.088824780263898,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "059098459330f461877206324cd3be2384b2cac5e033f3ac9188787cea989d77",
+      "archive_sha256": {
+        "result.json": "a32ee82f2165379a4bb371e62e7f20bc4a49770bc5026cff9d99d87e9fd23f30",
+        "evaluation.json": "192189edfebc4103f0c0042c9913989007bf158bc05d427b34e514721f0d000c"
+      },
+      "focus_evidence": {
+        "training_probe_ids": [
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "validation_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0007"
+        ],
+        "acquired_probe_properties": [
+          {
+            "mass": 1.0,
+            "charge": 1.0
+          },
+          {
+            "mass": 1.0,
+            "charge": 1.0
+          },
+          {
+            "charge": 1.0,
+            "mass": 1.0
+          },
+          {
+            "charge": 1.0,
+            "mass": 1.0
+          },
+          {
+            "charge": 1.0,
+            "mass": 1.0
+          },
+          {
+            "charge": 1.0,
+            "mass": 1.0
+          },
+          {
+            "charge": 1.0,
+            "mass": 1.0
+          }
+        ],
+        "score_components": {
+          "total": 53.40823842891941,
+          "prediction": 38.40823842891941,
+          "law": 15,
+          "conservation": 0.0,
+          "normalized_error": 0.10828864658308344
+        },
+        "score_claim_checks": [
+          {
+            "field": "dynamics_order",
+            "submitted": 2,
+            "expected": 2,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "hidden_matter",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          },
+          {
+            "field": "time_dependence",
+            "submitted": false,
+            "expected": false,
+            "correct": true,
+            "points": 5
+          }
+        ],
+        "fixed_test_probe_properties": [
+          {
+            "probe_id": "v15_b0-s0_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              1.119716354256181,
+              0.2621741520654666
+            ],
+            "v0": [
+              -0.0756966378265518,
+              0.39309446226317574
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s0_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -0.3191685329492636,
+              1.3631329530075247
+            ],
+            "v0": [
+              -0.43375420883903315,
+              -0.1213632937679471
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s0_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -1.6065495517588684,
+              -0.3761629138330606
+            ],
+            "v0": [
+              0.12948313335511769,
+              -0.48320529324166167
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s0_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              0.4331572947168584,
+              -1.849966150510212
+            ],
+            "v0": [
+              0.5399121861663417,
+              0.10661422976724141
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s1_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              0.8012127157492402,
+              0.824959504534451
+            ],
+            "v0": [
+              -0.27517744311463505,
+              0.29079637440753453
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s1_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -1.0042985272593314,
+              0.9753893930860318
+            ],
+            "v0": [
+              -0.32674236603708806,
+              -0.30996656217858465
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s1_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -1.1495660704228232,
+              -1.1836375499842122
+            ],
+            "v0": [
+              0.3704430386949354,
+              -0.33623966400491445
+            ]
+          },
+          {
+            "probe_id": "v15_b0-s1_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              1.3629765727090926,
+              -1.3237427477596149
+            ],
+            "v0": [
+              0.36996434331007766,
+              0.4073895287209379
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s0_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              2.3740312448120013,
+              1.0601771779548825
+            ],
+            "v0": [
+              -0.10059455689075937,
+              0.2836323018197072
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s0_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -1.264057404484667,
+              2.830575714968156
+            ],
+            "v0": [
+              -0.36211807509708316,
+              -0.170085132143846
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s0_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -3.2871201851243104,
+              -1.467937631014452
+            ],
+            "v0": [
+              0.2256138055568967,
+              -0.44683885043013943
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s0_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              1.6718178575442366,
+              -3.743664655280464
+            ],
+            "v0": [
+              0.414007524168379,
+              0.1765112529567885
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s1_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              1.4265936375121275,
+              2.1736675443613533
+            ],
+            "v0": [
+              -0.24846554864962478,
+              0.16817578229689403
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s1_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -2.591680533661614,
+              1.700938567802921
+            ],
+            "v0": [
+              -0.24006964818414883,
+              -0.32089459547304267
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s1_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -1.975283498093715,
+              -3.0096935229618738
+            ],
+            "v0": [
+              0.42035523423079163,
+              -0.270776106168376
+            ]
+          },
+          {
+            "probe_id": "v15_b1-s1_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              3.4277065122621337,
+              -2.2496284283845087
+            ],
+            "v0": [
+              0.22631673331020052,
+              0.38972748633739984
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s0_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              4.262169692796493,
+              2.9789107925225027
+            ],
+            "v0": [
+              -0.15205355859697642,
+              0.25973766720856656
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s0_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -3.3799180145928385,
+              4.83592330528833
+            ],
+            "v0": [
+              -0.33153001161300055,
+              -0.22389486584317084
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s0_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              -5.409676917780166,
+              -3.7809252366631747
+            ],
+            "v0": [
+              0.3062404094834085,
+              -0.3959807470678171
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s0_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 0.7
+            },
+            "t0": 0.0,
+            "r0": [
+              4.181932458733514,
+              -5.983430530272
+            ],
+            "v0": [
+              0.36517080355565706,
+              0.2630424752422382
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s1_1",
+            "properties": {
+              "mass": 0.7,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              1.9808090867077857,
+              4.807951264521706
+            ],
+            "v0": [
+              -0.2810763071044042,
+              0.10530990352886119
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s1_2",
+            "properties": {
+              "mass": 1.0,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -5.455175473207319,
+              2.247456463764604
+            ],
+            "v0": [
+              -0.17367470227300535,
+              -0.3610651348353584
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s1_3",
+            "properties": {
+              "mass": 1.3,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              -2.514103840821422,
+              -6.102399681892933
+            ],
+            "v0": [
+              0.458608502822012,
+              -0.1994299559646444
+            ]
+          },
+          {
+            "probe_id": "v15_b2-s1_4",
+            "properties": {
+              "mass": 1.6,
+              "charge": 1.7
+            },
+            "t0": 4.0,
+            "r0": [
+              6.7496238905785475,
+              -2.78075121787824
+            ],
+            "v0": [
+              0.15011139843884447,
+              0.42484997571145877
+            ]
+          }
+        ]
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r01-world_2",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 94.99999999999986,
+      "baseline_display_score": 95.0,
+      "final_law_id": "law_1",
+      "formula": {
+        "ax": "-(k*q('charge')/q('mass'))*x",
+        "ay": "-(k*q('charge')/q('mass'))*y"
+      },
+      "parameters": {
+        "k": 0.0599999999196218
+      },
+      "fitted_laws": 1,
+      "validation_count": 1,
+      "fit_position_rmse": 1.6113323481873224e-09,
+      "ui_validation_id": "validation_8dd8cedcf263",
+      "ui_validation_position_rmse": 2.6927846783937468e-08,
+      "post_session_position_rmse": 4.20693092068718e-08,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "d0229f5d9c64086c2500140e63ac491a437f6f30821bafd2a965c9ed125b81c3",
+      "archive_sha256": {
+        "result.json": "7d439e5eb5c66eea6f0d3c112bb04f25bccac81daebaf4de6cd6f64a29ed6076",
+        "evaluation.json": "4f12aeac689e5ddf4dcb4f67f471bd58cc2a048e48af05eb435b7c489d2fcc57"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r01-world_3",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 94.99999999999993,
+      "baseline_display_score": 95.0,
+      "final_law_id": "law_1",
+      "formula": {
+        "ax": "a11*x + a12*y",
+        "ay": "a21*x + a22*y"
+      },
+      "parameters": {
+        "a11": -0.05999999999987509,
+        "a12": 0.034641016138994604,
+        "a21": 0.03464101615117742,
+        "a22": -0.09999999997818951
+      },
+      "fitted_laws": 1,
+      "validation_count": 2,
+      "fit_position_rmse": 2.3226377155892622e-11,
+      "ui_validation_id": "validation_96fe171069a6",
+      "ui_validation_position_rmse": 1.5328827541114103e-08,
+      "post_session_position_rmse": 2.694568525269916e-08,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "14d64cc2cd2b7b46b0bf0c2ae107578a2005487a7b76d679b33f816afe7d922b",
+      "archive_sha256": {
+        "result.json": "df8fd0e40118aab857f446519453e00de78e005228281d06c28ff3ea3abbfe94",
+        "evaluation.json": "dfd30ffe921abe3e5774831fcde8002edba0355e91d0dfbb7a3860aa10aaa613"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r01-world_4",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 91.45641852040626,
+      "baseline_display_score": 91.46,
+      "final_law_id": "law_4",
+      "formula": {
+        "ax": "sum_b(-A*q('charge')/q('mass')*(x-bx)/(( (x-bx)**2+(y-by)**2+B)*sqrt((x-bx)**2+(y-by)**2)))",
+        "ay": "sum_b(-A*q('charge')/q('mass')*(y-by)/(( (x-bx)**2+(y-by)**2+B)*sqrt((x-bx)**2+(y-by)**2)))"
+      },
+      "parameters": {
+        "A": 0.4910584142836662,
+        "B": 0.9803538505208212
+      },
+      "fitted_laws": 4,
+      "validation_count": 2,
+      "fit_position_rmse": 0.00022988351623342554,
+      "ui_validation_id": "validation_a767d8d4fa17",
+      "ui_validation_position_rmse": 0.00034284732141921635,
+      "post_session_position_rmse": 0.40395733396808287,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "d356b906ec386b937a9877ea4f62bb95eb5b47e35836efb2769b96577a678e20",
+      "archive_sha256": {
+        "result.json": "8a1f9d0a860f8e40262b30710f569c80ef7abd98a49afb1da8b0722a22c483c9",
+        "evaluation.json": "401a6a7da17f4d0dfccb49949370cadb4a6abe6839cca2a7997218a5a2895f24"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r01-world_5",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 27.128129305729857,
+      "baseline_display_score": 27.13,
+      "final_law_id": "law_3",
+      "formula": {
+        "ax": "-p1*x",
+        "ay": "-p2*y"
+      },
+      "parameters": {
+        "p1": 0.07220671373091184,
+        "p2": 0.11512565052238033
+      },
+      "fitted_laws": 5,
+      "validation_count": 3,
+      "fit_position_rmse": 0.009480834009396508,
+      "ui_validation_id": "validation_74598f093a31",
+      "ui_validation_position_rmse": 0.010564311572032456,
+      "post_session_position_rmse": 1.932061033954022,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "852a91dff8a97fbc990bf4af074694c9acf5942fb5cbf53db395e1c54babf690",
+      "archive_sha256": {
+        "result.json": "cbf4c4301483152bed3109d0a44525ab49ea1b37721a6ca1f8332746c0f7e849",
+        "evaluation.json": "f468b73c039f0869c948c5959a6be8ef5855bbb03a47b81a4d27a3bf5f53e60f"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r01-world_6",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 11.229161220510365,
+      "baseline_display_score": 11.23,
+      "final_law_id": "law_3",
+      "formula": {
+        "ax": "-G*x/sqrt((x*x+y*y+e)*(x*x+y*y+e)*(x*x+y*y+e))",
+        "ay": "-G*y/sqrt((x*x+y*y+e)*(x*x+y*y+e)*(x*x+y*y+e))"
+      },
+      "parameters": {
+        "G": 0.24578378512562887,
+        "e": 0.9999999999995961
+      },
+      "fitted_laws": 3,
+      "validation_count": 1,
+      "fit_position_rmse": 0.18749901241301486,
+      "ui_validation_id": "validation_4688d87cd583",
+      "ui_validation_position_rmse": 0.594315880739298,
+      "post_session_position_rmse": 10.643690589194714,
+      "n_fixed_test_trajectories": 32,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "49aeb3129fbfd1329e302adf3865a985603acc616ecd2afee4fa048b8e18185e",
+      "archive_sha256": {
+        "result.json": "58ef77ae94b7eb47ea521ab1116bca3f437facf11b343b15802d108b72bf86d1",
+        "evaluation.json": "088be7db79535fe470195f8b906287ff91016913d4250c83b8ce48f6bf12b668"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_1",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 63.47748357564224,
+      "baseline_display_score": 63.48,
+      "final_law_id": "law_6",
+      "formula": {
+        "ax": "sum_b(-G*(q('charge')/q('mass'))*(x-bx)/sqrt((x-bx)**2+(y-by)**2)/((x-bx)**2+(y-by)**2))",
+        "ay": "sum_b(-G*(q('charge')/q('mass'))*(y-by)/sqrt((x-bx)**2+(y-by)**2)/((x-bx)**2+(y-by)**2))"
+      },
+      "parameters": {
+        "G": 0.22348874268836502
+      },
+      "fitted_laws": 6,
+      "validation_count": 3,
+      "fit_position_rmse": 0.0015868615799016154,
+      "ui_validation_id": "validation_5457873d00bc",
+      "ui_validation_position_rmse": 0.003153055314168991,
+      "post_session_position_rmse": 1.7267170021458333,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "cdad6d293a9e5654cfe0a8427b1154fa9a462e2c44b9a098b2cdc6c951e2bd9b",
+      "archive_sha256": {
+        "result.json": "97aa8ce214189f59983d7231b3fde6a8791ced53ea6454b6d7fe723417b18d82",
+        "evaluation.json": "0cead07184078b3218e11e2a38bc7489615852b9044371601f55f6aeb217bd42"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_2",
+      "status": "submitted",
+      "complete": false,
+      "evaluation_state": "scored",
+      "score": 15.0,
+      "baseline_display_score": null,
+      "final_law_id": "law_6",
+      "formula": {
+        "ax": "-p1*x/((x*x+y*y)*sqrt(x*x+y*y))+a*vx+b*vy",
+        "ay": "-p1*y/((x*x+y*y)*sqrt(x*x+y*y))+c*vx+d*vy"
+      },
+      "parameters": {
+        "p1": 0.4183701845439802,
+        "a": -0.1578842577926926,
+        "b": -0.2874348785427238,
+        "c": 0.07439893933784769,
+        "d": -0.013835954637938762
+      },
+      "fitted_laws": 7,
+      "validation_count": 7,
+      "fit_position_rmse": 0.02315462548929469,
+      "ui_validation_id": "validation_2cadbff9ea2f",
+      "ui_validation_position_rmse": 0.028273296069928185,
+      "post_session_position_rmse": null,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true,
+        "incomplete_score_is_explicit_prediction_failure_not_placeholder": true
+      },
+      "api_projection_sha256": "84d43a72b76d466fdc8940a7c58e2e7217f7382c0483fa6d46b32013ecbe3bda",
+      "archive_sha256": {
+        "result.json": "698be05a7abaa0eef5764c59c587c5bf79fbd90a4bc8779e894711c8b50b1d32",
+        "evaluation.json": "698176935bdecfedded8cebe99463e80d5fd6dc47553b0505fddaef237ebbe4e"
+      },
+      "local_browser_endpoint_matches_remote_api": true,
+      "detail_display_score": 15.0
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_3",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 89.99999999999993,
+      "baseline_display_score": 90.0,
+      "final_law_id": "law_2",
+      "formula": {
+        "ax": "a11*x+a12*y",
+        "ay": "a21*x+a22*y"
+      },
+      "parameters": {
+        "a11": -0.05999999998955766,
+        "a12": 0.03464101615040686,
+        "a21": 0.034641016134225544,
+        "a22": -0.09999999999822845
+      },
+      "fitted_laws": 2,
+      "validation_count": 1,
+      "fit_position_rmse": 3.7246878901855384e-11,
+      "ui_validation_id": "validation_21fdda3322f8",
+      "ui_validation_position_rmse": 1.347737892143706e-10,
+      "post_session_position_rmse": 2.6495925636064867e-08,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "f2a7576a77072d6c2fc451e5fc89a9ac235e21f4c256bc351df9d9210800f4ec",
+      "archive_sha256": {
+        "result.json": "1e4e045bc20f7a1133b7fba76b54670e4d576897b1955fd6eade7f552eb509fd",
+        "evaluation.json": "40b7bbc7e9b9608ecede63fd7d7eb38d7adb51f80d72d1d10f4ddbec6e34be4b"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_4",
+      "status": "submitted",
+      "complete": false,
+      "evaluation_state": "scored",
+      "score": 15.0,
+      "baseline_display_score": null,
+      "final_law_id": "law_4",
+      "formula": {
+        "ax": "-k*x/(x**2+y**2+c)",
+        "ay": "-k*y/(x**2+y**2+c)"
+      },
+      "parameters": {
+        "k": 0.13989424921706278,
+        "c": -0.9101117225374225
+      },
+      "fitted_laws": 4,
+      "validation_count": 2,
+      "fit_position_rmse": 0.0013234050449563862,
+      "ui_validation_id": "validation_fa16c918aa89",
+      "ui_validation_position_rmse": 0.0026849761152948886,
+      "post_session_position_rmse": null,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true,
+        "incomplete_score_is_explicit_prediction_failure_not_placeholder": true
+      },
+      "api_projection_sha256": "f85158a2e2c1c52bf7c02bb8701cdf8f4e91410fc55c25f13815a034c1e69d11",
+      "archive_sha256": {
+        "result.json": "6ba5bd9533ab4d1b96ad847634a229c2e0c07b89b6d13659a011359d6d1b1051",
+        "evaluation.json": "e7b09f62af589ff07a90e4f7d0d8fb47dd0359ee0242a366300ce8cecbe07cac"
+      },
+      "local_browser_endpoint_matches_remote_api": true,
+      "detail_display_score": 15.0
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_5",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 27.034041695063785,
+      "baseline_display_score": 27.03,
+      "final_law_id": "law_7",
+      "formula": {
+        "ax": "-k*x*exp(g*log(x*x+y*y))",
+        "ay": "-k*y*exp(g*log(x*x+y*y))"
+      },
+      "parameters": {
+        "k": 0.07227360964518784,
+        "g": 0.09046483382039275
+      },
+      "fitted_laws": 7,
+      "validation_count": 2,
+      "fit_position_rmse": 0.05622697976042977,
+      "ui_validation_id": "validation_69d5570f8874",
+      "ui_validation_position_rmse": 0.04013660438047903,
+      "post_session_position_rmse": 1.9409431167352096,
+      "n_fixed_test_trajectories": 24,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "95a67e7ecf716b7d4eb919b7d09a29e97438e3dc270df299e1c7fe83da9ab9aa",
+      "archive_sha256": {
+        "result.json": "e92f3e7093fdd46b0a281cdcc4bd573a1678288a8b47122c2c5017ed3fd8a188",
+        "evaluation.json": "e4e95b562f4a9551edfa0da20a0e940130d7609f091a172fecc1efb5b0655646"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_6",
+      "status": "submitted",
+      "complete": true,
+      "evaluation_state": "scored",
+      "score": 26.49091979421135,
+      "baseline_display_score": 26.49,
+      "final_law_id": "law_8",
+      "formula": {
+        "ax": "sum_b(G*(bx-x)/sqrt((x-bx)**2+(y-by)**2))",
+        "ay": "sum_b(G*(by-y)/sqrt((x-bx)**2+(y-by)**2))"
+      },
+      "parameters": {
+        "G": 0.04131017739133858
+      },
+      "fitted_laws": 8,
+      "validation_count": 2,
+      "fit_position_rmse": 0.04602074207629312,
+      "ui_validation_id": "validation_6a6923586dfa",
+      "ui_validation_position_rmse": 0.04656385164421493,
+      "post_session_position_rmse": 2.609212214540284,
+      "n_fixed_test_trajectories": 32,
+      "checks": {
+        "baseline_api_matches_summary": true,
+        "detail_result_matches_raw": true,
+        "detail_evaluation_matches_raw": true,
+        "detail_laws_match_raw": true,
+        "detail_validations_match_raw": true,
+        "detail_submissions_match_raw": true,
+        "every_validation_law_exists": true,
+        "validation_train_ids_disjoint": true,
+        "summary_complete_matches_raw": true,
+        "summary_score_matches_raw": true,
+        "detail_score_matches_raw": true,
+        "summary_independent_rmse_matches_raw": true,
+        "evaluation_law_matches_submission": true,
+        "evaluation_submission_matches_result": true,
+        "evaluation_world_matches_summary": true,
+        "complete_has_all_successful": true,
+        "full_fixed_case_count": true,
+        "detail_scored_state": true,
+        "frozen_export_matches_law_record": true,
+        "frozen_executable_formula_matches": true
+      },
+      "api_projection_sha256": "a7ce8d622ff74199d000a5d6d8b618f081f64a91384773a00a9ec6eea132f0e6",
+      "archive_sha256": {
+        "result.json": "a9f7308bd9983456471697843b8f574fb6494789a4cc03a075c58bdde4dd2baf",
+        "evaluation.json": "b36af199ce5608ba7a5502058996b4bf510a2d960a829071f2f7e36f4cfadcfe"
+      },
+      "local_browser_endpoint_matches_remote_api": true
+    }
+  ],
+  "errors": [],
+  "validation_order_warnings": [
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_2",
+      "law_id": "law_5",
+      "ui_selected_validation": "validation_e5f5f0baa9a2",
+      "chronologically_last_validation": "validation_1f5926c7ef44"
+    }
+  ],
+  "source_sha256": {
+    "shore_agent/web.py": "4da71b8ee35cddf142a6221516c0e066f084753450b4519e14f3796d0acc2a8b",
+    "shore_agent/web_jobs.py": "74f13d8a1191fefd52bfca33cfb7c69cbba3dc3e1a1a56f4f13ec5a32e61fe9a",
+    "web/app.js": "fbf59e71489684b8ac2f0fb5fdf8573091c73b763415129b6deb6f4ba292fdfd",
+    "web/index.html": "6ddaf4ec3bb81d29c2b458691f4944317a920cf645b83fc00cd38c563ff45fa7",
+    "web/baselines.js": "3ddf310b002aec6b8d0dfa4135d12f81f636d37c7ac58819ae7ea8e89d2e384c",
+    "web/baselines.html": "32f206b09b19d6172dbe694446e207625c30150f12fbe0b1e7766c6517fc9886"
+  },
+  "served_asset_sha256": {
+    "/app.js": "fbf59e71489684b8ac2f0fb5fdf8573091c73b763415129b6deb6f4ba292fdfd",
+    "/index.html": "6ddaf4ec3bb81d29c2b458691f4944317a920cf645b83fc00cd38c563ff45fa7",
+    "/baselines.js": "3ddf310b002aec6b8d0dfa4135d12f81f636d37c7ac58819ae7ea8e89d2e384c",
+    "/baselines": "32f206b09b19d6172dbe694446e207625c30150f12fbe0b1e7766c6517fc9886"
+  },
+  "totals": {
+    "batches": 4,
+    "runs": 24,
+    "complete": 22,
+    "all_checks_pass": true,
+    "score_gte90": 7
+  },
+  "local_asset_matches_server": {
+    "/app.js": true,
+    "/index.html": true,
+    "/baselines.js": true,
+    "/baselines": true
+  },
+  "local_source_matches_server": {
+    "shore_agent/web.py": true,
+    "shore_agent/web_jobs.py": true,
+    "web/app.js": true,
+    "web/index.html": true,
+    "web/baselines.js": true,
+    "web/baselines.html": true
+  },
+  "incomplete_evaluation_details": [
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_2",
+      "complete": false,
+      "n_successful": 13,
+      "n_trajectories": 24,
+      "score": {
+        "status": "scored",
+        "total": 15.0,
+        "reason": "candidate_prediction_invalid",
+        "prediction": 0.0,
+        "law": 15,
+        "conservation": 0.0
+      },
+      "validations_file_order": [
+        {
+          "law_id": "law_5",
+          "validation_id": "validation_1f5926c7ef44",
+          "probe_ids": [
+            "probe_0008"
+          ],
+          "warnings": [
+            "Errors are relative to observations, not hidden truth. No pass threshold is defined.",
+            "Changing a model after seeing these data makes them development data; use fresh experiments for final checking.",
+            "Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty."
+          ],
+          "position_rmse": 0.10871072940483432
+        },
+        {
+          "law_id": "law_6",
+          "validation_id": "validation_2cadbff9ea2f",
+          "probe_ids": [
+            "probe_0004",
+            "probe_0007"
+          ],
+          "warnings": [
+            "Errors are relative to observations, not hidden truth. No pass threshold is defined.",
+            "Changing a model after seeing these data makes them development data; use fresh experiments for final checking.",
+            "Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty."
+          ],
+          "position_rmse": 0.028273296069928185
+        },
+        {
+          "law_id": "law_5",
+          "validation_id": "validation_314a4bcee9e9",
+          "probe_ids": [
+            "probe_0007"
+          ],
+          "warnings": [
+            "Errors are relative to observations, not hidden truth. No pass threshold is defined.",
+            "Changing a model after seeing these data makes them development data; use fresh experiments for final checking.",
+            "Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty."
+          ],
+          "position_rmse": 0.02633385750586641
+        },
+        {
+          "law_id": "law_3",
+          "validation_id": "validation_7b6c18200547",
+          "probe_ids": [
+            "probe_0004"
+          ],
+          "warnings": [
+            "Errors are relative to observations, not hidden truth. No pass threshold is defined.",
+            "Changing a model after seeing these data makes them development data; use fresh experiments for final checking.",
+            "Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty."
+          ],
+          "position_rmse": 0.019938157793196666
+        },
+        {
+          "law_id": "law_7",
+          "validation_id": "validation_b2ab8daabc0a",
+          "probe_ids": [
+            "probe_0004",
+            "probe_0007"
+          ],
+          "warnings": [
+            "Errors are relative to observations, not hidden truth. No pass threshold is defined.",
+            "Changing a model after seeing these data makes them development data; use fresh experiments for final checking.",
+            "Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty."
+          ],
+          "position_rmse": 0.01749626008629072
+        },
+        {
+          "law_id": "law_5",
+          "validation_id": "validation_e5f5f0baa9a2",
+          "probe_ids": [
+            "probe_0004"
+          ],
+          "warnings": [
+            "Errors are relative to observations, not hidden truth. No pass threshold is defined.",
+            "Changing a model after seeing these data makes them development data; use fresh experiments for final checking.",
+            "Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty."
+          ],
+          "position_rmse": 0.02633385750586641
+        },
+        {
+          "law_id": "law_3",
+          "validation_id": "validation_f7d91e38e0d6",
+          "probe_ids": [
+            "probe_0006",
+            "probe_0007"
+          ],
+          "warnings": [
+            "Errors are relative to observations, not hidden truth. No pass threshold is defined.",
+            "Changing a model after seeing these data makes them development data; use fresh experiments for final checking.",
+            "Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty."
+          ],
+          "position_rmse": 0.06849389043014303
+        }
+      ],
+      "validation_event_order": [
+        {
+          "ok": true,
+          "law_id": "law_3",
+          "validation_id": "validation_7b6c18200547",
+          "position_rmse": 0.019938157793196666
+        },
+        {
+          "ok": true,
+          "law_id": "law_3",
+          "validation_id": "validation_f7d91e38e0d6",
+          "position_rmse": 0.06849389043014303
+        },
+        {
+          "ok": true,
+          "law_id": "law_5",
+          "validation_id": "validation_314a4bcee9e9",
+          "position_rmse": 0.02633385750586641
+        },
+        {
+          "ok": true,
+          "law_id": "law_5",
+          "validation_id": "validation_e5f5f0baa9a2",
+          "position_rmse": 0.02633385750586641
+        },
+        {
+          "ok": true,
+          "law_id": "law_5",
+          "validation_id": "validation_1f5926c7ef44",
+          "position_rmse": 0.10871072940483432
+        },
+        {
+          "ok": true,
+          "law_id": "law_6",
+          "validation_id": "validation_2cadbff9ea2f",
+          "position_rmse": 0.028273296069928185
+        },
+        {
+          "ok": true,
+          "law_id": "law_7",
+          "validation_id": "validation_b2ab8daabc0a",
+          "position_rmse": 0.01749626008629072
+        }
+      ],
+      "failure_count": 11,
+      "failure_reasons": [
+        "integration exceeded derivative-evaluation limit"
+      ],
+      "failed_probe_ids": [
+        "v15_b0-s0_1",
+        "v15_b0-s0_2",
+        "v15_b0-s0_3",
+        "v15_b0-s0_4",
+        "v15_b0-s1_1",
+        "v15_b0-s1_2",
+        "v15_b0-s1_3",
+        "v15_b0-s1_4",
+        "v15_b1-s0_2",
+        "v15_b1-s0_4",
+        "v15_b1-s1_2"
+      ]
+    },
+    {
+      "run_id": "e6-qwen38-recovery-concise-20261107-r02-world_4",
+      "complete": false,
+      "n_successful": 20,
+      "n_trajectories": 24,
+      "score": {
+        "status": "scored",
+        "total": 15.0,
+        "reason": "candidate_prediction_invalid",
+        "prediction": 0.0,
+        "law": 15,
+        "conservation": 0.0
+      },
+      "validations_file_order": [
+        {
+          "law_id": "law_3",
+          "validation_id": "validation_a71ca4a827b7",
+          "probe_ids": [
+            "probe_0008",
+            "probe_0009",
+            "probe_0010",
+            "probe_0011"
+          ],
+          "warnings": [
+            "Errors are relative to observations, not hidden truth. No pass threshold is defined.",
+            "Changing a model after seeing these data makes them development data; use fresh experiments for final checking.",
+            "Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty."
+          ],
+          "position_rmse": 0.010000464712790171
+        },
+        {
+          "law_id": "law_4",
+          "validation_id": "validation_fa16c918aa89",
+          "probe_ids": [
+            "probe_0012"
+          ],
+          "warnings": [
+            "Errors are relative to observations, not hidden truth. No pass threshold is defined.",
+            "Changing a model after seeing these data makes them development data; use fresh experiments for final checking.",
+            "Force formula and parameters are frozen; visible source states use the acquired observation snapshot saved in this validation. Interpolation error is part of the input uncertainty."
+          ],
+          "position_rmse": 0.0026849761152948886
+        }
+      ],
+      "validation_event_order": [
+        {
+          "ok": true,
+          "law_id": "law_3",
+          "validation_id": "validation_a71ca4a827b7",
+          "position_rmse": 0.010000464712790171
+        },
+        {
+          "ok": false,
+          "law_id": null,
+          "validation_id": null,
+          "position_rmse": null
+        },
+        {
+          "ok": true,
+          "law_id": "law_4",
+          "validation_id": "validation_fa16c918aa89",
+          "position_rmse": 0.0026849761152948886
+        }
+      ],
+      "failure_count": 4,
+      "failure_reasons": [
+        "integration failed: Required step size is less than spacing between numbers.",
+        "non-finite or excessive intermediate expression value"
+      ],
+      "failed_probe_ids": [
+        "v15_b0-s0_1",
+        "v15_b0-s0_2",
+        "v15_b0-s1_1",
+        "v15_b0-s1_2"
+      ]
+    }
+  ],
+  "ui_findings": [
+    {
+      "id": "same_law_validation_not_latest",
+      "severity": "medium",
+      "affected_runs": [
+        "e6-qwen38-recovery-concise-20261107-r02-world_2"
+      ],
+      "evidence": "web_jobs.py returns validations sorted by random UUID filename; app.js:644 filters same law_id then takes .at(-1). law_5 shows validation_e5f5f0baa9a2 RMSE 0.0263338575, but chronological last is validation_1f5926c7ef44 RMSE 0.1087107294.",
+      "impact": "Only while inspecting nonfinal law_5; final submitted law_7 and post-session score remain correct.",
+      "suggestion": "Resolve the latest successful validate_law event for the selected law_id, or expose explicit chronological order; label the chosen validation id/probe set. Do not mutate archive UUIDs."
+    },
+    {
+      "id": "partial_failure_score_gate_differs",
+      "severity": "medium",
+      "affected_runs": [
+        "e6-qwen38-recovery-concise-20261107-r02-world_2",
+        "e6-qwen38-recovery-concise-20261107-r02-world_4"
+      ],
+      "evidence": "Raw evaluation score explicitly gives 15 (P=0,L=15,C=0), reason=candidate_prediction_invalid. Detail score projection accepts this documented failure score, but baselines.js:49-50 suppresses all scores when evaluation_complete=false.",
+      "impact": "Same experiment shows 15 in detail/history and a dash in baseline table. These 15 points are recorded declaration points, not provisional or invented scores.",
+      "suggestion": "Use a shared scoring-state contract. Distinguish evaluation finished with invalid predictions from evaluation pending/interrupted. Show the recorded 15 with a prediction-failure label, or consistently suppress on both pages; do not count either as fully successful rollouts."
+    },
+    {
+      "id": "session_validation_copy_can_overstate_independence",
+      "severity": "medium",
+      "affected_runs": "all",
+      "evidence": "index.html:79 calls Agent validate calls 次独立轨迹验证; app.js:16 labels validate_law 验证独立轨迹; index.html:106 says 验证位置 RMSE and 等待独立轨迹验证. Detailed note only says trajectories did not fit this version.",
+      "impact": "The probe ids are disjoint from that law training set (checked across all 24 runs), but Agent selected/observed them and may use validation feedback to revise hypotheses. This is not the fixed after-session evaluation or a statistically untouched holdout.",
+      "suggestion": "Rename to 会话内验证（Agent 自选） and 会话内验证位置 RMSE; explain 未参与当前公式拟合，但 Agent 可查看并据此改进. Label final block 交卷后固定测试（无噪声，24/32 条，本地公开开发集）."
+    }
+  ],
+  "ui_correctness_evidence": {
+    "candidate_formula_and_fit": "app.js:622-645 uses selected law_id to obtain formula, fitted parameters, training RMSE and same-law validation.",
+    "default_candidate": "app.js:531-534 prefers result.submission.law_id after submission.",
+    "final_score_subject": "app.js:650-651 hides inline submission outcome for another candidate; 681-683 explicitly warns that evaluation is for final submission when another candidate is selected.",
+    "post_session_label": "index.html:116 says 会话后独立测评; baselines.html:10-11 states all fixed 24/32 cases and noiseless truth, local compatibility and not official score.",
+    "pending_placeholder_logic": "app.js:60-68/675 requires evaluation_state=scored and finite stored score; baselines.js:49-50 otherwise displays an em dash. Missing values are not coerced to zero.",
+    "observed_pending_runs_in_target_set": 0,
+    "scope_note": "Verified current served JS/HTML source and live HTTP data. No visual screenshot was taken and no evaluation was recomputed."
+  },
+  "conclusion": "No score/formula mismatch or fabricated placeholder in these 24 runs. 22 have all fixed rollouts successful; 2 have explicit 15-point invalid-prediction outcomes. UI has one stale same-law validation selection and inconsistent handling of scored failures; session validation terminology remains ambiguous."
+}
