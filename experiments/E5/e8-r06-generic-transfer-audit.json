@@ -1,0 +1,119 @@
+{
+  "scientific_commit": "5b6eef6",
+  "frozen_source": "19a83f9",
+  "scope": "Posthoc audit only, no new search or model calls, no candidate reselection or retuning. Reference laws never enter search input.",
+  "state_check": {
+    "seed": 834720,
+    "position_range": [
+      -4,
+      4
+    ],
+    "velocity_range": [
+      -1.2,
+      1.2
+    ],
+    "time_range": [
+      0,
+      12
+    ],
+    "reference_implementation": "independent explicit Python arithmetic and math sin/exp; candidate uses production DSL"
+  },
+  "limitations": [
+    "Tool-only diagnostic; does not measure Agent planning, 10-energy efficiency or hidden-nine performance.",
+    "Trajectory generator and predictor share the same integrator, hence near-machine precision is not independent integrator accuracy evidence. The additional random-state check compares vector fields directly.",
+    "Four manually selected synthetic structures and one random seed do not establish broad robustness.",
+    "Failure retained: decaying drive returned nested sine/fractional-power approximation, with out-of-sample domain failure. No formula was supplied to production Agent."
+  ],
+  "results": [
+    {
+      "name": "damped_coupled",
+      "input_hash_matches": true,
+      "selected_rank": 1,
+      "selected_law": {
+        "ax": "c1 * vx + c2 * x + c3 * y",
+        "ay": "c4 * vy + c5 * x + c2 * y"
+      },
+      "fitted_parameters": {
+        "c1": -0.20761771447365648,
+        "c2": -0.2291761131977825,
+        "c3": 0.13612646063730405,
+        "c4": -0.20761771447365635,
+        "c5": -0.13612646063730402
+      },
+      "heldout_position_rmse": 2.369830504328294e-15,
+      "heldout_trajectory_failures": [],
+      "random_state_domain_failures": 0,
+      "random_state_count": 1024,
+      "random_state_acceleration_rmse_on_valid_points": 4.677819140343714e-16,
+      "search_seconds": 33.51377294398844
+    },
+    {
+      "name": "velocity_cubic",
+      "input_hash_matches": true,
+      "selected_rank": 1,
+      "selected_law": {
+        "ax": "c1 * vx + c2 * vx ** 3",
+        "ay": "c3 * vy + c4 * vy ** 3"
+      },
+      "fitted_parameters": {
+        "c1": -0.25267388159809256,
+        "c2": -0.07213768343372848,
+        "c3": -0.2526738815980926,
+        "c4": -0.07213768343372867
+      },
+      "heldout_position_rmse": 7.949132167342281e-16,
+      "heldout_trajectory_failures": [],
+      "random_state_domain_failures": 0,
+      "random_state_count": 1024,
+      "random_state_acceleration_rmse_on_valid_points": 4.2124991463010757e-16,
+      "search_seconds": 35.187565702944994
+    },
+    {
+      "name": "coordinate_sines",
+      "input_hash_matches": true,
+      "selected_rank": 1,
+      "selected_law": {
+        "ax": "sin(x) * c1",
+        "ay": "sin(y) * c2"
+      },
+      "fitted_parameters": {
+        "c1": -0.2717183085331283,
+        "c2": -0.3085171087787845
+      },
+      "heldout_position_rmse": 1.663782392585289e-15,
+      "heldout_trajectory_failures": [],
+      "random_state_domain_failures": 0,
+      "random_state_count": 1024,
+      "random_state_acceleration_rmse_on_valid_points": 1.1223392972112153e-16,
+      "search_seconds": 34.70835970714688
+    },
+    {
+      "name": "decaying_drive",
+      "input_hash_matches": true,
+      "selected_rank": 1,
+      "selected_law": {
+        "ax": "sin(sin(sin(sin(sin(((t / c1 + vx - 1 * c2) / (-t - c3)) ** c4)))))",
+        "ay": "c5 * vy"
+      },
+      "fitted_parameters": {
+        "c1": 8.594314839323491,
+        "c2": 1.685626403091425,
+        "c3": 4.6063663860984745,
+        "c4": 0.8619158866986038,
+        "c5": -0.10782882469752127
+      },
+      "heldout_position_rmse": null,
+      "heldout_trajectory_failures": [
+        {
+          "probe_id": "test_0",
+          "error_type": "NumericalError",
+          "message": "expression domain/evaluation error: ValueError"
+        }
+      ],
+      "random_state_domain_failures": 129,
+      "random_state_count": 1024,
+      "random_state_acceleration_rmse_on_valid_points": 0.022183487270883682,
+      "search_seconds": 34.947517251595855
+    }
+  ]
+}

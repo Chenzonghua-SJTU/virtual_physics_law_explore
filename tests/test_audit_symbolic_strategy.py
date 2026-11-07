@@ -165,6 +165,23 @@ def test_delivery_detects_formula_change_and_missing_search_identifier(saved_run
     assert context_delivery([],messages,None,{})['source'] is None
 
 
+def test_delivery_distinguishes_declared_axis_omission_from_lost_joint_formula(saved_run):
+    _, _, _, candidate, _ = saved_run
+    search = {'search_id': 'sr_abc', 'candidates': [candidate],
+              'axis_candidates': {'ax': [candidate], 'ay': []}}
+    compact = {'search_id': 'sr_abc', 'candidates': [candidate],
+               'single_axis_alternatives_in_audit': {'ax': 1, 'ay': 0}}
+    messages = [{'role': 'tool', 'content': json.dumps({'data': compact})}]
+    delivery = context_delivery([], messages, 'sr_abc', search)
+    assert delivery['joint_formula_parameter_specs_preserved'] is True
+    assert delivery['all_formula_parameter_specs_preserved'] is False
+    assert delivery['single_axis_omission_declared_correctly'] is True
+    assert delivery['omitted_single_axis_counts'] == {'ax': 1, 'ay': 0}
+    compact['candidates'] = []
+    messages[0]['content'] = json.dumps({'data': compact})
+    assert context_delivery([], messages, 'sr_abc', search)['joint_formula_parameter_specs_preserved'] is False
+
+
 @pytest.mark.parametrize('content', ['null', '{"data":null}', '{"data":[]}'])
 def test_delivery_skips_tool_payloads_without_object_data(content):
     messages = [{'role':'tool','content':content}]

@@ -177,8 +177,18 @@ def context_delivery(model_messages, final_messages, search_id, search):
                 continue
             visible = {key: (candidate.get("law_spec"), candidate.get("parameter_spec"))
                        for key, _, candidate in candidate_list(data)}
+            expected_joint = {key: value for key, value in expected.items() if key.startswith("joint:")}
+            visible_joint = {key: value for key, value in visible.items() if key.startswith("joint:")}
+            omitted_axes = {axis: sum(key.startswith(axis+":") and key not in visible for key in expected)
+                            for axis in ("ax", "ay")}
+            declared = data.get("single_axis_alternatives_in_audit", {})
             return {"source": path, "message_index": index, "call_number": call,
                     "tool_call_id": message.get("tool_call_id"), "visible_candidate_count": len(visible),
+                    "joint_formula_parameter_specs_preserved": canonical(expected_joint) == canonical(visible_joint),
+                    "omitted_single_axis_counts": omitted_axes,
+                    "single_axis_omission_declared_correctly": all(declared.get(axis, 0) == count
+                                                                  for axis, count in omitted_axes.items()),
+                    "comparison_scope": "all includes archived single-axis alternatives; joint checks only complete returned candidates",
                     "all_formula_parameter_specs_preserved": canonical(expected) == canonical(visible)}
     return {"source": None, "all_formula_parameter_specs_preserved": None}
 
