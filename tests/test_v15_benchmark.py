@@ -263,7 +263,7 @@ def test_endpoint_pool_never_launches_two_active_worlds_on_one_service(tmp_path,
 def test_summary_separates_exploration_evaluation_and_checks_each_output(tmp_path):
     benchmark._write(tmp_path / 'config.json', {'environment': {'ruleset': 'e4', 'wall_seconds': 300},
                                                'model': {'max_tokens_per_call': 4096}})
-    benchmark._write(tmp_path / 'web.json', {'exploration_wall_seconds': 297,
+    benchmark._write(tmp_path / 'web.json', {'experiment_group': 'E8', 'exploration_wall_seconds': 297,
         'evaluation_wall_seconds': 9, 'wall_seconds_including_evaluation': 308})
     (tmp_path / 'model_events.jsonl').write_text('\n'.join(json.dumps({'event': 'request',
         'usage': {'completion_tokens': value}}) for value in (100, 4200)))
@@ -271,6 +271,7 @@ def test_summary_separates_exploration_evaluation_and_checks_each_output(tmp_pat
         'model_usage': {'calls': 2, 'completion_tokens': 4300},
         'budget': {'energy_remaining': 7, 'wall_seconds_remaining': 3}}, tmp_path)
     assert row['energy_used'] == 3
+    assert row['ruleset'] == 'e4' and row['experiment_group'] == 'E8'
     assert row['exploration_seconds'] == 297 and row['evaluation_seconds'] == 9
     assert row['wall_seconds_including_evaluation'] == 308
     assert row['average_output_tokens_per_call'] == 2150

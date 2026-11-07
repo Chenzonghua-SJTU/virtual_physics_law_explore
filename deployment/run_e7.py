@@ -157,13 +157,15 @@ def run_study(project=ROOT, *, opener=None, stop_requested=None, planned_batches
                     manifest['source_sha256'].update(source_hashes)
                 if batch.get('symbolic_runtime_preflight'):
                     manifest['symbolic_runtime_preflight']=batch['symbolic_runtime_preflight']
+                if batch.get('protocol_metadata'):
+                    manifest['protocol'].update(batch['protocol_metadata'])
                 if batch.get('experiment_group'):
                     manifest['experiment_group'] = batch['experiment_group']
                     for directory in runs.values():
                         metadata = read_json(directory/'web.json')
                         metadata['experiment_group'] = batch['experiment_group']
                         _write(directory/'web.json', metadata)
-                if source_hashes or batch.get('experiment_group') or batch.get('symbolic_runtime_preflight'):
+                if source_hashes or batch.get('experiment_group') or batch.get('symbolic_runtime_preflight') or batch.get('protocol_metadata'):
                     _write(batch['output']/'manifest.json', manifest)
             except BaseException as exc:
                 preparation_error = exc

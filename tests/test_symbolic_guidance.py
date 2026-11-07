@@ -83,6 +83,8 @@ def test_guidance_keeps_complementary_sampling_and_evidence_boundaries():
         '不能原样交拟合', '重命名参数避免意外共享',
         '预算充足应尝试替代结构', '不能作独立验证',
         '约6枚付费训练探针', '1–2个相同完整初态', '天体可见不证明力来自天体',
+        '免费粗轨迹可仅作定性依据', '先原式拟合再考虑改写',
+        '仍只有单t0', '新验证应包含较长时域', 'r^(1-p)', '未知源强度不等于hidden_matter',
     )
     assert all(item in GUIDANCE for item in requirements)
     assert len(GUIDANCE) <= 1500, 'Keep this supplemental prompt short.'

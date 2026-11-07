@@ -259,7 +259,8 @@
       if (run.model_settings?.model) {
         const batch = run.experiment_id?.match(/r\d+$/i)?.[0]?.toUpperCase();
         const origin = run.model_settings.deployment === 'local' ? '本地' : '云端';
-        const group = ['e4', 'e5'].includes(run.ruleset) ? run.ruleset.toUpperCase() : run.experiment_id?.startsWith('v15-local-') ? 'E3' : '';
+        const study = run.experiment_id?.match(/^e[4-8](?=-)/i)?.[0]?.toUpperCase();
+        const group = study || (['e4', 'e5'].includes(run.ruleset) ? run.ruleset.toUpperCase() : run.experiment_id?.startsWith('v15-local-') ? 'E3' : '');
         button.append(node('span', 'muted small', `${run.model_settings.model} · ${origin}${group ? ` · ${group}` : ''}${batch ? ` · ${batch}` : ''}`));
       }
       button.addEventListener('click', () => selectRun(run.id));

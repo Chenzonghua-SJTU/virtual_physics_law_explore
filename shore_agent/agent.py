@@ -1,6 +1,7 @@
 """Transparent main research loop. Files are restricted to acquired current-session data."""
 from __future__ import annotations
 
+import ast
 import copy
 import hashlib
 import json
@@ -45,6 +46,64 @@ class Agent:
         self._length_recovered = False
         self._symbolic_submission_reviewed = False
         self._symbolic_plan_reviewed = False
+        self._symbolic_probe_plan_reviewed = False
+        self._symbolic_fit_attempts = []
+
+    @staticmethod
+    def _symbolic_law_signature(value):
+        """Exact executable structure and named input parameters, not fit quality."""
+        try:
+            law, parameters = value['law_spec'], value['parameter_spec']
+            if set(law) != {'ax', 'ay'} or not isinstance(parameters, list) or len(parameters) > 5:
+                return None
+            trees = tuple(ast.dump(ast.parse(law[axis].strip(), mode='eval'), include_attributes=False)
+                          for axis in ('ax', 'ay'))
+            return trees, sorted(parameters, key=lambda parameter: parameter['name'])
+        except (AttributeError, KeyError, TypeError, ValueError, SyntaxError):
+            return None
+
+    def _untested_symbolic_joint_candidates(self, records):
+        candidates = []
+        for search_id, search in records.get('symbolic_search', {}).items():
+            for index, candidate in enumerate(search.get('candidates', [])):
+                if (not isinstance(candidate, dict) or candidate.get('joint_fit_ready') is False
+                        or candidate.get('dsl_valid') is False
+                        or (candidate.get('initial_domain_check') or {}).get('status') == 'failed'):
+                    continue
+                signature = self._symbolic_law_signature(candidate)
+                if signature is not None:
+                    candidates.append((search_id, index, signature))
+        tested = [self._symbolic_law_signature(law) for law in records.get('law', {}).values()]
+        tested.extend(self._symbolic_fit_attempts)
+        if not candidates or any(signature in tested for _, _, signature in candidates):
+            return None
+        return {'candidate_count': len(candidates),
+                'candidate_references': [{'search_id': sid, 'candidate_index': index}
+                                         for sid, index, _ in candidates[:3]],
+                'meaning': 'No complete returned candidate has a direct fit record or executed fit attempt. '
+                           'Untested does not mean correct or incorrect; compare a promising original before rewriting, '
+                           'or explain concrete reasons to reject it. No candidate is selected automatically.'}
+
+    def _symbolic_probe_plan_review(self, name, args):
+        if (name != 'insert_probe' or self._symbolic_probe_plan_reviewed
+                or not getattr(self.runtime, 'symbolic_enabled', False)):
+            return None
+        from .symbolic_guidance import build_probe_plan_review
+        records = getattr(getattr(self.runtime, 'store', None), 'records', {})
+        budget = self.runtime.budget()
+        review = build_probe_plan_review(records, budget, getattr(self.runtime, 'task', None) or {}, args)
+        if review is None:
+            return None
+        self._symbolic_probe_plan_reviewed = True
+        self.last_budget = budget
+        self._event('symbolic_probe_plan_review', review=review, tool_executed=False, one_time_only=True)
+        result = self._failure('scientific_review_needed')
+        result['error']['message'] = (
+            '本次insert_probe暂未执行、未扣能量。拟议批次将消耗最后机动能量；请先检查下方具体覆盖缺口、'
+            '延迟t0建议与两枚独立验证余量。可修改本批参数、先使用既有数据，或说明为何原计划更合适。'
+            '这是一次提醒；下一次insert_probe按你给出的原参数执行，不自动补实验或修改观测。')
+        result['error']['research_review'] = review
+        return result
 
     def _symbolic_submission_review(self, name, args):
         """One continuation opportunity, never an automatic hypothesis or search."""
@@ -57,8 +116,15 @@ class Agent:
             return None
         from .symbolic_guidance import build_review
         review = build_review(records, budget, getattr(self.runtime, 'task', None), law_id=args.get('law_id'))
+        untested = self._untested_symbolic_joint_candidates(records)
+        if untested is not None:
+            review = dict(review or {'kind': 'symbolic_experiment_review', 'law_id': args.get('law_id'),
+                                     'budget': budget, 'one_time_only': True, 'advisory_only': True})
+            review['reasons'] = list(review.get('reasons', [])) + ['returned_joint_candidates_not_directly_fitted']
+            review['untested_joint_candidates'] = untested
         critical = {'symbolic_search_not_attempted_with_available_training_data',
-                    'selected_fit_not_converged', 'selected_law_large_relative_validation_residual'}
+                    'selected_fit_not_converged', 'selected_law_large_relative_validation_residual',
+                    'returned_joint_candidates_not_directly_fitted'}
         reasons = [r for r in (review or {}).get('reasons', []) if r in critical]
         if not reasons:
             return None
@@ -71,6 +137,8 @@ class Agent:
             '尚有至少100秒，本次submit暂未执行，给一次继续研究机会：' + ', '.join(reasons) + '。'
             '请检查拟合与独立验证反证；有多条轨迹时可选择覆盖不同控制量的训练集调用符号回归，'
             '保留独立验证数据。不要无证据假设中心力、各向同性或不同轴共享系数。'
+            '若尚未直接测试任何完整SR候选，可先按原law_spec与parameter_spec拟合一个有希望的候选再比较；'
+            '未测试不代表候选正确或错误，有具体反证时不必强行采用。'
             '可以先save_draft保留当前最佳候选。此提醒只出现一次；如已有充分理由不再探索，'
             '可如实说明局限后再次submit，系统不会无限阻止交卷。')
         result['error']['research_review'] = review
@@ -394,8 +462,17 @@ class Agent:
                         executed_or_invalid = True
                         self._event('tool_started', tool_call_id=call['id'], name=name, arguments=args)
                         try:
-                            review = self._symbolic_submission_review(name, args)
-                            result = review if review is not None else self.runtime.execute(name, args)
+                            review = self._symbolic_probe_plan_review(name, args)
+                            if review is None:
+                                review = self._symbolic_submission_review(name, args)
+                            if review is not None:
+                                result = review
+                            else:
+                                if name == 'fit_law_and_rollout' and getattr(self.runtime, 'symbolic_enabled', False):
+                                    signature = self._symbolic_law_signature(args)
+                                    if signature is not None:
+                                        self._symbolic_fit_attempts.append(copy.deepcopy(signature))
+                                result = self.runtime.execute(name, args)
                         except Exception:
                             # Tool exceptions are a failure, never a success or raw backend dump.
                             result = self._failure('tool_execution_error')

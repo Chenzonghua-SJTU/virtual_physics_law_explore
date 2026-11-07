@@ -1,0 +1,175 @@
+{
+  "pid": 963376,
+  "previous_pid": 351799,
+  "commit": "72d0fcf",
+  "started_at": "2026-11-07T07:07:44.502460+00:00",
+  "command": [
+    "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv/bin/python",
+    "-B",
+    "-u",
+    "-m",
+    "shore_agent.symbolic_service",
+    "serve",
+    "--worker-python",
+    "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/bin/python",
+    "--pool-size",
+    "4",
+    "--port",
+    "8890",
+    "--spool-dir",
+    "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/deployment/pysr-work-e8"
+  ],
+  "log": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/deployment/e8-production-symbolic.log",
+  "fixed_environment": {
+    "PYTHON_JULIAPKG_EXE": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/julia-1.13.3/bin/julia",
+    "JULIA_DEPOT_PATH": "/inspire/hdd/project/26-the-other-shore/263140062/physics_discovery/.venv-pysr/julia-depot",
+    "PYTHON_JULIAPKG_OFFLINE": "yes",
+    "PYTHON_JULIACALL_THREADS": "4",
+    "JULIA_NUM_THREADS": "4",
+    "PYTHON_JULIACALL_HANDLE_SIGNALS": "yes",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "source_sha256": {
+    "shore_agent/symbolic_geometry.py": "402763a0475eef4286e8da648dc0a96ab2867afa7ff4275e3632490ae1fab932",
+    "shore_agent/symbolic_guidance.py": "dc0ba84cf8ff65a00c3482ff932bd22de5283fce6fe199a28d66d4507d155419",
+    "shore_agent/symbolic_regression.py": "6dee6a179db49d5a21fe2c754f469e10b2edc730dffe166ed329d3789cf107e4",
+    "shore_agent/symbolic_basis.py": "faef5985ab2132c6aa796979ee5413c78c893970044eb964770591dcdf52c924",
+    "shore_agent/symbolic_service.py": "a2933bbeab6bad6135ee5e5b8d38d041e0eea840db11b5f91df70a9c16f03f3d"
+  },
+  "startup_recovery": {
+    "previous_pid": 913793,
+    "searches": 0,
+    "reason": "new_spool_parent_missing",
+    "action": "created_spool_directory"
+  },
+  "ready_health": {
+    "status": "ready",
+    "pool_size": 4,
+    "ready": 4,
+    "busy": 0,
+    "failed": 0,
+    "warming": 0,
+    "actual_julia_threads": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "worker_warmup": [
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sqrt",
+              "abs"
+            ],
+            "elapsed_seconds": 23.00790024921298
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 6.061390824615955
+          }
+        ],
+        "warmup_seconds": 35.04070345312357
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sqrt",
+              "abs"
+            ],
+            "elapsed_seconds": 23.005415739491582
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 6.68259696289897
+          }
+        ],
+        "warmup_seconds": 35.65486975759268
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sqrt",
+              "abs"
+            ],
+            "elapsed_seconds": 22.58061141707003
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 5.932759778574109
+          }
+        ],
+        "warmup_seconds": 34.47637229785323
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sqrt",
+              "abs"
+            ],
+            "elapsed_seconds": 22.823799297213554
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 6.1209219843149185
+          }
+        ],
+        "warmup_seconds": 34.91178745403886
+      }
+    ]
+  }
+}

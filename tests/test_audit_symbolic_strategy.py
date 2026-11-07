@@ -120,6 +120,19 @@ def test_structural_rename_and_partial_component_are_not_exact(saved_run):
     assert source_class({'origin':'linear_least_squares'},'ax') == 'all_linear_least_squares'
 
 
+def test_unmatched_single_axis_is_not_reported_as_reused(saved_run):
+    root, summary, run, _, _ = saved_run
+    path = run/'records'/'symbolic_search'/'sr_abc.json'
+    search = json.loads(path.read_text())
+    search['axis_candidates'] = {'ax': [{'law_spec':{'ax':'c1*x*x','ay':'0'},
+        'parameter_spec':[{'name':'c1','initial':.12}], 'origin':'pysr'}]}
+    dump(path, search)
+    world = build_audit(root, summary)['worlds'][0]
+    axis = next(c for c in world['searches'][0]['candidates'] if c['component'] == 'ax')
+    assert axis['fit_matches'] == []
+    assert all(link['candidate_reference'] != 'ax:0' for link in world['fits'][0]['candidate_links'])
+
+
 def test_data_coverage_retains_time_and_property_controls(saved_run):
     *_, probes = saved_run
     result = coverage(probes, ['p1','p2','p3'])
@@ -137,6 +150,12 @@ def test_delivery_detects_formula_change_and_missing_search_identifier(saved_run
     messages = [{'role':'tool','content':json.dumps({'data':corrupted})}]
     assert context_delivery([],messages,'sr_abc',search)['all_formula_parameter_specs_preserved'] is False
     assert context_delivery([],messages,None,{})['source'] is None
+
+
+@pytest.mark.parametrize('content', ['null', '{"data":null}', '{"data":[]}'])
+def test_delivery_skips_tool_payloads_without_object_data(content):
+    messages = [{'role':'tool','content':content}]
+    assert context_delivery([],messages,'sr_abc',{'candidates':[]})['source'] is None
 
 
 def test_archive_detects_input_change(saved_run):

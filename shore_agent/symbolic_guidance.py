@@ -37,6 +37,20 @@ def _position_scale(probe):
     return math.sqrt(sum(sum((p[i]-first[i])**2 for i in range(2)) for p in points)/len(points))
 
 
+def _noninertial_position_scale(probe):
+    """Observed departure from its known constant-velocity initial motion."""
+    points, times = probe.get('r_obs', []), probe.get('times', [])
+    initial = probe.get('initial_conditions', {})
+    r0, v0, t0 = initial.get('r0'), initial.get('v0'), initial.get('t0')
+    if (_control_key(probe) is None or not _finite(t0) or len(points) != len(times)
+            or not points or not all(_finite(t) for t in times)
+            or not all(isinstance(p, (list, tuple)) and len(p) == 2
+                       and all(_finite(x) for x in p) for p in points)):
+        return None
+    return math.sqrt(sum(sum((p[i]-r0[i]-v0[i]*(t-t0))**2 for i in range(2))
+                         for p,t in zip(points,times))/len(points))
+
+
 def _validation_warnings(records, probes, law_id, task):
     result = []
     sigma = task.get('position_noise_sigma', 0.)
@@ -44,7 +58,9 @@ def _validation_warnings(records, probes, law_id, task):
     noise = math.sqrt(2)*sigma
     reference = task.get('reference_length', 1.)
     reference = abs(float(reference)) if _finite(reference) and reference else 1.
-    floor = 1e-9*reference
+    training_error = records.get('law', {}).get(law_id, {}).get('errors', {}).get('overall', {}).get('position_rmse')
+    if not _finite(training_error) or training_error < 0:
+        training_error = None
     for record_id, validation in records.get('validation', {}).items():
         if validation.get('law_id') != law_id:
             continue
@@ -53,14 +69,157 @@ def _validation_warnings(records, probes, law_id, task):
             scale = _position_scale(probes.get(probe_id, {}))
             if scale is None or not _finite(error) or error < 0:
                 continue
+            # The production DOP853 trajectory evaluator uses rtol=2e-8 and
+            # atol=1e-10. Use a conservative, scale-aware numerical floor for
+            # every diagnostic ratio; roundoff-sized deflection is not evidence
+            # of a scientifically large residual in almost-free motion.
+            observed_scale = max(reference, *[abs(float(value))
+                for point in probes[probe_id].get('r_obs', []) for value in point])
+            floor = 5*math.sqrt(2)*(1e-10+2e-8*observed_scale)
             normalized = error/max(scale, noise, floor)
+            departure = _noninertial_position_scale(probes.get(probe_id, {}))
+            force_normalized = error/max(departure,noise,floor) if departure is not None else None
+            training_ratio = error/max(training_error,noise,floor) if training_error is not None else None
+            cues = []
+            if normalized >= .2: cues.append('large_relative_to_observed_change')
+            if force_normalized is not None and force_normalized >= .2:
+                cues.append('large_relative_to_departure_from_uniform_motion')
+            if training_ratio is not None and training_ratio >= 5:
+                cues.append('validation_at_least_five_times_training_residual')
             # A continuation cue, never a scientific pass/fail criterion.
-            if normalized >= .2 and error > max(5*noise, floor):
+            if cues and error > max(5*noise, floor):
                 result.append({'validation_id': record_id, 'probe_id': probe_id,
                                'position_rmse': error, 'observed_position_rms_change': scale,
                                'relative_to_observed_change': normalized,
+                               'observed_departure_from_uniform_motion_rms': departure,
+                               'relative_to_departure_from_uniform_motion': force_normalized,
+                               'training_position_rmse': training_error,
+                               'relative_to_training_residual': training_ratio,
+                               'numerical_position_floor': floor,
+                               'diagnostic_cues': cues,
                                'interpretation': 'large_relative_residual; diagnostic only, not an official threshold'})
     return result
+
+
+def build_probe_plan_review(records, budget, task, args):
+    """Review a proposed paid batch; caller alone controls SR enablement/one-shot.
+
+    This function never changes arguments, spends energy, or chooses observations
+    as training data. Invalid requests are left to the ordinary schema validator.
+    """
+    if not all(isinstance(value,dict) for value in (records,budget,task,args)):
+        return None
+    remaining, energy = budget.get('wall_seconds_remaining'), budget.get('energy_remaining')
+    proposed, t0, dt, count = (args.get(key) for key in ('probes','t0','dt','n_samples'))
+    cost_each = task.get('limits', {}).get('probe_energy',1)
+    if (budget.get('session_ended') or not _finite(remaining) or remaining <= 35
+            or not _finite(energy) or not _finite(cost_each) or cost_each <= 0
+            or not isinstance(proposed,list) or not 1 <= len(proposed) <= 8
+            or not _finite(t0) or not _finite(dt) or dt <= 0
+            or type(count) is not int or not 1 <= count <= 50):
+        return None
+    cost = len(proposed)*cost_each
+    after = energy-cost
+    if after > 2 or after < 0:
+        return None
+    window = (count-1)*dt
+    converted = []
+    for item in proposed:
+        if (not isinstance(item,dict) or set(item)-{'r0','v0','properties'}
+                or not isinstance(item.get('properties'),dict)):
+            return None
+        probe = {'initial_conditions':dict(item,t0=t0)}
+        if _control_key(probe) is None:
+            return None
+        converted.append(probe)
+    acquired = [(key,p) for key,p in records.get('probe',{}).items()
+                if isinstance(p,dict) and _control_key(p) is not None
+                and _finite(p.get('initial_conditions',{}).get('t0'))]
+    all_controls = [p for _,p in acquired]+converted
+    time_contrast = any(_control_key(a)==_control_key(b)
+                        and abs(a['initial_conditions']['t0']-b['initial_conditions']['t0'])>1e-10
+                        for i,a in enumerate(all_controls) for b in all_controls[i+1:])
+    duplicate_indexes, duplicate_ids = [], {}
+    for index,probe in enumerate(converted):
+        same_batch = any(_control_key(p)==_control_key(probe) for p in converted[:index])
+        prior = []
+        for probe_id,known in acquired:
+            if (_control_key(known)!=_control_key(probe)
+                    or abs(known['initial_conditions']['t0']-t0)>1e-10):
+                continue
+            times = known.get('times',[])
+            # A longer/newly dense observation is useful, even at the same t0.
+            if times and all(any(_finite(t) and abs(t-(t0+j*dt))<1e-9 for t in times)
+                             for j in range(count)):
+                prior.append(probe_id)
+        if same_batch or prior:
+            duplicate_indexes.append(index)
+            duplicate_ids[str(index)] = prior
+    reasons = []
+    if not time_contrast: reasons.append('spending_last_training_energy_without_delayed_same_state_control')
+    if duplicate_indexes: reasons.append('repeated_complete_controls_with_already_covered_sampling')
+    if not reasons:
+        return None
+    durations = [float(p['times'][-1]-p['times'][0]) for _,p in acquired
+                 if isinstance(p.get('times'),list) and len(p['times'])>=2
+                 and all(_finite(t) for t in (p['times'][0],p['times'][-1]))
+                 and p['times'][-1]>p['times'][0]]
+    planning_window = max([window,*durations],default=0.)
+    grid = task.get('time_grid')
+    horizon = task.get('physical_time_range')
+    duration_limit = task.get('maximum_single_trajectory_duration')
+    suggestions = []
+    constraints = {'time_grid':grid,'physical_time_range':horizon,
+                   'maximum_single_trajectory_duration':duration_limit}
+    if (_finite(grid) and grid>0 and isinstance(horizon,(list,tuple)) and len(horizon)==2
+            and all(_finite(v) for v in horizon) and horizon[1]>=horizon[0] and planning_window>0):
+        safe_duration = min(planning_window, float(duration_limit)) if _finite(duration_limit) and duration_limit>0 else planning_window
+        safe_duration = math.floor((safe_duration+1e-10)/grid)*grid
+        lower = math.ceil((horizon[0]-1e-10)/grid)*grid
+        upper = math.floor((horizon[1]-safe_duration+1e-10)/grid)*grid
+        anchor = min([t0,*[p['initial_conditions']['t0'] for _,p in acquired]])
+        for factor in (3,9):
+            value = math.ceil((anchor+factor*planning_window-1e-10)/grid)*grid
+            value = min(value,upper)
+            if lower<=value<=upper and value>anchor+1e-10 and value not in suggestions:
+                suggestions.append(float(round(value,12)))
+        constraints['suggested_window_duration']=safe_duration
+    reuse = None
+    if acquired:
+        probe_id, existing = max(acquired,key=lambda item:len(item[1].get('times',[])))
+        initial = existing['initial_conditions']
+        reuse = {'existing_probe_id':probe_id,
+                 'probes':[{'r0':list(initial['r0']),'v0':list(initial['v0']),
+                            'properties':dict(initial.get('properties',{}))}],
+                 'original_t0':initial['t0'],
+                 'suggested_t0_values':[value for value in suggestions if abs(value-initial['t0'])>1e-10],
+                 't0_location':'batch_top_level',
+                 'change_only':'t0; keep r0, v0 and every property unchanged'}
+    positions = [p['initial_conditions']['r0'] for _,p in acquired]
+    return {'kind':'symbolic_probe_plan_review','one_time_only':True,'advisory_only':True,
+            'tool_executed':False,'reasons':reasons,'budget':dict(budget),
+            'proposed_probe_cost':cost,'energy_after_proposed_batch':after,
+            'training_energy_capacity_preserving_two':max(0.,energy-2),
+            'duplicate_proposed_indexes':duplicate_indexes,'duplicate_existing_probe_ids':duplicate_ids,
+            'existing_launch_times':sorted({p['initial_conditions']['t0'] for _,p in acquired}),
+            'proposed_t0':t0,'planning_window':planning_window,'suggested_delayed_launch_times':suggestions,
+            'recommended_same_state_time_control':reuse,
+            'acquired_spatial_coverage':{
+                'probe_count':len(positions),
+                'off_axis_probe_count':sum(p[0]!=0 and p[1]!=0 for p in positions),
+                'coordinate_signs':{name:{'negative':any(p[i]<0 for p in positions),
+                                           'positive':any(p[i]>0 for p in positions)}
+                                    for i,name in enumerate(('x','y'))}},
+            'legal_time_constraints':constraints,'has_same_complete_state_time_contrast_after_batch':time_contrast,
+            'instructions':[
+                '本批尚未执行，参数未改变。先调整探索设计：至少保留2点能量给两枚新的独立验证探针。',
+                '避免把最后探索能量全用于同一t0或已完整覆盖的重复初态；有明确噪声重复测量目的时请说明。',
+                '延迟对照保持r0、v0及完整properties相同，只改批次顶层t0；不同t0需分开insert_probe调用。',
+                '复用列出的existing_probe完整初态；同时改位置、速度或属性的延迟探针不能单独证明时间依赖。',
+                '若列出建议t0，它由当前探针窗口的3倍/9倍动态产生并限制在网格/时间范围；不是预设周期，使用前仍核对dt、样本数和总时长。',
+                '密采样局部探针可接近50个样本；把较长轨迹与延迟发射对照分开安排，勿只增加同一短窗密度。',
+                '天体长时观测不延长探针时间覆盖；粗采样免费轨迹只作对照，不要为凑数量全部强塞符号回归。',
+                '这是一次建议，不自动选择训练/验证记录、不强制预设任何力学形式。']}
 
 
 def build_review(records, budget, task=None, *, train_probe_ids=None, law_id=None,

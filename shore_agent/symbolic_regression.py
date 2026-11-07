@@ -876,6 +876,10 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             name = ('ax','ay')[component]
             if name not in report['search_axes_completed']: report['search_axes_completed'].append(name)
         snapshot('running')
-    snapshot("timeout" if time.monotonic() >= deadline-final_reserve else
+    if time.monotonic() >= search_deadline:
+        report['stop_reason'] = 'search_budget_reached'
+    # Finishing a bounded search within its reserved deadline is successful.
+    # Only an actual overrun (or the supervisor's kill) is a timeout.
+    snapshot("timeout" if time.monotonic() >= deadline else
              "partial" if report.get('backend_error') else "completed")
     return report

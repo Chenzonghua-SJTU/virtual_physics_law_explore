@@ -165,6 +165,21 @@ def test_backend_stage_failure_retains_previously_checked_candidates_without_ret
     assert all('pysr' not in c['component_sources'] for c in result['candidates'])
 
 
+def test_reserved_search_budget_end_is_completed_not_backend_timeout(monkeypatch):
+    from shore_agent import symbolic_regression as sr
+    clock = [100.]
+    monkeypatch.setattr(sr.time, 'monotonic', lambda: clock[0])
+    class BudgetSearch:
+        def __init__(self, **kwargs): pass
+        def fit(self, *args, **kwargs):
+            clock[0] += 26
+            self.equations_ = Rows([])
+    result = run_search([probe()], time_budget_seconds=30, model_factory=BudgetSearch)
+    assert result['status'] == 'completed'
+    assert result['stop_reason'] == 'search_budget_reached'
+    assert result['candidates']
+
+
 def test_constant_observed_acceleration_requires_no_pysr_dependency():
     record = probe()
     record["v_obs"] = [[0, 0]] * len(record["times"])

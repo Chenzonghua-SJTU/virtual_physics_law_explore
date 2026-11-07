@@ -8,7 +8,7 @@ function element(tag, text, cls) {
 }
 const number=(value,digits=2)=>typeof value==='number'&&Number.isFinite(value)?value.toFixed(digits):'—';
 const duration=(seconds)=>typeof seconds==='number'&&Number.isFinite(seconds)?`${Math.floor(Math.round(seconds)/60)}分${Math.round(seconds)%60}秒`:'—';
-const studyGroup=batch=>batch.id.startsWith('e7-')?'E7':batch.id.startsWith('e6-')?'E6':batch.experiment_group;
+const studyGroup=batch=>batch.id.match(/^e[4-8](?=-)/i)?.[0]?.toUpperCase()||batch.experiment_group;
 const scored=row=>row.evaluation_score?.status==='scored'&&Number.isFinite(row.evaluation_score.total);
 let latestBatches=[], lastRefreshed=null;
 const query=new URLSearchParams(location.search), requestedBatch=query.get('batch');
@@ -16,7 +16,7 @@ const groupSelector=document.getElementById('experiment-group');
 if(requestedBatch&&/^[A-Za-z0-9_-]{1,80}$/.test(requestedBatch)){
   const option=element('option',`单批：${requestedBatch}`);
   option.value='batch:'+requestedBatch;groupSelector.append(option);groupSelector.value=option.value;
-}else if(['all','E7','E6','E5_AB','E5','E4','E3'].includes(query.get('group'))){
+}else if(['all','E8','E7','E6','E5_AB','E5','E4','E3'].includes(query.get('group'))){
   groupSelector.value=query.get('group');
 }
 function render(batch) {
@@ -26,7 +26,7 @@ function render(batch) {
   section.append(element('h2',`${study} · ${batch.model} · ${repeat} · ${states[batch.status]||batch.status}`));
   section.append(element('div',batch.id,'batch-id'));
   section.append(element('p',`${batch.energy_budget} 能量 · ${batch.wall_seconds} 秒探索 · 噪声${batch.noise?'开启':'关闭'} · 思考${batch.thinking?'开启':'关闭'} · 单次输出上限 ${batch.output_limit??'未记录'} token`,'batch-id'));
-  if(study==='E6'||study==='E7') {
+  if(['E6','E7','E8'].includes(study)) {
     section.append(element('p',`提示词：${batch.guidance_profile??'baseline'} · PySR：${batch.symbolic_regression_enabled?'开启':'关闭'} · 模型 seed：${batch.model_sampling_seed??'未固定'} · 时间预算包含科学工具`,'batch-id'));
     section.append(element('p',`累计 Token 上限：${batch.max_total_tokens===null?'不设上限':batch.max_total_tokens??'未记录'} · 重复调用恢复：${batch.loop_recovery?'开启':'关闭'}`,'batch-id'));
   }else if(batch.experiment_group==='E5') {

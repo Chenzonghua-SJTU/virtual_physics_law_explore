@@ -21,10 +21,11 @@ def observation(index):
 
 class StrategyRuntime(Runtime):
     def __init__(self, *, enabled=True, seconds=180., probes=4, searched=False,
-                 fit_status='converged', validation_rmse=None, trained_probes=3):
+                 fit_status='converged', validation_rmse=None, trained_probes=3, energy=6):
         super().__init__()
         self.symbolic_enabled = enabled
         self.seconds = seconds
+        self.energy = energy
         self.task = {'allowed_properties': ['mass'], 'position_noise_sigma': 0.,
                      'reference_length': 1.}
         self.schemas = tool_schemas(ruleset='e5', symbolic_enabled=enabled)
@@ -40,7 +41,7 @@ class StrategyRuntime(Runtime):
         self.store = SimpleNamespace(records=records)
 
     def budget(self):
-        return {'wall_seconds_remaining': self.seconds, 'energy_remaining': 6, 'session_ended': False}
+        return {'wall_seconds_remaining': self.seconds, 'energy_remaining': self.energy, 'session_ended': False}
 
     def execute(self, name, args):
         if name != 'insert_probe':
@@ -185,3 +186,129 @@ def test_plan_advice_does_not_consume_later_critical_submission_review(tmp_path)
     assert len(events(tmp_path, 'symbolic_submission_review')) == 1
     assert agent._symbolic_submission_reviewed
     assert [name for name, _ in runtime.calls] == ['insert_probe', 'submit']
+
+
+def joint_candidate():
+    return {'law_spec': {'ax': '-c1*x', 'ay': '-c2*y'},
+            'parameter_spec': [{'name': 'c1', 'initial': .12}, {'name': 'c2', 'initial': .24}],
+            'joint_fit_ready': True, 'dsl_valid': True,
+            'initial_domain_check': {'status': 'passed'}}
+
+
+def add_candidate(runtime, candidate=None):
+    runtime.store.records['symbolic_search']['search_1'] = {
+        'candidates': [candidate or joint_candidate()], 'used_probe_ids': ['p0', 'p1', 'p2']}
+
+
+def probe_plan():
+    return {'probes': [{'r0': [-2., 1.], 'v0': [.2, 0.], 'properties': {'mass': 1.}}],
+            't0': 0., 'dt': .02, 'n_samples': 50}
+
+
+def test_probe_plan_defers_once_without_executing_or_changing_arguments(tmp_path):
+    runtime = StrategyRuntime(energy=3, searched=True)
+    runtime.task.update(time_grid=.005, physical_time_range=[0., 32.], maximum_single_trajectory_duration=10.)
+    arguments = probe_plan()
+    before = copy.deepcopy(runtime.store.records)
+    agent, client, _ = scripted_agent(tmp_path, runtime, [
+        reply(call('insert_probe', arguments, ident='first')),
+        reply(call('insert_probe', arguments, ident='second'))])
+    assert [name for name, _ in runtime.calls] == ['insert_probe']
+    assert runtime.calls[0][1] == arguments
+    assert agent._symbolic_probe_plan_reviewed
+    reviews = events(tmp_path, 'symbolic_probe_plan_review')
+    assert len(reviews) == 1 and reviews[0]['tool_executed'] is False
+    assert reviews[0]['review']['energy_after_proposed_batch'] == 2
+    first_result = next(m for m in client.requests[1]['messages'] if m['role'] == 'tool')
+    failure = json.loads(first_result['content'])
+    assert first_result['tool_call_id'] == 'first'
+    assert failure['error']['code'] == 'scientific_review_needed'
+    assert failure['budget']['energy_remaining'] == 3
+    assert len(runtime.store.records['probe']) == len(before['probe']) + 1
+    historical_args = next(c['function']['arguments'] for m in client.requests[1]['messages']
+                           for c in m.get('tool_calls', []) if c['id'] == 'first')
+    assert json.loads(historical_args) == arguments
+
+
+@pytest.mark.parametrize('options', [{'enabled': False, 'energy': 3},
+                                    {'seconds': 35, 'energy': 3}, {'energy': 4}])
+def test_probe_plan_disabled_late_or_energy_safe_does_not_defer(tmp_path, options):
+    runtime = StrategyRuntime(searched=True, **options)
+    agent, _, _ = scripted_agent(tmp_path, runtime, [reply(call('insert_probe', probe_plan()))])
+    assert [name for name, _ in runtime.calls] == ['insert_probe']
+    assert not agent._symbolic_probe_plan_reviewed
+    assert events(tmp_path, 'symbolic_probe_plan_review') == []
+
+
+def test_untested_complete_joint_candidate_defers_submit_once(tmp_path):
+    runtime = StrategyRuntime(searched=True)
+    add_candidate(runtime)
+    agent, _, result = scripted_agent(tmp_path, runtime, [
+        reply(call('submit', {'law_id': 'chosen'}, ident='first')),
+        reply(call('submit', {'law_id': 'chosen'}, ident='second'))])
+    assert result['status'] == 'submitted'
+    assert [name for name, _ in runtime.calls] == ['submit']
+    review = events(tmp_path, 'symbolic_submission_review')
+    assert len(review) == 1
+    assert review[0]['reasons'] == ['returned_joint_candidates_not_directly_fitted']
+    evidence = review[0]['evidence']['untested_joint_candidates']
+    assert evidence['candidate_references'] == [{'search_id': 'search_1', 'candidate_index': 0}]
+    assert 'Untested does not mean correct or incorrect' in evidence['meaning']
+
+
+def test_exact_candidate_fit_record_counts_despite_whitespace_or_parameter_order(tmp_path):
+    runtime = StrategyRuntime(searched=True)
+    add_candidate(runtime)
+    fitted = copy.deepcopy(joint_candidate())
+    fitted['law_spec']['ax'] = '-c1 * x'
+    fitted['parameter_spec'].reverse()
+    fitted.update(fit_status='converged', train_probe_ids=['p0', 'p1', 'p2'])
+    runtime.store.records['law']['already_tested'] = fitted
+    agent, _, result = scripted_agent(tmp_path, runtime, [reply(call('submit', {'law_id': 'chosen'}))])
+    assert result['status'] == 'submitted'
+    assert not agent._symbolic_submission_reviewed
+
+
+def test_modified_candidate_is_not_an_original_fit_record(tmp_path):
+    runtime = StrategyRuntime(searched=True)
+    add_candidate(runtime)
+    changed = copy.deepcopy(joint_candidate())
+    changed['law_spec']['ax'] = '-c1*x*x'
+    runtime.store.records['law']['rewritten'] = changed
+    agent = Agent(Client([]), runtime, tmp_path, {})
+    assert agent._symbolic_submission_review('submit', {'law_id': 'chosen'}) is not None
+
+
+@pytest.mark.parametrize('candidate_change', [
+    {'joint_fit_ready': False}, {'dsl_valid': False}, {'initial_domain_check': {'status': 'failed'}},
+    {'law_spec': {'ax': '-c1*x'}},
+])
+def test_unfit_or_incomplete_candidate_never_forces_submission_review(tmp_path, candidate_change):
+    runtime = StrategyRuntime(searched=True)
+    candidate = dict(joint_candidate(), **candidate_change)
+    add_candidate(runtime, candidate)
+    agent = Agent(Client([]), runtime, tmp_path, {})
+    assert agent._symbolic_submission_review('submit', {'law_id': 'chosen'}) is None
+
+
+def test_executed_original_fit_failure_does_not_force_identical_fit_retry(tmp_path):
+    runtime = StrategyRuntime(searched=True)
+    add_candidate(runtime)
+    runtime.fail = lambda name, *_: name == 'fit_law_and_rollout'
+    candidate = joint_candidate()
+    args = {key: candidate[key] for key in ('law_spec', 'parameter_spec')}
+    args['train_probe_ids'] = ['p0', 'p1', 'p2']
+    agent, _, result = scripted_agent(tmp_path, runtime, [
+        reply(call('fit_law_and_rollout', args)), reply(call('submit', {'law_id': 'chosen'}))])
+    assert result['status'] == 'submitted'
+    assert [name for name, _ in runtime.calls] == ['fit_law_and_rollout', 'submit']
+    assert len(agent._symbolic_fit_attempts) == 1
+    assert not agent._symbolic_submission_reviewed
+
+
+@pytest.mark.parametrize('options', [{'enabled': False}, {'seconds': 99.}])
+def test_untested_joint_review_keeps_disabled_and_late_paths_open(tmp_path, options):
+    runtime = StrategyRuntime(searched=True, **options)
+    add_candidate(runtime)
+    agent = Agent(Client([]), runtime, tmp_path, {})
+    assert agent._symbolic_submission_review('submit', {'law_id': 'chosen'}) is None

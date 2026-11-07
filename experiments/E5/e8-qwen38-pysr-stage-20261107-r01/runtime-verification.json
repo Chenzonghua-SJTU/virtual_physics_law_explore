@@ -1,0 +1,199 @@
+{
+  "checked_at": "2026-11-07T07:14:41.003177+00:00",
+  "commit": "72d0fcf",
+  "models": [
+    {
+      "port": 8000,
+      "ids": [
+        "qwen3.8-27b"
+      ],
+      "metrics": {
+        "num_requests_running": 0.0,
+        "num_requests_waiting": 0.0
+      }
+    },
+    {
+      "port": 8001,
+      "ids": [
+        "qwen3.8-27b"
+      ],
+      "metrics": {
+        "num_requests_running": 0.0,
+        "num_requests_waiting": 0.0
+      }
+    },
+    {
+      "port": 8002,
+      "ids": [
+        "qwen3.8-27b"
+      ],
+      "metrics": {
+        "num_requests_running": 0.0,
+        "num_requests_waiting": 0.0
+      }
+    },
+    {
+      "port": 8003,
+      "ids": [
+        "qwen3.8-27b"
+      ],
+      "metrics": {
+        "num_requests_running": 0.0,
+        "num_requests_waiting": 0.0
+      }
+    }
+  ],
+  "symbolic_health": {
+    "status": "ready",
+    "pool_size": 4,
+    "ready": 4,
+    "busy": 0,
+    "failed": 0,
+    "warming": 0,
+    "actual_julia_threads": [
+      4,
+      4,
+      4,
+      4
+    ],
+    "worker_warmup": [
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sqrt",
+              "abs"
+            ],
+            "elapsed_seconds": 23.00790024921298
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 6.061390824615955
+          }
+        ],
+        "warmup_seconds": 35.04070345312357
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sqrt",
+              "abs"
+            ],
+            "elapsed_seconds": 23.005415739491582
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 6.68259696289897
+          }
+        ],
+        "warmup_seconds": 35.65486975759268
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sqrt",
+              "abs"
+            ],
+            "elapsed_seconds": 22.58061141707003
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 5.932759778574109
+          }
+        ],
+        "warmup_seconds": 34.47637229785323
+      },
+      {
+        "actual_julia_threads": 4,
+        "warmup_stages": [
+          {
+            "stage": "algebra",
+            "maxsize": 24,
+            "unary_operators": [
+              "sqrt",
+              "abs"
+            ],
+            "elapsed_seconds": 22.823799297213554
+          },
+          {
+            "stage": "full",
+            "maxsize": 48,
+            "unary_operators": [
+              "sin",
+              "cos",
+              "exp",
+              "sqrt",
+              "log",
+              "abs"
+            ],
+            "elapsed_seconds": 6.1209219843149185
+          }
+        ],
+        "warmup_seconds": 34.91178745403886
+      }
+    ]
+  },
+  "web_active_run_id": null,
+  "web_e8_run_ids": [
+    "e8-qwen38-pysr-stage-20261107-r01-world_3",
+    "e8-qwen38-pysr-stage-20261107-r01-world_6",
+    "e8-qwen38-pysr-stage-20261107-r01-world_1",
+    "e8-qwen38-pysr-stage-20261107-r01-world_2",
+    "e8-qwen38-pysr-stage-20261107-r01-world_5",
+    "e8-qwen38-pysr-stage-20261107-r01-world_4"
+  ],
+  "defaults": {
+    "world_set": "v15",
+    "ruleset": "e5",
+    "energy_budget": 10,
+    "wall_seconds": 300,
+    "noise": false,
+    "seed": 42,
+    "world_id": "world_1",
+    "model": "qwen3.8-27b",
+    "max_total_tokens": null,
+    "max_tokens_per_call": 4096,
+    "thinking": false,
+    "reasoning_effort": "low",
+    "max_calls": null,
+    "code_enabled": false
+  }
+}

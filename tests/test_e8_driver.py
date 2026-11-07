@@ -54,6 +54,24 @@ def test_exactly_one_six_world_plan_preserves_registered_limits(project):
     assert not plans[0]['output'].exists()
 
 
+def test_second_registered_batch_keeps_first_attempts_and_all_limits(project):
+    first=driver.plans(project)[0]
+    first['output'].mkdir()
+    second=driver.plans(project,repeat='r02')[0]
+    assert second['output'].name=='e8-qwen38-pysr-stage-20261107-r02'
+    assert second['config']==first['config']
+    assert len(second['planned_runs'])==6
+    assert set(second['planned_runs'].values()).isdisjoint(first['planned_runs'].values())
+    driver.run_e7._check_fresh_paths([second])
+    assert second['protocol_metadata']['registered_repeat']=='r02'
+    assert second['protocol_metadata']['repeat_registration']['additional_offline_searches']==0
+    second['output'].mkdir()
+    with pytest.raises(ValueError,match='already_exists'):
+        driver.run_e7._check_fresh_paths([second])
+    with pytest.raises(ValueError,match='explicitly registered'):
+        driver.plans(project,repeat='r03')
+
+
 @pytest.mark.parametrize('opener,message',[
     (Opener(active='user-exploration'),'existing user'),
     (Opener(running=1),'idle model'),
@@ -74,10 +92,11 @@ def test_wrapper_reuses_scheduler_and_hashes_new_generic_modules(project,monkeyp
     monkeypatch.setattr(driver,'verify_julia_threads',lambda p:{'actual_threads':4})
     monkeypatch.setattr(driver.run_e7,'run_study',lambda *args,**kwargs:calls.append((args,kwargs)))
     opener=Opener()
-    driver.run_study(project,opener=opener)
+    driver.run_study(project,repeat='r02',opener=opener)
     kwargs=calls[0][1]
     assert len(kwargs['planned_batches'])==1
     assert kwargs['planned_batches'][0]['symbolic_runtime_preflight']=={'actual_threads':4}
+    assert kwargs['planned_batches'][0]['protocol_metadata']['registered_repeat']=='r02'
     assert 'shore_agent/features/new_basis.py' in kwargs['extra_source_paths']
     assert kwargs['opener'] is opener
     assert len(opener.calls)==5

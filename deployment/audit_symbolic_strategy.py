@@ -171,6 +171,8 @@ def context_delivery(model_messages, final_messages, search_id, search):
             except (ValueError, TypeError):
                 continue
             data = payload.get("data", {}) if isinstance(payload, dict) else {}
+            if not isinstance(data, dict):
+                continue
             if data.get("search_id") != search_id:
                 continue
             visible = {key: (candidate.get("law_spec"), candidate.get("parameter_spec"))
@@ -285,8 +287,8 @@ def analyze_world(archive, row):
                 if fit["tool_line"] <= search["tool_line"]:
                     continue
                 match = match_formula(candidate, fit, component=component)
-                axes = [component] if component else [axis for axis in ("ax", "ay")
-                                                    if match_formula(candidate, fit, component=axis)]
+                axes = ([component] if match else []) if component else [
+                    axis for axis in ("ax", "ay") if match_formula(candidate, fit, component=axis)]
                 if match is None and not axes:
                     continue
                 relation = match if match else "partial_axis_structure_only"

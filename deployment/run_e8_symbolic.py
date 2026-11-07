@@ -6,6 +6,7 @@ and failed attempts are retained; an existing output directory is never reused.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
 from pathlib import Path
@@ -22,12 +23,16 @@ from deployment import run_e7
 from shore_worlds import V15_WORLD_IDS
 
 BATCH_ID = 'e8-qwen38-pysr-stage-20261107-r01'
+REGISTERED_REPEATS = ('r01', 'r02')
 CONFIG = 'deployment/config.e8.symbolic.json'
 PROTOCOL = 'experiments/E5/e8-protocol.json'
 
 
-def plans(project=ROOT):
+def plans(project=ROOT, *, repeat='r01'):
+    if repeat not in REGISTERED_REPEATS:
+        raise ValueError('E8 repeat must be explicitly registered as r01 or r02')
     project = Path(project).resolve()
+    batch_id = BATCH_ID.removesuffix('r01') + repeat
     config = configuration(project, config_path=project/CONFIG, thinking=False, ruleset='e5')
     config['model'].pop('sampling_seed',None)
     required = {
@@ -42,9 +47,11 @@ def plans(project=ROOT):
     for (section,key), value in required.items():
         if config.get(section,{}).get(key) != value:
             raise ValueError(f'E8 registered setting differs: {section}.{key}')
-    return [{'output':project/'experiments/E5'/BATCH_ID, 'config':config, 'experiment_group':'E8',
+    registration = json.loads((project/PROTOCOL).read_text())['registered_agent_batches'][repeat]
+    return [{'output':project/'experiments/E5'/batch_id, 'config':config, 'experiment_group':'E8',
+             'protocol_metadata':{'registered_repeat':repeat, 'repeat_registration':registration},
              'require_staged_warmup':True,
-             'planned_runs':{world:project/'runs'/f'{BATCH_ID}-{world}' for world in V15_WORLD_IDS}}]
+             'planned_runs':{world:project/'runs'/f'{batch_id}-{world}' for world in V15_WORLD_IDS}}]
 
 
 def source_paths(project):
@@ -109,9 +116,9 @@ def idle_workloads(opener=None):
             raise RuntimeError(f'E8 cannot verify idle model endpoint: {endpoint}') from None
 
 
-def run_study(project=ROOT, *, opener=None, stop_requested=None):
+def run_study(project=ROOT, *, repeat='r01', opener=None, stop_requested=None):
     project = Path(project).resolve()
-    planned = plans(project)
+    planned = plans(project, repeat=repeat)
     run_e7._check_fresh_paths(planned)
     idle_workloads(opener)
     planned[0]['symbolic_runtime_preflight']=verify_julia_threads(project)
@@ -119,14 +126,17 @@ def run_study(project=ROOT, *, opener=None, stop_requested=None):
                             planned_batches=planned,extra_source_paths=source_paths(project))
 
 
-def main():
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--repeat', choices=REGISTERED_REPEATS, default='r01')
+    args = parser.parse_args(argv)
     stopped = False
     def request_stop(*_):
         nonlocal stopped
         stopped=True
     previous={sig:signal.signal(sig,request_stop) for sig in (signal.SIGINT,signal.SIGTERM)}
     try:
-        run_study(stop_requested=lambda:stopped)
+        run_study(repeat=args.repeat, stop_requested=lambda:stopped)
     finally:
         for sig,handler in previous.items(): signal.signal(sig,handler)
 

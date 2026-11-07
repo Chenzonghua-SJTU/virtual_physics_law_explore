@@ -286,7 +286,7 @@ def summarize(snapshot, directory):
         exploration = max(0., wall_limit - wall_remaining)
         timing_source = 'mission_budget_elapsed'
     return {'world_id': snapshot.get('world_id'), 'world_set': 'v15', 'run_id': directory.name,
-            'ruleset': ruleset, 'experiment_group': ruleset.upper(),
+            'ruleset': ruleset, 'experiment_group': metadata.get('experiment_group', ruleset.upper()),
             'model_endpoint': metadata.get('model_endpoint'),
             'status': snapshot.get('status'), 'reason': result.get('reason'),
             'running': snapshot.get('running', False), 'worker_returncode': metadata.get('worker_returncode'),
