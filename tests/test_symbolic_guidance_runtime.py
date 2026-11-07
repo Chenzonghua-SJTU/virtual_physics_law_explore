@@ -130,3 +130,11 @@ def test_absent_or_incomplete_observations_do_not_invent_evidence():
     assert build_review({'probe': {}}, budget()) is None
     assert build_review({'probe': {'incomplete': {'times': [0, 1], 'v_obs': [[0, 0]]}}}, budget()) is None
     assert build_review(records(), {**budget(), 'session_ended': True}) is None
+
+
+def test_public_evidence_review_is_invariant_to_world_identifiers():
+    public={'allowed_properties':['mass','charge'],'reference_length':2.}
+    expected=build_review(records(),budget(),public)
+    for label in ['world_1','world_6','unseen_opaque_identifier']:
+        metadata=dict(public,world_id=label,world_name=label)
+        assert build_review(records(),budget(),metadata)==expected

@@ -729,3 +729,13 @@ def test_joint_scalar_counterparts_survive_different_axis_shortlists(monkeypatch
     monkeypatch.setattr(sr,'_prepare_axis',prepare)
     result,audit=sr._select_candidates([left,right],data,3,time.monotonic()+3,{})
     assert audit['candidate_selection']['axis_frontier_counts']==[2,2]
+
+
+def test_discovery_targets_do_not_depend_on_world_labels_or_reference_fields():
+    reference=prepare_dataset([probe()])
+    for label in ['world_1','world_6','unseen_opaque_identifier']:
+        record=probe();record.update(world_id=label,reference_law={'ax':'SECRET_REFERENCE','ay':'SECRET_REFERENCE'})
+        observed=prepare_dataset([record])
+        assert observed['feature_names']==reference['feature_names']
+        np.testing.assert_array_equal(observed['X'],reference['X'])
+        np.testing.assert_array_equal(observed['y'],reference['y'])
