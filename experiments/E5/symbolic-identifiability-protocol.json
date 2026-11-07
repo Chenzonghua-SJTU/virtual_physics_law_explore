@@ -1,0 +1,69 @@
+{
+  "study": "Isolated six-world PySR identifiability: exact versus velocity-difference acceleration",
+  "status": "prepared_not_executed",
+  "scientific_question": "With identical informative trajectories, distinguish backend search limits, derivative-label error and candidate packaging limits before any new Agent benchmark.",
+  "dataset_generator": "deployment/check_symbolic_trajectory_data.py",
+  "driver": "deployment/check_symbolic_identifiability.py",
+  "data": {
+    "worlds": ["world_1", "world_2", "world_3", "world_4", "world_5", "world_6"],
+    "training_probes_per_world": 24,
+    "heldout_probes_per_world": 8,
+    "samples_per_probe": 50,
+    "dt": 0.02,
+    "features": ["t", "x", "y", "vx", "vy", "mass", "charge"],
+    "weighting": "Equal total weight per trajectory; equal weight per interior sample within trajectory.",
+    "design": "The same registered position, velocity, property and launch-time controls for every world; several quadrants/radii, independent mass/charge controls, repeated complete initial states at launch times 3,7,11,17,23,29,31.",
+    "holdout": "Eight separately specified new initial states, launch times and properties; never used for search, parameter fitting, coefficient-sharing acceptance or candidate selection.",
+    "noise": false,
+    "exact_labels": "Vendor acceleration evaluated only by the isolated dataset generator at each observed interior state; stored in a separate diagnostic-only side table, never in production probe records."
+  },
+  "arms": {
+    "A_exact": "Direct PySR on common interior states and exact acceleration labels.",
+    "B_velocity_difference": "The identical direct backend runner on the same states and weights, with prepare_dataset velocity-difference targets as the only changed search input. Neither arm uses generic linear seeds. This is not a third production-tool search."
+  },
+  "search": {
+    "attempts_per_world_per_arm": 1,
+    "automatic_retries": false,
+    "total_seconds_per_world_per_arm": 60,
+    "axis_allocation": "The same fixed 30-second PySR timeout for each of the two axes in both arms; actual per-axis and total timings recorded, including any soft-timeout overrun.",
+    "parent_hard_timeout": "Parent stops an owned worker about 63 seconds after its search phase begins (60 seconds requested search plus 3 seconds of timeout/result-transport tolerance). This is an offline diagnostic, not a claim of strict 60-second execution.",
+    "postprocessing": "The identical production selector/exporter is applied after each direct search with a separate 10-second allowance. Only arm-specific discovery targets enter this step; independent holdout is never used. Search and postprocessing times are reported separately.",
+    "maxsize": 48,
+    "binary_operators": ["+", "-", "*", "/", "^"],
+    "unary_operators": ["sin", "cos", "exp", "sqrt", "log", "abs"],
+    "power_exponent_max_complexity": 1,
+    "random_state": 42,
+    "axis_seed_increment": 1,
+    "populations": 8,
+    "population_size": 27,
+    "ncycles_per_iteration": 100,
+    "warm_start": false,
+    "parallelism": "multithreading",
+    "cpu_workers": 4,
+    "julia_threads_per_worker": 4,
+    "blas_threads_per_worker": 1,
+    "production_service_reused": false,
+    "warmup": "Synthetic-only compilation in each isolated process, measured separately from search; no contest world or archive data."
+  },
+  "reporting": [
+    "Raw PySR equations, loss and complexity frontier, selected strictly by training loss/complexity.",
+    "All equations scored on fixed holdout after search, with no best-of-holdout answer selection.",
+    "Acceleration NRMSE = sqrt(weighted squared error / weighted exact acceleration squared), per axis and energy-weighted combined vector.",
+    "Actual derivative-label error on common train and holdout states.",
+    "Exported coefficient count and compatibility with the existing five-parameter law limit.",
+    "Single-axis delivery and final packaged candidate results reported separately from raw backend results.",
+    "Warmup, actual per-axis/search, post-search diagnostic evaluation and total wall time; partial results/errors retained.",
+    "Dataset and scientific-source SHA256 recorded before execution."
+  ],
+  "boundaries": {
+    "agent_model_calls": 0,
+    "agent_missions": 0,
+    "gpu_model_generations": 0,
+    "world_id_or_formula_passed_to_pysr": false,
+    "production_truth_label_support_added": false,
+    "replace_previous_scores": false,
+    "hidden_world_generalization_claim": false,
+    "agent_energy_budget_applies": false
+  },
+  "limitations": "This is an informative-data offline diagnostic, not a contest score or an autonomous Agent result. A single stochastic multithreaded run cannot prove search impossibility; no repeated seeds, hand-supplied formulas or per-world operator tuning are allowed in this registered batch. Initial radii 1.5-4 provide limited identification of a 0.05 softening scale: epsilon squared / r squared is only about 1.6e-4 to 1.1e-3. Low heldout NRMSE establishes domain prediction accuracy, not recovery of every small term or an exact symbolic identity."
+}

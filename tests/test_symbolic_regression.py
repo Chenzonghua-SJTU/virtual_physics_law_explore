@@ -365,3 +365,160 @@ def test_log_is_allowed_but_its_initial_domain_failure_is_rejected():
     candidates, audit = _select_candidates(rows, data, 3, time.monotonic()+3, {})
     assert candidates == []
     assert audit["rejection_counts"]["observed_domain"] == 1
+
+
+def sharing_probes(second_cross_coefficient=.35):
+    from scipy.integrate import solve_ivp
+    records = []
+    for index, initial in enumerate(([1.,2.,.3,-.2], [-2.,.5,-.4,.7], [.4,-1.5,.8,.1])):
+        t = np.linspace(0, .8, 81)
+        def rhs(time, z):
+            x,y,vx,vy=z
+            return [vx,vy,.8*x+.35*y+.21*vx,
+                    second_cross_coefficient*x+.65*y-.45*vy]
+        z = solve_ivp(rhs,(0,t[-1]),initial,t_eval=t,rtol=1e-12,atol=1e-14).y.T
+        records.append({"probe_id":f"sharing_{index}","times":t.tolist(),
+                        "r_obs":z[:,:2].tolist(),"v_obs":z[:,2:].tolist(),
+                        "initial_conditions":{"r0":initial[:2],"v0":initial[2:],"t0":0,"properties":{}}})
+    return records
+
+
+def test_near_repeated_coefficients_are_jointly_fitted_and_checked_before_sharing():
+    import time
+    from shore_agent.symbolic_regression import _parameter_sharing
+    data=prepare_dataset(sharing_probes())
+    raw=export_candidate("0.8*x+0.3502*y+0.21*vx","0.3498*x+0.65*y-0.45*vy",
+                         data["feature_names"],_parameter_limit=24)
+    shared=_parameter_sharing(raw,data,time.monotonic()+3)
+    assert len(raw["parameter_spec"]) == 6
+    assert len(shared["parameter_spec"]) == 5
+    audit=shared["parameter_sharing"]
+    assert audit["status"] == "data_validated"
+    assert audit["uncompressed_law_spec"] == raw["law_spec"]
+    assert audit["uncompressed_parameter_spec"] == raw["parameter_spec"]
+    assert audit["fit_evaluations"] > 1
+    assert audit["heldout_discovery_probe_ids"] == ["sharing_2"]
+    assert all(c["passed"] for c in audit["split_checks"])
+    assert any(len(group["original_parameters"]) == 2 for group in audit["groups"])
+    assert audit["independent_validation"] is False
+    Expression(shared["law_spec"],shared["parameter_spec"])
+
+
+def test_close_but_distinct_true_coefficients_are_not_silently_merged():
+    import time
+    from shore_agent.symbolic_regression import _parameter_sharing
+    data=prepare_dataset(sharing_probes(second_cross_coefficient=.36))
+    raw=export_candidate("0.8*x+0.35*y+0.21*vx","0.36*x+0.65*y-0.45*vy",
+                         data["feature_names"],_parameter_limit=24)
+    with pytest.raises(SymbolicRegressionError,match="sharing_data_rejected"):
+        _parameter_sharing(raw,data,time.monotonic()+3)
+
+
+def test_full_axis_formulas_survive_even_when_joint_parameter_sharing_fails():
+    import time
+    from shore_agent.symbolic_regression import _select_candidates, validate_axis_candidate
+    data=prepare_dataset(sharing_probes(second_cross_coefficient=.36))
+    rows=[[{"source":"0.8*x+0.35*y+0.21*vx","complexity":11,"origin":"pysr"}],
+          [{"source":"0.36*x+0.65*y-0.45*vy","complexity":11,"origin":"pysr"}]]
+    candidates,audit=_select_candidates(rows,data,3,time.monotonic()+3,{})
+    assert candidates == []
+    assert audit["rejection_counts"]["sharing_data_rejected"] == 1
+    for component in ("ax","ay"):
+        axis=audit["axis_candidates"][component]
+        assert len(axis)==1
+        assert axis[0]["joint_fit_ready"] is False
+        assert axis[0]["parameter_count"]==3
+        validate_axis_candidate(axis[0],component)
+
+
+def test_axis_with_more_than_five_coefficients_is_safe_readable_output():
+    import time
+    from shore_agent.symbolic_regression import _select_candidates, validate_axis_candidate
+    data=prepare_dataset([physical_probe("p",(1.,2.))])
+    source="0.1*x+0.2*y+0.3*t+0.4*vx+0.5*vy+0.6*x*y"
+    rows=[[{"source":source,"complexity":25,"origin":"pysr"}],
+          [{"source":"0","complexity":1,"origin":"pysr"}]]
+    _,audit=_select_candidates(rows,data,3,time.monotonic()+3,{})
+    axis=audit["axis_candidates"]["ax"][0]
+    assert axis["parameter_count"]==6
+    assert axis["parameter_budget_compatible"] is False
+    assert axis["joint_fit_ready"] is False
+    validate_axis_candidate(axis,"ax")
+    tampered=copy.deepcopy(axis);tampered["parameter_spec"][0]["initial"]+=1
+    with pytest.raises(SymbolicRegressionError):validate_axis_candidate(tampered,"ax")
+    assert axis["prediction_accuracy_status"] == "not_independently_validated"
+
+
+def test_search_size_includes_larger_generic_expressions_and_retains_full_operator_set():
+    from shore_agent.symbolic_regression import SEARCH_MAXSIZE
+    options=[]
+    class EmptySearch:
+        def __init__(self,**kwargs):options.append(kwargs)
+        def fit(self,*args,**kwargs):self.equations_=Rows([])
+    result=run_search([physical_probe("p",(1.,2.))],model_factory=EmptySearch,time_budget_seconds=15)
+    assert SEARCH_MAXSIZE==48
+    assert all(o["maxsize"]==48 for o in options)
+    assert all({"sin","cos","exp","log"}.issubset(o["unary_operators"]) for o in options)
+    assert result["search_configuration"]["maxsize"]==48
+    assert "executability only" in result["data_quality"]["trajectory_checks"]
+    assert all(c["joint_fit_ready"] for c in result["candidates"])
+
+
+def test_axis_frontier_cap_preserves_accuracy_and_simplicity_endpoints():
+    from shore_agent.symbolic_regression import _prepare_axis, MAX_EQUATIONS_PER_AXIS
+    data=prepare_dataset([probe()])
+    # Search complexity belongs to the original tree and can exceed a simplified
+    # source spelling. These costs create 40 nondominated parameter/cost cells.
+    rows=[{"source":f"{float(c)!r}*x", "complexity":23+i, "origin":"pysr"}
+          for i,c in enumerate(np.linspace(1.5,2.,18))]
+    rows += [{"source":f"{float(c)!r}*x+0.01*y", "complexity":1+i,"origin":"pysr"}
+             for i,c in enumerate(np.linspace(.1,1.3,22))]
+    audit=[]
+    frontier=_prepare_axis(rows,data,0,audit)
+    assert len(frontier)==MAX_EQUATIONS_PER_AXIS
+    assert len(audit)==40
+    assert any(r["source"]=="2.0*x" for r in frontier)
+    assert min(r["complexity"] for r in frontier)==1
+
+
+def test_single_axis_delivery_always_keeps_lowest_loss_beside_simple_choices():
+    from shore_agent.symbolic_regression import _axis_public_candidates
+    data=prepare_dataset([probe()])
+    rows=[{"source":f"{value}.0*x","complexity":cost,"loss":loss,"parameter_count":1,"origin":"pysr"}
+          for value,cost,loss in ((1,1,3.),(3,2,2.),(4,3,1.),(2,10,0.))]
+    result=_axis_public_candidates([rows,rows],data,[10.,10.])
+    for axis in ("ax","ay"):
+        assert len(result[axis])==3
+        assert "2.0*x" in {r["source"] for r in result[axis]}
+        assert "1.0*x" in {r["source"] for r in result[axis]}
+
+
+def test_partial_nonempty_selection_cannot_replace_complete_certified_checkpoint(monkeypatch):
+    from shore_agent import symbolic_regression as sr
+    good=dict(export_candidate("0.1*x","0.2*y",["x","y"]),
+              normalized_acceleration_search_loss=.01,short_rollout_check={"status":"passed"})
+    bad=dict(export_candidate("4.0*x","5.0*y",["x","y"]),
+             normalized_acceleration_search_loss=100.,short_rollout_check={"status":"passed"})
+    selections=[0]
+    def selection(*args,**kwargs):
+        selections[0]+=1
+        complete=selections[0]==1
+        pair=good if complete else bad
+        return ([copy.deepcopy(pair)] if complete else [copy.deepcopy(pair)]*3,
+                {"axis_candidates":{"ax":[{"source":"good" if complete else "bad"}],"ay":[]},
+                 "candidate_selection":{"selection_incomplete":not complete,"retained_checkpoint":False}})
+    monkeypatch.setattr(sr,"_select_candidates",selection)
+    class EmptySearch:
+        def __init__(self,**kwargs):pass
+        def fit(self,*args,**kwargs):self.equations_=Rows([])
+    result=run_search([probe()],model_factory=EmptySearch,time_budget_seconds=15)
+    assert result["candidates"]==[good]
+    assert result["axis_candidates"]["ax"][0]["source"]=="good"
+    assert result["candidate_selection"]["retained_checkpoint"] is True
+
+
+@pytest.mark.parametrize("source",["1/exp(1000*x)","1/(1000000000000.0*x)","1**33"])
+def test_vector_domain_guard_rejects_intermediate_overflow_and_excessive_powers(source):
+    from shore_agent.symbolic_regression import _evaluate_array
+    with pytest.raises(SymbolicRegressionError):
+        _evaluate_array(source,{"x":np.array([2.])})

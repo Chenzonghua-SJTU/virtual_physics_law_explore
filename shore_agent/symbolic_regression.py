@@ -24,6 +24,9 @@ UNARY_OPERATORS = ("sin", "cos", "exp", "sqrt", "log", "abs")
 EXPORT_UNARY_OPERATORS = ("sin", "cos", "exp", "sqrt", "log", "abs")
 MAX_ROWS = 20000
 MAX_EQUATIONS_PER_AXIS = 32
+SEARCH_MAXSIZE = 48
+MAX_AXIS_CANDIDATES = 3
+MAX_INTERNAL_PARAMETERS = 24
 
 
 class SymbolicRegressionError(ValueError):
@@ -97,7 +100,7 @@ def prepare_dataset(probes):
             "probes": probes}
 
 
-def export_candidate(ax_source, ay_source, feature_names):
+def export_candidate(ax_source, ay_source, feature_names, *, _parameter_limit=5):
     """Convert two SymPy-style strings into the existing bounded expression DSL.
 
     Every numerical coefficient occurrence gets its own parameter. We never
@@ -112,8 +115,9 @@ def export_candidate(ax_source, ay_source, feature_names):
     def parameter(value):
         if not math.isfinite(value) or abs(value) > MAX_MAGNITUDE:
             raise SymbolicRegressionError("Invalid fitted coefficient")
-        if len(parameters) >= 5:
-            raise SymbolicRegressionError("Candidate needs more than five scalar parameters")
+        if len(parameters) >= _parameter_limit:
+            raise SymbolicRegressionError("Candidate needs more than five scalar parameters" if _parameter_limit == 5
+                                          else "Candidate exceeds internal coefficient budget")
         name = "c" + str(len(parameters) + 1)
         parameters.append({"name": name, "initial": float(value)})
         return ast.Name(id=name, ctx=ast.Load())
@@ -170,15 +174,52 @@ def export_candidate(ax_source, ay_source, feature_names):
         if len(law_spec[key]) > 600:
             raise SymbolicRegressionError("Export exceeds tool expression length")
     try:
-        Expression(law_spec, parameters)
+        if len(parameters) <= 5:
+            Expression(law_spec, parameters)
+        else:
+            # Check the identical DSL structure with one placeholder symbol.
+            # This does not certify the unrestricted coefficient list as an
+            # executable five-parameter law; raw axis records say so explicitly.
+            collapsed = _rename_parameters(law_spec, {p["name"]: "coefficient" for p in parameters})
+            Expression(collapsed, [{"name": "coefficient", "initial": 1.0}])
     except ExpressionError as exc:
         raise SymbolicRegressionError(str(exc)) from exc
     return {"law_spec": law_spec, "parameter_spec": parameters}
 
 
+def _rename_parameters(law_spec, mapping):
+    class Rename(ast.NodeTransformer):
+        def visit_Name(self, node):
+            return ast.copy_location(ast.Name(id=mapping.get(node.id, node.id), ctx=ast.Load()), node)
+    return {axis: ast.unparse(ast.fix_missing_locations(Rename().visit(ast.parse(source, mode="eval"))))
+            for axis, source in law_spec.items()}
+
+
+def validate_axis_candidate(candidate, component):
+    """Validate non-executable single-axis output by deterministic re-export.
+
+    A component with >5 coefficient occurrences is useful mathematical evidence,
+    but is never accepted as an executable joint law by this helper.
+    """
+    if not isinstance(candidate, dict) or component not in ("ax", "ay"):
+        raise SymbolicRegressionError("Invalid axis candidate")
+    if candidate.get("component") != component or candidate.get("joint_fit_ready") is not False:
+        raise SymbolicRegressionError("Single-axis candidates are not joint-fit-ready")
+    source = candidate.get("source")
+    expected = export_candidate(source if component == "ax" else "0",
+                                source if component == "ay" else "0", FEATURES+PROPERTIES,
+                                _parameter_limit=MAX_INTERNAL_PARAMETERS)
+    if candidate.get("law_spec") != expected["law_spec"] or candidate.get("parameter_spec") != expected["parameter_spec"]:
+        raise SymbolicRegressionError("Single-axis source and exported coefficients differ")
+    count = len(expected["parameter_spec"])
+    if candidate.get("parameter_count") != count or candidate.get("parameter_budget_compatible") != (count <= 5):
+        raise SymbolicRegressionError("Invalid single-axis parameter metadata")
+    return expected
+
+
 def _evaluate_array(source, features):
     """Small vector interpreter for search auditing; never eval or compiled code."""
-    def visit(node):
+    def compute(node):
         if isinstance(node, ast.Constant) and type(node.value) in (int, float):
             return float(node.value)
         if isinstance(node, ast.Name) and node.id in features:
@@ -192,13 +233,24 @@ def _evaluate_array(source, features):
             if isinstance(node.op, ast.Sub): return a - b
             if isinstance(node.op, ast.Mult): return a * b
             if isinstance(node.op, ast.Div): return np.divide(a, b)
-            if isinstance(node.op, ast.Pow): return np.power(a, b)
+            if isinstance(node.op, ast.Pow):
+                if np.any(np.abs(b) > 32):
+                    raise SymbolicRegressionError("nonfinite_expression_or_exponent_limit")
+                return np.power(a, b)
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and len(node.args) == 1:
+            if node.func.id == "q" and isinstance(node.args[0], ast.Constant) and node.args[0].value in PROPERTIES:
+                return features[node.args[0].value]
             functions = {"sin": np.sin, "cos": np.cos, "exp": np.exp,
                          "sqrt": np.sqrt, "log": np.log, "abs": np.abs, "Abs": np.abs}
             if node.func.id in functions:
                 return functions[node.func.id](visit(node.args[0]))
         raise SymbolicRegressionError("unsupported_expression")
+    def visit(node):
+        value = compute(node)
+        checked = np.asarray(value, dtype=float)
+        if not np.isfinite(checked).all() or np.any(np.abs(checked) > MAX_MAGNITUDE):
+            raise SymbolicRegressionError("nonfinite_expression")
+        return value
     with np.errstate(all="ignore"):
         values = np.asarray(visit(ast.parse(source, mode="eval").body), dtype=float)
     if not np.isfinite(values).all() or np.any(np.abs(values) > MAX_MAGNITUDE):
@@ -291,7 +343,7 @@ def _prepare_axis(rows, dataset, axis, audit, deadline=float("inf")):
             audit.append(row)
             continue
         try:
-            candidate = export_candidate(source, "0", dataset["feature_names"])
+            candidate = export_candidate(source, "0", dataset["feature_names"], _parameter_limit=MAX_INTERNAL_PARAMETERS)
             row["parameter_count"] = len(candidate["parameter_spec"])
             prediction = _evaluate_array(source, features)
             row["loss"] = float(np.sum(dataset["weights"] * (prediction-dataset["y"][:, axis])**2))
@@ -316,8 +368,12 @@ def _prepare_axis(rows, dataset, axis, audit, deadline=float("inf")):
         cells.setdefault((row["parameter_count"], row["complexity"]), row)
     ordered = sorted(cells.values(), key=lambda r: (r["parameter_count"], r["complexity"], r["loss"]))
     if len(ordered) > MAX_EQUATIONS_PER_AXIS:
-        indexes = np.linspace(0, len(ordered)-1, MAX_EQUATIONS_PER_AXIS).round().astype(int)
-        ordered = [ordered[i] for i in indexes]
+        best = min(range(len(ordered)), key=lambda i:(ordered[i]["loss"],ordered[i]["complexity"]))
+        simple = min(range(len(ordered)), key=lambda i:(ordered[i]["complexity"],ordered[i]["parameter_count"],ordered[i]["loss"]))
+        indexes = list(dict.fromkeys([best, simple, *np.linspace(0,len(ordered)-1,MAX_EQUATIONS_PER_AXIS).round().astype(int)]))
+        if len(indexes) < MAX_EQUATIONS_PER_AXIS:
+            indexes.extend(i for i in range(len(ordered)) if i not in indexes)
+        ordered = [ordered[i] for i in indexes[:MAX_EQUATIONS_PER_AXIS]]
     return ordered
 
 
@@ -397,6 +453,140 @@ def _compress_frontier(frontier, limit):
     return selected
 
 
+def _parameter_sharing(candidate, dataset, deadline):
+    """Propose ties by numeric proximity, accept only after joint data fitting.
+
+    The proposal is never treated as physical identity. A whole-probe holdout
+    inside the discovery data checks the constrained fit when >=2 probes exist;
+    fresh-probe independent validation is still required by the Agent.
+    """
+    from scipy.optimize import least_squares
+    original = candidate["parameter_spec"]
+    if len(original) <= 5:
+        return candidate
+    stop = min(deadline, time.monotonic()+1.0)
+    values = np.asarray([p["initial"] for p in original], dtype=float)
+    # Only propose close, same-sign coefficient occurrences. Their closeness is
+    # not the acceptance test: distinct true values must fail the data check.
+    groups = [[i] for i in range(len(values))]
+    while len(groups) > 5:
+        proposals = []
+        for i, a in enumerate(groups):
+            for j, b in enumerate(groups[:i]):
+                together = values[a+b]
+                scale = max(float(np.max(np.abs(together))), 1e-12)
+                distance = float(np.ptp(together))/scale
+                if distance <= .1 and (np.all(together >= 0) or np.all(together <= 0)):
+                    proposals.append((distance, j, i))
+        if not proposals: raise SymbolicRegressionError("sharing_no_supported_proposal")
+        _, j, i = min(proposals)
+        groups[j] += groups.pop(i)
+    names = [f"c{i+1}" for i in range(len(groups))]
+    mapping = {original[index]["name"]: name for name, group in zip(names, groups) for index in group}
+    law = _rename_parameters(candidate["law_spec"], mapping)
+    guess = np.asarray([float(np.mean(values[group])) for group in groups])
+    features = {name: dataset["X"][:,i] for i,name in enumerate(dataset["feature_names"])}
+    full_features = _all_features(dataset)
+    count = len(dataset["weights"])
+    y, weights = dataset["y"], dataset["weights"]
+    # Weight each selected trajectory equally, including the held-out trajectory.
+    train_mask = np.ones(count, dtype=bool)
+    heldout_ids = []
+    if len(dataset["used_probe_ids"]) >= 2:
+        last_id = dataset["used_probe_ids"][-1]
+        heldout_size = dataset["samples_per_probe"][last_id]
+        train_mask[-heldout_size:] = False
+        heldout_ids = [last_id]
+    calls = 0
+    def predict(formula, parameters, table):
+        context = dict(table, **parameters)
+        return np.column_stack([np.broadcast_to(_evaluate_array(formula[axis], context),
+                                               (len(next(iter(table.values()))),)) for axis in ("ax", "ay")])
+    original_parameters = {p["name"]: p["initial"] for p in original}
+    before_prediction = predict(candidate["law_spec"], original_parameters, features)
+    def mse(prediction, mask):
+        w = weights[mask]/sum(weights[mask])
+        return np.sum(w[:,None]*(prediction[mask]-y[mask])**2, axis=0)
+    old = mse(before_prediction, np.ones(count, dtype=bool))
+    resolution = _differencing_tolerance(dataset)
+    signal = np.sum(weights[:,None]*y*y, axis=0)
+    def permitted(original_loss):
+        return original_loss + np.maximum.reduce([.05*original_loss, 4*resolution, 1e-14*np.maximum(signal, 1e-12)])
+    def residual(parameters, mask):
+        nonlocal calls
+        calls += 1
+        if time.monotonic() >= stop: raise SymbolicRegressionError("sharing_time_limit")
+        try:
+            prediction = predict(law, dict(zip(names, parameters)), features)
+            value = (prediction[mask]-y[mask])*np.sqrt(weights[mask])[:,None]
+            return value.ravel()
+        except (SymbolicRegressionError, ValueError, OverflowError, ZeroDivisionError):
+            return np.full(2*int(np.sum(mask)), 1e6)
+    result = least_squares(residual, guess, args=(train_mask,), max_nfev=35, x_scale="jac",
+                           ftol=1e-9, xtol=1e-9, gtol=1e-9)
+    constrained = predict(law, dict(zip(names, result.x)), features)
+    checks = []
+    for label, mask in (("fit", train_mask), ("heldout_discovery_probes", ~train_mask)):
+        if not np.any(mask): continue
+        baseline, fitted = mse(before_prediction, mask), mse(constrained, mask)
+        tolerance = permitted(baseline)
+        passed = bool(np.all(fitted <= tolerance))
+        checks.append({"split": label, "original_mse_by_axis": baseline.tolist(),
+                       "shared_mse_by_axis": fitted.tolist(), "maximum_accepted_mse_by_axis": tolerance.tolist(),
+                       "passed": passed})
+        if not passed: raise SymbolicRegressionError("sharing_data_rejected")
+    # Refit on all discovery data after the whole-trajectory selection check.
+    if heldout_ids:
+        result = least_squares(residual, result.x, args=(np.ones(count,dtype=bool),), max_nfev=25,
+                               x_scale="jac", ftol=1e-9, xtol=1e-9, gtol=1e-9)
+    parameters = [{"name": name, "initial": float(value)} for name,value in zip(names,result.x)]
+    Expression(law, parameters)
+    params = {p["name"]:p["initial"] for p in parameters}
+    prediction = predict(law, params, features)
+    after = mse(prediction, np.ones(count,dtype=bool))
+    if not np.all(after <= permitted(old)): raise SymbolicRegressionError("sharing_data_rejected")
+    predict(law, params, full_features)  # Do not inherit pre-fit domain validity.
+    scale = np.maximum(signal, 1e-20)
+    return dict(candidate, law_spec=law, parameter_spec=parameters, parameter_count=len(parameters),
+        acceleration_search_mse_by_axis=after.tolist(), acceleration_search_mse=float(np.sum(after)),
+        normalized_acceleration_search_loss=float(np.mean(after/scale)),
+        parameter_sharing={"status": "data_validated", "proposal": "close coefficients proposed, never assumed equal",
+            "uncompressed_law_spec": candidate["law_spec"], "uncompressed_parameter_spec": original,
+            "groups": [{"shared_parameter":name,"original_parameters":[original[i]["name"] for i in group]}
+                       for name,group in zip(names,groups)],
+            "original_loss_by_axis": old.tolist(), "shared_loss_by_axis": after.tolist(),
+            "acceptance_tolerance_by_axis": permitted(old).tolist(), "fit_evaluations": calls,
+            "heldout_discovery_probe_ids": heldout_ids, "split_checks": checks,
+            "independent_validation": False,
+            "limitation": "Ties are supported only by the supplied discovery data and resolution heuristic."})
+
+
+def _axis_public_candidates(axes, dataset, tolerance_by_axis):
+    result = {}
+    for index, component in enumerate(("ax", "ay")):
+        rows = sorted(axes[index], key=lambda r: (r["loss"],r["complexity"]))
+        if rows:
+            threshold = rows[0]["loss"] + tolerance_by_axis[index]
+            simple = sorted([r for r in rows if r["loss"] <= threshold],
+                            key=lambda r:(r["complexity"],r["parameter_count"],r["loss"]))
+            rows = simple[:1] + rows[:1] + simple[1:] + rows[1:]
+        seen, result[component] = set(), []
+        for row in rows:
+            if row["source"] in seen: continue
+            seen.add(row["source"])
+            source = row["source"]
+            raw = export_candidate(source if index==0 else "0", source if index==1 else "0",
+                                   dataset["feature_names"], _parameter_limit=MAX_INTERNAL_PARAMETERS)
+            result[component].append(dict(raw, component=component, source=source,
+                loss=row["loss"],complexity=row["complexity"],origin=row.get("origin","pysr"),
+                parameter_count=len(raw["parameter_spec"]), joint_fit_ready=False,
+                parameter_budget_compatible=len(raw["parameter_spec"])<=5,
+                initial_domain_check={"status":"passed","scope":"This component on all acquired and controlled initial states"},
+                prediction_accuracy_status="not_independently_validated"))
+            if len(result[component]) >= MAX_AXIS_CANDIDATES: break
+    return result
+
+
 def _select_candidates(axis_rows, dataset, limit, deadline, cache):
     audits = [[], []]
     axes = [_prepare_axis(rows, dataset, axis, audits[axis], deadline) for axis, rows in enumerate(axis_rows)]
@@ -411,13 +601,14 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
         for r in rows:
             if r["domain_valid"] is False: reject(r["rejection_reason"], stage="axis", axis=axis, source=r["source"])
     scale = np.maximum(np.sum(dataset["weights"][:, None]*dataset["y"]**2, axis=0), 1e-20)
-    tolerance = max(1e-10, float(np.mean(_differencing_tolerance(dataset)/scale)))
+    resolution = _differencing_tolerance(dataset)
+    tolerance = max(1e-10, float(np.mean(resolution/scale)))
+    oversized = []
     for left, right in itertools.product(*axes):
         if time.monotonic() >= deadline: break
         try:
-            if left["parameter_count"] + right["parameter_count"] > 5:
-                raise SymbolicRegressionError("Candidate needs more than five scalar parameters")
-            candidate = export_candidate(left["source"], right["source"], dataset["feature_names"])
+            candidate = export_candidate(left["source"], right["source"], dataset["feature_names"],
+                                         _parameter_limit=MAX_INTERNAL_PARAMETERS)
             key = (candidate["law_spec"]["ax"], candidate["law_spec"]["ay"],
                    tuple(p["initial"] for p in candidate["parameter_spec"]))
             if key in seen: continue
@@ -430,9 +621,29 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
                 discovery_probe_ids=list(dataset["used_probe_ids"]), dsl_valid=True,
                 component_sources=[left.get("origin", "pysr"), right.get("origin", "pysr")],
                 initial_domain_check={"status": "passed", "scope": "All acquired states and controlled initial states"})
-            pool.append((key, candidate))
+            if candidate["parameter_count"] > 5:
+                oversized.append((key,candidate))
+            else:
+                pool.append((key, candidate))
         except (ValueError, OverflowError) as exc:
             reject(_reason(exc), stage="pair", ax=left["source"], ay=right["source"])
+    sharing_cache = cache.setdefault("parameter_sharing", {})
+    sharing_deadline = min(deadline, time.monotonic()+2.0)
+    for key,candidate in sorted(oversized, key=lambda item:(item[1]["normalized_acceleration_search_loss"],item[1]["complexity"]))[:4]:
+        if key not in sharing_cache:
+            if time.monotonic() >= sharing_deadline: break
+            try:
+                sharing_cache[key] = _parameter_sharing(candidate, dataset, sharing_deadline)
+            except (ValueError, OverflowError, ZeroDivisionError) as exc:
+                sharing_cache[key] = {"error": str(exc) if str(exc).startswith("sharing_") else "sharing_fit_failed"}
+        shared = sharing_cache[key]
+        if "error" in shared:
+            reject(shared["error"],stage="sharing",ax=candidate["law_spec"]["ax"],ay=candidate["law_spec"]["ay"])
+            continue
+        new_key = (shared["law_spec"]["ax"],shared["law_spec"]["ay"],tuple(p["initial"] for p in shared["parameter_spec"]))
+        pool.append((new_key,shared))
+    # Uncompressed components remain available even if no joint sharing is accepted.
+    axis_candidates = _axis_public_candidates(axes, dataset, resolution)
     # Rank by accuracy, then retain the simplest statistically unresolved model.
     # Resolution sensitivity is a heuristic, not a formal noise/confidence bound.
     ranked = sorted(pool, key=lambda item: (item[1]["normalized_acceleration_search_loss"], item[1]["complexity"]))
@@ -440,7 +651,7 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
         threshold = ranked[0][1]["normalized_acceleration_search_loss"] + tolerance
         simplest = sorted([i for i in ranked if i[1]["normalized_acceleration_search_loss"] <= threshold],
                           key=lambda i: (i[1]["complexity"], i[1]["parameter_count"], i[1]["normalized_acceleration_search_loss"]))
-        ranked = simplest + ranked
+        ranked = simplest[:1] + ranked[:1] + simplest[1:] + ranked[1:]
     checked, candidates = set(), []
     for key, candidate in ranked:
         if key in checked: continue
@@ -456,13 +667,17 @@ def _select_candidates(axis_rows, dataset, limit, deadline, cache):
             reject(result["reason"], stage="rollout", ax=candidate["law_spec"]["ax"], ay=candidate["law_spec"]["ay"])
             continue
         candidate["short_rollout_check"] = result
+        candidate["joint_fit_ready"] = True
+        candidate["prediction_accuracy_status"] = "not_independently_validated"
         candidate["selection_role"] = "simplest_within_resolution_tolerance" if not candidates else "alternative_accuracy_candidate"
         candidates.append(candidate)
         if len(candidates) == limit: break
-    return candidates, {"axis_equations": dict(zip(("ax", "ay"), audits)), "rejection_counts": rejected,
+    return candidates, {"axis_candidates": axis_candidates, "axis_equations": dict(zip(("ax", "ay"), audits)), "rejection_counts": rejected,
         "rejection_examples": examples, "rejected_candidate_pairs": stages.get("pair", 0),
         "candidate_selection": {"strategy": "parameter_aware_pareto_then_resolution_tolerance_and_short_rollout",
             "normalized_resolution_tolerance": tolerance, "legal_pairs": len(pool),
+            "over_budget_pairs_retained": len(oversized), "sharing_attempts_cached": len(sharing_cache),
+            "sharing_unattempted_pairs": sum(key not in sharing_cache for key,_ in oversized),
             "rejection_stage_counts": stages, "rejected_candidates_total": sum(stages.values()),
             "unchecked_axis_equations": sum(r["domain_valid"] is None for rows in audits for r in rows), "rollout_candidates_considered": len(checked),
             "axis_frontier_counts": [len(a) for a in axes], "full_axis_equations_retained": True,
@@ -496,7 +711,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
         "used_probe_ids": dataset["used_probe_ids"], "feature_names": dataset["feature_names"],
         "samples_per_probe": dataset["samples_per_probe"], "dropped_constant_features": dataset["dropped_constant_features"],
         "omitted_incomplete_properties": dataset["omitted_incomplete_properties"],
-        "search_configuration": {"maxsize": 20, "binary_operators": list(BINARY_OPERATORS),
+        "search_configuration": {"maxsize": SEARCH_MAXSIZE, "binary_operators": list(BINARY_OPERATORS),
             "unary_operators": list(UNARY_OPERATORS), "power_exponent_max_complexity": 1,
             "random_state": random_state, "warm_start": False, "parallelism": "multithreading",
             "linear_seed_max_terms": 3, "finalization_reserve_seconds": final_reserve,
@@ -508,24 +723,31 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             "Body positions are not included; explicit t may substitute for unobserved body motion.",
             "Resolution tolerance is a finite-stencil sensitivity heuristic, not a confidence interval.",
             "Short rollout checks certify only acquired initial states; fit and fresh-probe validation remain required."],
+        "data_quality": {"samples_per_probe": dataset["samples_per_probe"],
+            "differencing_tolerance_by_axis": _differencing_tolerance(dataset).tolist(),
+            "dropped_constant_features": dataset["dropped_constant_features"],
+            "omitted_incomplete_properties": dataset["omitted_incomplete_properties"],
+            "body_positions_included": False, "acceleration_source": "observed_velocity_finite_difference",
+            "trajectory_checks": "executability only; reported RMSE is training diagnostic, not accuracy certification"},
         "axis_search_seconds": [], "search_axes_completed": [], "candidates": []}
     cache = {}
+    last_complete_selection = None
     def snapshot(status):
+        import copy
+        nonlocal last_complete_selection
         candidates, audit = _select_candidates(axis_rows, dataset, max_candidates, deadline, cache)
         # The dataset is immutable throughout a search. A late snapshot may
         # exhaust its selection budget; keep previously certified candidates,
         # never replacing them with unvalidated partial search output.
-        previous = report.get("candidates", [])
-        if audit["candidate_selection"]["selection_incomplete"] and previous:
-            keys = {(c["law_spec"]["ax"], c["law_spec"]["ay"],
-                     tuple(p["initial"] for p in c["parameter_spec"])) for c in candidates}
-            kept = 0
-            for candidate in previous:
-                key = (candidate["law_spec"]["ax"], candidate["law_spec"]["ay"],
-                       tuple(p["initial"] for p in candidate["parameter_spec"]))
-                if key not in keys and len(candidates) < max_candidates:
-                    candidates.append(candidate); keys.add(key); kept += 1
-            audit["candidate_selection"]["retained_checkpoint"] = kept > 0
+        if audit["candidate_selection"]["selection_incomplete"]:
+            if last_complete_selection is not None:
+                candidates = copy.deepcopy(last_complete_selection["candidates"])
+                audit["axis_candidates"] = copy.deepcopy(last_complete_selection["axis_candidates"])
+                audit["candidate_selection"]["retained_checkpoint"] = bool(
+                    candidates or any(audit["axis_candidates"].values()))
+        else:
+            last_complete_selection = {"candidates": copy.deepcopy(candidates),
+                                       "axis_candidates": copy.deepcopy(audit["axis_candidates"])}
         report.update(audit)
         report.update(status=status, candidates=candidates, elapsed_seconds=time.monotonic()-started)
         if progress_callback is not None:
@@ -548,7 +770,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             continue
         axis_budget = remaining/(2-axis)
         options = dict(binary_operators=list(BINARY_OPERATORS), unary_operators=list(UNARY_OPERATORS),
-            constraints={"^": (-1, 1)}, maxsize=20, niterations=1000000, populations=8, population_size=27,
+            constraints={"^": (-1, 1)}, maxsize=SEARCH_MAXSIZE, niterations=1000000, populations=8, population_size=27,
             ncycles_per_iteration=100, timeout_in_seconds=axis_budget, random_state=random_state+axis,
             parallelism="multithreading", warm_start=False, precision=64, verbosity=0, progress=False)
         if output_directory is not None: options["output_directory"] = str(Path(output_directory)/("ax" if axis==0 else "ay"))
@@ -559,7 +781,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
         for _, row in model.equations_.iterrows():
             try:
                 loss, complexity = float(row["loss"]), int(row["complexity"])
-                if not math.isfinite(loss) or loss < 0 or not 1 <= complexity <= 20: continue
+                if not math.isfinite(loss) or loss < 0 or not 1 <= complexity <= SEARCH_MAXSIZE: continue
                 source = str(row["sympy_format"])
                 if len(source) > 4096: continue
                 axis_rows[axis].append({"source": source, "complexity": complexity, "loss": loss, "origin": "pysr"})

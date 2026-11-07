@@ -32,10 +32,19 @@ for line in sys.stdin:
          'rejection_examples':[{'stage':'domain','reason':'initial_domain','ax':'vx/t','ay':'0',
                                 'host_path':'/private/secret'}],
          'candidate_selection':{'strategy':'power_law','rollout_checks':1,'debug_path':'/private/secret'},
+         'data_quality':{'sample_counts':{'p':30},'body_positions_included':False,'host_path':'/private/secret'},
+         'axis_candidates':{'ax':[{'component':'ax','source':'2.5*x','law_spec':{'ax':'c1 * x','ay':'0'},
+                                  'parameter_spec':[{'name':'c1','initial':2.5}], 'parameter_count':1,
+                                  'joint_fit_ready':False,'parameter_budget_compatible':True,
+                                  'loss':.01,'complexity':3,'origin':'pysr','host_path':'/private/secret'}],
+                            'ay':[]},
          'candidates':[{'law_spec':{'ax':'c1*x','ay':'0'},
                         'parameter_spec':[{'name':'c1','initial':float(data['random_state'])}],
                         'discovery_probe_ids':['wrong'], 'host_path':'/private/secret',
                         'component_sources':['pysr','constant_initialization'],
+                        'parameter_sharing':{'status':'data_validated','groups':[['c1','c2']],
+                                             'host_path':'/private/secret'},
+                        'joint_fit_ready':True,'prediction_accuracy_status':'not_independently_validated',
                         'parameter_count':1,'initial_domain_check':{'status':'passed','probe_count':1},
                         'short_rollout_check':{'status':'passed','probe_count':1,'position_rmse':.002}}],
          'used_probe_ids':['wrong']}
@@ -203,6 +212,12 @@ def test_http_round_trip_and_request_path_control(pool):
         assert result['candidate_selection'] == {'strategy': 'power_law', 'rollout_checks': 1}
         assert result['candidates'][0]['short_rollout_check']['position_rmse'] == .002
         assert result['candidates'][0]['initial_domain_check']['status'] == 'passed'
+        assert result['candidates'][0]['parameter_sharing'] == {'status':'data_validated','groups':[['c1','c2']]}
+        assert result['candidates'][0]['prediction_accuracy_status'] == 'not_independently_validated'
+        assert result['axis_candidates']['ax'][0]['law_spec'] == {'ax':'c1 * x','ay':'0'}
+        assert result['axis_candidates']['ax'][0]['joint_fit_ready'] is False
+        assert result['axis_candidates']['ax'][0]['discovery_probe_ids'] == ['p']
+        assert result['data_quality'] == {'sample_counts':{'p':30},'body_positions_included':False}
         assert '/private/' not in json.dumps(result)
         connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
         connection.request('GET', '/health')
@@ -360,3 +375,36 @@ def test_excess_audit_rows_are_explicitly_bounded_without_changing_formula():
     assert first['candidate_selection']['full_axis_equations_retained'] is False
     # search_remote applies the public boundary again; omission accounting must survive.
     assert symbolic_service._public_result(first, ['p']) == first
+
+
+def test_over_budget_axis_survives_both_boundaries_and_audit_trimming():
+    from shore_agent.symbolic_regression import export_candidate, FEATURES, MAX_INTERNAL_PARAMETERS
+    source = '.1*y+.2*x*y+.3*y**2+.4*x**2*y+.5*y**3+.6*t*y'
+    exported = export_candidate('0', source, FEATURES, _parameter_limit=MAX_INTERNAL_PARAMETERS)
+    parameters = exported['parameter_spec']
+    component = {**exported, 'component': 'ay', 'source': source, 'parameter_count': 6,
+                 'joint_fit_ready': False, 'parameter_budget_compatible': False,
+                 'loss': 1e-9, 'complexity': 23, 'origin': 'pysr'}
+    raw = {'status':'completed', 'candidates':[], 'axis_candidates':{'ax':[], 'ay':[component]},
+           'axis_equations':{'ax':[], 'ay':[{'source':'x'*4000, 'complexity':40, 'loss':.1} for _ in range(160)]}}
+    first = symbolic_service._public_result(raw, ['a', 'b'])
+    second = symbolic_service._public_result(first, ['a', 'b'])
+    assert second == first
+    assert second['axis_candidates']['ay'][0]['parameter_spec'] == parameters
+    assert second['axis_candidates']['ay'][0]['law_spec'] == component['law_spec']
+    assert second['axis_candidates']['ay'][0]['discovery_probe_ids'] == ['a', 'b']
+    assert second['transport_audit_omitted_rows']['ay'] > 0
+    assert len(symbolic_service._json_bytes(second)) <= symbolic_service.MAX_RESPONSE_BYTES
+
+
+@pytest.mark.parametrize('update', [
+    {'joint_fit_ready':True}, {'component':'ay'}, {'parameter_count':2},
+    {'parameter_budget_compatible':False}, {'parameter_spec':[{'name':'c1','initial':float('nan')}]},
+])
+def test_axis_metadata_cannot_claim_complete_or_misrepresent_parameter_budget(update):
+    row = {'component':'ax', 'source':'.1*x', 'law_spec':{'ax':'c1 * x','ay':'0'},
+           'parameter_spec':[{'name':'c1','initial':.1}], 'parameter_count':1,
+           'joint_fit_ready':False, 'parameter_budget_compatible':True}
+    row.update(update)
+    with pytest.raises(SymbolicServiceError, match='invalid_worker_result'):
+        symbolic_service._public_result({'axis_candidates':{'ax':[row]}}, ['p'])

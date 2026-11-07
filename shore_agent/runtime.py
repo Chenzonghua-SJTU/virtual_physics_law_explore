@@ -337,7 +337,17 @@ class ToolRuntime:
                     for candidate in result['candidates']:
                         Expression(candidate['law_spec'], candidate['parameter_spec'])
                         candidate['discovery_probe_ids'] = list(train_probe_ids)
-                    if not result['candidates'] and result['status'] != 'completed':
+                    from .symbolic_regression import validate_axis_candidate
+                    axis_candidates = result.get('axis_candidates', {})
+                    if not isinstance(axis_candidates, dict) or set(axis_candidates) - {'ax', 'ay'}:
+                        raise ValueError('Invalid single-axis result')
+                    for component, candidates in axis_candidates.items():
+                        if not isinstance(candidates, list) or len(candidates) > 3:
+                            raise ValueError('Invalid single-axis candidates')
+                        for candidate in candidates:
+                            validate_axis_candidate(candidate, component)
+                            candidate['discovery_probe_ids'] = list(train_probe_ids)
+                    if not result['candidates'] and not any(axis_candidates.values()) and result['status'] != 'completed':
                         failure_code = ('symbolic_search_timeout' if result['status'] == 'timeout'
                                         else 'symbolic_search_incomplete')
             except Exception:
@@ -350,6 +360,12 @@ class ToolRuntime:
                       effective_time_budget_seconds=allowed,
                       wall_seconds=time.monotonic() - started,
                       body_positions_included=False)
+        result['input_coverage'] = self._symbolic_input_coverage(probes)
+        has_candidates = bool(result.get('candidates') or any(result.get('axis_candidates', {}).values()))
+        result['outcome'] = ('budget_ended_with_candidates' if result.get('status') == 'timeout' and has_candidates
+                             else 'candidates_available' if has_candidates else 'no_candidates')
+        result['status_meaning'] = ('A search budget ending with candidates is a usable bounded result, not an over-budget failure. '
+                                   'Executable or integrable candidates are not certified accurate physical laws.')
         if failure_code is not None:
             result['error'] = {'code': failure_code,
                                'message': 'Symbolic search produced no usable result; continue with existing tools.'}
@@ -370,15 +386,48 @@ class ToolRuntime:
             'wall_seconds', 'body_positions_included', 'rejected_candidate_pairs',
             'rejection_counts', 'candidate_selection', 'stop_reason',
             'transport_audit_omitted_rows',
+            'axis_candidates', 'data_quality', 'coverage', 'input_coverage', 'outcome', 'status_meaning',
         }
         public = {key: copy.deepcopy(value) for key, value in result.items() if key in public_keys}
         public['audit_path'] = f'analyses/{rid}.json'
         public['next_step'] = (
             'For a promising candidate, pass its complete law_spec and parameter_spec '
             'plus used_probe_ids as train_probe_ids to fit_law_and_rollout. '
+            'Single-axis entries have joint_fit_ready=false: their zero placeholder is not a prediction for the other axis. '
+            'Keep useful component structure, combine with evidence for the other axis, and respect the five-parameter fit limit. '
+            'Shared-parameter proposals are checked on discovery data only; do not impose extra symmetry by hand. '
             'Initial-domain and short-rollout checks are training diagnostics, '
             'not independent validation. Validate the fitted law on fresh probes.')
         return public
+
+    def _symbolic_input_coverage(self, probes):
+        """Describe acquired controls only; never silently add held-out data to search."""
+        selected = {p['probe_id'] for p in probes}
+        properties = [p.get('initial_conditions', {}).get('properties', {}) for p in probes]
+        property_values, unselected_contrasts = {}, {}
+        for key in ('mass', 'charge'):
+            values = sorted({float(p[key]) for p in properties if key in p})
+            property_values[key] = values
+            if len(values) == 1 and all(key in p for p in properties):
+                unselected_contrasts[key] = [rid for rid, p in self.store.records['probe'].items()
+                    if rid not in selected and key in p.get('initial_conditions', {}).get('properties', {})
+                    and float(p['initial_conditions']['properties'][key]) != values[0]]
+        times = np.concatenate([np.asarray(p['times'], dtype=float) for p in probes])
+        states = np.concatenate([np.asarray(p['r_obs'], dtype=float) for p in probes])
+        steps = np.concatenate([np.diff(np.asarray(p['times'], dtype=float)) for p in probes])
+        return {
+            'selected_probe_count': len(probes),
+            'interior_samples': sum(max(0, len(p['times'])-2) for p in probes),
+            'absolute_time_range': [float(times.min()), float(times.max())],
+            'launch_times': sorted({float(p.get('initial_conditions', {}).get('t0', p['times'][0])) for p in probes}),
+            'position_min': states.min(axis=0).tolist(), 'position_max': states.max(axis=0).tolist(),
+            'sample_interval_range': [float(steps.min()), float(steps.max())] if steps.size else None,
+            'insufficient_sample_probe_ids': [p['probe_id'] for p in probes if len(p['times']) < 3],
+            'selected_property_values': property_values,
+            'unselected_acquired_property_contrasts': {k: v for k, v in unselected_contrasts.items() if v},
+            'meaning': 'Coverage diagnostics, not an identifiability certificate. Constant properties cannot establish independence. '
+                       'Unselected contrast IDs have not been added to search; choose training data explicitly and preserve fresh validation probes. '
+                       'A long body observation does not extend these probe times. Coarse velocity differences can be biased even without observation noise.'}
 
     def list_files(self, path='', offset=0, limit=100):
         return self.files.list_files(path, offset, limit)

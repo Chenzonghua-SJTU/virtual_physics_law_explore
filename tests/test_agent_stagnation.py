@@ -144,6 +144,39 @@ def test_invalid_arguments_cannot_break_next_qwen_history_template(tmp_path, bad
     assert repair['original_arguments'] == bad_arguments and repair['tool_executed'] is False
 
 
+@pytest.mark.parametrize('remaining,enabled,search_done,fit_status,expected_reviews', [
+    (200, True, False, 'converged', 1),
+    (200, True, True, 'not_converged', 1),
+    (200, True, True, 'converged', 0),
+    (60, True, False, 'not_converged', 0),
+    (200, False, False, 'not_converged', 0),
+])
+def test_symbolic_submission_review_is_bounded_and_preserves_baseline(
+        tmp_path, remaining, enabled, search_done, fit_status, expected_reviews):
+    runtime = Runtime()
+    runtime.symbolic_enabled = enabled
+    runtime.budget = lambda: {'wall_seconds_remaining': remaining, 'energy_remaining': 2, 'session_ended': False}
+    runtime.store.records.update(
+        probe={f'p{i}': {'times': [0, .1, .2], 'v_obs': [[0, 0]]*3} for i in range(3)},
+        law={'existing': {'fit_status': fit_status}},
+        symbolic_search={'sr_1': {}} if search_done else {})
+    client = Client([
+        reply(call('submit', args={'law_id': 'existing'})),
+        reply(call('submit', args={'law_id': 'existing'}, ident='c2')),
+    ])
+    result = Agent(client, runtime, tmp_path, {'loop_recovery': True}).run()
+    assert result['status'] == 'submitted'
+    assert [name for name, _ in runtime.calls] == ['submit']
+    assert client.usage['calls'] == 1 + expected_reviews
+    events = [json.loads(line) for line in (tmp_path/'events.jsonl').read_text().splitlines()]
+    reviews = [event for event in events if event['event'] == 'symbolic_submission_review']
+    assert len(reviews) == expected_reviews
+    if reviews:
+        assert reviews[0]['tool_executed'] is False
+        feedback = [m for m in client.requests[1]['messages'] if m['role'] == 'tool']
+        assert json.loads(feedback[-1]['content'])['error']['code'] == 'scientific_review_needed'
+
+
 def run(tmp_path, runtime, replies, config=None):
     client = Client(replies)
     agent = Agent(client, runtime, tmp_path, {'loop_recovery': True, **(config or {})})

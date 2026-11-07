@@ -43,6 +43,39 @@ class Agent:
         self._last_observation_version = None
         self._fallback_observation_version = 0
         self._length_recovered = False
+        self._symbolic_submission_reviewed = False
+
+    def _symbolic_submission_review(self, name, args):
+        """One continuation opportunity, never an automatic hypothesis or search."""
+        if (name != 'submit' or self._symbolic_submission_reviewed
+                or not getattr(self.runtime, 'symbolic_enabled', False)):
+            return None
+        records = getattr(getattr(self.runtime, 'store', None), 'records', {})
+        budget = self.runtime.budget()
+        if budget.get('session_ended') or budget.get('wall_seconds_remaining', 0) < 100:
+            return None
+        usable = [p for p in records.get('probe', {}).values()
+                  if len(p.get('times', [])) >= 3 and p.get('v_obs')]
+        reasons = []
+        if len(usable) >= 3 and not records.get('symbolic_search'):
+            reasons.append('symbolic_search_not_attempted_with_available_training_data')
+        law = records.get('law', {}).get(args.get('law_id'), {})
+        if law.get('fit_status') == 'not_converged':
+            reasons.append('selected_fit_not_converged')
+        if not reasons:
+            return None
+        self._symbolic_submission_reviewed = True
+        self.last_budget = budget
+        self._event('symbolic_submission_review', reasons=reasons, law_id=args.get('law_id'), budget=budget,
+                    tool_executed=False, one_time_only=True)
+        result = self._failure('scientific_review_needed')
+        result['error']['message'] = (
+            '尚有至少100秒，本次submit暂未执行，给一次继续研究机会：' + ', '.join(reasons) + '。'
+            '请检查拟合与独立验证反证；有多条轨迹时可选择覆盖不同控制量的训练集调用符号回归，'
+            '保留独立验证数据。不要无证据假设中心力、各向同性或不同轴共享系数。'
+            '可以先save_draft保留当前最佳候选。此提醒只出现一次；如已有充分理由不再探索，'
+            '可如实说明局限后再次submit，系统不会无限阻止交卷。')
+        return result
 
     _DETERMINISTIC_TOOLS = frozenset({'read_file', 'list_files', 'fit_law_and_rollout',
                                     'validate_law', 'analyze_residual', 'observe_body'})
@@ -347,7 +380,8 @@ class Agent:
                         executed_or_invalid = True
                         self._event('tool_started', tool_call_id=call['id'], name=name, arguments=args)
                         try:
-                            result = self.runtime.execute(name, args)
+                            review = self._symbolic_submission_review(name, args)
+                            result = review if review is not None else self.runtime.execute(name, args)
                         except Exception:
                             # Tool exceptions are a failure, never a success or raw backend dump.
                             result = self._failure('tool_execution_error')

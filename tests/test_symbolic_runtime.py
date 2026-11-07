@@ -246,3 +246,62 @@ def test_search_delivery_keeps_executable_fields_complete_and_audit_in_file(runt
     assert saved['axis_equations'] == audit
     assert data['audit_path'] in runtime.files.entries()
     assert data['rejection_counts']['initial_domain_failure'] == 2
+
+
+def test_single_axis_over_joint_limit_is_delivered_without_becoming_a_force_law(runtime, monkeypatch):
+    from shore_agent.symbolic_regression import export_candidate, FEATURES, PROPERTIES
+    source = '0.11*x + 0.23*y + 0.37*vx + 0.41*vy + 0.53*t + 0.67*mass'
+    axis = dict(export_candidate(source, '0', FEATURES+PROPERTIES, _parameter_limit=24),
+                component='ax', source=source, parameter_count=6,
+                joint_fit_ready=False, parameter_budget_compatible=False)
+    stub_service(monkeypatch, lambda *args, **kwargs: {
+        'status': 'timeout', 'candidates': [], 'axis_candidates': {'ax': [axis], 'ay': []}})
+    result = runtime.execute('symbolic_regression', {'train_probe_ids': ['p1'], 'time_budget_seconds': 20})
+    assert result['ok']
+    data = result['data']
+    assert data['outcome'] == 'budget_ended_with_candidates'
+    assert data['axis_candidates']['ax'][0]['parameter_spec'] == axis['parameter_spec']
+    assert data['axis_candidates']['ax'][0]['discovery_probe_ids'] == ['p1']
+    assert data['candidates'] == []
+    fit_result = runtime.execute('fit_law_and_rollout', {
+        'law_spec': axis['law_spec'], 'parameter_spec': axis['parameter_spec'], 'train_probe_ids': ['p1']})
+    assert not fit_result['ok']
+
+
+def test_coverage_reports_omitted_property_controls_without_training_on_them(runtime, monkeypatch):
+    runtime.store.records['probe']['p1']['initial_conditions']['properties'] = {'mass': 1, 'charge': 1}
+    runtime.store.records['probe']['p2']['initial_conditions']['properties'] = {'mass': 2, 'charge': 1}
+    runtime.store.records['probe']['p3']['initial_conditions']['properties'] = {'mass': 1, 'charge': 3}
+    used = []
+    def search(probes, seconds, **kwargs):
+        used.extend(p['probe_id'] for p in probes)
+        return {'status': 'completed', 'candidates': []}
+    stub_service(monkeypatch, search)
+    result = runtime.execute('symbolic_regression', {'train_probe_ids': ['p1'], 'time_budget_seconds': 20})
+    coverage = result['data']['input_coverage']
+    assert coverage['unselected_acquired_property_contrasts'] == {'mass': ['p2'], 'charge': ['p3']}
+    assert used == ['p1'] and runtime.discovery_probe_ids == {'p1'}
+    assert coverage['absolute_time_range'] == [0, 1]
+    assert coverage['sample_interval_range'] == [.5, .5]
+
+
+def test_forged_axis_ready_flag_is_not_accepted(runtime, monkeypatch):
+    stub_service(monkeypatch, lambda *args, **kwargs: {
+        'status': 'completed', 'candidates': [], 'axis_candidates': {'ax': [{'joint_fit_ready': True}]}})
+    result = runtime.execute('symbolic_regression', {'train_probe_ids': ['p1'], 'time_budget_seconds': 20})
+    assert not result['ok'] and result['error']['code'] == 'invalid_service_response'
+
+
+def test_coverage_does_not_mask_failure_for_single_observation(runtime, monkeypatch):
+    probe = runtime.store.records['probe']['p1']
+    for key in ('times', 'r_obs', 'v_obs'):
+        probe[key] = probe[key][:1]
+    def failed(*args, **kwargs):
+        raise ValueError('Insufficient derivative samples')
+    stub_service(monkeypatch, failed)
+    result = runtime.execute('symbolic_regression', {'train_probe_ids': ['p1'], 'time_budget_seconds': 20})
+    assert result['error']['code'] == 'symbolic_service_unavailable'
+    record = next(iter(runtime.store.records['symbolic_search'].values()))
+    assert record['input_coverage']['sample_interval_range'] is None
+    assert record['input_coverage']['insufficient_sample_probe_ids'] == ['p1']
+    assert record['used_probe_ids'] == ['p1']

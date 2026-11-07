@@ -133,6 +133,7 @@ def _request(probes, budget, random_state):
 def _public_result(raw, ids):
     """Allow only our structured scientific result; never forward worker paths."""
     from .expressions import Expression
+    from .symbolic_regression import validate_axis_candidate
     if not isinstance(raw, dict):
         raise SymbolicServiceError("invalid_worker_result", 502)
     allowed = {"status", "backend", "target", "feature_names", "samples_per_probe",
@@ -141,8 +142,9 @@ def _public_result(raw, ids):
                "elapsed_seconds", "service_elapsed_seconds", "search_elapsed_seconds",
                "requested_time_budget_seconds", "worker_search_budget_seconds", "cleanup_reserve_seconds",
                "service_budget_exceeded", "worker_reap_pending", "cleanup_pending", "timing_scope",
-               "search_version", "stop_reason"}
-    result = {k: copy.deepcopy(v) for k, v in raw.items() if k in allowed}
+               "search_version", "stop_reason", "data_quality", "coverage",
+               "prediction_accuracy_status"}
+    result = {k: _scientific_metadata(v) for k, v in raw.items() if k in allowed}
     result.update(_search_audit(raw))
     result["used_probe_ids"] = list(ids)
     result["candidates"] = []
@@ -152,7 +154,8 @@ def _public_result(raw, ids):
     candidate_keys = {"law_spec", "parameter_spec", "complexity", "acceleration_search_mse_by_axis",
                       "acceleration_search_mse", "normalized_acceleration_search_loss",
                       "component_sources", "dsl_valid", "selection_role", "parameter_count",
-                      "initial_domain_check", "short_rollout_check"}
+                      "initial_domain_check", "short_rollout_check", "parameter_sharing",
+                      "prediction_accuracy_status", "joint_fit_ready"}
     for candidate in candidates:
         try:
             Expression(candidate["law_spec"], candidate["parameter_spec"])
@@ -163,6 +166,30 @@ def _public_result(raw, ids):
         item = {k: _scientific_metadata(v) for k, v in candidate.items() if k in candidate_keys}
         item["discovery_probe_ids"] = list(ids)
         result["candidates"].append(item)
+    # Single-axis discoveries remain useful evidence when no complete pair fits
+    # the existing five-parameter submission limit. Never label the zero-filled
+    # other axis as a discovered force component or silently discard parameters.
+    if "axis_candidates" in raw:
+        axes = raw["axis_candidates"]
+        if not isinstance(axes, dict) or set(axes) - {"ax", "ay"}:
+            raise SymbolicServiceError("invalid_worker_result", 502)
+        result["axis_candidates"] = {}
+        axis_keys = {"component", "source", "law_spec", "parameter_spec", "parameter_count",
+                     "loss", "complexity", "origin", "joint_fit_ready",
+                     "parameter_budget_compatible", "prediction_accuracy_status", "initial_domain_check"}
+        for axis in ("ax", "ay"):
+            rows = axes.get(axis, [])
+            if not isinstance(rows, list) or len(rows) > 3:
+                raise SymbolicServiceError("invalid_worker_result", 502)
+            result["axis_candidates"][axis] = []
+            for row in rows:
+                try:
+                    validate_axis_candidate(row, axis)
+                except (KeyError, TypeError, ValueError) as exc:
+                    raise SymbolicServiceError("invalid_worker_result", 502) from exc
+                item = {k: _scientific_metadata(v) for k, v in row.items() if k in axis_keys}
+                item["discovery_probe_ids"] = list(ids)
+                result["axis_candidates"][axis].append(item)
     if len(_json_bytes(result)) > MAX_RESPONSE_BYTES:
         raise SymbolicServiceError("invalid_worker_result", 502)
     return result
@@ -488,7 +515,7 @@ def _command_lines(stream):
 
 
 def _worker(directory):
-    from .symbolic_regression import run_search, BINARY_OPERATORS, UNARY_OPERATORS
+    from .symbolic_regression import run_search, BINARY_OPERATORS, UNARY_OPERATORS, SEARCH_MAXSIZE
     from pysr import PySRRegressor
     import numpy as np
     directory = Path(directory).resolve()
@@ -501,7 +528,7 @@ def _worker(directory):
          + np.cos(X[:, 4]) + np.exp(X[:, 5]) + np.log(X[:, 6]))
     model = PySRRegressor(binary_operators=list(BINARY_OPERATORS), unary_operators=list(UNARY_OPERATORS),
                           constraints={"^": (-1, 1)},
-                          maxsize=20, niterations=1, populations=2, population_size=27,
+                          maxsize=SEARCH_MAXSIZE, niterations=1, populations=2, population_size=27,
                           ncycles_per_iteration=10, timeout_in_seconds=2, parallelism="multithreading",
                           warm_start=False, precision=64, verbosity=0, progress=False,
                           output_directory=str(directory / "warmup"))
