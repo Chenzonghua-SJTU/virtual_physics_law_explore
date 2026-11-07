@@ -54,6 +54,9 @@ class ToolRuntime:
         self.diagnostics_curvature = self.config.get('diagnostics_curvature', False)
         if type(self.diagnostics_curvature) is not bool:
             raise ValueError('numerics.diagnostics_curvature must be boolean')
+        self.diagnostics_candidates = self.config.get('diagnostics_candidates', False)
+        if type(self.diagnostics_candidates) is not bool:
+            raise ValueError('numerics.diagnostics_candidates must be boolean')
         self.code_config = code_config or {}
         self.code_enabled = self.code_config.get('enabled', False)
         if type(self.code_enabled) is not bool:
@@ -62,7 +65,8 @@ class ToolRuntime:
         self.schemas = tool_schemas(self.code_enabled, ruleset=self.ruleset,
                                     diagnostics_enabled=self.diagnostics_enabled,
                                     diagnostics_compact=self.diagnostics_compact,
-                                    diagnostics_curvature=self.diagnostics_curvature)
+                                    diagnostics_curvature=self.diagnostics_curvature,
+                                    diagnostics_candidates=self.diagnostics_candidates)
         self.last_valid_draft = None
         self.exploration_started_monotonic = None
         self.exploration_deadline_monotonic = None
@@ -409,6 +413,12 @@ class ToolRuntime:
         if self.diagnostics_curvature:
             from .diagnostics import diagnose_radial_curvature
             diagnostics['radial_curvature'] = diagnose_radial_curvature(probes, copy.deepcopy(self.task))
+        if self.diagnostics_candidates:
+            from .candidate_hints import propose_observation_candidates
+            diagnostics['candidate_hints'] = propose_observation_candidates(diagnostics, copy.deepcopy(self.task))
+            diagnostics['meaning'] = ('Exploratory numerical evidence and unfit candidate hints from acquired observations. '
+                                      'No fitted law, submission, or official verdict is produced. '
+                                      'Candidate hints require formal fitting and validation on fresh probes.')
         # Validate before creating an immutable archive entry. A diagnostic is
         # intentionally a different record type from fitted laws and residuals.
         json.dumps(diagnostics, allow_nan=False)
@@ -428,6 +438,8 @@ class ToolRuntime:
         if self.diagnostics_compact:
             from .diagnostics import summarize
             response = {key: value for key, value in record.items() if key != 'diagnostics'}
+            if self.diagnostics_candidates:
+                response['candidate_hints'] = diagnostics['candidate_hints']
             response['diagnostic_summary'] = summarize(diagnostics)
             response['full_evidence'] = f'diagnostics/{rid}.json'
             return preview(response)

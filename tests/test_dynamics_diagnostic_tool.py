@@ -204,6 +204,36 @@ def test_curvature_flag_requires_boolean(tmp_path, flag):
         ToolRuntime(Environment(), tmp_path, config={'diagnostics_curvature': flag})
 
 
+def test_candidate_hints_are_archived_suggestions_not_fitted_or_submitted(tmp_path, monkeypatch):
+    rt = runtime(tmp_path)
+    rt.diagnostics_candidates = rt.diagnostics_compact = True
+    base = {'source': 'synthetic acquired observations'}
+    hints = {'candidates': [{'law_spec': {'ax': 'k*x', 'ay': 'k*y'},
+                             'parameter_spec': [{'name': 'k', 'initial': -.2}]}]}
+    seen = []
+    def propose(diagnostics, task):
+        seen.append((copy.deepcopy(diagnostics), copy.deepcopy(task)))
+        return copy.deepcopy(hints)
+    monkeypatch.setitem(sys.modules, 'shore_agent.candidate_hints',
+                        SimpleNamespace(propose_observation_candidates=propose))
+    monkeypatch.setitem(sys.modules, 'shore_agent.diagnostics', SimpleNamespace(
+        diagnose=lambda *args: copy.deepcopy(base), summarize=lambda value: {'status': 'synthetic_summary'}))
+    reply = rt.execute('diagnose_dynamics', {'probe_ids': ['selected']})
+    assert reply['ok'] and seen == [(base, rt.task)]
+    data = reply['data']
+    assert data['candidate_hints'] == hints
+    assert rt.store.get('diagnostic', data['diagnostic_id'])['diagnostics']['candidate_hints'] == hints
+    assert not rt.store.records['law'] and not rt.store.records['validation'] and not rt.store.records['submission']
+    assert not rt.last_valid_draft and set(rt.environment.requests) == {'budget'}
+    assert ToolRuntime(Environment(), tmp_path / 'default').diagnostics_candidates is False
+
+
+@pytest.mark.parametrize('flag', [None, 0, 1, 'true', [], {}])
+def test_candidate_option_requires_boolean(tmp_path, flag):
+    with pytest.raises(ValueError, match='diagnostics_candidates must be boolean'):
+        ToolRuntime(Environment(), tmp_path, config={'diagnostics_candidates': flag})
+
+
 @pytest.mark.parametrize('flag', [None, 0, 1, 'true', 'false', [], {}])
 def test_diagnostic_switch_requires_an_actual_boolean(tmp_path, flag):
     with pytest.raises(ValueError, match='numerics.diagnostics_enabled must be boolean'):

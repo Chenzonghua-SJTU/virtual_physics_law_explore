@@ -1,0 +1,32 @@
+{
+  "experiment": "e5-qwen38-candidates-20261107-r10",
+  "status": "prepared_before_run",
+  "starting_point": "bf546d6 R09",
+  "changes": [
+    "Normalize strict transport regex to retain original non-whitespace substring semantics for full physical explanations",
+    "Recover repeated successful but unchanged observation/numerical actions by excluding that tool for one required-choice response; new data resets numerical repeat counters",
+    "Translate current-session generic regression coefficients into at most three legal unfit candidate hints with at most five named parameters; no fixed world-specific formulas or hidden data"
+  ],
+  "preserved": [
+    "Exact E3 main prompt",
+    "Qwen3.8-27B; seed42; thinking off",
+    "10 energy;300s exploration;4096 output tokens per call",
+    "No exploration noise; clean independent evaluation",
+    "Model still selects experiments, candidate, formal fitting, validation and submission",
+    "Worlds, fitting objective and scoring remain unchanged"
+  ],
+  "workers": 4,
+  "endpoints": [
+    8000,
+    8001,
+    8002,
+    8003
+  ],
+  "attempts_per_world": 1,
+  "primary_outcome": "At least five raw scores>=90 in a single complete six-world batch; do not combine per-world bests",
+  "limitations": [
+    "Composite engineering follow-up, not a single-factor comparison",
+    "Pruned/shared polynomial coefficients and empirical radial powers are hypotheses; their source regression CV is not validation of the hinted candidate",
+    "R09 one-character explanation records remain unchanged as failed explanations"
+  ]
+}

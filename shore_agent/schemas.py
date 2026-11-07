@@ -63,7 +63,7 @@ DYNAMICS_DIAGNOSTIC_SCHEMA = tool('diagnose_dynamics',
 
 
 def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False, diagnostics_compact=False,
-                 diagnostics_curvature=False):
+                 diagnostics_curvature=False, diagnostics_candidates=False):
     import copy
     schemas = copy.deepcopy(SCHEMAS + ([CODE_SCHEMA] if code_enabled else []))
     if ruleset in ('e4', 'e5'):
@@ -95,4 +95,10 @@ def tool_schemas(code_enabled=False, *, ruleset='e3', diagnostics_enabled=False,
                 '补充实验后将新旧开发轨迹一起重新诊断；初始少量轨迹中CV不可用或病态的回归不能固化为动力学结构。'
                 '另比较log半径的一次/二次回归；曲率只描述已测区间中单一全局幂次遗漏的变化，不自动提供动力学公式。'
                 '公开属性未变化意味着作用未知，不能当作零作用；有预算时用相同初态、只改变一个属性的成对实验辨识，避免和距离变化混淆。')
+        if diagnostics_candidates is True:
+            schemas[-1]['function']['description'] += (
+                'candidate_hints把本场回归结果转成至多3个未拟合的合法DSL候选与参数初值，减少手工转写错误。'
+                '剪掉弱项或合并近似系数只是降维假设；原回归CV不等于这些候选已验证。'
+                '由你决定是否采用、修改或拒绝，必须调用fit_law_and_rollout并用未参与开发的新轨迹validate_law；'
+                '候选不读取真值，没有law_id，不能直接提交。初始证据不足时应补充实验后重新诊断。')
     return schemas

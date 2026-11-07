@@ -46,6 +46,14 @@ class Agent:
         self.strict_tool_recovery = self.ruleset == 'e5' and strict_tool_recovery
         if self.strict_tool_recovery and getattr(client, 'strict_tools', False) is not True:
             raise ValueError('strict_tool_recovery requires client.strict_tools=true')
+        stagnation_recovery = config.get('stagnation_recovery', False)
+        if type(stagnation_recovery) is not bool:
+            raise ValueError('stagnation_recovery must be boolean')
+        self.stagnation_recovery = self.ruleset == 'e5' and stagnation_recovery
+        if self.stagnation_recovery and getattr(client, 'strict_tools', False) is not True:
+            raise ValueError('stagnation_recovery requires client.strict_tools=true')
+        self._successful_tool_counts = {}
+        self._data_version = 0
         self.finish_reserve_seconds = 30.0 if self.e4 else 0.0
         self.max_no_action = config.get('max_no_action', 3)
         if isinstance(self.max_no_action, bool) or not isinstance(self.max_no_action, int) or self.max_no_action < 1:
@@ -111,6 +119,36 @@ class Agent:
             constraints.append('这批请求超过剩余能量；请自行减少本批消耗，或改用已经取得的观测继续分析。')
         return key, {'tool': name, 'arguments': copy.deepcopy(args),
                      'repeat_count': count, 'error': error, 'constraints': constraints}
+
+    def _track_tool_success(self, name, args, result):
+        """Detect repeated deterministic work, without inspecting scientific results."""
+        if not self.stagnation_recovery or args is None or result.get('ok') is not True:
+            return None, None
+        computation_tools = {'fit_law_and_rollout', 'validate_law', 'diagnose_dynamics', 'analyze_residual'}
+        if name not in computation_tools | {'observe_body', 'insert_probe'}:
+            return None, None
+        signature_args = args
+        if name == 'observe_body':
+            # Equivalent numeric representations denote the same absolute times.
+            signature_args = copy.deepcopy(args)
+            signature_args['times'] = [float(t) for t in args.get('times', [])]
+        key = (name, json.dumps(signature_args, sort_keys=True, ensure_ascii=False, allow_nan=False))
+        new_data = (name == 'insert_probe'
+                    or (name == 'observe_body' and key not in self._successful_tool_counts))
+        if new_data:
+            self._data_version += 1
+            # Repeated noise-free body observations remain duplicates across
+            # data revisions; only computation caches are invalidated.
+            self._successful_tool_counts = {
+                k: count for k, count in self._successful_tool_counts.items() if k[0] == 'observe_body'}
+        if name == 'insert_probe':
+            return None, None
+        count = self._successful_tool_counts.get(key, 0) + 1
+        self._successful_tool_counts[key] = count
+        if count < 2:
+            return key, None
+        return key, {'reason': 'repeated_success', 'tool': name, 'arguments': copy.deepcopy(args),
+                     'repeat_count': count, 'data_version': self._data_version}
 
     def _append_failure_feedback(self, pending, turn):
         """Append only after every tool call in the assistant turn has a reply."""
@@ -220,6 +258,10 @@ class Agent:
                         return self._finish('incomplete', 'wall_time_exhausted_without_saved_draft')
             turn += 1
             model_tools = self._model_tools(current_budget)
+            excluded_names = {trigger['tool'] for trigger in pending_strict_recovery
+                              if trigger['reason'] == 'repeated_success'}
+            if excluded_names:
+                model_tools = [tool for tool in model_tools if tool['function']['name'] not in excluded_names]
             advertised_names = {tool['function']['name'] for tool in model_tools}
             try:
                 if pending_strict_recovery:
@@ -228,6 +270,7 @@ class Agent:
                     triggers, pending_strict_recovery = pending_strict_recovery, []
                     self._event('strict_tool_recovery_requested', turn=turn,
                                 tool_choice='required', triggers=triggers,
+                                temporarily_excluded_tool_names=sorted(excluded_names),
                                 advertised_tool_names=sorted(advertised_names),
                                 budget=copy.deepcopy(current_budget))
                     message = self.client.complete(self.messages, tools=model_tools, role='main',
@@ -276,6 +319,7 @@ class Agent:
                 continue
             no_action = 0
             pending_failure_feedback = {}
+            pending_success_recovery = {}
             unadvertised_calls = []
             for call in calls:
                 name = call['function']['name']
@@ -317,6 +361,9 @@ class Agent:
                     pending_failure_feedback[failure_key] = feedback
                 elif failure_key is not None and result.get('ok') is True:
                     pending_failure_feedback.pop(failure_key, None)
+                success_key, success_notice = self._track_tool_success(name, args, result)
+                if success_notice is not None:
+                    pending_success_recovery[success_key] = success_notice
                 data = result.get('data') or {}
                 if (name == 'submit' and result.get('ok') and data.get('status') == 'accepted'
                         and data.get('session_ended') is True):
@@ -333,11 +380,18 @@ class Agent:
                 return self._finish('incomplete', 'session_ended_without_accepted_submission')
             if pending_failure_feedback and self.repeated_tool_failure_feedback:
                 self._append_failure_feedback(pending_failure_feedback, turn)
+            pending_strict_recovery = []
             if self.strict_tool_recovery:
-                pending_strict_recovery = unadvertised_calls + [
+                pending_strict_recovery.extend(unadvertised_calls + [
                     {'reason': 'repeated_tool_failure', **copy.deepcopy(notice)}
-                    for notice in pending_failure_feedback.values()]
-                if pending_strict_recovery:
-                    self._event('strict_tool_recovery_scheduled', turn=turn, next_turn=turn + 1,
-                                tool_choice='required', triggers=pending_strict_recovery,
-                                budget=copy.deepcopy(self.last_budget))
+                    for notice in pending_failure_feedback.values()])
+            if self.stagnation_recovery:
+                pending_strict_recovery.extend(copy.deepcopy(notice)
+                    for notice in pending_success_recovery.values()
+                    if notice['tool'] == 'observe_body' or notice['data_version'] == self._data_version)
+            if pending_strict_recovery:
+                self._event('strict_tool_recovery_scheduled', turn=turn, next_turn=turn + 1,
+                            tool_choice='required', triggers=pending_strict_recovery,
+                            temporarily_excluded_tool_names=sorted({notice['tool']
+                                for notice in pending_strict_recovery if notice['reason'] == 'repeated_success'}),
+                            budget=copy.deepcopy(self.last_budget))

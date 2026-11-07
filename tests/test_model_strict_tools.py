@@ -35,7 +35,11 @@ def test_strict_clones_advertised_schemas_preserves_auto_limits_and_logs_names(t
     assert [tool['function']['name'] for tool in body['tools']] == [tool['function']['name'] for tool in supplied]
     assert supplied == original and all('strict' not in s['function'] for s in schemas)
     for actual, expected in zip(body['tools'], supplied):
-        assert actual['function']['parameters'] == expected['function']['parameters']
+        parameters = copy.deepcopy(expected['function']['parameters'])
+        explanation = parameters['properties'].get('physical_explanation')
+        if explanation is not None:
+            explanation['pattern'] = r'^[\s\S]*\S[\s\S]*$'
+        assert actual['function']['parameters'] == parameters
     assert returned['content'] == '研究进展'  # Ordinary text remains allowed by this client contract.
     assert value.usage['calls'] == 1 and value.usage['completion_tokens'] == 12
 

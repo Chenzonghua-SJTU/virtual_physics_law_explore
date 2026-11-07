@@ -76,6 +76,22 @@ def model_auth_config(config):
     return env_name, required
 
 
+def _normalize_strict_schema_patterns(value):
+    """Preserve JSON Schema search semantics in Qwen's full-match grammar.
+
+    Only the known non-whitespace constraint is rewritten, on the request's
+    schema copy. Runtime validation and all other patterns remain unchanged.
+    """
+    if isinstance(value, dict):
+        if value.get('type') == 'string' and value.get('pattern') == r'\S':
+            value['pattern'] = r'^[\s\S]*\S[\s\S]*$'
+        for nested in value.values():
+            _normalize_strict_schema_patterns(nested)
+    elif isinstance(value, list):
+        for nested in value:
+            _normalize_strict_schema_patterns(nested)
+
+
 class DeepSeekClient:
     """Every HTTP attempt (including retries) consumes the research Agent budget.
 
@@ -449,6 +465,7 @@ class DeepSeekClient:
             if self.strict_tools:
                 for tool in body['tools']:
                     tool['function']['strict'] = True
+                    _normalize_strict_schema_patterns(tool['function'].get('parameters', {}))
         advertised_names = [tool['function']['name'] for tool in body.get('tools', [])]
         estimate = self._prompt_estimate(body)
         prompt_allowance = estimate['estimated_prompt_tokens']
