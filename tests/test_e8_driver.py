@@ -163,3 +163,16 @@ def test_r06_uses_only_user_allocated_three_model_replicas(project,monkeypatch):
     assert len(opener.calls)==4
     assert not any(':8000/' in url for url in opener.calls)
     assert calls[0]['model_endpoints']==tuple(f'http://127.0.0.1:{p}/v1' for p in (8001,8002,8003))
+
+
+def test_r08_reuses_noisy_policy_on_current_three_replicas(project):
+    noisy=driver.plans(project,repeat='r08')[0]
+    old=driver.plans(project,repeat='r04')[0]
+    assert noisy['config']==old['config']
+    assert noisy['config']['environment']['noise'] is True
+    assert noisy['config']['agent']['submission_fit_rmse_threshold']==.1
+    assert noisy['config']['agent']['submission_time_remaining_seconds']==60
+    registration=noisy['protocol_metadata']['repeat_registration']
+    assert registration['evaluation_noise'] is False
+    assert registration['parallelism']==3
+    assert all(':8000/' not in url for url in registration['model_endpoints'])

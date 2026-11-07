@@ -211,6 +211,39 @@
       ],
       "parallelism": 3,
       "resource_allocation": "Continue user-reserved 8001-8003 after idle checks; official_test remains on 8000. Separate symbolic service."
+    },
+    "r08": {
+      "batch_id": "e8-qwen38-pysr-stage-20261107-r08",
+      "registration": "User explicitly requested one noisy six-world batch on the current frozen implementation.",
+      "observation_noise": true,
+      "evaluation_noise": false,
+      "ruleset": "e4",
+      "scientific_implementation": "52dbdd6, same scientific source and base prompts as R07. Only registered noise and noise-specific submission policy differ.",
+      "inherits": "27B, three replicas 8001-8003, 10 energy, 300 seconds, 4096 output tokens/call, no thinking or cumulative token cap.",
+      "changes": [
+        "Enable existing position and velocity Gaussian observation noise; post-session evaluation remains clean."
+      ],
+      "audit_required_before_next_round": [
+        "Every acquired-probe plan and public coverage",
+        "Every SR input, returned candidate and selection/fit residual",
+        "Every Agent fit/validation/submit argument and feedback",
+        "Final formula compared with public reference only after completion; no truth injected into exploration"
+      ],
+      "selection_policy": "One attempt per world, retain all six results; no replacing failed worlds with retries. Diagnose the complete round before registering the next frozen implementation.",
+      "preceding_audit": "experiments/E5/e8-r07-diagnosis.json",
+      "model_endpoints": [
+        "http://127.0.0.1:8001/v1",
+        "http://127.0.0.1:8002/v1",
+        "http://127.0.0.1:8003/v1"
+      ],
+      "parallelism": 3,
+      "resource_allocation": "Continue user-reserved 8001-8003 after idle checks; official_test remains on 8000. Separate symbolic service.",
+      "submission_gate": {
+        "training_and_independent_validation_position_rmse_both_below": 0.1,
+        "or_remaining_seconds_below": 60,
+        "next_action_must_submit_when_remaining_below": 40,
+        "comparisons": "strict"
+      }
     }
   }
 }
