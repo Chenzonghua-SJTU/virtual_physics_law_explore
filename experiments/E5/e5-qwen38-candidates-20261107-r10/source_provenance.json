@@ -1,0 +1,35 @@
+{
+  "source_commit": "7e977c14687a37c333636a9098dcb2f3db75f3ec",
+  "run_source_hashes": "manifest.json:source_sha256",
+  "audit_completed_before_next_source_deployment": true,
+  "audit_source_hashes_all_match": true,
+  "audited_source_count": 19,
+  "audit_errors_preserved": [],
+  "guidance_profile": "e3",
+  "diagnostics_enabled": true,
+  "diagnostics_compact": true,
+  "diagnostics_curvature": true,
+  "repeated_tool_failure_feedback": true,
+  "budget_aware_tools": true,
+  "strict_tools": true,
+  "strict_tool_recovery": true,
+  "stagnation_recovery": true,
+  "strict_explanation_pattern_compatibility_fix": true,
+  "sampling_seed": 42,
+  "attempts_per_world": 1,
+  "configuration_difference_from_r09": [
+    "agent.stagnation_recovery",
+    "numerics.diagnostics_candidates"
+  ],
+  "changes_note": "Composite change: acquired-observation candidate hints, successful-action stagnation recovery, and strict transport regex compatibility. Not a single-factor comparison. Original scoring and fixed validation matrix unchanged.",
+  "execution_evidence": "execution_evidence.json",
+  "archive_evidence_sha256": {
+    "manifest.json": "63877bff3427d43b2323ad01b3a105a2882008845a749f325389f3a550fa1a92",
+    "summary.json": "c14caf931d1366dea6b7abdeafef2c509b990099b66d99133b403d6cf2b069da",
+    "audit.json": "c8407b003204ec0bbf70edb1ad0a0d8225d909331d64a4acaf2a7d402b41bfaf",
+    "execution_evidence.json": "7a33795da6e74247941e36bc0273c014cc17e93cfa8288637fe7b3ebb2d3a8d0"
+  },
+  "downloaded_raw_archive_sha256": "2bd6879dfd7ae7c1aeda3d6c5ce19ecd3a0c60a82ceee1aca7589f128b7fd06b",
+  "source_note": "Server audit and all 19 frozen source hashes, including candidate_hints.py, checked before subsequent scientific-source deployment. Raw six-world records retained locally and on server; failures preserved without backfill or re-evaluation. Explanation character lengths verify the one-character transport restriction is absent, not scientific explanation quality.",
+  "diagnostics_candidates": true
+}
