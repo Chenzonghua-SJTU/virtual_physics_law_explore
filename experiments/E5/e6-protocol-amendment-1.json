@@ -1,0 +1,10 @@
+{
+  "registered_at": "2026-11-07T03:19:38.274519+00:00",
+  "reason": "Fixed per-request seed is an added experimental sampling condition; observed repeated actions do not establish seed causality. The user requests one frozen no-extra-tool version before PySR. Confirm the selected prompt under original unseeded deployment sampling before proceeding.",
+  "original_five_batches": "Retain all, no cancellations, reruns, or overwrites",
+  "additional_batches": 1,
+  "additional_batch": "e6-qwen38-final-unseeded-20261107-r01",
+  "selection": "Use original preregistered profile selection across seeds42/43; remove sampling_seed for one final six-world batch. No per-world model or prompt changes.",
+  "phase1_total_max_six_world_batches": 6,
+  "phase2": "Use that frozen profile and unseeded sampling for both PySR off/on arms, two repeats each. Four total six-world batches; no new experiments until final no-tool report exists."
+}
