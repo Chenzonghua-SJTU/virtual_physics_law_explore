@@ -67,8 +67,22 @@ def radial_projection(dataset, *, tolerance=.04):
     error = float(np.sqrt(np.sum(weights[:, None]*perpendicular**2)/signal))
     angular = position/np.sqrt(r2)[:, None]
     eigenvalues = np.linalg.eigvalsh(angular.T@(weights[:, None]*angular))
-    supported = error <= tolerance and eigenvalues[0] > .02
+    # A small *relative* transverse force is still a resolved contradiction
+    # when velocity differences are precise. A fixed 4% allowance incorrectly
+    # gave weakly noncentral observations most of the radial search budget.
+    # Trace of the two-axis resolution estimate is rotation invariant. This is
+    # a stencil/noise sensitivity heuristic, not a statistical confidence bound.
+    relative_resolution = None
+    resolution = np.asarray(dataset.get('derivative_resolution_mse', []), dtype=float)
+    if resolution.shape == (2,) and np.isfinite(resolution).all() and np.all(resolution >= 0):
+        relative_resolution = float(np.sqrt(np.sum(resolution)/signal))
+    effective_tolerance = (min(tolerance, max(1e-8, 4*relative_resolution))
+                           if relative_resolution is not None else tolerance)
+    supported = error <= effective_tolerance and eigenvalues[0] > .02
     diagnostics = {'supported': bool(supported), 'relative_transverse_residual': error,
+                   'relative_derivative_resolution': relative_resolution,
+                   'effective_transverse_tolerance': effective_tolerance,
+                   'tolerance_rule': 'min(relative cap, four times observed stencil/noise sensitivity); not a confidence interval',
                    'direction_coverage_min_eigenvalue': float(eigenvalues[0]),
                    'hypothesis': 'acceleration equals an unknown scalar response times position',
                    'scope': 'Acquired-data hypothesis only; not proof of isotropy or an origin force source.'}

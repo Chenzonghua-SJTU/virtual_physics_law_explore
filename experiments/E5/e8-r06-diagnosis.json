@@ -1,0 +1,315 @@
+{
+  "batch": "e8-qwen38-pysr-stage-20261107-r06",
+  "scientific_commit": "5b6eef6",
+  "allocation_commit": "19a83f9",
+  "attempts_per_world": 1,
+  "observation_noise": false,
+  "evaluation_noise": false,
+  "source_unchanged_after_completion": true,
+  "audit_inputs_unchanged": true,
+  "audit_warnings": [],
+  "all_six_tool_traces_reviewed": true,
+  "strict_scores_at_least_90": 3,
+  "numerical_boundary_world": "world_3",
+  "all_limits_met": true,
+  "worlds": {
+    "world_1": {
+      "score": 96.99995570042557,
+      "timing": {
+        "exploration_seconds": 126.44572314247489,
+        "evaluation_seconds": 3.520284056663513,
+        "wall_seconds_including_evaluation": 131.7822244912386,
+        "model_elapsed_seconds": 83.25507188215852,
+        "symbolic_search_seconds": 40.29740933328867,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 15,
+        "completion_tokens": 4867,
+        "average_output_tokens_per_call": 324.46666666666664,
+        "max_call_output_tokens": 1384,
+        "requests_with_reported_usage": 15,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 6,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-c1 * q('charge') / q('mass') * x / (x * x + y * y)",
+          "ay": "-c1 * q('charge') / q('mass') * y / (x * x + y * y)"
+        },
+        "fitted_parameters": {
+          "c1": 0.07955262769073175
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Correct leading radial inverse-radius magnitude and property ratio; small-radius softening unresolved.",
+        "SR rank 1 delivered intact with training RMSE 9.29e-9; Agent initially replaced it with erroneous powers before recovering a simpler approximation."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_2": {
+      "score": 95.99999999999923,
+      "timing": {
+        "exploration_seconds": 125.34535625949502,
+        "evaluation_seconds": 1.7173904031515121,
+        "wall_seconds_including_evaluation": 129.69362194091082,
+        "model_elapsed_seconds": 82.87348665110767,
+        "symbolic_search_seconds": 40.935457022860646,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 14,
+        "completion_tokens": 4910,
+        "average_output_tokens_per_call": 350.7142857142857,
+        "max_call_output_tokens": 1144,
+        "requests_with_reported_usage": 14,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 8,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "q('charge')/q('mass')*c1*x",
+          "ay": "q('charge')/q('mass')*c2*y"
+        },
+        "fitted_parameters": {
+          "c1": -0.059999998879852245,
+          "c2": -0.059999999590853094
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Correct isotropic linear field and property ratio.",
+        "Agent initially ignored correct SR rank 1; an intermediate law omitted acquired property controls, then restored the ratio and validated on fresh probes."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_3": {
+      "score": 89.99999999999991,
+      "timing": {
+        "exploration_seconds": 86.09189746156335,
+        "evaluation_seconds": 2.518643641844392,
+        "wall_seconds_including_evaluation": 90.07518810965121,
+        "model_elapsed_seconds": 41.286485120654106,
+        "symbolic_search_seconds": 42.6961431261152,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 8,
+        "completion_tokens": 2389,
+        "average_output_tokens_per_call": 298.625,
+        "max_call_output_tokens": 1107,
+        "requests_with_reported_usage": 8,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 10,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "c1 * x + c2 * y",
+          "ay": "c3 * x + c4 * y"
+        },
+        "fitted_parameters": {
+          "c1": -0.06000000004176067,
+          "c2": 0.03464101608223756,
+          "c3": 0.03464101622667955,
+          "c4": -0.09999999988692432
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Correct linear tensor; all heldout trajectories valid near numerical precision.",
+        "Unsupported hidden_matter claim lost 5 points; all energy consumed. Raw score is 89.99999999999991, displayed 90.00; strict raw >=90 count does not include this boundary case."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_4": {
+      "score": 87.56932391450515,
+      "timing": {
+        "exploration_seconds": 170.3509757798165,
+        "evaluation_seconds": 4.1204578801989555,
+        "wall_seconds_including_evaluation": 176.54811602644622,
+        "model_elapsed_seconds": 124.87183154001832,
+        "symbolic_search_seconds": 43.808684250339866,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 12,
+        "completion_tokens": 7764,
+        "average_output_tokens_per_call": 647.0,
+        "max_call_output_tokens": 3098,
+        "requests_with_reported_usage": 12,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 8,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-1 * exp(c1 + c2 * sqrt(x * x + y * y) + c3 * log(sqrt(x * x + y * y)) + c4 * q('mass') + c5 * log(q('charge'))) * x",
+          "ay": "-1 * exp(c1 + c2 * sqrt(x * x + y * y) + c3 * log(sqrt(x * x + y * y)) + c4 * q('mass') + c5 * log(q('charge'))) * y"
+        },
+        "fitted_parameters": {
+          "c1": -0.45235408403441707,
+          "c2": -0.2503055000421901,
+          "c3": -1.9986852716207855,
+          "c4": -0.6931459704431334,
+          "c5": 0.9999989432853983
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Distance exponential found, but mass dependence wrong: exp(c4*mass), not a power. Correct alternative exp(c4*log(mass)) was returned at rank 2.",
+        "Training had only two mass levels. Fresh validation at mass=1.5 and altered spatial/velocity conditions contradicted the first candidate; Agent did not compare rank 2, and misread exp(c4*mass) as mass**c4 in its explanation.",
+        "Submitted with 130 seconds and 2 energy left. This is not true-law recovery."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_5": {
+      "score": 37.96864636746355,
+      "timing": {
+        "exploration_seconds": 261.9030643440783,
+        "evaluation_seconds": 2.8690107706934214,
+        "wall_seconds_including_evaluation": 266.88782449811697,
+        "model_elapsed_seconds": 208.46058306097984,
+        "symbolic_search_seconds": 42.179125340655446,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 32,
+        "completion_tokens": 10823,
+        "average_output_tokens_per_call": 338.21875,
+        "max_call_output_tokens": 1081,
+        "requests_with_reported_usage": 32,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 10,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "(x + sin(sin(x) * c1)) * (exp(sqrt(x * x + y * y)) * c2 - c3)",
+          "ay": "c4 * vy + c5 * y"
+        },
+        "fitted_parameters": {
+          "c1": 1.8049417136146648,
+          "c2": -0.0020644238888219086,
+          "c3": 0.030054240740276086,
+          "c4": -0.004833673130320203,
+          "c5": -0.1174400862901977
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Initial discovery almost entirely coordinate-axis short trajectories; all initial paid points on axes, train time span 1.96. Polynomial design rank 34/35.",
+        "Fixed 4% radial-support heuristic accepted a 3.56% transverse residual although stencil sensitivity was about 0.037%; radial stages consumed about 19 seconds, Cartesian stages about 5.7 seconds.",
+        "Returned top candidates were approximations. Agent fitted rank 3, fresh off-axis validation RMSE 0.047 vs training 0.000431, but never incorporated counterexamples into another search.",
+        "Repeated missing-parameter/too-many-parameter requests and wrong velocity-coupling guesses; 32 model calls consumed 208.46 seconds. Submitted under the <40-second deadline exception."
+      ],
+      "all_complete_candidates_preserved": true
+    },
+    "world_6": {
+      "score": 94.99999999999994,
+      "timing": {
+        "exploration_seconds": 229.65075028687716,
+        "evaluation_seconds": 3.5199835766106844,
+        "wall_seconds_including_evaluation": 234.2140618748963,
+        "model_elapsed_seconds": 105.57999464124441,
+        "symbolic_search_seconds": 40.07509900443256,
+        "exploration_deadline_met": true
+      },
+      "tokens": {
+        "calls": 18,
+        "completion_tokens": 6051,
+        "average_output_tokens_per_call": 336.1666666666667,
+        "max_call_output_tokens": 1537,
+        "requests_with_reported_usage": 18,
+        "requests_without_reported_usage": 0,
+        "output_cap_compliant": true
+      },
+      "energy_used": 10,
+      "accepted_law": {
+        "law_spec": {
+          "ax": "-(c1 * x) + c2 * (y * sin(c3 * t + c4)) + c2 * (x * cos(c3 * t + c4))",
+          "ay": "-(c5 * x) + -(c1 * y) + c2 * (x * sin(c3 * t + c4)) + -(c2 * (y * cos(c3 * t + c4)))"
+        },
+        "fitted_parameters": {
+          "c1": 0.12000000010050967,
+          "c2": 0.06000000014947808,
+          "c3": 0.39269908163929973,
+          "c4": 0.5999999990502488,
+          "c5": 8.242753180648067e-11
+        },
+        "train_probe_ids": [
+          "probe_0001",
+          "probe_0002",
+          "probe_0003",
+          "probe_0004",
+          "probe_0005",
+          "probe_0006",
+          "probe_0007",
+          "probe_0008"
+        ],
+        "fit_status": "converged"
+      },
+      "review": [
+        "Correct time-modulated tensor recovered, with one extra fitted coefficient about 8.24e-11 (effectively zero, not exact symbolic simplification).",
+        "SR resolved frequency from observed trajectories and returned intact joint formula. Agent first tried unrelated body-force fits; three consumed about 25 seconds each. Eventually fitted original candidate and passed fresh delayed validation."
+      ],
+      "all_complete_candidates_preserved": true
+    }
+  },
+  "conclusion": "R06 improves full-form delivery and recovers the time-varying law, but still fails structural recovery in W4/W5. It is not declared a robust best version; no noisy run yet. No per-world cherry picking.",
+  "generalization_boundary": [
+    "No world IDs, reference formulas, reference coefficients or official hidden-universe data enter prompts/search.",
+    "Existing basis/coordinate priors remain explicit and may introduce bias; six-world scores alone do not validate generalization.",
+    "Separate frozen tool-only synthetic diagnostic recovered 3/4 systems and failed the exponential drive; all outcomes archived."
+  ],
+  "next_general_changes": [
+    "Use observed derivative resolution to test collinearity, not a fixed relative tolerance. Test rotation-invariant weak noncentral synthetic forces.",
+    "Improve candidate comparison after fresh counterexamples and avoid repeated invalid formula arguments; no formula or declaration answer hints.",
+    "Any subsequent Agent batch must use one newly frozen version for all six worlds and retain every failure."
+  ]
+}
