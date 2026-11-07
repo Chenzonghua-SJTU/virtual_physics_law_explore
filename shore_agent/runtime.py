@@ -387,6 +387,7 @@ class ToolRuntime:
             'rejection_counts', 'candidate_selection', 'stop_reason',
             'transport_audit_omitted_rows',
             'axis_candidates', 'data_quality', 'coverage', 'input_coverage', 'outcome', 'status_meaning',
+            'search_stages', 'basis_diagnostics', 'geometric_features', 'projection_diagnostics',
         }
         public = {key: copy.deepcopy(value) for key, value in result.items() if key in public_keys}
         public['audit_path'] = f'analyses/{rid}.json'

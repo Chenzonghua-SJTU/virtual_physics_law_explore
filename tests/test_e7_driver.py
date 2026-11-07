@@ -323,3 +323,26 @@ def test_main_defers_sigterm_until_safe_checkpoint_and_restores_handlers(monkeyp
     monkeypatch.setattr(driver, 'run_study', run_study)
     driver.main()
     assert installed == originals
+
+
+def test_predeclared_single_batch_reuses_cleanup_and_records_extra_sources(project,monkeypatch):
+    plan=driver.plans(project)[0]
+    plan['experiment_group']='E8'
+    plan['symbolic_runtime_preflight']={'actual_threads':4}
+    source=project/'deployment/generic_basis.py'
+    source.write_text('generic implementation')
+    (project/'experiments/E5/e6-final-selection.json').unlink()
+    calls=[]
+    def launch(*args):
+        calls.append(args[0].name)
+        return fake_launch(*args)
+    monkeypatch.setattr(driver,'launch',launch)
+    driver.run_study(project,opener=Opener(),planned_batches=[plan],
+                     extra_source_paths=['deployment/generic_basis.py'])
+    assert len(calls)==len(set(calls))==6
+    manifest=benchmark.read_json(plan['output']/'manifest.json')
+    assert manifest['experiment_group']=='E8'
+    assert manifest['symbolic_runtime_preflight']['actual_threads']==4
+    assert len(manifest['source_sha256']['deployment/generic_basis.py'])==64
+    for directory in assert_terminal(project,6):
+        assert benchmark.read_json(directory/'web.json')['experiment_group']=='E8'

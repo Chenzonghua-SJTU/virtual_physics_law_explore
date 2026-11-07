@@ -121,17 +121,20 @@ def test_search_adapter_uses_shared_budget_weights_and_exports_two_axis_candidat
 
     result = run_search([probe()], time_budget_seconds=30, model_factory=FakeSearch,
                         progress_callback=checkpoints.append)
-    assert len(calls) == 2
+    assert len(calls) == 4
     assert calls[0][0]["timeout_in_seconds"] <= 14
     assert calls[1][0]["timeout_in_seconds"] < 28
     assert all(c[0]["warm_start"] is False and c[0]["precision"] == 64 for c in calls)
-    assert calls[0][3]["variable_names"] == result["feature_names"]
+    assert set(result["feature_names"]) <= set(calls[0][3]["variable_names"])
+    assert 'radius2' in calls[0][3]['variable_names']
+    assert calls[-1][0]['unary_operators'] == ['sin', 'cos', 'exp', 'sqrt', 'log', 'abs']
     assert sum(calls[0][3]["weights"]) == pytest.approx(1)
     assert result["search_axes_completed"] == ["ax", "ay"]
     best = result["candidates"][0]
     assert best["acceleration_search_mse"] < 1e-20
     assert best["discovery_probe_ids"] == ["p1"]
-    assert best["component_sources"] == ["pysr", "pysr"]
+    assert set(best["component_sources"]) <= {"pysr", "regression_basis", "linear_least_squares"}
+    assert any(row['origin'] == 'pysr' for row in result['axis_equations']['ax'])
     assert result["used_probe_ids"] == ["p1"]
     assert result["status"] == "completed"
     assert checkpoints[0]["search_axes_completed"] == []
@@ -303,13 +306,13 @@ def test_generic_linear_seed_recovers_coupled_components_without_claiming_pysr_o
         def __init__(self, **kwargs):
             assert kwargs["binary_operators"] == ["+", "-", "*", "/", "^"]
             assert kwargs["constraints"]["^"] == (-1, 1)
-            assert {"sin", "cos", "exp", "log", "sqrt", "abs"} == set(kwargs["unary_operators"])
+            assert set(kwargs["unary_operators"]) in ({'sqrt', 'abs'}, {"sin", "cos", "exp", "log", "sqrt", "abs"})
         def fit(self, *args, **kwargs): self.equations_ = Rows([])
     records = [physical_probe("a", (1., 0.)), physical_probe("b", (0., 1.)),
                physical_probe("c", (-1., 2.))]
     result = run_search(records, time_budget_seconds=15, model_factory=EmptySearch)
     best = result["candidates"][0]
-    assert best["component_sources"] == ["linear_least_squares"] * 2
+    assert all(source in ('linear_least_squares', 'regression_basis') for source in best['component_sources'])
     assert best["parameter_count"] <= 5
     assert best["short_rollout_check"]["position_rmse"] < 1e-5
     assert best["acceleration_search_mse"] < 1e-8
@@ -330,14 +333,14 @@ def test_late_snapshot_retains_only_previously_certified_candidates(monkeypatch)
             self.equations_ = Rows([{ "loss": 0., "complexity": 3, "sympy_format": "vx/t"}])
     result = run_search([physical_probe("p", (1., 2.))], time_budget_seconds=30,
                         model_factory=SlowSearch, progress_callback=checkpoints.append)
-    before = checkpoints[1]["candidates"]
+    before = [c['candidates'] for c in checkpoints if not c['candidate_selection']['selection_incomplete']][-1]
     assert before
     assert result["candidates"] == before
     assert result["candidate_selection"]["selection_incomplete"] is True
     assert result["candidate_selection"]["retained_checkpoint"] is True
     assert all(c["short_rollout_check"]["status"] == "passed" for c in result["candidates"])
-    assert any(r["source"] == "vx/t" for r in result["axis_equations"]["ax"])
-    assert next(r for r in result["axis_equations"]["ax"] if r["source"] == "vx/t")["domain_valid"] is None
+    assert any(r["source"].replace(' ', '') == "vx/t" for r in result["axis_equations"]["ax"])
+    assert next(r for r in result["axis_equations"]["ax"] if r["source"].replace(' ', '') == "vx/t")["domain_valid"] is None
 
 
 @pytest.mark.parametrize("source", ["sin(t)", "cos(t)", "exp(t)", "log(t + 2.0)"])
@@ -549,8 +552,8 @@ def test_search_size_includes_larger_generic_expressions_and_retains_full_operat
         def fit(self,*args,**kwargs):self.equations_=Rows([])
     result=run_search([physical_probe("p",(1.,2.))],model_factory=EmptySearch,time_budget_seconds=15)
     assert SEARCH_MAXSIZE==48
-    assert all(o["maxsize"]==48 for o in options)
-    assert all({"sin","cos","exp","log"}.issubset(o["unary_operators"]) for o in options)
+    assert {o['maxsize'] for o in options} == {24, 48}
+    assert any({"sin","cos","exp","log"}.issubset(o["unary_operators"]) for o in options)
     assert result["search_configuration"]["maxsize"]==48
     assert "executability only" in result["data_quality"]["trajectory_checks"]
     assert all(c["joint_fit_ready"] for c in result["candidates"])

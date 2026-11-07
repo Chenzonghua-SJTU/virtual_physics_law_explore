@@ -47,7 +47,7 @@ def _search_audit(raw):
     audit data, omit explicit rows with counts rather than corrupting/truncating
     returned executable formulas or losing otherwise valid candidates.
     """
-    allowed = {"source", "complexity", "loss", "origin", "parameter_count",
+    allowed = {"source", "complexity", "loss", "origin", "search_representation", "parameter_count",
                "domain_valid", "rejection_reason"}
     result = {}
     omitted = dict(raw.get("transport_audit_omitted_rows", {}))
@@ -143,7 +143,8 @@ def _public_result(raw, ids):
                "requested_time_budget_seconds", "worker_search_budget_seconds", "cleanup_reserve_seconds",
                "service_budget_exceeded", "worker_reap_pending", "cleanup_pending", "timing_scope",
                "search_version", "stop_reason", "data_quality", "coverage",
-               "prediction_accuracy_status"}
+               "prediction_accuracy_status", "search_stages", "basis_diagnostics",
+               "geometric_features", "projection_diagnostics"}
     result = {k: _scientific_metadata(v) for k, v in raw.items() if k in allowed}
     result.update(_search_audit(raw))
     result["used_probe_ids"] = list(ids)
@@ -220,7 +221,12 @@ class WorkerPool:
         self.worker_python = str(Path(worker_python or sys.executable).absolute())
         self.warmup_timeout_seconds = warmup_timeout_seconds
         self.command_factory = worker_command_factory
-        self.worker_env = worker_env
+        self.worker_env = dict(os.environ if worker_env is None else worker_env)
+        # JuliaCall uses its own thread setting; JULIA_NUM_THREADS alone can be
+        # overridden by PySR. Set both before the worker imports either package.
+        self.worker_env.update(PYTHON_JULIACALL_THREADS="4", JULIA_NUM_THREADS="4",
+                               PYTHON_JULIACALL_HANDLE_SIGNALS="yes", OPENBLAS_NUM_THREADS="1",
+                               OMP_NUM_THREADS="1", MKL_NUM_THREADS="1")
         self.workers = [None] * size
         self.failed_starts = set()
         self.lock = threading.Lock()
@@ -299,9 +305,20 @@ class WorkerPool:
             ready = sum(w is not None and w.ready() and not w.busy for w in self.workers)
             busy = sum(w is not None and w.busy for w in self.workers)
             failed = len(self.failed_starts) + sum(w is not None and (w.failed or w.process.poll() is not None) for w in self.workers)
+            details = []
+            for worker in self.workers:
+                if worker is not None and worker.ready():
+                    try:
+                        metadata = _read(worker.directory/"ready.json", 16 * 1024)
+                        details.append({key:metadata[key] for key in
+                            ("actual_julia_threads", "warmup_stages", "warmup_seconds") if key in metadata})
+                    except (OSError, ValueError, SymbolicServiceError):
+                        details.append({})
             return {"status": "ready" if ready else "busy" if busy else "failed" if failed == len(self.workers) else "warming",
                     "pool_size": len(self.workers), "ready": ready, "busy": busy, "failed": failed,
-                    "warming": max(0, len(self.workers) - ready - busy - failed)}
+                    "warming": max(0, len(self.workers) - ready - busy - failed),
+                    "actual_julia_threads": [item.get("actual_julia_threads") for item in details],
+                    "worker_warmup": details}
 
     def search(self, probes, time_budget_seconds, random_state=42):
         started = time.monotonic()
@@ -514,27 +531,48 @@ def _command_lines(stream):
         yield line
 
 
-def _worker(directory):
-    from .symbolic_regression import run_search, BINARY_OPERATORS, UNARY_OPERATORS, SEARCH_MAXSIZE
-    from pysr import PySRRegressor
+def _warmup_models(directory, model_factory=None, julia_main=None):
+    started = time.monotonic()
+    from .symbolic_regression import BINARY_OPERATORS, UNARY_OPERATORS, SEARCH_MAXSIZE
+    if model_factory is None:
+        from pysr import PySRRegressor
+        model_factory = PySRRegressor
+    if julia_main is None:
+        from juliacall import Main as julia_main
     import numpy as np
-    directory = Path(directory).resolve()
+    actual_threads = int(julia_main.seval("Threads.nthreads()"))
+    if actual_threads != 4:
+        raise RuntimeError("symbolic_worker_requires_four_julia_threads")
     # Synthetic-only compilation warmup: no experiment, archive or world input.
     rng = np.random.default_rng(123)
     X = rng.uniform(.2, 1.2, size=(64, 7))
-    # Compile the same complete operator space before any mission starts.
-    # Power laws are common, but trigonometric/exponential/log terms stay legal.
+    # Each operator enum requires Julia compilation. Warm both actual stages,
+    # rather than making the first timed mission compile the algebra-only enum.
     y = (2 * X[:, 1] ** 1.7 + np.sqrt(X[:, 0]) + np.sin(X[:, 3])
          + np.cos(X[:, 4]) + np.exp(X[:, 5]) + np.log(X[:, 6]))
-    model = PySRRegressor(binary_operators=list(BINARY_OPERATORS), unary_operators=list(UNARY_OPERATORS),
-                          constraints={"^": (-1, 1)},
-                          maxsize=SEARCH_MAXSIZE, niterations=1, populations=2, population_size=27,
-                          ncycles_per_iteration=10, timeout_in_seconds=2, parallelism="multithreading",
-                          warm_start=False, precision=64, verbosity=0, progress=False,
-                          output_directory=str(directory / "warmup"))
-    model.fit(X, y, weights=np.ones(len(y)), variable_names=["t", "x", "y", "vx", "vy", "mass", "charge"])
-    del model
-    _save(directory / "ready.json", {"ready": True})
+    stages = []
+    for name, unary, maxsize in (("algebra", ["sqrt", "abs"], 24),
+                                 ("full", list(UNARY_OPERATORS), SEARCH_MAXSIZE)):
+        begin = time.monotonic()
+        model = model_factory(binary_operators=list(BINARY_OPERATORS), unary_operators=unary,
+                              constraints={"^": (-1, 1)}, maxsize=maxsize,
+                              niterations=1, populations=2, population_size=27,
+                              ncycles_per_iteration=10, timeout_in_seconds=2, parallelism="multithreading",
+                              warm_start=False, precision=64, verbosity=0, progress=False,
+                              output_directory=str(directory / "warmup" / name))
+        model.fit(X, y, weights=np.ones(len(y)), variable_names=["t", "x", "y", "vx", "vy", "mass", "charge"])
+        stages.append({"stage":name,"maxsize":maxsize,"unary_operators":unary,
+                       "elapsed_seconds":time.monotonic()-begin})
+        del model
+    return {"actual_julia_threads":actual_threads,"warmup_stages":stages,
+            "warmup_seconds":time.monotonic()-started}
+
+
+def _worker(directory):
+    from .symbolic_regression import run_search
+    directory = Path(directory).resolve()
+    warmup = _warmup_models(directory)
+    _save(directory / "ready.json", dict(warmup, ready=True))
     jobs_root = directory.parent.parent / "jobs"
     for line in _command_lines(sys.stdin):
         job = None

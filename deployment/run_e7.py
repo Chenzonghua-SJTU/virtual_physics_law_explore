@@ -3,6 +3,7 @@
 All 24 attempts are retained, with at most one active mission per model endpoint.
 Queues are outside mission time. No per-world retries or answer selection.
 """
+import hashlib
 import json
 import signal
 import sys
@@ -75,6 +76,12 @@ def preflight(batches, endpoints=ENDPOINTS, *, opener=None):
     health = _remote_json(SYMBOLIC_ENDPOINT + '/health', opener)
     if type(health.get('ready')) is not int or health['ready'] != 4 or type(health.get('busy')) is not int or health['busy'] != 0:
         raise RuntimeError('E7 preflight requires four ready, idle PySR workers')
+    if any(batch.get('require_staged_warmup') for batch in batches):
+        warmup=health.get('worker_warmup',[])
+        if (health.get('actual_julia_threads')!=[4]*4 or len(warmup)!=4 or any(
+                {(stage.get('stage'),stage.get('maxsize')) for stage in worker.get('warmup_stages',[])}
+                !={('algebra',24),('full',48)} for worker in warmup)):
+            raise RuntimeError('E8 requires actual four-thread workers warmed for algebra24 and full48')
     # Network checks take time. Recheck all arms before the first reservation.
     _check_fresh_paths(batches)
 
@@ -103,7 +110,8 @@ def _partial_preparation_summary(batch):
     _write(batch['output']/'summary.json', dict(manifest, worlds=worlds))
 
 
-def run_study(project=ROOT, *, opener=None, stop_requested=None):
+def run_study(project=ROOT, *, opener=None, stop_requested=None, planned_batches=None,
+              extra_source_paths=()):
     project = Path(project).resolve()
     deadline = time.monotonic() + 3600
     def checkpoint():
@@ -112,10 +120,21 @@ def run_study(project=ROOT, *, opener=None, stop_requested=None):
         if time.monotonic() >= deadline:
             raise TimeoutError('E7 study exceeded one-hour orchestration deadline')
 
-    selection = read_json(project/'experiments/E5/e6-final-selection.json')
-    if not isinstance(selection, dict) or not selection.get('selected_profile'):
-        raise SystemExit('Complete E6 and freeze selection before E7')
-    planned = plans(project)
+    if planned_batches is None:
+        selection = read_json(project/'experiments/E5/e6-final-selection.json')
+        if not isinstance(selection, dict) or not selection.get('selected_profile'):
+            raise SystemExit('Complete E6 and freeze selection before E7')
+        planned = plans(project)
+    else:
+        planned = list(planned_batches)
+        if not planned:
+            raise ValueError('at_least_one_predeclared_batch_required')
+    source_hashes = {}
+    for name in extra_source_paths:
+        path = (project/name).resolve()
+        if not path.is_relative_to(project):
+            raise ValueError('source_path_outside_project')
+        source_hashes[str(path.relative_to(project))] = hashlib.sha256(path.read_bytes()).hexdigest()
     preflight(planned, opener=opener)
     checkpoint()
     batches, attempts = [], {}
@@ -134,6 +153,18 @@ def run_study(project=ROOT, *, opener=None, stop_requested=None):
                 manifest, runs = prepare(batch['output'], batch['config'], workers=4,
                                          project=project, model_endpoints=ENDPOINTS)
                 batch.update(manifest=manifest, runs=runs)
+                if source_hashes:
+                    manifest['source_sha256'].update(source_hashes)
+                if batch.get('symbolic_runtime_preflight'):
+                    manifest['symbolic_runtime_preflight']=batch['symbolic_runtime_preflight']
+                if batch.get('experiment_group'):
+                    manifest['experiment_group'] = batch['experiment_group']
+                    for directory in runs.values():
+                        metadata = read_json(directory/'web.json')
+                        metadata['experiment_group'] = batch['experiment_group']
+                        _write(directory/'web.json', metadata)
+                if source_hashes or batch.get('experiment_group') or batch.get('symbolic_runtime_preflight'):
+                    _write(batch['output']/'manifest.json', manifest)
             except BaseException as exc:
                 preparation_error = exc
                 raise

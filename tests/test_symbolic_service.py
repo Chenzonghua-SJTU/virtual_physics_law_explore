@@ -16,7 +16,7 @@ from shore_agent.symbolic_service import SymbolicServiceError, WorkerPool, make_
 FAKE_WORKER = r'''
 import json, pathlib, sys, time, subprocess
 directory=pathlib.Path(sys.argv[1])
-(directory/'ready.json').write_text('{"ready":true}')
+(directory/'ready.json').write_text('{"ready":true,"actual_julia_threads":4}')
 def save(path,data):
  temp=path.with_suffix('.tmp');temp.write_text(json.dumps(data));temp.replace(path)
 for line in sys.stdin:
@@ -33,6 +33,10 @@ for line in sys.stdin:
                                 'host_path':'/private/secret'}],
          'candidate_selection':{'strategy':'power_law','rollout_checks':1,'debug_path':'/private/secret'},
          'data_quality':{'sample_counts':{'p':30},'body_positions_included':False,'host_path':'/private/secret'},
+         'search_stages':[{'stage':'axis_0_algebra','elapsed_seconds':.01,'output_directory':'/private/secret'}],
+         'basis_diagnostics':{'status':'completed','selected_terms':['x','y'],'debug_path':'/private/secret'},
+         'geometric_features':{'radius':'sqrt(x*x+y*y)'},
+         'projection_diagnostics':{'radial_supported':True,'relative_tangential_residual':.001},
          'axis_candidates':{'ax':[{'component':'ax','source':'2.5*x','law_spec':{'ax':'c1 * x','ay':'0'},
                                   'parameter_spec':[{'name':'c1','initial':2.5}], 'parameter_count':1,
                                   'joint_fit_ready':False,'parameter_budget_compatible':True,
@@ -101,6 +105,13 @@ os.set_blocking(0, False)
 class PySRRegressor:
     def __init__(self, **kwargs): pass
     def fit(self, *args, **kwargs): os.set_blocking(0, False)
+''')
+    (fake_package/'juliacall.py').write_text('''
+class Main:
+    @staticmethod
+    def seval(code):
+        assert code == 'Threads.nthreads()'
+        return 4
 ''')
     command = '''
 import os, sys
@@ -218,11 +229,17 @@ def test_http_round_trip_and_request_path_control(pool):
         assert result['axis_candidates']['ax'][0]['joint_fit_ready'] is False
         assert result['axis_candidates']['ax'][0]['discovery_probe_ids'] == ['p']
         assert result['data_quality'] == {'sample_counts':{'p':30},'body_positions_included':False}
+        assert result['search_stages']==[{'stage':'axis_0_algebra','elapsed_seconds':.01}]
+        assert result['basis_diagnostics']=={'status':'completed','selected_terms':['x','y']}
+        assert result['geometric_features']=={'radius':'sqrt(x*x+y*y)'}
+        assert result['projection_diagnostics']['radial_supported'] is True
         assert '/private/' not in json.dumps(result)
         connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
         connection.request('GET', '/health')
         response = connection.getresponse()
-        assert response.status == 200 and json.load(response)['ready'] == 1
+        health=json.load(response)
+        assert response.status == 200 and health['ready'] == 1
+        assert health['actual_julia_threads']==[4]
         connection.close()
         connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
         connection.request('POST', '/search', json.dumps({'probes': [{'probe_id': 'p'}],
@@ -408,3 +425,30 @@ def test_axis_metadata_cannot_claim_complete_or_misrepresent_parameter_budget(up
     row.update(update)
     with pytest.raises(SymbolicServiceError, match='invalid_worker_result'):
         symbolic_service._public_result({'axis_candidates':{'ax':[row]}}, ['p'])
+
+
+def test_both_operator_enums_are_warmed_before_worker_ready(tmp_path):
+    calls=[]
+    class Model:
+        def __init__(self,**options): self.options=options
+        def fit(self,X,y,**kwargs):
+            calls.append(self.options)
+            assert X.shape==(64,7) and len(y)==64
+    class Julia:
+        @staticmethod
+        def seval(code): return 4
+    result=symbolic_service._warmup_models(tmp_path,Model,Julia)
+    assert result['actual_julia_threads']==4
+    assert [r['stage'] for r in result['warmup_stages']]==['algebra','full']
+    assert calls[0]['unary_operators']==['sqrt','abs'] and calls[0]['maxsize']==24
+    assert calls[1]['unary_operators']==['sin','cos','exp','sqrt','log','abs']
+    assert calls[1]['maxsize']==48
+    Julia.seval=lambda code:192
+    with pytest.raises(RuntimeError,match='four_julia_threads'):
+        symbolic_service._warmup_models(tmp_path,Model,Julia)
+
+
+def test_worker_environment_forces_juliacall_thread_and_signal_settings(pool):
+    assert pool.worker_env['PYTHON_JULIACALL_THREADS']==pool.worker_env['JULIA_NUM_THREADS']=='4'
+    assert pool.worker_env['PYTHON_JULIACALL_HANDLE_SIGNALS']=='yes'
+    assert pool.worker_env['OPENBLAS_NUM_THREADS']==pool.worker_env['OMP_NUM_THREADS']=='1'

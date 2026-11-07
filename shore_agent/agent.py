@@ -44,6 +44,7 @@ class Agent:
         self._fallback_observation_version = 0
         self._length_recovered = False
         self._symbolic_submission_reviewed = False
+        self._symbolic_plan_reviewed = False
 
     def _symbolic_submission_review(self, name, args):
         """One continuation opportunity, never an automatic hypothesis or search."""
@@ -54,20 +55,17 @@ class Agent:
         budget = self.runtime.budget()
         if budget.get('session_ended') or budget.get('wall_seconds_remaining', 0) < 100:
             return None
-        usable = [p for p in records.get('probe', {}).values()
-                  if len(p.get('times', [])) >= 3 and p.get('v_obs')]
-        reasons = []
-        if len(usable) >= 3 and not records.get('symbolic_search'):
-            reasons.append('symbolic_search_not_attempted_with_available_training_data')
-        law = records.get('law', {}).get(args.get('law_id'), {})
-        if law.get('fit_status') == 'not_converged':
-            reasons.append('selected_fit_not_converged')
+        from .symbolic_guidance import build_review
+        review = build_review(records, budget, getattr(self.runtime, 'task', None), law_id=args.get('law_id'))
+        critical = {'symbolic_search_not_attempted_with_available_training_data',
+                    'selected_fit_not_converged', 'selected_law_large_relative_validation_residual'}
+        reasons = [r for r in (review or {}).get('reasons', []) if r in critical]
         if not reasons:
             return None
         self._symbolic_submission_reviewed = True
         self.last_budget = budget
         self._event('symbolic_submission_review', reasons=reasons, law_id=args.get('law_id'), budget=budget,
-                    tool_executed=False, one_time_only=True)
+                    tool_executed=False, one_time_only=True, evidence=review)
         result = self._failure('scientific_review_needed')
         result['error']['message'] = (
             '尚有至少100秒，本次submit暂未执行，给一次继续研究机会：' + ', '.join(reasons) + '。'
@@ -75,7 +73,23 @@ class Agent:
             '保留独立验证数据。不要无证据假设中心力、各向同性或不同轴共享系数。'
             '可以先save_draft保留当前最佳候选。此提醒只出现一次；如已有充分理由不再探索，'
             '可如实说明局限后再次submit，系统不会无限阻止交卷。')
+        result['error']['research_review'] = review
         return result
+
+    def _symbolic_plan_review(self, name, result):
+        if (name != 'insert_probe' or not result.get('ok') or self._symbolic_plan_reviewed
+                or not getattr(self.runtime, 'symbolic_enabled', False)):
+            return None
+        records = getattr(getattr(self.runtime, 'store', None), 'records', {})
+        if records.get('symbolic_search') or len(records.get('probe', {})) < 4:
+            return None
+        from .symbolic_guidance import build_review
+        review = build_review(records, self.last_budget, getattr(self.runtime, 'task', None))
+        if review is None or self.last_budget.get('wall_seconds_remaining', 0) < 100:
+            return None
+        self._symbolic_plan_reviewed = True
+        self._event('symbolic_experiment_review', review=review)
+        return json.dumps(review, ensure_ascii=False, allow_nan=False)
 
     _DETERMINISTIC_TOOLS = frozenset({'read_file', 'list_files', 'fit_law_and_rollout',
                                     'validate_law', 'analyze_residual', 'observe_body'})
@@ -391,6 +405,9 @@ class Agent:
                     notice = self._record_repeat(key, result)
                     if notice is not None:
                         recovery_feedback.append(notice)
+                plan_review = self._symbolic_plan_review(name, result)
+                if plan_review is not None:
+                    recovery_feedback.append(plan_review)
                 self.messages.append({'role': 'tool', 'tool_call_id': call['id'],
                                       'content': json.dumps(result, ensure_ascii=False, allow_nan=False)})
                 self._event('tool_finished', tool_call_id=call['id'], name=name, result=result)

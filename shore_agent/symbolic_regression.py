@@ -752,7 +752,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
     means = np.sum(dataset["weights"][:, None]*dataset["y"], axis=0)
     axis_rows = [[{"source": repr(float(value)), "complexity": 1, "origin": "constant_initialization"}]
                  for value in means]
-    report = {"status": "running", "backend": "pysr_with_linear_seeds", "target": "velocity_difference_acceleration",
+    report = {"status": "running", "backend": "staged_pysr_with_regression_basis", "target": "velocity_difference_acceleration",
         "used_probe_ids": dataset["used_probe_ids"], "feature_names": dataset["feature_names"],
         "samples_per_probe": dataset["samples_per_probe"], "dropped_constant_features": dataset["dropped_constant_features"],
         "omitted_incomplete_properties": dataset["omitted_incomplete_properties"],
@@ -760,7 +760,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             "unary_operators": list(UNARY_OPERATORS), "power_exponent_max_complexity": 1,
             "random_state": random_state, "warm_start": False, "parallelism": "multithreading",
             "linear_seed_max_terms": 3, "finalization_reserve_seconds": final_reserve,
-            "operator_scope": "All listed operators are enabled in each PySR search; no staged exclusion.",
+            "operator_scope": "Plan: algebraic then full elementary operators; actual completed stages are in search_stages and depend on remaining budget.",
             "simplicity_preference": "Linear seeds plus parameter/complexity-aware selection within resolution tolerance."},
         "warnings": ["Search loss uses finite-difference acceleration, not independent prediction.",
             "All selected probes are discovery data and cannot serve as independent validation.",
@@ -774,7 +774,7 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
             "omitted_incomplete_properties": dataset["omitted_incomplete_properties"],
             "body_positions_included": False, "acceleration_source": "observed_velocity_finite_difference",
             "trajectory_checks": "executability only; reported RMSE is training diagnostic, not accuracy certification"},
-        "axis_search_seconds": [], "search_axes_completed": [], "candidates": []}
+        "axis_search_seconds": [], "search_axes_completed": [], "search_stages": [], "candidates": []}
     cache = {}
     last_complete_selection = None
     def snapshot(status):
@@ -802,36 +802,69 @@ def run_search(probes, time_budget_seconds=30, max_candidates=3, random_state=42
     if time.monotonic() < deadline-final_reserve:
         for axis in range(2): axis_rows[axis] += _linear_rows(dataset, axis, deadline-final_reserve)
         snapshot("running")
+    if time.monotonic() < deadline-final_reserve:
+        from .symbolic_basis import generate_basis_candidates
+        basis = generate_basis_candidates(dataset, deadline=min(deadline-final_reserve, time.monotonic()+3))
+        report['basis_diagnostics'] = basis['diagnostics']
+        for axis in range(2): axis_rows[axis] += basis['axis_rows'][axis]
+        snapshot('running')
     needs_search = bool(dataset["feature_names"]) and any(not np.all(dataset["y"][:,i] == dataset["y"][0,i]) for i in range(2))
     if model_factory is None and needs_search and time.monotonic() < deadline-final_reserve:
         try: from pysr import PySRRegressor
         except ImportError as exc: raise SymbolicRegressionError("PySR is unavailable in the symbolic worker environment") from exc
         model_factory = PySRRegressor
+    from .symbolic_geometry import ALIASES, feature_table, expand_aliases, radial_projection
+    search_X, search_names = feature_table(dataset)
+    projected, projection_diagnostics = radial_projection(dataset)
+    report['geometric_features'] = {key: value for key, value in ALIASES.items() if key in search_names}
+    report['projection_diagnostics'] = projection_diagnostics
+    search_deadline = deadline-final_reserve
+    total_search = max(0., search_deadline-time.monotonic())
+    # A supported projection changes representation, not the admissible laws.
+    # Keep Cartesian searches as a fallback; never force an unsupported symmetry.
+    projected_fraction = .55 if projected is not None else 0.
+    schedule = []
+    if projected is not None:
+        schedule += [('radial_algebra', None, projected_fraction*.4, ['sqrt', 'abs']),
+                     ('radial_full', None, projected_fraction*.6, list(UNARY_OPERATORS))]
     for axis in range(2):
-        remaining = deadline-time.monotonic()-final_reserve
-        if remaining <= 0: break
-        if not dataset["feature_names"] or np.all(dataset["y"][:,axis] == dataset["y"][0,axis]):
-            report["axis_search_seconds"].append(0.0)
-            continue
-        axis_budget = remaining/(2-axis)
-        options = dict(binary_operators=list(BINARY_OPERATORS), unary_operators=list(UNARY_OPERATORS),
-            constraints={"^": (-1, 1)}, maxsize=SEARCH_MAXSIZE, niterations=1000000, populations=8, population_size=27,
-            ncycles_per_iteration=100, timeout_in_seconds=axis_budget, random_state=random_state+axis,
-            parallelism="multithreading", warm_start=False, precision=64, verbosity=0, progress=False)
-        if output_directory is not None: options["output_directory"] = str(Path(output_directory)/("ax" if axis==0 else "ay"))
+        schedule.append((f'axis_{axis}_algebra', axis, (1-projected_fraction)*.18, ['sqrt', 'abs']))
+    for axis in range(2):
+        schedule.append((f'axis_{axis}_full', axis, (1-projected_fraction)*.32, list(UNARY_OPERATORS)))
+    for stage_index, (label, axis, fraction, unary) in enumerate(schedule):
+        remaining = search_deadline-time.monotonic()
+        stage_budget = min(total_search*fraction, remaining)
+        if not needs_search or stage_budget < .15: break
+        target = projected['target'] if axis is None else dataset['y'][:, axis]
+        if np.all(target == target[0]): continue
+        weights = projected['weights'] if axis is None else dataset['weights']
+        options = dict(binary_operators=list(BINARY_OPERATORS), unary_operators=unary,
+            constraints={'^': (-1, 1)}, maxsize=24 if label.endswith('algebra') else SEARCH_MAXSIZE,
+            niterations=1000000, populations=8, population_size=27, ncycles_per_iteration=100,
+            timeout_in_seconds=stage_budget, random_state=random_state+stage_index,
+            parallelism='multithreading', warm_start=False, precision=64, verbosity=0, progress=False)
+        if output_directory is not None: options['output_directory'] = str(Path(output_directory)/label)
         begin = time.monotonic()
         model = model_factory(**options)
-        model.fit(dataset["X"], dataset["y"][:,axis], weights=dataset["weights"], variable_names=dataset["feature_names"])
-        report["axis_search_seconds"].append(time.monotonic()-begin)
+        model.fit(search_X, target, weights=weights, variable_names=search_names)
+        elapsed = time.monotonic()-begin
+        report['axis_search_seconds'].append(elapsed)
+        report['search_stages'].append({'stage': label, 'requested_seconds': stage_budget,
+                                       'elapsed_seconds': elapsed, 'features': search_names, 'unary_operators': unary})
         for _, row in model.equations_.iterrows():
             try:
-                loss, complexity = float(row["loss"]), int(row["complexity"])
+                loss, complexity = float(row['loss']), int(row['complexity'])
                 if not math.isfinite(loss) or loss < 0 or not 1 <= complexity <= SEARCH_MAXSIZE: continue
-                source = str(row["sympy_format"])
+                source = expand_aliases(str(row['sympy_format']))
                 if len(source) > 4096: continue
-                axis_rows[axis].append({"source": source, "complexity": complexity, "loss": loss, "origin": "pysr"})
-            except (KeyError, ValueError, TypeError): continue
-        report["search_axes_completed"].append("ax" if axis==0 else "ay")
-        snapshot("running")
+                for component in range(2) if axis is None else (axis,):
+                    expression = f'({source})*{("x", "y")[component]}' if axis is None else source
+                    axis_rows[component].append({'source': expression, 'complexity': complexity+(2 if axis is None else 0),
+                                                'origin': 'pysr', 'search_representation': label})
+            except (KeyError, ValueError, TypeError, SyntaxError): continue
+        for component in range(2) if axis is None else (axis,):
+            name = ('ax','ay')[component]
+            if name not in report['search_axes_completed']: report['search_axes_completed'].append(name)
+        snapshot('running')
     snapshot("timeout" if time.monotonic() >= deadline-final_reserve else "completed")
     return report

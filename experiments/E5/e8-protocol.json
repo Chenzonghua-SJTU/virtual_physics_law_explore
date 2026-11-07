@@ -1,0 +1,55 @@
+{
+  "study": "E8 staged symbolic search with generic basis and derived features",
+  "status": "registered_before_execution",
+  "agent_batch_id": "e8-qwen38-pysr-stage-20261107-r01",
+  "configuration": "deployment/config.e8.symbolic.json",
+  "driver": "deployment/run_e8_symbolic.py",
+  "scope": "Improve generic current-session symbolic search and then measure one complete autonomous six-development-world batch. No per-world formula templates or hidden oracle input enters the production tool.",
+  "pre_agent_validation": {
+    "maximum_six_world_offline_replays": 1,
+    "attempts_per_world": 1,
+    "requested_search_seconds_per_world": 47,
+    "mode": "B only: one production staged run_search per world through an isolated warmed service on port 8891; no exact-label A search.",
+    "dataset": "experiments/E5/symbolic-identifiability-20261107-r01/dataset.json: 24 training and 8 heldout trajectories per world, each with 50 observations; only training probes enter the service.",
+    "input": "Frozen acquired/diagnostic probe observations only; independent exact holdout labels may score after search but never select, fit or initialize candidate formulas.",
+    "role": "Check implementation viability before the Agent batch, not choose the best per-world configuration. Every result and failure remains visible."
+  },
+  "agent_batch": {
+    "worlds": ["world_1", "world_2", "world_3", "world_4", "world_5", "world_6"],
+    "attempts_per_world": 1,
+    "model": "qwen3.8-27b",
+    "model_endpoints": ["http://127.0.0.1:8000/v1", "http://127.0.0.1:8001/v1", "http://127.0.0.1:8002/v1", "http://127.0.0.1:8003/v1"],
+    "workers": 4,
+    "single_active_world_per_endpoint": true,
+    "wall_seconds_per_world": 300,
+    "energy_budget": 10,
+    "max_output_tokens_per_call": 4096,
+    "max_total_tokens": null,
+    "thinking": false,
+    "observation_noise": false,
+    "evaluation_noise": false,
+    "environment_seed": 42,
+    "symbolic_seed": 42,
+    "model_sampling_seed": null,
+    "automatic_session_retries": false,
+    "best_of_world_selection": false,
+    "guidance_profile": "baseline",
+    "loop_recovery": true,
+    "symbolic_regression_enabled": true,
+    "independent_evaluation": "All fixed v15 cases after accepted submission, evaluated without noise; not official contest scores."
+  },
+  "launch_preconditions": [
+    "Source frozen and scientific hashes include every generic basis/feature module, conditional prompt, driver, configuration and protocol.",
+    "Four 27B endpoints respond with the expected model and zero running/waiting inference requests; no active user exploration.",
+    "Symbolic service has four warmed, idle workers; service startup uses a fixed local Julia executable and depot, offline mode and both thread variables set to four.",
+    "Independent no-search Julia preflight confirms the actual thread count is four; its environment whitelist and result are recorded in the batch manifest.",
+    "No prior experiment or run directory is reused. Baseline web defaults keep symbolic regression disabled."
+  ],
+  "reporting": [
+    "Retain all six attempts, including failures, incomplete submissions and evaluation failures.",
+    "Per-world exploration, evaluation and total time; total completion tokens, mean output tokens per actual API call, per-call maximum and limit violations.",
+    "Actual symbolic search calls, stages, raw/component/joint candidates, Agent fitting/adoption and final independently evaluated law.",
+    "Keep offline checks, autonomous Agent scores and any posthoc analyses clearly separate."
+  ],
+  "limitations": "One six-world development batch does not establish generalization to nine unseen universes. The package must not import diagnostic oracle labels, stored reference laws or world-specific feature templates."
+}

@@ -60,8 +60,8 @@ def test_recommended_search_budgets_and_sampling_limits_are_callable():
     functions = {item['function']['name']: item['function'] for item in
                  tool_schemas(ruleset='e5', symbolic_enabled=True)}
     search_schema = functions['symbolic_regression']['parameters']
-    assert '40–50秒' in GUIDANCE and '上限60秒' in GUIDANCE
-    for seconds in (40, 45, 50, 60):
+    assert '47秒' in GUIDANCE and '上限60秒' in GUIDANCE
+    for seconds in (40, 47, 50, 60):
         validate({'train_probe_ids': ['current_session_probe'],
                   'time_budget_seconds': seconds}, search_schema)
     with pytest.raises(ValidationError):
@@ -82,6 +82,7 @@ def test_guidance_keeps_complementary_sampling_and_evidence_boundaries():
         '长轨迹', '不要统一缩短总时长', 'timeout不是调用失败',
         '不能原样交拟合', '重命名参数避免意外共享',
         '预算充足应尝试替代结构', '不能作独立验证',
+        '约6枚付费训练探针', '1–2个相同完整初态', '天体可见不证明力来自天体',
     )
     assert all(item in GUIDANCE for item in requirements)
     assert len(GUIDANCE) <= 1500, 'Keep this supplemental prompt short.'
